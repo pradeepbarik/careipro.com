@@ -2,32 +2,25 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+.theme_defult {
+    --rgb-primary-color: 105, 196, 191;
+    --primary-color: rgb(var(--rgb-primary-color), 1);
+    --white-color:#ffff;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
-}
+body {}
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+/*bg color*/
+.bg-white {
+    background-color: var(--white-color);
 }
-
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+.bg-primary{
+    background-color: var(--primary-color);
+}
+/*font color*/
+.color-primary{
+    color: var(--primary-color);
+}
+.color-white{
+    color: var(--white-color);
 }
