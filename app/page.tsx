@@ -1,7 +1,12 @@
+import type { Metadata } from "next";
 import dynamic from 'next/dynamic'
-import useDeviceInfo from "./hooks/useDeviceInfo";
+import useDeviceInfo from "@/lib/hooks/useDeviceInfo";
 const HomeDesktop = dynamic(() => import("./components/pages/home/home.desktop"));
 const HomeMobile = dynamic(() => import("./components/pages/home"));
+export const metadata:Metadata={
+  title:"Find Best Nearby Clinics,Hospitals,Doctors,Medicine Store,Caretaker - careipro",
+  description:"Careipro, a Platform where you can find best doctors,clinic,hospital,medicine store,caretakers,masage service providers for your relaxation.All Things need for human health care and pet care like hospital,doctor,medicine,health tips,diet plans,disease awarness.peoples trusted platform careipro.com"
+}
 export default function Home() {
   const { device } = useDeviceInfo();
   if (device.type === "mobile") {

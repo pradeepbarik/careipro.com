@@ -1,4 +1,5 @@
+import Link from "next/link";
 const Home=()=>{
-    return <>desktop home</>
+    return <>dddfdf dfgdf</>
 }
 export default Home;

@@ -1,4 +1,13 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {};
+const nextConfig = {
+    rewrites: async()=> {
+        return [
+            {
+                source:'/:city-in-:state',
+                destination:'/city'
+            }
+        ]
+    }
+};
 
 export default nextConfig;
