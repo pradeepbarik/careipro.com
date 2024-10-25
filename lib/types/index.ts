@@ -1,3 +1,10 @@
+export type TSeodt={
+    h1:string,
+    title:string,
+    meta_description:string,
+    seo_url:string,
+    short_seo_url:string
+}
 export type Tstate = {
     id: number,
     name: string,

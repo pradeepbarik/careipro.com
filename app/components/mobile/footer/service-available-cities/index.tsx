@@ -9,8 +9,8 @@ const ServiceAvailbeCities = async () => {
      <h2 className='font-semibold fs-16 py-2 px-2'>Service Available Cities
      </h2>
         {data.states.map((state) =>
-            <div key={state.name} className='bg-white px-2'>
-                 <h3 className='font-medium fs-16 py-2'>{state.name}
+            <div key={state.name} className='bg-white px-2 py-2'>
+                 <h3 className='font-medium fs-16'>Cities In {state.name}
                  </h3>
                  <div className='flex flex-wrap gap-2'>
                         {data.data[state.name.toLowerCase()] && data.data[state.name.toLowerCase()].map((district) =>

@@ -1,6 +1,11 @@
 import Button from "./button";
-import SectionHeading from "./section-heading";
+import Tabs from "./tabs";
+import SlideUpModal from "./slide-up-modal";
+import SectionHeading,{SectionSubHeading} from "./section-heading";
 export {
     Button,
-    SectionHeading
+    Tabs,
+    SectionHeading,
+    SectionSubHeading,
+    SlideUpModal
 }

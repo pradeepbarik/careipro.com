@@ -1,3 +1,5 @@
+import { TPopularClinic } from "./clinic"
+
 export type TPopularDoctor = {
     id: number
     name: string,
@@ -14,15 +16,6 @@ export type TPopularDoctor = {
     city: string,
     clinic_seo_url: string,
     service_location_id: number
-}
-export type TPopularClinic = {
-    banner: string,
-    banner_message: string,
-    display_location: string,
-    clinic_name: string,
-    clinic_location: string,
-    logo: string | null,
-    clinic_seo_url: string
 }
 export type TSuggestedCity = {
     state: string

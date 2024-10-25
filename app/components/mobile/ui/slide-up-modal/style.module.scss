@@ -1,0 +1,25 @@
+.overlay{
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    background-color: #495d5b38;
+    z-index: 10;
+    top: 0;
+    left: 0;
+}
+.modalContainer{
+    width: 100%;
+    background: white;
+    position: fixed;
+    z-index: 12;
+    bottom: -100%;
+    left: 0;
+    transition: all 0.25s ease 0s, visibility 0ms ease 0s;
+    border-radius: 1.2rem 1.2rem 0px 0px;
+    max-height: 80vh;
+    border-top: 1px solid #ddd;
+    overflow: hidden;
+    &[data-open="true"]{
+        bottom: 0;
+    }
+}

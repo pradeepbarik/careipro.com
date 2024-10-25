@@ -1,0 +1,13 @@
+.tabsContainer{
+    display: flex;
+    border-bottom: 1px solid #ede8e8;
+    >li{
+        flex-grow: 1;
+        text-align: center;
+        padding: .4rem 0rem;
+        &.active{
+            color: var(--primary-color);
+            border-bottom: 2.5px solid var(--primary-color);
+        }
+    }
+}

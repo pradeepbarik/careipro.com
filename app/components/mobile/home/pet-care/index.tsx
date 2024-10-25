@@ -5,7 +5,7 @@ const Petcare=({data}:{data:THomePageData['petCareInfo']})=>{
         <div className='flex overflow-auto cp-section' style={{ gap: '2%' }}>
             {data.map((item,i)=>
             <div className="grow h-40" key={`petcare-${i}`}>
-                <img src={doctorSpecialityIcon(item.banner)} className="w-full h-full" />
+                <img src={doctorSpecialityIcon(item.banner)} alt="petcare banner" className="w-full h-full" />
             </div>
             )}
         </div>
