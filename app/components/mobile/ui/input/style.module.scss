@@ -1,0 +1,11 @@
+.input {
+    &::placeholder{
+        font-size: calc(1rem / 16 * 14);
+    }
+    &:focus {
+        border: 1px solid var(--primary-color);
+    }
+    &[type="number"] {
+        letter-spacing: 1.5px;
+    }
+}

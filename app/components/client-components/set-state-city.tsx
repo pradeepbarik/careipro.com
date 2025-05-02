@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import moment from "moment";
 import {useCookies} from '@/lib/hooks/useCookies';
 const SetStateCityCookie=({state,city}:{state:string,city:string})=>{
-    const {setCookie}=useCookies(state,city);
+    const {setCookie}=useCookies();
     useEffect(()=>{
         let expire=moment().add(2,'years').format('YYYY-MM-DD');
         setCookie("state",state,{expire:expire,httpOnly:true});

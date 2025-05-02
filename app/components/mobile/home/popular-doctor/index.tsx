@@ -2,6 +2,7 @@ import Link from "next/link";
 import { BiSolidMap, BiClinic } from "react-icons/bi";
 import { THomePageData } from "@/lib/types/home-page";
 import { array_chunk } from '@/lib/helper';
+import { doctorDetailPageUrl } from "@/lib/helper/link";
 const PopularDoctor = ({ data }: { data: THomePageData['popularDoctors'] }) => {
     let chunks = array_chunk([...data], 1, [])
     return <>
@@ -35,8 +36,8 @@ const PopularDoctor2 = ({ data }: { data: THomePageData['popularDoctors'] }) => 
                                     <img src={doctor.image} alt={"Profile picture of " + doctor.name} className="w-16 h-16 rounded-full shrink-0" />
                                     <div className="flex flex-col">
                                         <Link href={doctor.seo_url} className="font-semibold one-line fs-16">{doctor.name}</Link>
-                                        <span>{doctor.position.trim() || "No Position"}</span>
-                                        <span>Medicine Specialist, Gastroenterologist</span>
+                                        {doctor.position && <span>{doctor.position.trim()}</span>}
+                                        <span>{doctor.specialization}</span>
                                     </div>
                                 </div>
                                 <hr />
@@ -47,17 +48,17 @@ const PopularDoctor2 = ({ data }: { data: THomePageData['popularDoctors'] }) => 
                                     </div>
                                     <div className="flex">
                                         <span>
-                                            <span className="flex">
+                                            <span className="flex items-center">
                                                 <BiSolidMap className="color-primary" />
                                                 <span>{doctor.city}</span>
                                             </span>
                                             <span>
                                                 Available On:
-                                                <span className="color-secondary font-semibold">Every Day</span>
+                                                <span className="color-secondary font-semibold">{doctor.availability}</span>
                                             </span>
                                         </span>
                                         <span className="ml-auto">
-                                            <Link href={''} className="button py-2 text one-line text-xs rounded-2xl text-center">Appointment</Link>
+                                            <Link href={doctor.seo_url} className="button py-2 text one-line text-xs rounded-2xl text-center">Appointment</Link>
                                         </span>
                                     </div>
                                 </div>

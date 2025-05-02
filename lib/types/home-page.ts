@@ -10,12 +10,17 @@ export type TPopularDoctor = {
     position: string,
     rating: string,
     experience: number,
+    specialization:string|null,
     seo_url: string,
+    clinic_id:number,
+    market_name:string,
     clinic: string,
     place: string,
     city: string,
+    state:string,
     clinic_seo_url: string,
-    service_location_id: number
+    service_location_id: number,
+    availability:string,
 }
 export type TSuggestedCity = {
     state: string
@@ -26,9 +31,9 @@ export type TSpecility = {
     id: number, name: string, icon: string, short_description: string, seo_url: string
 }
 export type THomePageData = {
-    sections: Array<{ heading: string, name: string }>,
+    sections: Array<{ heading: string, name: string,viewType?:string,itemViewType?:string,specialist_ids?:number[] }>,
     nearbyCities?: TSuggestedCity[],
-    specializations: TSpecility[],
+    specializations: Record<number,TSpecility>,
     verticals: Array<{ label: string, icons: string, url: string }>,
     popularDoctors: TPopularDoctor[],
     popularClinics: TPopularClinic[],

@@ -2,12 +2,13 @@ body{
     color: #696f6e;
     color: #474242;
     color: #3a3636;
-    font-size: calc(1rem / 16 * 14);
+    font-size: calc(1rem / 16 * 13);
     line-height: 1.3;
     font-weight: 500;
     width: 100vw;
     font-family: "Poppins",sans-serif;
     background-color: #d7d7d742;
+    background-color: rgb(217 232 233 / 26%);
 }
 .cp-section{
     padding: .3rem .4rem;
@@ -22,6 +23,8 @@ body{
     justify-content: center;
     padding-left: .5rem;
     padding-right: .5rem;
+    padding-top: .5rem;
+    padding-bottom: .5rem;
     &[data-color="secondary"]{
         background-color: var(--secondary-color);
      }
@@ -47,4 +50,12 @@ body{
         font-size: .7rem;
         padding: 0.2rem 0.5rem;
     }
+}
+.textarea{
+    outline: none;
+    border: 1px solid #d7d7d7;
+    border-radius: .3rem;
+    padding: .5rem;
+    width: 100%;
+    font-size: 1rem;
 }

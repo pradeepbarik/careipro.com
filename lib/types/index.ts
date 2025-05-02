@@ -19,3 +19,12 @@ export type Tcity = {
     is_serviceable: number,
     name_ln: string
 }
+export type TSelectedAddress={
+    source:"map"|"pincode"|"manual"
+    state:string,
+    city:string,
+    sub_dist:string,
+    area:string,
+    pincode?:number,
+    landmark:string
+}

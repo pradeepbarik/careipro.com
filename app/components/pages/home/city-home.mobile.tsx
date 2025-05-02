@@ -13,12 +13,13 @@ import NearbyCities from '../../mobile/home/nearby-cities';
 import PopularDoctor from '../../mobile/home/popular-doctor';
 import PopularClinics from '../../mobile/home/popular-clinics';
 import SetStateCity from '../../client-components/set-state-city';
+import AppointmentReminder from '../../mobile/appointment-reminder';
 const CityHome = async ({ state, city }: { state: string, city: string }) => {
     const data = await getCityHomePageData(state, city);
     return (
         <>
-            <Header />
-            {data && data.sections.map((section) => <div>
+            <Header state={state} city={city} />
+            {data && data.sections.map((section,i) => <div id={`section-${i}`}>
                 {section.name === "nearby_cities" ?
                     <>
                         {section.heading && <SectionHeading heading={section.heading} />}
@@ -27,7 +28,7 @@ const CityHome = async ({ state, city }: { state: string, city: string }) => {
                         }
                     </> : section.name === "specialization" ? <>
                         {section.heading && <SectionHeading heading={section.heading} />}
-                        <Specializations data={data.specializations} />
+                        <Specializations viewType={section.viewType} itemViewType={section.itemViewType==="oneline"?'oneline':'line_by_line'} state={state} city={city} data={data.specializations} specialist_ids={section.specialist_ids||[]} />
                     </> : section.name === "verticals" ? <>
                         {section.heading && <SectionHeading heading={section.heading} />}
                         <Verticals data={data.verticals} />
@@ -37,7 +38,7 @@ const CityHome = async ({ state, city }: { state: string, city: string }) => {
                     </> : (section.name === "popular_doctors" && data.popularDoctors) ? <>
                         {section.heading && <SectionHeading heading={section.heading} />}
                         <PopularDoctor data={data.popularDoctors} />
-                    </> : (section.name === "category" && data) ? <>
+                    </> : (section.name === "doctor_category" && data.doctorCategory) ? <>
                         {section.heading && <SectionHeading heading={section.heading} />}
                         <DoctorCategory data={data.doctorCategory} />
                     </> : section.name === "pet_care" ? <>
@@ -52,6 +53,7 @@ const CityHome = async ({ state, city }: { state: string, city: string }) => {
                 </Suspense>
             </Footer>
             <SetStateCity state={state} city={city} />
+            <AppointmentReminder position={"section-1"} />
         </>
     )
 }

@@ -1,10 +1,8 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { authSlice } from './slices';
+import combineSlices from './slices';
 export const makeStore = () => {
     return configureStore({
-        reducer: {
-            authSlice:authSlice
-        },
+        reducer: combineSlices,
     })
 }
 export type AppStore = ReturnType<typeof makeStore>;

@@ -23,3 +23,33 @@ export const fetchCategories = cache(async (group_category: string) => {
         return data;
     }
 })
+export type TAllCategories={
+    group_categories:string[],
+    categoryDataMapping:{
+        [group_category:string]:{
+            no_child_cats:string[],
+            has_child_cats:string[],
+            [parent_id:string]:string[]
+        }
+    },
+    categoryData:{
+        [id:string]:{
+            id:number,
+            name:string,
+            parent_id:number,
+            icon:string,
+            short_description:string,
+            seo_url:string,
+            group_category:string,
+            seo_id:string
+        }
+    }
+}
+export const fetchAllCategories = cache(async () => {
+    try {
+        return await fetchJson<TAllCategories>(`/cache/category/all-categories.json`);
+    } catch (err: any) {
+        const { data } = await fetchJson<IResponse<TAllCategories>>(`/init-cache/all-categories`);
+        return data;
+    }
+})

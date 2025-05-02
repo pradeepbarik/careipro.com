@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import dynamic from 'next/dynamic'
 import "./globals.scss";
 import StoreProvider from "./StoreProvider";
-import Auth from "./components/client-components/auth";
+import GlobalComponent from "./components/client-components/global";
 import useDeviceInfo from "@/lib/hooks/useDeviceInfo";
 const MobileLayout = dynamic(() => import('./components/mobile/layout'));
 export default function RootLayout({
@@ -10,10 +10,10 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const { device } = useDeviceInfo();
+  const { device,cookies } = useDeviceInfo();
   return (
     <>
-      <StoreProvider>
+      <StoreProvider cookies={cookies}>
         <html lang="en">
           <body className="theme_defult">
           {device.type === "mobile"? 
@@ -21,7 +21,7 @@ export default function RootLayout({
             <>{children}</>}
           </body>
         </html>
-        <Auth />
+        <GlobalComponent />
       </StoreProvider>
     </>
   );

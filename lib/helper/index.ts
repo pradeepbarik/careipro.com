@@ -6,3 +6,10 @@ export const array_chunk:<T>(arr:T[],c:number,result:Array<Array<T>>)=>Array<Arr
     }
     return array_chunk(arr,chunk,result);
  }
+ export const arrayToObj=<T>(arr:Array<any>,{key,value}:{key:string,value:string})=>{
+    let obj:Record<string,T>={};
+    for(let ar of arr){
+        obj[ar[key]]=ar[value];
+    }
+    return obj;
+ }

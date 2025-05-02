@@ -1,12 +1,17 @@
 'use client'
 import { useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch,useSelector } from 'react-redux';
 import { initUserDetail, setGuestUserSecreateKey } from '@/lib/slices/authSlice';
 import { g_user_secreate_key, userSecreateKey, userinfo } from '@/constants/storage_keys';
+import {registerGuestUser} from '@/lib/services/apicalls';
+import { RootState } from '@/lib/store';
+import useCookies from '@/lib/hooks/useCookies';
 export const useAuth = () => {
   const query = useSearchParams();
   const dispatch = useDispatch();
+  const {setCookie}=useCookies()
+  const {cookies}=useSelector((state:RootState)=>state.authSlice)
   const registerGuestVisiter = () => {
     let guest_user_secreate_key = localStorage.getItem(g_user_secreate_key);
     if (guest_user_secreate_key) {
@@ -20,17 +25,24 @@ export const useAuth = () => {
       utm_medium: query.get('utm_medium')||"",
       utm_source: query.get('utm_source')||"",
     }
-    console.log('logdata',logdata)
+    registerGuestUser(logdata).then(({data,code})=>{
+      if(code===200){
+        localStorage.setItem(g_user_secreate_key,data.secreate_key)
+      }
+    });
   }
   useEffect(() => {
-    let user_info = localStorage.getItem(userinfo);
+    let user_info = localStorage.getItem(userinfo)? JSON.parse(localStorage.getItem(userinfo)||""):null;
     if (user_info !== null) {
-      // dispatch(
-      //   setLoggedinUserInfo({
-      //     is_loggedin: true,
-      //     user_info: JSON.parse(user_info)
-      //   })
-      // );
+      dispatch(
+        initUserDetail({
+          is_loggedin: true,
+          user_info: user_info
+        })
+      );
+      if(!cookies[userSecreateKey]){
+        setCookie(userSecreateKey,user_info.secreate_key);
+      }
     } else {
       dispatch(initUserDetail({ is_loggedin: false, user_info: {} }))
       let guest_user_secreate_key = localStorage.getItem(g_user_secreate_key);

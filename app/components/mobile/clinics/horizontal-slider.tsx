@@ -9,7 +9,7 @@ const OneIsToNClinicsSliders = ({ clinics }: { clinics: TClinic[] }) => {
                 {clinics.map((clinic) => {
                     let hasMoreSpecialist = clinic.total_specialist > clinic.doctor_specializations.length ? true : false
                     return (
-                        <div key={clinic.id} className="bg-white shrink-0 border rounded-md p-1" style={{ width: "70%" }}>
+                        <div key={clinic.id} className="bg-white shrink-0 border rounded-md p-1 click" data-href={clinic.seo_url} style={{ width: "70%" }}>
                             <div className='flex overflow-hidden'>
                                 <div className='flex flex-col' style={{ width: "calc(100% - 3rem)" }}>
                                     <Link href={clinic.seo_url} className='font-semibold fs-18 text one-line'>{clinic.name}</Link>

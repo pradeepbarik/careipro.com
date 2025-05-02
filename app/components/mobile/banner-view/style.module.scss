@@ -1,0 +1,26 @@
+.progressFill{
+    animation-name: grow;
+    animation-fill-mode: forwards;
+    animation-timing-function: ease;
+}
+@keyframes grow{
+    0% {
+       width: 0%;
+    }
+    100% {
+        width: 100%;
+    }
+}
+.shake{
+    animation-name: shake;
+    animation-fill-mode: forwards;
+    animation-timing-function: ease;
+}
+@keyframes shake{
+    0% {
+       transform: translateX(-10px);
+    }
+    100% {
+        transform: translateX(0px);
+    }
+}

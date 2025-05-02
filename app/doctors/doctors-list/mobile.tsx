@@ -6,7 +6,7 @@ const DoctorListMobile = async ({ params,data }: { params: any,data:TfetchDoctor
     return (
         <>
             <Header template="SUBPAGE" heading={data.specialist_name} />
-            <NIsToOneDoctorsSliders data={data.doctors} />
+            <NIsToOneDoctorsSliders data={data.doctors} showAvaileTime={true} />
         </>
     )
 }

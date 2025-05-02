@@ -4,7 +4,7 @@ const get_env_configs = () => {
     if (process.env.mode === "production") {
         API_BASE_URL = "https://careipro.com:9002"
     } else {
-        API_BASE_URL = "https://localhost:9002"
+        API_BASE_URL = "http://localhost/api"
     }
     return {
         API_BASE_URL

@@ -18,7 +18,8 @@ export type TDoctor = {
     market_name:string,
     locality:string,
     state:string,
-    specialists?:string
+    specialists?:string,
+    availability:string,
 }
 export type TWeeklyConsultingTiming={
     sunday:number,
@@ -57,17 +58,24 @@ export type TWeeklyConsultingTiming={
     saturday_2nd_session_start: string,
     saturday_2nd_session_end: string,
 }
+export type TSlnoGroup={
+    group_name:string,
+    group_name_for_user:string,
+    limit:number,
+    booking_start:string,
+    booking_complete_time:string,
+    message:string
+}
 export type TDoctorDetail=TWeeklyConsultingTiming & {
     id: number,
     doctor_id: number,
     clinic: string,
     clinic_id: number,
-    service_charge:number,
-    site_service_charge: number,
+    service_charge:string,
+    site_service_charge: string,
     availability:string,
     slno_type:string,
     consulting_time: string,
-    
     doctor_name: string,
     profile_pic: string,
     short_name: null|string,
@@ -91,6 +99,8 @@ export type TDoctorDetail=TWeeklyConsultingTiming & {
     clinic_seo_url: string,
     clinic_state: string,
     clinic_market: string,
+    whatsapp_number:string,
+    whatsapp_channel_link:string,
     settings: {
         payment_type:string,
         advance_booking_enable:number,
@@ -101,6 +111,34 @@ export type TDoctorDetail=TWeeklyConsultingTiming & {
         raw_information:string,
         appointment_book_mode:string,
         allow_booking_request:number,
-        slot_allocation_mode:string
+        slot_allocation_mode:string,
+        mon_limit:number,
+        mon_booking_start_time:string,
+        tue_limit:number,
+        tue_booking_start_time:string,
+        wed_limit:number,
+        wed_booking_start_time:string,
+        thu_limit:number,
+        thu_booking_start_time:string,
+        fri_limit:number,
+        fri_booking_start_time:string,
+        sat_limit:number,
+        sat_booking_start_time:string,
+        sun_limit:number,
+        sun_booking_start_time:string,
     }
+    slno_groups?:Array<TSlnoGroup>,
+    allSpecializations:{[group_category:string]:{
+        name:string,
+        icon:string,
+        short_description:string,seo_url:string,group_category:string,seo_id:string
+    }[]}
+}
+export type TDoctorvailableData={
+    available_date:string,
+    available_on:string,
+    first_session_start_time:string,
+    first_session_end_time:string,
+    second_session_start_time:string,
+    second_session_end_time:string
 }

@@ -13,6 +13,7 @@ import NIsToOneClinicsSliders from "@/app/components/mobile/clinics/vertical-sli
 import ViewAllCategories from "@/app/components/mobile/clinics/view-all-categores";
 import { doctorSpecialityIcon } from '@/lib/image';
 import { TCategories } from "@/lib/hooks/useCategories";
+import ClientHandler from './client-handler';
 type Tprops = {
     state: string,
     city: string,
@@ -60,12 +61,13 @@ const HospitalsMobile = ({ state, city, pageData }: Tprops) => {
                     <CategoriesFooter state={state} city={city} market_name={pageData.primary_market} group_category='CLINIC' page="CLINICS" heading='Find Best Clinics By Categories' />
                 </Suspense>
                 <Suspense fallback={<></>}>
-                    <CategoriesFooter state={state} city={city} market_name={pageData.primary_market} group_category='DOCTOR' page="CLINICS" heading='Disease Specialist Clinics' />
+                    <CategoriesFooter state={state} city={city} market_name={pageData.primary_market} group_category='DOCTOR' page="CLINICS" heading='Best Specialization Doctors' />
                 </Suspense>
                 <Suspense fallback={<></>}>
                     <ServiceAvailbeCities />
                 </Suspense>
             </Footer>
+            <ClientHandler/>
         </>
     )
 }

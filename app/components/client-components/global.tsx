@@ -1,7 +1,7 @@
 'use client'
 import useAuth from "@/lib/hooks/useAuth"
-const Auth = () => {
+const GlobalComponent = () => {
     useAuth();
     return <></>
 }
-export default Auth;
+export default GlobalComponent;

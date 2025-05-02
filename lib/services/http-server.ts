@@ -9,12 +9,29 @@ export type IResponse<T> = {
   message: string,
   data: T
 }
-export const fetchJson = async <R>(url: string, log_api: boolean = false): Promise<R> => {
-  if (log_api) {
-    console.log("api:", API_BASE_URL + url);
-  }
+export const getCityCachePath=(state:string,city:string,extraParams?:{market_name?:string,dir?:string})=>{
+    if(extraParams && extraParams.market_name && extraParams.dir){
+        return `/cache/${state.toLowerCase().replace(" ","-")}/${city.toLowerCase().replace(" ","-")}/${extraParams.dir}/${extraParams.market_name.toLowerCase().replace(" ","-")}/`;
+    }else if(extraParams?.dir){
+        return `/cache/${state.toLowerCase().replace(" ","-")}/${city.toLowerCase().replace(" ","-")}/${extraParams.dir}/`;
+    }
+    return `/cache/${state.toLowerCase().replace(" ","-")}/${city.toLowerCase().replace(" ","-")}/`;
+}
+export const fetchJson = async <R>(url: string, log_api: boolean = false, options?: {method?:string,secreate_key?:string}): Promise<R> => {
   try {
-    let response = await fetch(API_BASE_URL + url);
+    let configs:RequestInit = {headers:{}};
+    if(options?.method){
+      configs.method=options.method
+    }
+    if(options?.secreate_key){
+      configs.headers={
+        "x-api-key":options.secreate_key
+      }
+    }
+    if (log_api) {
+      console.log("api:=====>", API_BASE_URL + url,"configs-->",configs);
+    }
+    let response = await fetch(API_BASE_URL + url, configs);
     if (!response.ok) {
       throw new Error("something went wrong");
     }

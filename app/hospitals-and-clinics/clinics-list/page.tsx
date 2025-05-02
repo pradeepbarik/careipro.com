@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import dynamic from 'next/dynamic'
 import useDeviceInfo from "@/lib/hooks/useDeviceInfo";
-import { fetchClinicsList } from '@/lib/hooks/useClinics';
+import { fetchClinicsList, fetchClinicTopDoctors } from '@/lib/hooks/useClinics';
 const ClinicListMobile = dynamic(() => import('./mobile'));
 const ClinicListDesktop = dynamic(() => import('./desktop'));
 export async function generateMetadata({ searchParams }: { searchParams: any }): Promise<Metadata> {
@@ -13,10 +13,13 @@ export async function generateMetadata({ searchParams }: { searchParams: any }):
 }
 const Clinics = async ({ searchParams }: { searchParams: any }) => {
     const { device } = useDeviceInfo();
-    const data = await fetchClinicsList({ state: searchParams.state, city: searchParams.city, market_name: searchParams.market_name, cat_id: searchParams.cat_id, group_category: searchParams.group_cat });
+    let [clinicListData, clinicSTopDoctorsData] = await Promise.all([
+        fetchClinicsList({ state: searchParams.state, city: searchParams.city, market_name: searchParams.market_name, cat_id: searchParams.cat_id, group_category: searchParams.group_cat }),
+        fetchClinicTopDoctors({ state: searchParams.state, city: searchParams.city, market_name: searchParams.market_name })
+    ])
     if (device.type === "mobile") {
         return (<>
-            <ClinicListMobile params={searchParams} data={data.data} />
+            <ClinicListMobile params={searchParams} data={clinicListData.data} topDoctorsData={clinicSTopDoctorsData.data} />
         </>)
     } else {
         return (<>

@@ -1,0 +1,33 @@
+.container {
+    z-index: 10;
+    &[data-show='false'] {
+        animation-delay: .1s;
+        animation-name: hideSuggestion;
+        animation-fill-mode: forwards;
+        animation-duration: .1s;
+    }
+    &[data-show='true'] {
+        display: block;
+        animation-name: showSuggestion;
+        animation-fill-mode: forwards;
+        animation-duration: .3s;
+    }
+}
+@keyframes hideSuggestion{
+    0%{
+        display: none;
+    };
+    100%{
+        display: none;
+    }
+}
+@keyframes showSuggestion{
+    0%{
+        transform: translateY(10px);
+        opacity: 0;
+    }
+    100%{
+        transform: translateY(0px);
+        opacity: 1;
+    }
+}
