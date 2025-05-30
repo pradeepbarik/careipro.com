@@ -1,11 +1,11 @@
 'use client'
 import Link from 'next/link';
-import { AiFillCaretDown, AiOutlineLeft } from "react-icons/ai";
-import { BiSolidUserCircle } from "react-icons/bi";
+import { AiFillCaretDown } from "react-icons/ai";
+import { BiSolidUserCircle,BiSolidChevronLeft } from "react-icons/bi";
 import classes from "./header.module.scss";
 export const BackButton = () => {
     return (
-        <AiOutlineLeft className='font-semibold h-8 w-8 rounded-full p-1' onClick={() => {
+        <BiSolidChevronLeft className='color-black h-7 w-7 rounded-full p-1' onClick={() => {
             window.history.go(-1)
         }} />
     )
@@ -13,9 +13,9 @@ export const BackButton = () => {
 const Header = ({ template = "HOMEPAGE", heading = "", state, city }: { template?: "HOMEPAGE" | "SUBPAGE", heading?: string, state?: string, city?: string }) => {
     if (template === "SUBPAGE") {
         return (
-            <div style={{ height: "3.7rem" }}>
+            <div style={{ height: "3.5rem" }}>
                 <div className={`flex gap-2 items-center px-2 py-2 fixed bg-white ${classes.container}`}>
-                    <AiOutlineLeft className='font-semibold h-10 w-10 p-2' onClick={() => {
+                    <BiSolidChevronLeft className='font-semibold h-10 w-10 p-2' onClick={() => {
                         window.history.go(-1)
                     }} />
                     <h3 className='fs-17 font-semibold'>
@@ -38,7 +38,7 @@ const Header = ({ template = "HOMEPAGE", heading = "", state, city }: { template
                     <div>
                         <Link href={"/my-profile"} className='flex gap-1 items-center border rounded-lg px-1 py-1 color-primary'>
                             <BiSolidUserCircle className='text-lg' />
-                            <span className='font-semibold'>My Profile</span>
+                            <span>My Profile</span>
                         </Link>
                     </div>
                 </div>

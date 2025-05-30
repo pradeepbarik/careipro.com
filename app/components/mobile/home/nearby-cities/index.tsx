@@ -17,14 +17,14 @@ const NearbyCities = ({ data }: { data: THomePageData['nearbyCities'] }) => {
                         <span className='fs-12 font-semibold'>Near me</span>
                     </div>
                     {data.map((city) =>
-                        <Link href={cityPageLink(city.state, city.city)} key={city.city} scroll={false} className="text-center w-20 shrink-0 overflow-hidden">
+                        <Link title={`Careipro - ${city.city}`} href={cityPageLink(city.state, city.city)} key={city.city} scroll={false} className="text-center w-20 shrink-0 overflow-hidden">
                             <div className='h-12 rounded-md overflow-hidden'>
                                 <img src={getCityIcon(city.thumbIcon)} alt={`${city.city} of ${city.state}`} className='h-full w-full' />
                             </div>
                             <span className='fs-12 font-semibold' >{capitalizeFirstLetter(city.city)}</span>
                         </Link>
                     )}
-                    <Link href={"/service-available-cities"} className="text-center w-20 shrink-0 overflow-hidden">
+                    <Link title={`Services available cities`} href={"/service-available-cities"} className="text-center w-20 shrink-0 overflow-hidden">
                         <div className='h-12 rounded-md overflow-hidden bg-primary flex items-center justify-center'>
                             <BiSolidChevronRight className='color-white text-2xl'/>
                         </div>

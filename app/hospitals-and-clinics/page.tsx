@@ -8,7 +8,11 @@ const HospitalsDesktop = dynamic(() => import('./desktop'));
 export async function generateMetadata({ searchParams }: { searchParams: { city: string, state: string } }): Promise<Metadata> {
     return {
         title: `Best Clinics and Hospitals in ${searchParams.city} - careipro.com`,
-        description: `Find best Clinics and Hospitals by specialist,disease symptoms and book appoinment. Get Hospitals and clinics phone number,clinic address,consultaion fees and consultaion timing. `
+        description: `Find best Clinics and Hospitals by specialist,disease symptoms and book appoinment. Get Hospitals and clinics phone number,clinic address,consultaion fees and consultaion timing. `,
+        robots: {
+            index: true,
+            follow: true,
+        },
     }
 }
 const Hospitals = async ({ searchParams }: { searchParams: { city: string, state: string } }) => {

@@ -207,11 +207,10 @@ export type TclinicDetail = {
 }
 export const fetchClinicDetail = cache(async (params: { state: string, city: string, market_name: string, clinic_id: number, clinic_bid: string }) => {
     try {
-        throw new Error("test");
         let data = await fetchJson<TclinicDetail>(`/cache/${params.state.replace(" ", "-").toLowerCase()}/${params.city.replace(" ", "-").toLowerCase()}/clinic-details/${params.clinic_bid}/details.json`);
         return { data: data }
     } catch (err: any) {
-        const res = await fetchJson<IResponse<TclinicDetail>>(`/get-clinic-detail?state=${params.state}&city=${params.city}&clinic_id=${params.clinic_id}`);
+        const res = await fetchJson<IResponse<TclinicDetail>>(`/get-clinic-detail?state=${params.state}&city=${params.city}&clinic_id=${params.clinic_id}`,true);
         return { data: res.data }
     }
 })

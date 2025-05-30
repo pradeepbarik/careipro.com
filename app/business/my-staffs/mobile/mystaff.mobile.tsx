@@ -1,6 +1,6 @@
 'use client'
 import Link from "next/link";
-import { BiLogoWhatsapp, BiPhone, BiTask } from "react-icons/bi";
+import { BiLogoWhatsapp, BiPhone, BiTask,BiPencil } from "react-icons/bi";
 import Header from "@/app/components/mobile/header";
 import AddNewStaff from '@/app/business/my-staffs/mobile/add-new-staff';
 import useMystaffs from "@/lib/hooks/business/useMystaff";
@@ -57,14 +57,14 @@ const MystaffMobile = () => {
                                 </Link>
                             </div> :
                             <div className="flex gap-4 mt-2 px-2">
-                                <a className='button grow flex items-center gap-2 py-1 shrink-0 basis-0' data-variant="outlined">
-                                    <BiLogoWhatsapp />WhatsApp
-                                </a>
                                 <a href={`tel:${staff.mobile}`} className='button grow flex items-center gap-2 py-1 shrink-0 basis-0'>
                                     <BiPhone />Call Now
                                 </a>
                                 <Link href={``} className='button grow flex items-center gap-2 py-1 shrink-0 basis-0'>
                                     <BiTask />Jobs
+                                </Link>
+                                <Link href={``} className='button grow flex items-center gap-2 py-1 shrink-0 basis-0'>
+                                    <BiPencil />Edit Profile
                                 </Link>
                             </div>
                         }

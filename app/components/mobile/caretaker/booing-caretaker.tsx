@@ -1,0 +1,38 @@
+'use client'
+import { useEffect, useRef } from 'react';
+import { useDispatch } from 'react-redux';
+import { handelBookBtnClick } from '@/lib/slices/caretakerSlice';
+import { TCareTakerClinic } from '@/lib/hooks/caretaker/useCaretaker';
+import {clinicProfilePic} from '@/lib/image';
+export const BookCaretakerButton = () => {
+    const dispatch = useDispatch();
+    return (
+        <button className='button py-2 one-line ripple' onClick={() => { dispatch(handelBookBtnClick({ show: true,page:"caretaker_home",section:"nedd_help" })) }}>Book Now</button>
+    )
+}
+export const CaretakerBookClinicButton = ({ data }: { data: TCareTakerClinic }) => {
+    const dispatch=useDispatch();
+    const ref = useRef<HTMLButtonElement>(null);
+    useEffect(() => {
+        const clickhandler = (e: any) => {
+            e.stopPropagation();
+            dispatch(handelBookBtnClick({ show: true,page:"caretaker_home",section:"listing",data:{clinic_id:data.id,businessInfo:{name:data.name,logo:clinicProfilePic(data.logo)}} }))
+        }
+        if (ref.current) {
+            ref.current.addEventListener("click", clickhandler)
+        }
+        return () => {
+            if (ref.current) {
+                ref.current.removeEventListener("click",clickhandler)
+            }
+        }
+    }, [])
+    return (
+        <button className='button grow ripple' ref={ref}>Book Now</button>
+    )
+}
+// export const CaretakerBookClinicButton = ({ data }: { data: TCareTakerClinic }) => {
+//     return (
+//         <button className='button grow ripple' onClick={(e)=>{alert("click on button");e.stopPropagation()}}>Book Now</button>
+//     )
+// }

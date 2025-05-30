@@ -8,7 +8,15 @@ export async function generateMetadata({ searchParams }: { searchParams: any }):
     const data = await fetchDoctors({ state: searchParams.state, city: searchParams.city, cat_id: searchParams.cat_id, group_category: searchParams.group_cat, seo_url: searchParams.seo_url })
     return {
         title: data.data.seo_dt.title,
-        description: data.data.seo_dt.meta_description
+        description: data.data.seo_dt.meta_description,
+        robots: {
+            index: true,
+            follow: true,
+            googleBot: {
+                index: true,
+                follow: true,
+            }
+        },
     }
 }
 const DoctorsList = async ({ searchParams }: { searchParams: any }) => {

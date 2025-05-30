@@ -84,7 +84,7 @@ const nextConfig = {
                 destination:'/hospitals-and-clinics/clinic-detail'
             }, 
             {
-                source:'/:seo_url-At-:market_name-In-:city-of-:state/C:clinic_id-:state_city/:sub_page',
+                source:'/:seo_url-At-:market_name-In-:city-of-:state/:business_type(CT|C):clinic_id-:state_city/:sub_page',
                 destination:'/hospitals-and-clinics/clinic-detail'
             },
             {

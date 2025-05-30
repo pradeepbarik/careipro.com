@@ -40,97 +40,109 @@ const MyProfileMobile = ({ cookies }: { cookies: Record<string, string> }) => {
                         {user_info.ico === '1' &&
                             <>
                                 {(user_info.bt === "RELAXATION" || user_info.bt === "CARETAKER") ? <>
-                                    <li>
-                                        <Link href={`/${BUSINESS_ROUTES}/my-leads`} className='flex items-center h-12'>
-                                            <AiOutlineCarryOut className='fs-18' />
-                                            <span className='ml-2 fs-17'>
-                                                Leads
-                                            </span>
-                                        </Link>
-                                    </li>
+                                    {user_info.bt === "RELAXATION" &&
+                                        <li>
+                                            <Link href={`/${BUSINESS_ROUTES}/my-leads`} className='flex items-center h-12'>
+                                                <AiOutlineCarryOut className='fs-16' />
+                                                <span className='ml-2 fs-16'>
+                                                    Leads
+                                                </span>
+                                            </Link>
+                                        </li>
+                                    }
+                                     {user_info.bt === "CARETAKER" &&
+                                     <li>
+                                            <Link href={`/${BUSINESS_ROUTES}/enquiries`} className='flex items-center h-12'>
+                                                <AiOutlineCarryOut className='fs-16' />
+                                                <span className='ml-2 fs-16'>
+                                                    Enquiries
+                                                </span>
+                                            </Link>
+                                        </li>
+                                     }
                                     <li>
                                         <Link href={`/${BUSINESS_ROUTES}/my-jobs`} className='flex items-center h-12'>
-                                            <AiOutlineCarryOut className='fs-18' />
-                                            <span className='ml-2 fs-17'>
+                                            <AiOutlineCarryOut className='fs-16' />
+                                            <span className='ml-2 fs-16'>
                                                 Jobs
                                             </span>
                                         </Link>
                                     </li>
                                     <li>
                                         <Link href={`/${BUSINESS_ROUTES}/my-staffs`} className='flex items-center h-12'>
-                                            <AiOutlineCarryOut className='fs-18' />
-                                            <span className='ml-2 fs-17'>
+                                            <AiOutlineCarryOut className='fs-16' />
+                                            <span className='ml-2 fs-16'>
                                                 My Staffs
                                             </span>
                                         </Link>
                                     </li>
-                                </>:user_info.bt === "PETCARE"?<>
-                                
-                                </>:
-                                <></>}
+                                </> : user_info.bt === "PETCARE" ? <>
+
+                                </> :
+                                    <></>}
                                 <hr />
                             </>
                         }
                         <li>
                             <Link href={`/${MY_PROFILE_ROUTES}/appointment-history`} className='flex items-center h-12'>
-                                <AiOutlineCarryOut className='fs-18' />
-                                <span className='ml-2 fs-17'>
+                                <AiOutlineCarryOut className='fs-16' />
+                                <span className='ml-2 fs-16'>
                                     My Appointments
                                 </span>
                             </Link>
                         </li>
                         <li>
                             <Link href={"/my-appointments"} className='flex items-center h-12'>
-                                <AiOutlineHeart className='fs-18' />
-                                <span className='ml-2 fs-17'>
+                                <AiOutlineHeart className='fs-16' />
+                                <span className='ml-2 fs-16'>
                                     My Favourites
                                 </span>
                             </Link>
                         </li>
                         <li>
                             <Link href={`/${MY_PROFILE_ROUTES}/profile-detail`} className='flex items-center h-12'>
-                                <AiOutlineEdit className='fs-18' />
-                                <span className='ml-2 fs-17'>
+                                <AiOutlineEdit className='fs-16' />
+                                <span className='ml-2 fs-16'>
                                     My Profile
                                 </span>
                             </Link>
                         </li>
-                        <li>
+                        {/* <li>
                             <Link href={"/my-appointments"} className='flex items-center h-12'>
-                                <AiOutlineTeam className='fs-18' />
-                                <span className='ml-2 fs-17'>
+                                <AiOutlineTeam className='fs-16' />
+                                <span className='ml-2 fs-16'>
                                     Refer & Earn
                                 </span>
                             </Link>
-                        </li>
+                        </li> */}
                         <li>
                             <Link href={"/my-appointments"} className='flex items-center h-12'>
-                                <AiOutlineNotification className='fs-18' />
-                                <span className='ml-2 fs-17'>
+                                <AiOutlineNotification className='fs-16' />
+                                <span className='ml-2 fs-16'>
                                     Open Jobs at Hospitals
                                 </span>
                             </Link>
                         </li>
                         <li>
-                            <Link href={"/my-appointments"} className='flex items-center h-12'>
-                                <AiOutlineComment className='fs-18' />
-                                <span className='ml-2 fs-17'>
+                            <Link href={"/support/share-feedback"} className='flex items-center h-12'>
+                                <AiOutlineComment className='fs-16' />
+                                <span className='ml-2 fs-16'>
                                     Share your Feedback
                                 </span>
                             </Link>
                         </li>
                         <li>
                             <Link href={"my-appointments"} className='flex items-center h-12'>
-                                <AiOutlineTag className='fs-18' />
-                                <span className='ml-2 fs-17'>
+                                <AiOutlineTag className='fs-16' />
+                                <span className='ml-2 fs-16'>
                                     Register your Hospital / Clinic
                                 </span>
                             </Link>
                         </li>
                         <li>
                             <Link href={"/Business-With-Careipro"} className='flex items-center h-12'>
-                                <AiOutlineTag className='fs-18' />
-                                <span className='ml-2 fs-17'>
+                                <AiOutlineTag className='fs-16' />
+                                <span className='ml-2 fs-16'>
                                     Business Opertunities
                                 </span>
                             </Link>
@@ -139,24 +151,24 @@ const MyProfileMobile = ({ cookies }: { cookies: Record<string, string> }) => {
 
                         <li>
                             <Link href={"/my-appointments"} className='flex items-center h-12'>
-                                <AiOutlinePhone className='fs-18' />
-                                <span className='ml-2 fs-17'>
+                                <AiOutlinePhone className='fs-16' />
+                                <span className='ml-2 fs-16'>
                                     Need Help?
                                 </span>
                             </Link>
                         </li>
                         <li>
                             <Link href={"/my-appointments"} className='flex items-center h-12'>
-                                <AiOutlineQuestionCircle className='fs-18' />
-                                <span className='ml-2 fs-17'>
+                                <AiOutlineQuestionCircle className='fs-16' />
+                                <span className='ml-2 fs-16'>
                                     FAQs
                                 </span>
                             </Link>
                         </li>
                         <li>
                             <Link href={"/my-appointments"} className='flex items-center h-12'>
-                                <AiOutlineInfoCircle className='fs-18' />
-                                <span className='ml-2 fs-17'>
+                                <AiOutlineInfoCircle className='fs-16' />
+                                <span className='ml-2 fs-16'>
                                     About us
                                 </span>
                             </Link>
@@ -169,9 +181,9 @@ const MyProfileMobile = ({ cookies }: { cookies: Record<string, string> }) => {
     return (
         <>
             <div className='bg-white' style={{ minHeight: "100vh" }}>
-                <div className='h-16 flex items-center px-2 border-b'>
+                <div className='h-12 flex items-center px-2 border-b'>
                     <BackButton />
-                    <span className='grow text-center font-semibold text-xl'>My Profile</span>
+                    <span className='grow text-center font-semibold text-lg'>My Profile</span>
                     <span onClick={() => { setShowLoginModal(true) }} className='flex gap-1 items-center color-primary font-semibold border border-color-primary px-1 rounded-md'>
                         <BiUserCircle className='text-xl' />
                         <span className='py-1'>
@@ -182,65 +194,65 @@ const MyProfileMobile = ({ cookies }: { cookies: Record<string, string> }) => {
                 <div className='px-4'>
                     <ul>
                         <li>
-                            <Link href={"/my-appointments"} className='flex items-center h-12'>
-                                <AiOutlineTag className='fs-18' />
-                                <span className='ml-2 fs-17'>
+                            <Link href={"/Register-clinic-hospital"} className='flex items-center h-12'>
+                                <AiOutlineTag className='fs-16' />
+                                <span className='ml-2 fs-16'>
                                     Register your Hospital / Clinic
                                 </span>
                             </Link>
                         </li>
                         <li>
                             <Link href={"/Business-with-Careipro"} className='flex items-center h-12'>
-                                <AiOutlineTag className='fs-18' />
-                                <span className='ml-2 fs-17'>
+                                <AiOutlineTag className='fs-16' />
+                                <span className='ml-2 fs-16'>
                                     Business Opertunities
                                 </span>
                             </Link>
                         </li>
-                        <li>
+                        {/* <li>
                             <Link href={"/my-appointments"} className='flex items-center h-12'>
-                                <AiOutlineTeam className='fs-18' />
-                                <span className='ml-2 fs-17'>
+                                <AiOutlineTeam className='fs-16' />
+                                <span className='ml-2 fs-16'>
                                     Refer & Earn
                                 </span>
                             </Link>
-                        </li>
+                        </li> */}
                         <li>
                             <Link href={"/my-appointments"} className='flex items-center h-12'>
-                                <AiOutlineNotification className='fs-18' />
-                                <span className='ml-2 fs-17'>
+                                <AiOutlineNotification className='fs-16' />
+                                <span className='ml-2 fs-16'>
                                     Open Jobs
                                 </span>
                             </Link>
                         </li>
                         <li>
-                            <Link href={"/my-appointments"} className='flex items-center h-12'>
-                                <AiOutlineComment className='fs-18' />
-                                <span className='ml-2 fs-17'>
+                            <Link href={"/support/share-feedback"} className='flex items-center h-12'>
+                                <AiOutlineComment className='fs-16' />
+                                <span className='ml-2 fs-16'>
                                     Share your Feedback
                                 </span>
                             </Link>
                         </li>
                         <li>
                             <Link href={"/my-appointments"} className='flex items-center h-12'>
-                                <AiOutlinePhone className='fs-18' />
-                                <span className='ml-2 fs-17'>
+                                <AiOutlinePhone className='fs-16' />
+                                <span className='ml-2 fs-16'>
                                     Need Help?
                                 </span>
                             </Link>
                         </li>
                         <li>
                             <Link href={"/my-appointments"} className='flex items-center h-12'>
-                                <AiOutlineQuestionCircle className='fs-18' />
-                                <span className='ml-2 fs-17'>
+                                <AiOutlineQuestionCircle className='fs-16' />
+                                <span className='ml-2 fs-16'>
                                     FAQs
                                 </span>
                             </Link>
                         </li>
                         <li>
                             <Link href={"/my-appointments"} className='flex items-center h-12'>
-                                <AiOutlineInfoCircle className='fs-18' />
-                                <span className='ml-2 fs-17'>
+                                <AiOutlineInfoCircle className='fs-16' />
+                                <span className='ml-2 fs-16'>
                                     About us
                                 </span>
                             </Link>

@@ -1,12 +1,12 @@
-import { SectionHeading } from "@/app/components/mobile/ui"
+import { SectionHeading,SectionSubHeading } from "@/app/components/mobile/ui"
 import { TDoctorDetail, TDoctorvailableData } from '@/lib/types/doctor';
 import WeeklyConsultingTiming from "@/app/components/mobile/doctors/doctor-detail/weekly-consulting-timing";
 import NextConsultTime from '@/app/components/mobile/doctors/doctor-detail/next-consult-time';
 const OverView = ({ data, availableData }: { data: TDoctorDetail, availableData: TDoctorvailableData }) => {
     return (
         <>
-            <SectionHeading heading='Consulting Timing' />
-            <div className='bg-white px-2 py-2 mb-2 max-h-80 shadow-sm overflow-auto'>
+            <SectionSubHeading heading='Consulting Timing' />
+            <div className='bg-white px-2 py-2 mb-2 shadow-sm'>
                 {data.availability === "per_week" ? <WeeklyConsultingTiming data={{
                     sunday: data.sunday,
                     sunday_1st_session_start: data.sunday_1st_session_start,

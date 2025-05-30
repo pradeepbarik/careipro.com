@@ -1,4 +1,4 @@
-body{
+body {
     color: #696f6e;
     color: #474242;
     color: #3a3636;
@@ -6,14 +6,16 @@ body{
     line-height: 1.3;
     font-weight: 500;
     width: 100vw;
-    font-family: "Poppins",sans-serif;
+    font-family: "Poppins", sans-serif;
     background-color: #d7d7d742;
     background-color: rgb(217 232 233 / 26%);
 }
-.cp-section{
+
+.cp-section {
     padding: .3rem .4rem;
 }
-.button{
+
+.button {
     border-radius: .3rem;
     background-color: var(--primary-color);
     color: white;
@@ -25,33 +27,57 @@ body{
     padding-right: .5rem;
     padding-top: .5rem;
     padding-bottom: .5rem;
-    &[data-color="secondary"]{
-        background-color: var(--secondary-color);
-     }
-    &[data-variant='contained']{
-        &[data-color="secondary"]{
-           background-color: var(--secondary-color);
+
+    &.ripple {
+        background-position: center;
+        transition: background 0.6s;
+
+        &:hover {
+            background: var(--primary-color) radial-gradient(circle, transparent 1%, var(--primary-color) 1%) center/15000%;
+        }
+
+        &:active {
+            background-color: #6eb9f7;
+            background-color: rgb(var(--rgb-page-background) / 100%);
+            background-size: 100%;
+            transition: background 0s;
         }
     }
-    &[data-variant="outlined"]{
+
+    &[data-color="secondary"] {
+        background-color: var(--secondary-color);
+    }
+
+    &[data-variant='contained'] {
+        &[data-color="secondary"] {
+            background-color: var(--secondary-color);
+        }
+    }
+
+    &[data-variant="outlined"] {
         background-color: white;
         color: var(--primary-color);
         border: 1px solid var(--primary-color);
-        &[data-color="secondary"]{
+
+        &[data-color="secondary"] {
             border: 1px solid var(--secondary-color);
             color: var(--secondary-color);
         }
+
     }
-    &[data-size="small"]{
+
+    &[data-size="small"] {
         padding: .3rem .5rem;
         font-size: 14px;
     }
-    &[data-size="xs"]{
+
+    &[data-size="xs"] {
         font-size: .7rem;
         padding: 0.2rem 0.5rem;
     }
 }
-.textarea{
+
+.textarea {
     outline: none;
     border: 1px solid #d7d7d7;
     border-radius: .3rem;

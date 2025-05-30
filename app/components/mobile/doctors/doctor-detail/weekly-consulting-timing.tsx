@@ -33,12 +33,12 @@ const Row = ({ day,isAvailable, isToday, first_session_start, first_session_end,
 const WeeklyConsultingTiming = ({ data }: { data: TWeeklyConsultingTiming }) => {
     const today = moment(get_current_datetime()).format("dddd");
     return (<>
-        <table className="w-full table font-semibold">
+        <table className="w-full table">
             <thead>
-                <tr className="bg-primary-20 rounded-md">
-                    <th colSpan={1} className="text-left fs-16">Day</th>
-                    <th colSpan={2} className="fs-16">1st Session</th>
-                    <th colSpan={2} className="fs-16">2nd Session</th>
+                <tr className="rounded-md">
+                    <th colSpan={1} className="text-left">Day</th>
+                    <th colSpan={2} className="">1st Session</th>
+                    <th colSpan={2} className="">2nd Session</th>
                 </tr>
             </thead>
             <tbody>

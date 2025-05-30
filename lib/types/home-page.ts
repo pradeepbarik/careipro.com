@@ -31,7 +31,7 @@ export type TSpecility = {
     id: number, name: string, icon: string, short_description: string, seo_url: string
 }
 export type THomePageData = {
-    sections: Array<{ heading: string, name: string,viewType?:string,itemViewType?:string,specialist_ids?:number[] }>,
+    sections: Array<{ heading: string, name: string,viewType?:string,itemViewType?:string,itemWidth?:string,specialist_ids?:number[],doctor_ids?:number[],specialist_id?:number }>,
     nearbyCities?: TSuggestedCity[],
     specializations: Record<number,TSpecility>,
     verticals: Array<{ label: string, icons: string, url: string }>,
@@ -47,5 +47,8 @@ export type THomePageData = {
     petCareInfo:Array<{
       banner: string,
       url: string
-    }>
+    }>,
+    doctors?: Record<string, TPopularDoctor>,
+    clinics?: Record<string, any>,
+    specialistDoctors?: Record<string, TPopularDoctor[]>,
 }

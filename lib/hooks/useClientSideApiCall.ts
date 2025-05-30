@@ -98,6 +98,22 @@ export const bookmarkedAddressList = async () => {
 export const submitReviewsPostCurl= (data:any)=>{
     return httpPost("/user/submit-appoitment-rating-review",data,{passSecreateKey:true})
 }
+export const sendEnquiryPostCurl=(data:{
+    name:string,
+    mobile:string,
+    message:string,
+    clinic_id?:number,
+    doctor_id?:number,
+    vertical:string,
+    specialist_id?:number,
+    state:string,
+    city:string,
+    market_name?:string,
+    page:string,
+    section:string
+})=>{
+    return httpPost("/create-enquiry",data,{passSecreateKey:true,passGuserSecreateKey:true})
+}
 //user business page
 export type TLead = {
     id: number,

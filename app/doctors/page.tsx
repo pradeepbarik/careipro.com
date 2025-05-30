@@ -8,7 +8,15 @@ const DoctorsDesktop = dynamic(() => import('./desktop'));
 export async function generateMetadata({searchParams}:{ searchParams: {city: string, state: string} }):Promise<Metadata> {
     return {
         title:`Best Doctors by specialist in ${searchParams.city} - careipro.com`,
-        description:`Get available doctors by specialist and book appoinment. Get doctors phone number,clinic address,consultaion fees and consultaion timing. `
+        description:`Get available doctors by specialist and book appoinment. Get doctors phone number,clinic address,consultaion fees and consultaion timing. `,
+        robots:{
+            index:true,
+            follow:true,
+            googleBot: {
+                index: true,
+                follow: true,
+            }
+        },
     }
 }
 const Doctors = async ({ searchParams }: { searchParams: { city: string, state: string } }) => {

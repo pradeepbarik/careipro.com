@@ -1,4 +1,5 @@
 import { httpPost, authenicatedFetchJson, IResponse, buildResponse } from "../http-client";
+import { fetchJson } from "../http-client";
 export const registerGuestUser = (data: any) => {
    return httpPost<{ secreate_key: string }>("/guser/register", data);
 }
@@ -103,4 +104,13 @@ export const uploadPrescriptionPostCurl = (data: FormData) => {
 }
 export const deletePrescriptionCurl = (params: { prescription: string, booking_id: number }) => {
    return httpPost<{}>(`/user/delete-prescription`, { prescription: params.prescription, booking_id: params.booking_id }, { passSecreateKey: true });
+}
+export const shareFeedbackPostCurl = (params: { rating: number, name: string, mobile: string, comment: string,campaign:string,specialist_id?:number }) => {
+   return httpPost<{}>(`/share-feedback`, params, { passSecreateKey: true, passGuserSecreateKey: true });
+}
+export const doctorNotFoundFeedbackPostCurl = (params: { rating: number, name: string, mobile: string, comment: string,campaign:string,specialist_id?:number }) => {
+   return httpPost<{}>(`/doctor-not-found`, params, { passSecreateKey: true, passGuserSecreateKey: true });
+}
+export const fetchShareFeedbackList = () => {
+   return fetchJson<Array<{ id: number, rating: number, name: string, mobile: string, comment: string,campaign:string }>>(`/shared-feedback`, false, {}, { passGuserSecreateKey: true,passSecreateKey:true })
 }

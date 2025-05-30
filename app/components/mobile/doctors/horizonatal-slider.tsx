@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { BiSolidMap, BiClinic } from "react-icons/bi";
+import { BiSolidMap, BiClinic,BiTimeFive } from "react-icons/bi";
 import { TDoctor } from "@/lib/types/doctor";
 import { doctorProfilePic } from "@/lib/image";
 import { doctorDetailPageUrl } from '@/lib/helper/link';
@@ -18,8 +18,8 @@ const OneIsToNDoctorsSliders = ({ data }: { data: TDoctor[] }) => {
                                 {doctor.qualification_disp && <span>{doctor.qualification_disp}</span>}
                                 {doctor.position && <span>{doctor.position}</span>}
                                 {doctor.experience && <span>EXP:{doctor.experience} Yrs</span>}
-                                <span>
-                                    Available On:
+                                <span className="flex items-center">
+                                    <BiTimeFive className="mr-1"/>
                                     <span className="color-secondary font-semibold">{doctor.availability}</span>
                                 </span>
                             </div>

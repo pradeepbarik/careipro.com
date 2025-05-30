@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import {RootState} from '@/lib/store'
 type initialState = {
     show_login_modal: boolean,
     is_loggedin: boolean,
@@ -51,5 +52,6 @@ const authSlice = createSlice({
         }
     }
 })
+export const selectAuthSlice=(state:RootState)=>state.authSlice;
 export const { initCookies, initUserDetail, setGuestUserSecreateKey } = authSlice.actions;
 export default authSlice.reducer;

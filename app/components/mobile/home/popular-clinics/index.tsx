@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { BiSolidMap, BiClinic } from "react-icons/bi";
 import { TPopularClinic } from '@/lib/types/clinic';
 import { popularClinicBanner } from '@/lib/image';
@@ -8,10 +9,10 @@ const PopularClinics = ({ clinics }: { clinics: TPopularClinic[] }) => {
                 {clinics.map((clinic, i) => {
                     let isEven = i % 2 === 0 ? true : false;
                     return (
-                        <div key={clinic.id} className={`shrink-0 py-1 px-2 shadow-md ${isEven ? 'bg-primary color-white' : 'bg-white'} border rounded-md`} style={{ width: '70%' }}>
-                            <div className='font-semibold fs-17 one-line'>
+                        <div key={clinic.id} data-href={clinic.seo_url} className={`click shrink-0 py-1 px-2 shadow-md ${isEven ? 'bg-primary color-white' : 'bg-white'} border rounded-md`} style={{ width: '70%' }}>
+                            <Link href={clinic.seo_url} title={`${clinic.name} - careipro`} className='font-semibold fs-17 one-line'>
                                 {clinic.name}
-                            </div>
+                            </Link>
                             <div className="flex items-baseline">
                                 <span>
                                     <BiSolidMap className={`${isEven === true ? 'color-white' : 'color-primary'} top-1 relative`} />

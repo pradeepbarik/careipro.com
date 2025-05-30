@@ -1,12 +1,65 @@
 import { cache } from 'react';
-import { fetchJson } from "@/lib/services/http-server";
-import { IResponse } from "@/lib/services/http-server";
-export const getSendEnquiryWhatsappMessage=(sentTo:"clinic"|"support",clinic_name="")=>{
-    if(sentTo==="clinic"){
+import { fetchJson, IResponse } from "@/lib/services/http-server";
+export const getSendEnquiryWhatsappMessage = (sentTo: "clinic" | "support", clinic_name = "") => {
+    if (sentTo === "clinic") {
         return `Hi,\nI found about your service on careipro.com. I need some more info about your service`;
-    }else{
+    } else {
         return `Hi,\nI found about ${clinic_name} caretaker service on careipro.com. I need some more information`;
     }
+}
+export type TCaretaker = {
+    id: number,
+    name: string,
+    mobile: string,
+    gender: string,
+    experience: number,
+    image: string,
+    position: string,
+    rating: string,
+    seo_url: string,
+    category: string,
+    qualification_disp: string,
+    specialization: string,
+    business_type: string,
+    specialists: string[],
+}
+export type TCareTakerClinic = {
+    id: number,
+    name: string,
+    mobile: string,
+    location: string,
+    city: string,
+    locality: string,
+    location_lat: string,
+    location_lng: string,
+    logo: string,
+    rating: number,
+    seo_url: string,
+    alt_mob_no: string,
+    state: string,
+    market_name: string,
+    bid: string,
+    partner_type: string,
+    business_type: string,
+    whatsapp_number: string,
+    whatsapp_channel_link: string,
+    specialists: string[],
+    doctors: Array<{
+        id: number,
+        name: string,
+        mobile: string,
+        gender: string,
+        experience: number,
+        image: string,
+        position: string,
+        rating: string,
+        seo_url: string,
+        category: string,
+        qualification_disp: string,
+        specialization: string,
+        business_type: string
+    }>,
+    doctors_cnt: number,
 }
 export type TCaretakersHomePageData = {
     specialists: Array<{
@@ -19,66 +72,22 @@ export type TCaretakersHomePageData = {
     }>,
     sections: Array<{
         heading: string,
-        viewType: "n:1"|"1:n",
+        viewType: "n:1" | "1:n" | "send_enquiry",
         enable: boolean,
-        section_type: "doctors"|"clinics",
+        section_type: "doctors" | "clinics" | "popular_specialist" | "site_banner" | "patient_care",
         listing_count: number,
         cat_id: Array<number>,
         doctor_ids: Array<number>,
         clinic_ids: Array<number>,
-        doctors: Array<{
+        doctors: Array<TCaretaker>,
+        clinics: Array<TCareTakerClinic>,
+        banners?: Array<{
             id: number,
-            name: string,
-            mobile: string,
-            gender: string,
-            experience: number,
             image: string,
-            position: string,
-            rating: string,
-            seo_url: string,
-            category: string,
-            qualification_disp: string,
-            specialization: string,
-            business_type: string
+            link: string,
+            alt_text: string,
+            device_type: "desktop" | "mobile" | "all"
         }>,
-        
-        clinics: Array<{
-            id: number,
-            name: string,
-            mobile: string,
-            location: string,
-            city: string,
-            locality: string,
-            location_lat: string,
-            location_lng: string,
-            logo: string,
-            rating: number,
-            seo_url: string,
-            alt_mob_no: string,
-            state: string,
-            market_name: string,
-            bid: string,
-            partner_type: string,
-            business_type: string,
-            whatsapp_number: string,
-            whatsapp_channel_link: string,
-            doctors: Array<{
-                id: number,
-                name: string,
-                mobile: string,
-                gender: string,
-                experience: number,
-                image: string,
-                position: string,
-                rating: string,
-                seo_url: string,
-                category: string,
-                qualification_disp: string,
-                specialization: string,
-                business_type: string
-            }>,
-            doctors_cnt: number,
-        }>
     }>
 }
 export const fetCaretakersHomePageData = async (state: string, city: string) => {

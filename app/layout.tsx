@@ -7,8 +7,10 @@ import useDeviceInfo from "@/lib/hooks/useDeviceInfo";
 const MobileLayout = dynamic(() => import('./components/mobile/layout'));
 export default function RootLayout({
   children,
+  searchParams
 }: Readonly<{
   children: React.ReactNode;
+  searchParams:any,
 }>) {
   const { device,cookies } = useDeviceInfo();
   return (

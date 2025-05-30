@@ -10,7 +10,15 @@ type TProps = {
 export async function generateMetadata({ searchParams }: { searchParams: { city: string, state: string } }): Promise<Metadata> {
   return {
     title: `Doctors,clinics,hospitals,medicine stores,caretakers,Body massage service in ${searchParams.city} - careipro.com`,
-    description: `Book Appointment with Doctors,Order medicine from nearby medicine stores,hire caretakers,veterinary doctors for you pets and relaxation by full body massage.Visit careipro.com`
+    description: `Book Appointment with Doctors,Order medicine from nearby medicine stores,hire caretakers,veterinary doctors for you pets and relaxation by full body massage.Visit careipro.com`,
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+      }
+    },
   }
 }
 const CityHomePage = ({ searchParams }: TProps) => {

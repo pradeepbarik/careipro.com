@@ -1,13 +1,17 @@
 'use client'
+import dynamic from "next/dynamic";
 import { useState } from "react";
 import { BiGridAlt } from "react-icons/bi";
 import { TclinicDetail } from "@/lib/hooks/useClinics";
-import NIsToOneDoctorsSliders from '../doctors/vertical-slider';
 import { TDoctor } from "@/lib/types/doctor";
 import { doctorSpecialityIcon } from '@/lib/image';
-import useHandelDataHref from "@/lib/hooks/useHandelDataHref";
+const NIsToOneDoctorsSliders= dynamic(() => import('../doctors/vertical-slider'), {
+    ssr: false,
+});
+const ClinicCareTakers = dynamic(() => import('./caretakers'), {
+    ssr: false,
+});
 const ClinicDoctors = ({ clinic_info, doctors, specializations }: { clinic_info: TclinicDetail['clinic_info'], doctors: TclinicDetail['doctors'], specializations: TclinicDetail['specializations'] }) => {
-    useHandelDataHref();
     const [filter, setFilter] = useState({ doctorIds: Object.keys(doctors), catId: 0 });
     let docs: TDoctor[] = filter.doctorIds.map((doctor_id) => {
         let doctor = doctors[doctor_id];
@@ -32,7 +36,7 @@ const ClinicDoctors = ({ clinic_info, doctors, specializations }: { clinic_info:
             locality: clinic_info.locality,
             state: clinic_info.state || "",
             specialists: doctor.specialists,
-            availability: doctor.availability,
+            availability: '',
         }
     })
     if (docs.length === 0) {
@@ -60,9 +64,10 @@ const ClinicDoctors = ({ clinic_info, doctors, specializations }: { clinic_info:
 
         </div>
         {clinic_info.business_type === "CLINIC" ?
-            <NIsToOneDoctorsSliders data={docs} type={"CLINIC_DOCTOR"} />
+            <NIsToOneDoctorsSliders data={docs} type={"CLINIC_DOCTOR"} showAvaileTime={true} />
             : clinic_info.business_type === "CARETAKER" ?
                 <>
+                <ClinicCareTakers data={docs}/>
                 </>
                 :
                 <>

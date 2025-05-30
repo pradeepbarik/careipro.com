@@ -132,7 +132,15 @@ export type TDoctorDetail=TWeeklyConsultingTiming & {
         name:string,
         icon:string,
         short_description:string,seo_url:string,group_category:string,seo_id:string
-    }[]}
+    }[]},
+    business_type:string,
+    seo_dt:{
+        seo_url:string,
+        short_seo_url:string
+        title:string,
+        description:string,
+        h1:string,
+    }
 }
 export type TDoctorvailableData={
     available_date:string,

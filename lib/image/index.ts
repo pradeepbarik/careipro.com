@@ -28,7 +28,7 @@ export const clinicProfilePic=(image:string)=>{
     }
 }
 export const clinicBannerImage=(image:string)=>{
-    return `http://localhost:8080/doctorapp/assets/images/clinic/${image}`;
+    return `http://localhost:8080/doctorapp/assets/images/banners/${image}`;
 }
 export const popularClinicBanner=(image:string)=>{
     return `http://localhost:8080/doctorapp/assets/images/popular-clinic-banner/${image}`;

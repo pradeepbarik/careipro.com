@@ -1,7 +1,7 @@
 'use client'
 import axios from 'axios';
 import { API_BASE_URL } from '@/constants/client-apis';
-import { userinfo } from '@/constants/storage_keys';
+import { userinfo, g_user_secreate_key } from '@/constants/storage_keys';
 import { headers } from 'next/headers';
 type TResponse<T> = {
    code: number,
@@ -17,16 +17,24 @@ export type IResponse<T> = {
    message: string,
    data: T
 }
-export const buildResponse=<T>(data:T):Promise<IResponse<T>>=>{
-   return new Promise((resolve,reject)=>{
-      resolve({code:200,message:"",data:data});
+export const buildResponse = <T>(data: T): Promise<IResponse<T>> => {
+   return new Promise((resolve, reject) => {
+      resolve({ code: 200, message: "", data: data });
    })
 }
-export const fetchJson = async <R>(url: string, log_api: boolean = false, headers: any = {}): Promise<R> => {
+export const fetchJson = async <R>(url: string, log_api: boolean = false, headers: any = {},extraParams:{passSecreateKey?: boolean, passGuserSecreateKey?: boolean} = {passSecreateKey:false,passGuserSecreateKey:false}): Promise<R> => {
    if (log_api) {
       console.log("api:", API_BASE_URL + url);
    }
    try {
+      if (extraParams && extraParams.passSecreateKey) {
+         let user = JSON.parse(localStorage.getItem(userinfo) || JSON.stringify({}));
+         headers['x-api-key'] = user.secreate_key || "";
+      }
+      if (extraParams && extraParams.passGuserSecreateKey) {
+         let secreatekey = localStorage.getItem(g_user_secreate_key)
+         headers['g-api-key'] = secreatekey || "";
+      }
       let response = await fetch(API_BASE_URL + url, {
          method: 'GET',
          headers: headers
@@ -59,19 +67,23 @@ export const authenicatedFetchJson = async <R>(url: string, log_api: boolean = f
       throw new Error("")
    }
 }
-export const httpPost = <R>(url: string, body: any,extraParams?:{passSecreateKey:boolean,fileUpload?:boolean}): Promise<TResponse<R>> => {
+export const httpPost = <R>(url: string, body: any, extraParams?: { passSecreateKey: boolean, passGuserSecreateKey?: boolean, fileUpload?: boolean }): Promise<TResponse<R>> => {
    return new Promise((resolve, reject) => {
-      let config:any={
-         headers:{}
+      let config: any = {
+         headers: {}
       };
-      if(extraParams && extraParams.passSecreateKey){
-         let user = JSON.parse(localStorage.getItem(userinfo) || "");
-         config.headers['x-api-key']=user.secreate_key;
+      if (extraParams && extraParams.passSecreateKey) {
+         let user = JSON.parse(localStorage.getItem(userinfo) || JSON.stringify({}));
+         config.headers['x-api-key'] = user.secreate_key || "";
       }
-      if(extraParams && extraParams.fileUpload){
-         config.headers['Content-Type']="multipart/form-data";
+      if (extraParams && extraParams.passGuserSecreateKey) {
+         let secreatekey = localStorage.getItem(g_user_secreate_key)
+         config.headers['g-api-key'] = secreatekey || "";
       }
-      axiosInstance.post(url, body,config).then(({ data }) => {
+      if (extraParams && extraParams.fileUpload) {
+         config.headers['Content-Type'] = "multipart/form-data";
+      }
+      axiosInstance.post(url, body, config).then(({ data }) => {
          resolve(data)
       }).catch((err) => {
          if (err.response.data) {
