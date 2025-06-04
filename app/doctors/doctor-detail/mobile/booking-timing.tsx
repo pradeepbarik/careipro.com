@@ -13,7 +13,7 @@ const BookingTimings = ({ data }: { data: TDoctorDetail }) => {
                 </thead>
                 <tbody>
                     {data.slno_groups?.map((slgroup) =>
-                        <tr className="font-semibold color-text-light">
+                        <tr key={`slnogroup-${slgroup.group_name}`} className="font-semibold color-text-light">
                             <td className="text-center py-1">{slgroup.group_name_for_user} ({slgroup.group_name})</td>
                             <td className="text-center py-1">{slgroup.booking_start}</td>
                             <td className="text-center py-1">{slgroup.limit}</td>

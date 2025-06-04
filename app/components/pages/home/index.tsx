@@ -14,7 +14,7 @@ const Home = async () => {
     return (
         <>
             <Header />
-            {data && data.sections.map((section) => <div>
+            {data && data.sections.map((section,i) => <div key={`section-${i}-${section.name}`}>
                 {section.name === "nearby_cities" ?
                     <>
                         {section.heading && <SectionHeading heading={section.heading} />}

@@ -5,8 +5,8 @@ import { doctorSpecialityIcon } from '@/lib/image';
 const DoctorCategory = ({ data }: { data: THomePageData['doctorCategory'] }) => {
     return (<>
         <div className='flex overflow-auto cp-section' style={{ gap: '2%' }}>
-            {data && data.map((category) =>
-                <div className='flex flex-shrink-0 bg-white h-20 rounded' style={{ width: '48%', backgroundColor: category.bgColor }}>
+            {data && data.map((category,i) =>
+                <div className='flex flex-shrink-0 bg-white h-20 rounded' key={`doctor-category-${i}-${category.name}`} style={{ width: '48%', backgroundColor: category.bgColor }}>
                     <div className="relative w-1/2" >
                         <span className="color-white px-2 py-1 flex">{category.name}</span>
                         <div className="absolute flex items-center w-3/4 bg-primary bottom-4 px-1 py-1">

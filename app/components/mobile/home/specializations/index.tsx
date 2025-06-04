@@ -11,10 +11,10 @@ const Specializations: FC<{ data: Record<number, TSpecility>, specialist_ids: nu
         let chunks = array_chunk([...specialist_ids, 0], 2, [])
         return (
             <div className="flex overflow-auto gap-1 hide-scroll-bar px-2">
-                {chunks.map((ids) =>
-                    <div style={itemWidth?{width:itemWidth,flexShrink:0}:{}}>
+                {chunks.map((ids,i) =>
+                    <div key={`specializations-${i}`} style={itemWidth?{width:itemWidth,flexShrink:0}:{}}>
                         {ids.map((specialist_id) =>
-                            <div className="my-1">
+                            <div className="my-1" key={specialist_id}>
                                 {specialist_id !== 0 ?
                                     <>
                                         {itemViewType === "oneline" ?
@@ -56,8 +56,8 @@ const Specializations: FC<{ data: Record<number, TSpecility>, specialist_ids: nu
     let chunks = array_chunk([...specialist_ids, 0], 2, [])
     return (
         <div className="flex overflow-auto gap-1 hide-scroll-bar px-2">
-            {chunks.map((ids) =>
-                <div className="shrink-0" style={{ width: "28%" }}>
+            {chunks.map((ids,i) =>
+                <div key={`section-${i}`} className="shrink-0" style={{ width: "28%" }}>
                     {ids.map((specialist_id) =>
                         <div key={`${specialist_id}`}>
                             {specialist_id !== 0 ?

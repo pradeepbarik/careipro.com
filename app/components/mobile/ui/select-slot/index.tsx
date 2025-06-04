@@ -10,7 +10,7 @@ const SelectSlot = ({ data, selectedDate,selectedTime, onSelectDate,onSelectTime
         <div className="border border-color-grey rounded-md">
             <div className="flex rounded-md py-1" style={{ backgroundColor: "var(--border-color-light)" }}>
                 {dates.map((date) =>
-                    <div className="grow text-center" onClick={() => { onSelectDate(date) }}>
+                    <div key={date} className="grow text-center" onClick={() => { onSelectDate(date) }}>
                         <span className={`inline-flex flex-col px-3 py-1 rounded-md cursor-pointer ${date === selectedDate ? 'border border-color-primary bg-primary-10' : ''}`}>
                             <span className="fs-15 color-text-light font-semibold leading-5">{moment(date).format("ddd")}</span>
                             <span className="text-lg font-semibold leading-5">{moment(date).format('D MMM')}</span>

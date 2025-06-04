@@ -18,13 +18,10 @@ const AppointmentDetailMobile = ({ case_id, appointmentId }: { case_id: number, 
     const { activeAppointmentId, appointmentDetail, caseAppointmentIds, onSwipeEnd, getAppointmentDetail, onSelectPrescriptionImage, deletePrescription, caseAppointmentDetails } = useAppointment({ page: "detail", init: true, appointmentId: appointmentId, case_id: case_id });
     const { reviewTags, showReviewModal, setShowReviewModal, setSelectedRating, SelectedRating, selectedReviewTagsArr, setSelectedReviewTagsArr, setSelectedReviewTags, onSelectReviewTag, reviewText, setReviewText, submitRatingReview, submitRating } = useSubmitRatingReview({ review_text: appointmentDetail?.experience || "" });
     useEffect(() => {
-        if (caseAppointmentDetails[activeAppointmentId]?.review_tags) {
-            let reviewtags: string[] = [];
-            for (let tag of caseAppointmentDetails[activeAppointmentId].review_tags) {
-                reviewtags.push(tag.tag)
-            }
+        if (caseAppointmentDetails[activeAppointmentId] && caseAppointmentDetails[activeAppointmentId].review_tags !== null) {
+            let reviewtags: string[] = (caseAppointmentDetails[activeAppointmentId].review_tags || []).map((tag) => tag.tag);
             setSelectedReviewTagsArr(reviewtags)
-            setSelectedReviewTags(caseAppointmentDetails[activeAppointmentId]?.review_tags)
+            setSelectedReviewTags(caseAppointmentDetails[activeAppointmentId]?.review_tags || [])
         } else {
             setSelectedReviewTagsArr([])
             setSelectedReviewTags([])
@@ -161,9 +158,11 @@ const AppointmentDetailMobile = ({ case_id, appointmentId }: { case_id: number, 
                                     }
                                     {caseAppointmentDetails[bid].rev_id ?
                                         <>
-                                            <SectionHeading heading="Your Feedback" children={<span className="ml-auto button" data-size="small" data-variant="outlined" onClick={() => {
-                                                setShowReviewModal(true); setSelectedRating(caseAppointmentDetails[bid].rating)
-                                            }}><BiPencil />&nbsp;Edit</span>} />
+                                            <SectionHeading heading="Your Feedback">
+                                                <span className="ml-auto button" data-size="small" data-variant="outlined" onClick={() => {
+                                                    setShowReviewModal(true); setSelectedRating(caseAppointmentDetails[bid].rating)
+                                                }}><BiPencil />&nbsp;Edit</span>
+                                            </SectionHeading>
                                             <div className="px-2 py-2 bg-white">
                                                 <div className="flex justify-center">
                                                     <Ratingstars disable={true} given_rating={caseAppointmentDetails[bid].rating} className="color-primary text-3xl" />
@@ -177,7 +176,7 @@ const AppointmentDetailMobile = ({ case_id, appointmentId }: { case_id: number, 
                                                     </div>
                                                 }
                                                 <div className="flex flex-wrap gap-2 mt-4">
-                                                    {caseAppointmentDetails[bid].review_tags && caseAppointmentDetails[bid].review_tags.map((tag) => <span key={tag.tag} className={`chip selected ${tag.score < 0 ? 'secondary' : ''}`}>{tag.tag}</span>)}
+                                                    {caseAppointmentDetails[bid].review_tags && (caseAppointmentDetails[bid].review_tags || []).map((tag) => <span key={tag.tag} className={`chip selected ${tag.score < 0 ? 'secondary' : ''}`}>{tag.tag}</span>)}
                                                 </div>
                                             </div>
                                         </>
@@ -212,16 +211,17 @@ const AppointmentDetailMobile = ({ case_id, appointmentId }: { case_id: number, 
                         }
                     }}>
                         <div>
-                            {reviewTags.map((topic, i) => <div key={`topic-${i}`}>
-                                <div className="font-semibold my-2">{topic.topic}</div>
-                                <div className="flex flex-wrap gap-2">
-                                    {topic.sub_topics.map((sub_topic) =>
-                                        <Fragment key={sub_topic.sub_topic}>
-                                            <ReviewTags data={sub_topic} topic={topic.topic} selectedTags={selectedReviewTagsArr} onClick={(data) => { onSelectReviewTag(data) }} />
-                                        </Fragment>
-                                    )}
-                                </div>
-                            </div>)}
+                            {reviewTags.map((topic, i) =>
+                                <div key={`topic-${i}`}>
+                                    <div className="font-semibold my-2">{topic.topic}</div>
+                                    <div className="flex flex-wrap gap-2">
+                                        {topic.sub_topics.map((sub_topic) =>
+                                            <Fragment key={sub_topic.sub_topic}>
+                                                <ReviewTags data={sub_topic} topic={topic.topic} selectedTags={selectedReviewTagsArr} onClick={(data) => { onSelectReviewTag(data) }} />
+                                            </Fragment>
+                                        )}
+                                    </div>
+                                </div>)}
                             <div className="font-semibold my-2">Overall Experience</div>
                             <div className="flex justify-center">
                                 <Ratingstars given_rating={SelectedRating} onChange={(r) => { setSelectedRating(r) }} className="color-primary text-3xl" />

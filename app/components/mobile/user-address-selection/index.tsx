@@ -81,7 +81,7 @@ const SelectAddress = ({ page_source, onSelect, save_address = true, showBreadCu
                     <div className='mt-2'>
                         <div className='flex flex-wrap gap-2 mt-2'>
                             {foundCities.map((city) =>
-                                <span className='inline-flex flex-col border rounded-md px-2 py-1' onClick={() => { onSelectCity(city) }}>
+                                <span key={city.name} className='inline-flex flex-col border rounded-md px-2 py-1' onClick={() => { onSelectCity(city) }}>
                                     <span className='font-semibold'>{city.name}</span>
                                     <span>{city.state}</span>
                                 </span>
@@ -206,7 +206,7 @@ const SelectAddress = ({ page_source, onSelect, save_address = true, showBreadCu
                                         </div>
                                         <div className="flex flex-wrap mt-1 overflow-hidden px-1" style={{ columnGap: ".5rem", rowGap: ".5rem" }}>
                                             {(searchVillageText.length >= 2 ? villages.filter((village) => village.name.includes(searchVillageText)) : villages).map((village) =>
-                                                <div className="border inline-flex items-center gap-1 px-2 py-2 rounded-md shrink-0 capitalize"
+                                                <div key={village.name} className="border inline-flex items-center gap-1 px-2 py-2 rounded-md shrink-0 capitalize"
                                                     onClick={() => { onSelectVillage(village.name) }}
                                                     style={{ width: village.name.length > 12 ? '100%' : `calc(50% - .25rem)` }}>
                                                     <Radio selected={breadcums.village === village.name} />

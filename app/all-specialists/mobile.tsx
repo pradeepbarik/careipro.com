@@ -12,8 +12,8 @@ const AllSpecialistMobile = async ({state,city}:{state:string,city:string}) => {
             <Header template="SUBPAGE" heading="All Categories" />
             <div className="flex">
                 <div className="w-24 border-r px-1 py-2 overflow-auto flex-shrink-0" style={{ height: "calc(100vh - 59px)" }}>
-                    {data.group_categories.map((gcat) =>
-                        <div className="flex flex-col items-center rounded-md overflow-hidden">
+                    {data.group_categories.map((gcat,i) =>
+                        <div className="flex flex-col items-center rounded-md overflow-hidden" key={`gcat-${i}`}>
                             <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTpQQExpgI8S_23hjllORQ3eeWQNYVDuxI4DQ&s" className="w-10 h-10" />
                             <span className="font-semibold fs-13 text-center">{groupCategoryDisplayName(gcat)}</span>
                         </div>

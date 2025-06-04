@@ -26,7 +26,7 @@ const OneIsToNClinicsSliders = ({ clinics }: { clinics: TClinic[] }) => {
                                 <img src={clinicProfilePic(clinic.logo)} className='rounded-md flex-shrink-0 ml-auto' style={{ width: '3rem', height: '3rem' }} />
                             </div>
                             <div className='mt-1 text-xs'>
-                                {clinic.doctor_specializations.map((sp) => <span className='border border-gray-300 px-1 py-1 rounded-full inline-flex mb-1 mx-1'>{sp}</span>)}
+                                {clinic.doctor_specializations.map((sp,i) => <span key={`spl-${i}`} className='border border-gray-300 px-1 py-1 rounded-full inline-flex mb-1 mx-1'>{sp}</span>)}
                                 {hasMoreSpecialist && <span className='border px-2 py-1 rounded-full inline-flex mb-1 mx-1'>{(clinic.total_specialist - clinic.doctor_specializations.length) + "+ More"}</span>}
                             </div>
                         </div>

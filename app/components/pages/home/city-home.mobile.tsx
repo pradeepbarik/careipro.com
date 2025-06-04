@@ -25,13 +25,12 @@ const CityHome = async ({ state, city }: { state: string, city: string }) => {
                 }
             }
         }
-        console.log("doctors",doctors,"doctorIds===>",doctorIds);
         return doctors;
     }
     return (
         <>
             <Header state={state} city={city} />
-            {data && data.sections.map((section, i) => <div id={`section-${i}`}>
+            {data && data.sections.map((section, i) => <div key={`section-${i}-${section.name}`} id={`section-${i}`}>
                 {section.name === "nearby_cities" ?
                     <>
                         {section.heading && <SectionHeading heading={section.heading} />}

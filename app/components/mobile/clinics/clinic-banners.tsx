@@ -16,7 +16,7 @@ const ClinicBanner = ({ name, banners, profile_pic }: { name: string, banners: A
                 autoplay={true}
             >
                 {banners.map((banner) =>
-                    <SwiperSlide>
+                    <SwiperSlide key={banner.image}>
                         <img src={clinicBannerImage(banner.image)} className="h-40 w-full rounded-md" />
                     </SwiperSlide>
                 )}

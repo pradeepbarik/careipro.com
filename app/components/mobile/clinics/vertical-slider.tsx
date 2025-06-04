@@ -30,7 +30,7 @@ const NIsToOneClinicsSliders = ({ clinics, cliniCTopDoctorsData }: { clinics: TC
                             {(cliniCTopDoctorsData && cliniCTopDoctorsData[clinic.id.toString()]) &&
                                 <div className='flex gap-1 overflow-auto w-full hide-scroll-bar'>
                                     {cliniCTopDoctorsData[clinic.id.toString()].topDoctors.map((doctor) =>
-                                        <div className='border border-color-grey rounded-md shrink-0' style={{width:"45%",overflow:"hidden"}}>
+                                        <div key={`doctor-${doctor.id}`} className='border border-color-grey rounded-md shrink-0' style={{width:"45%",overflow:"hidden"}}>
                                             <Link href={doctor.seo_url} className='flex gap-1'>
                                                 <img src={doctorProfilePic(doctor.image||"")} className='h-10 w-10 shrink-0' />
                                                 <div className='flex flex-col grow'>
@@ -42,7 +42,7 @@ const NIsToOneClinicsSliders = ({ clinics, cliniCTopDoctorsData }: { clinics: TC
                                     )}
                                 </div>}
                             <div className='mt-1 text-xs'>
-                                {clinic.doctor_specializations.slice(0,5).map((sp) => <span className='border px-1 py-1 rounded-full inline-flex mb-1 mx-1'>{sp}</span>)}
+                                {clinic.doctor_specializations.slice(0,5).map((sp,i) => <span key={`spl-${i}`} className='border px-1 py-1 rounded-full inline-flex mb-1 mx-1'>{sp}</span>)}
                                 {hasMoreSpecialist && <span className='border border-gray-300 px-2 py-1 rounded-full inline-flex mb-1 mx-1'>{(clinic.doctor_specializations.length - 5) + "+ More"}</span>}
                             </div>
                         </div>

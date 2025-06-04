@@ -51,7 +51,7 @@ const OverView = ({ data, availableData }: { data: TDoctorDetail, availableData:
                 <SectionHeading heading='Good Experience in treatment of' />
                 <div className="px-2 py-2 grid grid-cols-2 gap-2">
                     {data.allSpecializations["DISEASE"].map((cat) =>
-                        <div className="flex items-center gap-2 px-2 py-1 border border-color-grey rounded-md bg-white">
+                        <div key={cat.seo_id} className="flex items-center gap-2 px-2 py-1 border border-color-grey rounded-md bg-white">
                             <img src={cat.icon || "/icon/disease-defult-icon.png"} className="w-10 h-10" />
                             <span>{cat.name}</span>
                         </div>

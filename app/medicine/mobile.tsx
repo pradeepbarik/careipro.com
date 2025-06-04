@@ -49,8 +49,8 @@ const MedicineMobile = () => {
                                 </div>
                                 <div className='px-2 font-semibold py-1'>Precribed By Doctors</div>
                                 <div className='flex gap-2 overflow-auto px-2 hide-scroll-bar pb-1'>
-                                    {[1, 2, 3, 4].map((staff) =>
-                                        <div className='flex shrink-0 border border-color-primary rounded-md gap-1' style={{ width: "30%", padding: "3px 2px" }}>
+                                    {[1, 2, 3, 4].map((staff,i) =>
+                                        <div key={`staff-${i}`} className='flex shrink-0 border border-color-primary rounded-md gap-1' style={{ width: "30%", padding: "3px 2px" }}>
                                             <img src='https://content.jdmagicbox.com/comp/bhubaneshwar/q3/0674px674.x674.211117163052.w1q3/catalogue/shanti-health-care-laxmi-sagar-bhubaneshwar-home-nursing-services-7gr4wu2dcm-250.jpg?w=640&q=75' className="rounded-full" style={{ height: '2.5rem', width: '2.5rem' }} />
                                             <div className='flex flex-col grow' style={{ width: "calc(100% - 2.5rem)" }} >
                                                 <span className='one-line font-semibold'>Kamini swain</span>

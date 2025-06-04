@@ -44,7 +44,7 @@ const AppointmentReminder = ({ position, doctor_id, clinic_id }: { position: str
                                 spaceBetween={10}
                             >
                                 {appoinments.map((appoinment) =>
-                                    <SwiperSlide style={{width:`80%`}}>
+                                    <SwiperSlide style={{width:`80%`}} key={appoinment.id}>
                                         <div className='p-2 shadow-md rounded-md' style={{background:"#d7e7e6"}} >
                                             {/* <BiBell className='absolute top-2' /> */}
                                             <div className='fs-16'>

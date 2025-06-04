@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { BiSolidMap, BiClinic, BiRightArrowAlt,BiChevronRight } from "react-icons/bi";
+import { BiSolidMap, BiClinic, BiRightArrowAlt, BiChevronRight } from "react-icons/bi";
 import { THomePageData } from "@/lib/types/home-page";
 import { array_chunk } from '@/lib/helper';
 import { doctorDetailPageUrl } from "@/lib/helper/link";
@@ -8,13 +8,15 @@ const PopularDoctor = ({ data }: { data: THomePageData['popularDoctors'] }) => {
     return <>
 
         <div className='flex overflow-auto cp-section text-center bg-white hide-scroll-bar' style={{ gap: '1%' }}>
-            {chunks.map((doctors) => {
+            {chunks.map((doctors, i) => {
                 return (
-                    <div className="flex flex-col gap-2 shrink-0" style={{ width: '25%' }}>
-                        {doctors.map((doctor) => <div key={doctor.id} className="flex flex-col gap-2 shrink-0 items-center justify-center py-1">
-                            <img src={doctor.image} alt={"Profile picture of " + doctor.name} className="w-20 h-20 rounded-full" />
-                            <Link href={doctor.seo_url} className="font-semibold">{doctor.name}</Link>
-                        </div>)}
+                    <div className="flex flex-col gap-2 shrink-0" key={`doctors-${i}`} style={{ width: '25%' }}>
+                        {doctors.map((doctor) =>
+                            <div key={doctor.id} className="flex flex-col gap-2 shrink-0 items-center justify-center py-1">
+                                <img src={doctor.image} alt={"Profile picture of " + doctor.name} className="w-20 h-20 rounded-full" />
+                                <Link href={doctor.seo_url} className="font-semibold">{doctor.name}</Link>
+                            </div>
+                        )}
                     </div>
                 )
             }
@@ -27,9 +29,9 @@ const PopularDoctor2 = ({ data }: { data: THomePageData['popularDoctors'] }) => 
     return <>
 
         <div className='flex overflow-auto cp-section hide-scroll-bar' style={{ gap: '.6rem' }}>
-            {chunks.map((doctors) => {
+            {chunks.map((doctors,i) => {
                 return (
-                    <div className="flex flex-col gap-2 shrink-0" style={{ width: '80%' }}>
+                    <div key={`doctors-${i}`} className="flex flex-col gap-2 shrink-0" style={{ width: '80%' }}>
                         {doctors.map((doctor) =>
                             <div key={doctor.id} className="py-1 px-2 bg-white shadow-md click" data-href={doctor.seo_url}>
                                 <div className="flex gap-2">

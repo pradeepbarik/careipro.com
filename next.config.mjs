@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+   // output:"standalone",//Next. js can automatically create a standalone folder that copies only the necessary files for a production deployment including select files in node_modules . This will create a folder at . next/standalone which can then be deployed on its own without installing node_modules .
     images:{
         remotePatterns:[
             {

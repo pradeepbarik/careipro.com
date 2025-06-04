@@ -49,7 +49,7 @@ const ServiceAvailableCitiesMobile = ({ states, data }: { states: Tstate[], data
                     </div>
                     <div className="flex flex-wrap gap-2 mt-2">
                         {states.map((state) =>
-                            <div className='flex flex-wrap gap-2'>
+                            <div key={state.name} className='flex flex-wrap gap-2'>
                                 {data[state.name.toLowerCase()].map((city) =>
                                     <Link href={cityPageLink(city.state,city.name)} key={city.name} className="relative border rounded-md py-1 px-2">
                                         {city.name_ln || city.name}

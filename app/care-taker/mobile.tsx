@@ -139,8 +139,8 @@ const CaretakersMobile = async ({ state, city, pageData, categories }: { state: 
                                 {clinic.doctors.length > 0 && <>
                                     <div className='px-2 font-semibold py-1'>Our Top Rated Staffs</div>
                                     <div className='flex gap-2 overflow-auto px-2 hide-scroll-bar pb-1'>
-                                        {clinic.doctors.map((staff) =>
-                                            <div className='flex shrink-0 border border-color-primary rounded-md gap-1' style={{ width: "30%", padding: "3px 2px" }}>
+                                        {clinic.doctors.map((staff,i) =>
+                                            <div key={`staff-${i}`} className='flex shrink-0 border border-color-primary rounded-md gap-1' style={{ width: "30%", padding: "3px 2px" }}>
                                                 <img src={doctorProfilePic(staff.image)} className="rounded-full" style={{ height: '2.5rem', width: '2.5rem' }} />
                                                 <div className='flex flex-col grow' style={{ width: "calc(100% - 2.5rem)" }} >
                                                     <span className='one-line font-semibold'>{staff.name}</span>

@@ -24,7 +24,7 @@ const MassageServiceMobile = ({ state, city, market_name, data }: { state: strin
             <div className='bg-white-primary'>
                 <div className='flex px-2 overflow-auto hide-scroll-bar' style={{ gap: "10px" }}>
                     {data.categories.map((category) =>
-                        <div className='shrink-0 rounded-md' style={{ width: "calc(50% - 5px)" }}>
+                        <div key={category.seo_id} className='shrink-0 rounded-md' style={{ width: "calc(50% - 5px)" }}>
                             <div className='flex flex-col justify-center shadow-md border'>
                                 <img src={doctorSpecialityIcon(category.icon)} className='h-28 w-full rounded-md' />
                                 <div className='px-2 mt-2 pb-2'>
