@@ -1,7 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
+html{
+    scroll-behavior: smooth;
+}
 .theme_defult {
     --rgb-page-background:217, 232, 233;
     --rgb-primary-color: 105, 196, 191;
