@@ -4,7 +4,7 @@ module.exports = {
       name: 'www.careipro.com',
       script: 'npm',
       args: 'start',
-      instances: 2,
+      instances: 1,
       autorestart: true,
       watch: false,
       max_memory_restart: '1G',
