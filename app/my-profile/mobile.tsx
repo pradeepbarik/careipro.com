@@ -166,7 +166,7 @@ const MyProfileMobile = ({ cookies }: { cookies: Record<string, string> }) => {
                             </Link>
                         </li>
                         <li>
-                            <Link href={"/my-appointments"} className='flex items-center h-12'>
+                            <Link href={"/about-us"} className='flex items-center h-12'>
                                 <AiOutlineInfoCircle className='fs-16' />
                                 <span className='ml-2 fs-16'>
                                     About us
@@ -250,7 +250,7 @@ const MyProfileMobile = ({ cookies }: { cookies: Record<string, string> }) => {
                             </Link>
                         </li>
                         <li>
-                            <Link href={"/my-appointments"} className='flex items-center h-12'>
+                            <Link href={"/about-us"} className='flex items-center h-12'>
                                 <AiOutlineInfoCircle className='fs-16' />
                                 <span className='ml-2 fs-16'>
                                     About us
