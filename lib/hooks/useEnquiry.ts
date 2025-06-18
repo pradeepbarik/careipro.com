@@ -32,6 +32,7 @@ const useEnquiry = ({ state, city, vaertical, market_name = "" }: { state: strin
             message: data.message,
             clinic_id: data.clinic_id || 0,
             doctor_id: data.doctor_id || 0,
+            specialist_id: data.specialist_id || 0,
             vertical: vaertical,
             state: state,
             city: city,

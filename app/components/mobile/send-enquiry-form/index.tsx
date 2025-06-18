@@ -106,7 +106,7 @@ export const SendEnquiryForm = ({ state, city, vertical, message }: { state: str
                             <div className='flex flex-col gap-2'>
                                 <Input type="text" lable='Your name' className='border p-2 rounded-md' value={booingData.name} onChange={(e) => { setBookingData({ ...booingData, name: e.target.value }) }} />
                                 <Input type="text" lable='Contact no' className='border p-2 rounded-md' value={booingData.mobile} onChange={(e) => { setBookingData({ ...booingData, mobile: e.target.value }) }} />
-                                <TextArea lable='Write about your requirement' className='border p-2 rounded-md' value={booingData.message || ""} onChange={(e) => { setBookingData({ ...booingData, message: e.target.value }) }} />
+                                <TextArea lable='Write about your requirement' className='border p-2 rounded-md font-semibold fs-15' value={booingData.message || ""} onChange={(e) => { setBookingData({ ...booingData, message: e.target.value }) }} />
                                 <button className='button py-2 one-line ripple' onClick={onSubmit}>Submit</button>
                             </div>
                         </div>

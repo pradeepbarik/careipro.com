@@ -10,7 +10,7 @@ import { doctorSpecialityIcon, doctorProfilePic, clinicProfilePic, clinicBannerI
 import ViewAllCategories from '../components/mobile/doctors/view-all-categores';
 import { getSendEnquiryWhatsappMessage } from '@/lib/hooks/caretaker/useCaretaker';
 import { support_no } from '@/constants/site-config';
-import { BookCaretakerButton, CaretakerBookClinicButton } from '@/app/components/mobile/caretaker/booing-caretaker';
+import { BookCaretakerButton, BookNowService,SendEnquiryBtn, CaretakerBookClinicButton } from '@/app/components/mobile/caretaker/booing-caretaker';
 import BannerView from '@/app/components/mobile/banner-view';
 import SendEnquiryForm from '@/app/components/mobile/send-enquiry-form';
 const CaretakersMobile = async ({ state, city, pageData, categories }: { state: string, city: string, market_name?: string, pageData: TCaretakersHomePageData, categories: TCategories }) => {
@@ -34,10 +34,10 @@ const CaretakersMobile = async ({ state, city, pageData, categories }: { state: 
                                     <BiHome />
                                     At Home
                                 </div>
-                                 <div className='font-semibold flex items-center gap-1'>
-                                    <BiGroup /> 140 Staffs
+                                <div className='font-semibold flex items-center gap-1'>
+                                    <BiGroup /> 40 Staffs
                                 </div>
-                                <div className='border border-color-primary py-2 rounded-md grow text-center font-semibold bg-white'>Send Enquiry</div>
+                                <SendEnquiryBtn section='service_at_hospital'/>
                             </div>
                             <div className='grow bg-white shadow-md rounded-md overflow-hidden p-2' style={{ background: "#a3eeff45" }}>
                                 <div className='font-semibold fs-16'>Patient Caretaker</div>
@@ -47,9 +47,9 @@ const CaretakersMobile = async ({ state, city, pageData, categories }: { state: 
                                     At Hospital
                                 </div>
                                 <div className='font-semibold flex items-center gap-1'>
-                                    <BiGroup /> 140 Staffs
+                                    <BiGroup /> 125 Staffs
                                 </div>
-                                <div className='border border-color-primary py-2 rounded-md grow text-center font-semibold bg-white'>Send Enquiry</div>
+                                <SendEnquiryBtn section='service_at_home'/>
                             </div>
                         </div>
                     </> : (section.section_type === "popular_specialist" && section.viewType === "send_enquiry") ? <>
@@ -63,10 +63,10 @@ const CaretakersMobile = async ({ state, city, pageData, categories }: { state: 
                                         <BiGroup /> 140 Workers
                                     </div>
                                     <div className='pb-2 mt-2 flex gap-1'>
-                                        <span className='flex justify-center border border-color-primary py-1 px-2 rounded-md grow font-semibold bg-white'>Book Now</span>
-                                        <Link href={specialist.seo_url} title={``} className="flex items-center justify-center border rounded-full border-color-primary h-6 w-6" >
+                                        <BookNowService service_id={specialist.id} service_name={specialist.name} logo={doctorSpecialityIcon(specialist.icon)} />
+                                        {/* <Link href={specialist.seo_url} title={``} className="flex items-center justify-center border rounded-full border-color-primary h-6 w-6" >
                                             <BiRightArrowAlt className="text-2xl color-primary" />
-                                        </Link>
+                                        </Link> */}
                                     </div>
                                 </div>
                             )}
@@ -139,7 +139,7 @@ const CaretakersMobile = async ({ state, city, pageData, categories }: { state: 
                                 {clinic.doctors.length > 0 && <>
                                     <div className='px-2 font-semibold py-1'>Our Top Rated Staffs</div>
                                     <div className='flex gap-2 overflow-auto px-2 hide-scroll-bar pb-1'>
-                                        {clinic.doctors.map((staff,i) =>
+                                        {clinic.doctors.map((staff, i) =>
                                             <div key={`staff-${i}`} className='flex shrink-0 border border-color-primary rounded-md gap-1' style={{ width: "30%", padding: "3px 2px" }}>
                                                 <img src={doctorProfilePic(staff.image)} className="rounded-full" style={{ height: '2.5rem', width: '2.5rem' }} />
                                                 <div className='flex flex-col grow' style={{ width: "calc(100% - 2.5rem)" }} >
