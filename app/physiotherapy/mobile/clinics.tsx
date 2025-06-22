@@ -18,7 +18,7 @@ const Clinics = ({ data, state, city }: { data: TClinic[], state: string, city: 
                             </span>
                             <span className="flex flex-wrap gap-1 mt-1">
                                 {clinic.specialists.slice(0,3).map((spl)=>
-                                <span className="chip">{spl}</span>
+                                <span className="chip" key={spl}>{spl}</span>
                                 )}
                             </span>
                         </div>
