@@ -1,6 +1,6 @@
 import { cache } from 'react';
-import { fetchJson,getCityCachePath, IResponse } from '@/lib/services/http-server';
-import { TClinic,TClinicTopDoctor } from '../types/clinic';
+import { fetchJson, getCityCachePath, IResponse } from '@/lib/services/http-server';
+import { TClinic, TClinicTopDoctor } from '../types/clinic';
 import { TSeodt } from '../types';
 import { get_current_datetime } from '@/lib/helper/date-time';
 export type TClinicsPageData = {
@@ -46,19 +46,21 @@ export const fetchClinicsList = cache(async (params: { state: string, city: stri
 })
 export const fetchClinicTopDoctors = cache(async (params: { state: string, city: string, market_name: string }) => {
     try {
-        const res = await fetchJson<{[clinic_id:string]:{
-            total_doctor:number,
-            topDoctors:TClinicTopDoctor[]
-        }}>(`${getCityCachePath(params.state,params.city,{market_name:params.market_name,dir:"clinics"})}/clinics-top-doctors.json`,true);
-        return {data:res}
-    }catch(err:any){
+        const res = await fetchJson<{
+            [clinic_id: string]: {
+                total_doctor: number,
+                topDoctors: TClinicTopDoctor[]
+            }
+        }>(`${getCityCachePath(params.state, params.city, { market_name: params.market_name, dir: "clinics" })}/clinics-top-doctors.json`, true);
+        return { data: res }
+    } catch (err: any) {
         const res = await fetchJson<IResponse<{
-            [clinic_id:string]:{
-                total_doctor:number,
-                topDoctors:TClinicTopDoctor[]
+            [clinic_id: string]: {
+                total_doctor: number,
+                topDoctors: TClinicTopDoctor[]
             }
         }>>(`/init-cache/clinics-top-doctors?state=${params.state}&city=${params.city}&market_name=${params.market_name}`);
-        return {data:res.data}
+        return { data: res.data }
     }
 })
 export type TclinicDetail = {
@@ -90,7 +92,11 @@ export type TclinicDetail = {
         partner_type: string;
         business_type: string;
         whatsapp_number: string | null,
-        whatsapp_channel_link: string | null
+        whatsapp_channel_link: string | null,
+        tag_line: string | null,
+        enable_enquiry: number,
+        show_patients_feedback: number,
+        rating: number | null,
     },
     hasBanner: boolean,
     banners: Array<{ image: string }>,
@@ -203,14 +209,14 @@ export type TclinicDetail = {
         specialists: string;
     }>,
     totalDoctors: number,
-    pageUrl:string,
+    pageUrl: string,
 }
 export const fetchClinicDetail = cache(async (params: { state: string, city: string, market_name: string, clinic_id: number, clinic_bid: string }) => {
     try {
         let data = await fetchJson<TclinicDetail>(`/cache/${params.state.replace(" ", "-").toLowerCase()}/${params.city.replace(" ", "-").toLowerCase()}/clinic-details/${params.clinic_bid}/details.json`);
         return { data: data }
     } catch (err: any) {
-        const res = await fetchJson<IResponse<TclinicDetail>>(`/get-clinic-detail?state=${params.state}&city=${params.city}&clinic_id=${params.clinic_id}`,true);
+        const res = await fetchJson<IResponse<TclinicDetail>>(`/get-clinic-detail?state=${params.state}&city=${params.city}&clinic_id=${params.clinic_id}`);
         return { data: res.data }
     }
 })

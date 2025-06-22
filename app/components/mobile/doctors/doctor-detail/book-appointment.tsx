@@ -9,14 +9,14 @@ import useBooking from '@/lib/hooks/useBooking';
 import { TDoctorvailableData, TDoctorDetail } from '@/lib/types/doctor';
 import { RootState } from '@/lib/store';
 import Login from '@/app/components/mobile/login';
-const BookAppointment = ({ open, service_charge, site_service_charge, service_loc_id, doctor_id, clinic_id, availability }: { open: boolean, service_loc_id: number, clinic_id: number, doctor_id: number, service_charge: number, site_service_charge: number, settings: TDoctorDetail['settings'], availability?: TDoctorvailableData }) => {
+const BookAppointment = ({ open, service_charge, site_service_charge, service_loc_id, doctor_id, clinic_id, availability, settings }: { open: boolean, service_loc_id: number, clinic_id: number, doctor_id: number, service_charge: number, site_service_charge: number, settings: TDoctorDetail['settings'], availability?: TDoctorvailableData }) => {
     const autoSuggestRef = useRef<HTMLInputElement>(null);
     const { user_info } = useSelector((state: RootState) => {
         return {
             user_info: state.authSlice.user_info
         }
     })
-    const { showModal, setShowModal, showSuggestions,setShowSuggestion,onSelectSuggestedPatient, patients, onOk, patientInfo, setPatientInfo, booingDetail, bookAppointment } = useBooking({ service_loc_id, doctor_id, clinic_id: clinic_id, open: open });
+    const { showModal, setShowModal, showSuggestions, setShowSuggestion, onSelectSuggestedPatient, patients, onOk, patientInfo, setPatientInfo, booingDetail, bookAppointment } = useBooking({ service_loc_id, doctor_id, clinic_id: clinic_id, open: open,settings:settings,availability:availability });
     const [showLoginModal, setShowLoginModal] = useState(false);
     const onBookbtnClick = () => {
         if (user_info === null) {

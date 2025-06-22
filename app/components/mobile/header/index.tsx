@@ -18,9 +18,9 @@ const Header = ({ template = "HOMEPAGE", heading = "", state, city }: { template
                     <BiSolidChevronLeft className='font-semibold h-10 w-10 p-2' onClick={() => {
                         window.history.go(-1)
                     }} />
-                    <h3 className='fs-17 font-semibold'>
+                    <h1 className='fs-17 font-semibold'>
                         {heading}
-                    </h3>
+                    </h1>
                 </div>
             </div>
 

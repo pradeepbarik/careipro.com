@@ -44,26 +44,26 @@ const ClinicDoctors = ({ clinic_info, doctors, specializations }: { clinic_info:
     }
     return (<>
         <div className="flex overflow-auto px-2 gap-2 hide-scroll-bar mb-2">
-            <span className={"text-nowrap border bg-white rounded-lg px-2 py-1 font-semibold flex items-center" + (filter.catId === 0 ? ' bg-primary-20' : '')} onClick={() => { setFilter({ doctorIds: Object.keys(doctors), catId: 0 }) }}>
+            <span className={"text-nowrap border bg-white rounded-3xl px-2 py-1 font-semibold flex items-center" + (filter.catId === 0 ? ' bg-primary-20' : '')} onClick={() => { setFilter({ doctorIds: Object.keys(doctors), catId: 0 }) }}>
                 <BiGridAlt />
                 <span className="ml-1">All</span>
             </span>
             {clinic_info.business_type === "CLINIC" ? <>
                 {specializations['DOCTOR'] && specializations['DOCTOR'].map((spl) =>
-                    <span key={spl.id} className={`bg-white border rounded-lg font-semibold px-2 py-1 flex shrink-0 gap-1 ${filter.catId === spl.id ? ' bg-primary-20' : ''}`} onClick={() => { setFilter({ doctorIds: spl.doctor_ids.split(","), catId: spl.id }) }}>
+                    <span key={spl.id} className={`bg-white border rounded-3xl font-semibold px-2 py-1 flex shrink-0 gap-1 ${filter.catId === spl.id ? ' bg-primary-20' : ''}`} onClick={() => { setFilter({ doctorIds: spl.doctor_ids.split(","), catId: spl.id }) }}>
                         {spl.icon && <img src={doctorSpecialityIcon(spl.icon)} className="h-6 w-6 rounded-full" />}
                         <span className="text-nowrap">{spl.name}</span>
                     </span>)}
             </> : <>
                 {specializations[clinic_info.business_type] && specializations[clinic_info.business_type].map((spl) =>
-                    <span key={spl.id} className={`bg-white border rounded-lg font-semibold px-2 py-1 flex shrink-0 gap-1 ${filter.catId === spl.id ? ' bg-primary-20' : ''}`} onClick={() => { setFilter({ doctorIds: spl.doctor_ids.split(","), catId: spl.id }) }}>
+                    <span key={spl.id} className={`bg-white border rounded-3xl font-semibold px-2 py-1 flex shrink-0 gap-1 ${filter.catId === spl.id ? ' bg-primary-20' : ''}`} onClick={() => { setFilter({ doctorIds: spl.doctor_ids.split(","), catId: spl.id }) }}>
                         {spl.icon && <img src={doctorSpecialityIcon(spl.icon)} className="h-6 w-6 rounded-full" />}
                         <span className="text-nowrap">{spl.name}</span>
                     </span>)}
             </>}
 
         </div>
-        {clinic_info.business_type === "CLINIC" ?
+        {(clinic_info.business_type === "CLINIC" || clinic_info.business_type ==="PHYSIOTHERAPY") ?
             <NIsToOneDoctorsSliders data={docs} type={"CLINIC_DOCTOR"} showAvaileTime={true} />
             : clinic_info.business_type === "CARETAKER" ?
                 <>

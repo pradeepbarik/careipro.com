@@ -57,7 +57,7 @@ const nextConfig = {
                 destination:'/petcare'
             },
             {
-                source:'/:seo_url-In-:city-of-:state/CATG:cat_id-DOCTOR',
+                source:'/:seo_url-In-:city-of-:state/CATG:cat_id-:group_cat',
                 destination:'/doctors/doctors-list'
             },
             {
@@ -76,16 +76,12 @@ const nextConfig = {
                 source:'/:seo_url-In-:city-of-:state/CLINICS-CATG:cat_id-:group_cat',
                 destination:'/hospitals-and-clinics/clinics-list'
             },
-            // {
-            //     source:'/:seo_url-At-:market_name-In-:city-of-:state/CT:clinic_id-:state_city',
-            //     destination:'/care-taker/caretaker-clinic-detail'
-            // }, 
             {
-                source:'/:seo_url-At-:market_name-In-:city-of-:state/:business_type(CT|C):clinic_id-:state_city',
+                source:'/:seo_url-At-:market_name-In-:city-of-:state/:business_type(CT|C|PTY):clinic_id-:state_city',
                 destination:'/hospitals-and-clinics/clinic-detail'
-            }, 
+            },
             {
-                source:'/:seo_url-At-:market_name-In-:city-of-:state/:business_type(CT|C):clinic_id-:state_city/:sub_page',
+                source:'/:seo_url-At-:market_name-In-:city-of-:state/:business_type(CT|C|PTY):clinic_id-:state_city/:sub_page',
                 destination:'/hospitals-and-clinics/clinic-detail'
             },
             {

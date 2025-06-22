@@ -6,6 +6,7 @@ import { httpPost, authenicatedFetchJson } from "@/lib/services/http-client";
 import { RootState } from '@/lib/store';
 import useReminder from '@/lib/hooks/useReminder';
 import { IResponse } from "../services/http-server";
+import {TDoctorDetail,TDoctorvailableData} from '@/lib/types/doctor';
 type TBookingSuccessResponse = {
     booking_date: string,
     booking_id: number,
@@ -14,7 +15,7 @@ type TBookingSuccessResponse = {
 }
 type TSuggestedPatientInfo = { id: number, patient_name: string, patient_mobile: string, patient_gender: string, patient_age: string, patient_address: string };
 const patientInfoInitState = { case_id: 0, patient_name: "", patient_mobile: "", patient_address: "", patient_age: "", patient_gender: "", dataFillMode: "form" };
-const useBooking = ({ service_loc_id, doctor_id, clinic_id, open }: { service_loc_id: number, doctor_id: number, clinic_id: number, open: boolean }) => {
+const useBooking = ({ service_loc_id, doctor_id, clinic_id, open,settings,availability }: { service_loc_id: number, doctor_id: number, clinic_id: number, open: boolean, settings: TDoctorDetail['settings'],availability?:TDoctorvailableData }) => {
     const { is_loggedin, user_info } = useSelector((state: RootState) => state.authSlice);
     const { refreshAppointmentReminders } = useReminder({});
     const [showModal, setShowModal] = useState(open);
@@ -43,7 +44,8 @@ const useBooking = ({ service_loc_id, doctor_id, clinic_id, open }: { service_lo
             patient_address: patientInfo.patient_address,
             patient_age: patientInfo.patient_age,
             patient_gender: patientInfo.patient_gender,
-            case_id: patientInfo.case_id || ""
+            case_id: patientInfo.case_id || "",
+            consult_date:settings.advance_booking_enable? availability?.available_date : "",
         }, { passSecreateKey: true }).then((data) => {
             toast.success(data.message);
             setBookingDetail(data.data);

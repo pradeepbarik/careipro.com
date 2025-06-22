@@ -126,6 +126,8 @@ export type TDoctorDetail=TWeeklyConsultingTiming & {
         sat_booking_start_time:string,
         sun_limit:number,
         sun_booking_start_time:string,
+        enable_enquiry:number,
+        show_patients_feedback:number,
     }
     slno_groups?:Array<TSlnoGroup>,
     allSpecializations:{[group_category:string]:{

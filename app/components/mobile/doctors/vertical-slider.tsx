@@ -42,6 +42,7 @@ const NIsToOneDoctorsSliders = ({ data, type = 'DOCTOR', showAvaileTime }: { dat
                         <div className="flex items-center px-2 py-2">
                             <div className="flex flex-col leading-5">
                                 {type === "CLINIC_DOCTOR" && <>
+                                            
                                     {doctor.availability ?
                                         <span>
                                             <BiTimeFive className="color-primary" />&nbsp;

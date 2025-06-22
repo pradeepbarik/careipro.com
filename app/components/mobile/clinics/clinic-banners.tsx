@@ -1,6 +1,6 @@
 'use client'
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Pagination } from "swiper/modules";
+import { Pagination,Autoplay } from "swiper/modules";
 import 'swiper/css';
 import 'swiper/css/pagination';
 import { clinicBannerImage, clinicProfilePic } from '@/lib/image';
@@ -11,7 +11,7 @@ const ClinicBanner = ({ name, banners, profile_pic }: { name: string, banners: A
                 pagination={{
                     dynamicBullets: true,
                 }}
-                modules={[Pagination]}
+                modules={[Pagination,Autoplay]}
                 className="mySwiper"
                 autoplay={true}
             >

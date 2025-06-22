@@ -71,7 +71,6 @@ const LookingFor = ({ specialist_id }: { specialist_id: number }) => {
                     <div className='mt-2'>
                         <Input placeholder="Your Contact No" lable='Your Contact No' className='w-full' value={contactNo} onChange={(e) => setContactNo(e.target.value)} />
                     </div>
-
                 </>
 
             }

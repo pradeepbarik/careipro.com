@@ -15,7 +15,7 @@ const selectUserInfo = createSelector([selectAuthSlice], (state) => {
         mobile: state.user_info?.mobile
     }
 })
-const SendEnquiry = ({ businessType, state, city, clini_id }: { businessType: string, state: string, city: string, clini_id: number }) => {
+const SendEnquiry = ({ businessType, state, city, clini_id, doctor_id = 0 }: { businessType: string, state: string, city: string, clini_id: number, doctor_id?: number }) => {
     const { isloggedIn, name, mobile } = useSelector((state: RootState) => selectUserInfo(state))
     const { sendEnquiry } = useEnquiry({ state: state, city: city, market_name: "", vaertical: businessType })
     const [askMobile, setAskMobile] = useState(false)
@@ -43,7 +43,7 @@ const SendEnquiry = ({ businessType, state, city, clini_id }: { businessType: st
             name: userInfo.name,
             mobile: userInfo.mobile,
             clinic_id: clini_id,
-            doctor_id: 0,
+            doctor_id: doctor_id,
             specialist_id: 0,
             page: "detail_page",
             section: "top_enquiry_form"
@@ -64,7 +64,7 @@ const SendEnquiry = ({ businessType, state, city, clini_id }: { businessType: st
                 name: name,
                 mobile: mobile || "",
                 clinic_id: clini_id,
-                doctor_id: 0,
+                doctor_id: doctor_id,
                 specialist_id: 0,
                 page: "detail_page",
                 section: "top_enquiry_form"

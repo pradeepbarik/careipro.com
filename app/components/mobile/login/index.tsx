@@ -21,7 +21,7 @@ const Login = ({ redirectUrl = "",onLoginSuccess,allowLoggedInUser }: { redirect
                     <div className="px-1">
                         <form autoComplete={"off"}>
                             <div>
-                                <Input type="mobile" autofocus={true} value={mobile} lable="Enter Your Mobile No" onChange={(e) => { setMobile(e.target.value) }} />
+                                <Input type="mobile" value={mobile} lable="Enter Your Mobile No" onChange={(e) => { setMobile(e.target.value) }} />
                             </div>
                             <div className="mt-4 py-2 flex">
                                 <Button className="ml-auto" onClick={sendOtp} >
@@ -44,7 +44,7 @@ const Login = ({ redirectUrl = "",onLoginSuccess,allowLoggedInUser }: { redirect
                                             </span>
                                         </div>
                                         <div className='w-24 shrink-0'>
-                                            <Input lable='Enter OTP' autofocus={true} type="number" value={otp} className='text-center' onChange={(e) => { setOtp(e.target.value) }} />
+                                            <Input lable='Enter OTP' type="number" value={otp} className='text-center' onChange={(e) => { setOtp(e.target.value) }} />
                                         </div>
                                     </div>
                                     <div className='mt-6'>

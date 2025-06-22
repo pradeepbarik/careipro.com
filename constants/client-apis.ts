@@ -1,7 +1,7 @@
 'use client'
 const get_env_configs = () => {
     let API_BASE_URL = "";
-    if (window.location.hostname === "localhost") {
+    if (process.env.NEXT_PUBLIC_MODE === "development") {
         API_BASE_URL = "http://localhost/api"
     } else {
         API_BASE_URL = "http://dev.careipro.com/um-api"
