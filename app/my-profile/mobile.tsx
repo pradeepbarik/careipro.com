@@ -261,7 +261,7 @@ const MyProfileMobile = ({ cookies }: { cookies: Record<string, string> }) => {
                 </div>
             </div>
             <SlideUpModal open={showLoginModal} onClose={() => { setShowLoginModal(false) }} heading='Login / Signup'>
-                <Login onLoginSuccess={() => { setShowLoginModal(false) }} />
+                <Login onLoginSuccess={() => { setShowLoginModal(false) }} allowLoggedInUser={true} />
             </SlideUpModal>
         </>
     )

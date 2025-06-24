@@ -26,14 +26,14 @@ const ClinicDetailMobile = ({ data, searchParams }: { data: TclinicDetail, searc
                             {/* <span>5 Years in healthcare</span> */}
                             <span>
                                 {data.clinic_info.locality} {data.clinic_info.market_name},{data.clinic_info.city} &nbsp;
-                                {!data.clinic_info.show_patients_feedback &&
-                                    <Link href={`https://www.google.com/maps/dir/?api=1&destination=${data.clinic_info.location_lat},${data.clinic_info.location_lng}`} target="_blank" className="color-secondary border border-color-secondary rounded-md px-1 py-1">View on map {'>'}</Link>
+                                {!data.clinic_info.show_patients_feedback ?
+                                    <Link href={`https://www.google.com/maps/dir/?api=1&destination=${data.clinic_info.location_lat},${data.clinic_info.location_lng}`} target="_blank" className="color-secondary border border-color-secondary rounded-md px-1 py-1 one-line">View on map {'>'}</Link> : <></>
                                 }
                             </span>
-                            {data.clinic_info.show_patients_feedback &&
+                            {data.clinic_info.show_patients_feedback ?
                                 <div className="mt-1">
-                                    <Link href={`https://www.google.com/maps/dir/?api=1&destination=${data.clinic_info.location_lat},${data.clinic_info.location_lng}`} target="_blank" className="color-secondary border border-color-secondary rounded-md px-1 py-1">View on map {'>'}</Link>
-                                </div>}
+                                    <Link href={`https://www.google.com/maps/dir/?api=1&destination=${data.clinic_info.location_lat},${data.clinic_info.location_lng}`} target="_blank" className="color-secondary border border-color-secondary rounded-md px-1 py-1 one-line">View on map {'>'}</Link>
+                                </div> : <></>}
                         </div>
                         {data.clinic_info.show_patients_feedback == 1 &&
                             <span className="ml-auto font-bold absolute top-2 right-2 fs-18">
@@ -57,7 +57,12 @@ const ClinicDetailMobile = ({ data, searchParams }: { data: TclinicDetail, searc
                         <div className="flex flex-col grow">
                             <span className="font-semibold fs-17 color-primary">{data.clinic_info.name}</span>
                             {/* <span>5 Years in healthcare</span> */}
-                            <span>{data.clinic_info.locality} {data.clinic_info.market_name},{data.clinic_info.city}</span>
+                            <span>{data.clinic_info.locality} {data.clinic_info.market_name},{data.clinic_info.city}
+                            </span>
+                            <div className="mt-1">
+                                <Link href={`https://www.google.com/maps/dir/?api=1&destination=${data.clinic_info.location_lat},${data.clinic_info.location_lng}`} target="_blank" className="color-secondary border border-color-secondary rounded-md px-1 py-1 one-line">View on map {'>'}</Link>
+                            </div>
+
                         </div>
                     </div>
                 </>}
@@ -107,7 +112,7 @@ const ClinicDetailMobile = ({ data, searchParams }: { data: TclinicDetail, searc
                     <Link href={`${pageUrl}/Patients-Reviews`} className={`bg-white border rounded-md font-semibold px-2 py-1 flex items-center shrink-0 gap-1 ${(searchParams.sub_page === "feedback") ? 'bg-primary color-white' : ''}`}>
                         <BiMessageRoundedDots />
                         <span className="text-nowrap fs-16">Reviews</span>
-                    </Link>:<></>
+                    </Link> : <></>
                 }
             </div>
             {searchParams.sub_page === "" || searchParams.sub_page === undefined ?
