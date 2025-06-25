@@ -3,7 +3,10 @@ import { cookies } from "next/headers";
 import { userSecreateKey,userinfo } from '@/constants/storage_keys';
 import { fetchJson, IResponse } from "@/lib/services/http-server";
 export async function GET(request: NextRequest) {
-    const { searchParams, hostname } = new URL(request.url);
+    let { searchParams, hostname } = new URL(request.url);
+    if(process.env.NEXT_PUBLIC_MODE ==="production"){
+        hostname = process.env.NEXT_PUBLIC_HOSTNAME || hostname;
+    }
     if (searchParams.get('action') === 'set_cookie') {
         let name = searchParams.get('name') || "";
         let value = searchParams.get('value') || "";
