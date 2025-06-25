@@ -5,7 +5,7 @@ import { fetchJson, IResponse } from "@/lib/services/http-server";
 export async function GET(request: NextRequest) {
     let { searchParams, hostname } = new URL(request.url);
     if(process.env.NEXT_PUBLIC_MODE ==="production"){
-        hostname = process.env.NEXT_PUBLIC_HOSTNAME || hostname;
+        hostname = process.env.NEXT_PUBLIC_HOST || hostname;
     }
     if (searchParams.get('action') === 'set_cookie') {
         let name = searchParams.get('name') || "";
