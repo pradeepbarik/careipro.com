@@ -9,6 +9,10 @@ const nextConfig = {
                 port:"8080",
             },
             {
+                protocol: 'http',
+                hostname: 'dev.careipro.com',
+            },
+            {
                 protocol: 'https',
                 hostname: 'careipro.com',
             },

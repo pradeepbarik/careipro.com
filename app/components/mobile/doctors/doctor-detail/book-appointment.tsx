@@ -99,7 +99,7 @@ const BookAppointment = ({ open, service_charge, site_service_charge, service_lo
                                 </div>
                             </div>
                             <div className='mt-2'>
-                                <TextArea value={patientInfo.patient_address} onChange={(e) => { setPatientInfo({ ...patientInfo, patient_address: e.target.value }) }} lable='Patient Address' />
+                                <TextArea className='font-semibold fs-16' value={patientInfo.patient_address} onChange={(e) => { setPatientInfo({ ...patientInfo, patient_address: e.target.value }) }} lable='Patient Address' />
                             </div>
                         </div>
                         <div className='font-semibold py-2 px-2 fs-16 bg-slate-100'>
