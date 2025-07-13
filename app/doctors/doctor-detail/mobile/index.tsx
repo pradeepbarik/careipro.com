@@ -13,7 +13,7 @@ import { formatCurrency } from '@/lib/helper/format-text';
 import { TsearchParams } from '../types';
 import { doctorDetailPageUrl } from '@/lib/helper/link';
 import SendEnquiry from "@/app/hospitals-and-clinics/clinic-detail/mobile/send-enquiry";
-
+import EmergencyBookingCloseAlert from '@/app/components/mobile/doctors/doctor-detail/emergency-booking-close-alert';
 const OverView = dynamic(() => import('./overview'))
 const AppointmentBookingTiming = dynamic(() => import('./booking-timing'));
 const Photos = dynamic(() => import('./photos'))
@@ -55,7 +55,9 @@ const DoctorDetailMobile = async ({ data, availableData, searchParams }: {
                 </div>
             </div>
         </div>
-
+        <div className="relative">
+            {data.settings.emergency_booking_close == 1 && <EmergencyBookingCloseAlert message={data.settings.booking_close_message} />}
+        </div>
         <div id="reminder-section"></div>
         <SectionHeading heading='Clinic Information' />
         <div className='bg-white px-2 py-2 shadow-sm'>
@@ -119,7 +121,7 @@ const DoctorDetailMobile = async ({ data, availableData, searchParams }: {
         {data.settings.enable_enquiry ? <>
             <SendEnquiry businessType={data.business_type} state={data.clinic_state || ""} city={data.clinic_city} clini_id={data.clinic_id} doctor_id={data.doctor_id} />
 
-        </>:<></>}
+        </> : <></>}
         <div className="flex overflow-auto px-2 py-2 gap-2 hide-scroll-bar mt-2 sticky bg-page-background-50" style={{ top: "4rem" }}>
             <Link href={`${pageUrl}`} className={`text-nowrap border bg-white rounded-lg px-2 py-1 font-semibold flex items-center ${(searchParams.sub_page == undefined || searchParams.sub_page === "") ? 'bg-primary color-white' : ''}`}>
                 <BiGridAlt />
@@ -146,7 +148,7 @@ const DoctorDetailMobile = async ({ data, availableData, searchParams }: {
                 <Link href={`${pageUrl}/Patient-Reviews`} className={`bg-white border rounded-lg font-semibold px-2 py-1 flex items-center shrink-0 gap-1 ${(searchParams.sub_page === "feedback") ? 'bg-primary color-white' : ''}`}>
                     <BiMessageRoundedDots />
                     <span className="text-nowrap fs-15">Reviews</span>
-                </Link>:<></>
+                </Link> : <></>
             }
         </div>
         {!searchParams.sub_page ?
@@ -165,8 +167,8 @@ const DoctorDetailMobile = async ({ data, availableData, searchParams }: {
                     reviews
                 </> : <><OverView data={data} availableData={availableData} />
                 </>}
-        {data.settings.book_by === "app" && <div className="bg-white sticky bottom-0 w-full px-2 py-1" style={{ bottom: 0 }}>
-            <BookAppointment open={searchParams.book_appointment === '1' ? true : false} clinic_id={data.clinic_id} service_loc_id={data.id} doctor_id={data.doctor_id} service_charge={parseInt(data.service_charge)} site_service_charge={parseInt(data.site_service_charge)} settings={data.settings} availability={availableData} />
+        {(data.settings.book_by === "app") && <div className="bg-white sticky bottom-0 w-full px-2 py-1" style={{ bottom: 0 }}>
+            <BookAppointment emergencyBookingClose={data.settings.emergency_booking_close} bookingCloseMessage={data.settings.booking_close_message} open={searchParams.book_appointment === '1' ? true : false} clinic_id={data.clinic_id} service_loc_id={data.id} doctor_id={data.doctor_id} service_charge={parseInt(data.service_charge)} site_service_charge={parseInt(data.site_service_charge)} settings={data.settings} availability={availableData} />
         </div>}
         {data.settings.book_by === "call" &&
             <div className="bg-white sticky bottom-0 w-full px-2 py-1" style={{ bottom: 0 }}

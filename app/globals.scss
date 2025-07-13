@@ -334,3 +334,29 @@ details {
         scale: 1;
     }
 }
+.slideup{
+    animation: slideUp .5s;
+    animation-fill-mode: forwards;
+}
+@keyframes slideUp {
+    0% {
+        transform: translateY(20px);
+    }
+
+    100% {
+         transform: translateY(0px);
+    }
+}
+.slideDown{
+    animation: slideDown .5s;
+    animation-fill-mode: forwards;
+}
+@keyframes slideDown {
+    0% {
+        transform: translateY(-20px);
+    }
+
+    100% {
+         transform: translateY(0px);
+    }
+}

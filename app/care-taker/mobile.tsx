@@ -37,7 +37,7 @@ const CaretakersMobile = async ({ state, city, pageData, categories }: { state: 
                                 <div className='font-semibold flex items-center gap-1'>
                                     <BiGroup /> 40 Staffs
                                 </div>
-                                <SendEnquiryBtn section='service_at_hospital'/>
+                                <SendEnquiryBtn section='service_at_hospital' service_name='Need Caretaker at hospital?'/>
                             </div>
                             <div className='grow bg-white shadow-md rounded-md overflow-hidden p-2' style={{ background: "#a3eeff45" }}>
                                 <div className='font-semibold fs-16'>Patient Caretaker</div>
@@ -49,7 +49,7 @@ const CaretakersMobile = async ({ state, city, pageData, categories }: { state: 
                                 <div className='font-semibold flex items-center gap-1'>
                                     <BiGroup /> 125 Staffs
                                 </div>
-                                <SendEnquiryBtn section='service_at_home'/>
+                                <SendEnquiryBtn section='service_at_home' service_name='Need Caretaker at home?'/>
                             </div>
                         </div>
                     </> : (section.section_type === "popular_specialist" && section.viewType === "send_enquiry") ? <>

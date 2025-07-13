@@ -15,8 +15,8 @@ const selectFromCaretaker = createSelector([selectCaretakeSlice], (state) => {
         clinic_id: state.clinic_id,
         doctor_id: state.doctor_id,
         specialist_id: state.specialist_id,
-        page:state.page,
-        section:state.section,
+        page: state.page,
+        section: state.section,
         businessInfo: state.businessInfo
     }
 })
@@ -28,7 +28,7 @@ const selectFromAuth = createSelector([selectAuthSlice], (state) => {
 })
 export const SendEnquiryForm = ({ state, city, vertical, message }: { state: string, city: string, message?: string, vertical: string }) => {
     const dispatch = useDispatch();
-    const { show, clinic_id, doctor_id, specialist_id,page,section, businessInfo } = useSelector((state: RootState) => selectFromCaretaker(state))
+    const { show, clinic_id, doctor_id, specialist_id, page, section, businessInfo } = useSelector((state: RootState) => selectFromCaretaker(state))
     const { logedin_mobile, loggedin_name } = useSelector((state: RootState) => selectFromAuth(state));
     const { sendEnquiry } = useEnquiry({ state: state, city: city, market_name: "", vaertical: vertical });
     const [showSuccessScreen, setShowSuccessScreen] = useState(false);
@@ -99,7 +99,7 @@ export const SendEnquiryForm = ({ state, city, vertical, message }: { state: str
                         <div className='bg-white p-2'>
                             {businessInfo?.name &&
                                 <div className='flex items-center border px-2 py-1 rounded-md gap-2'>
-                                    <img src={businessInfo.logo} className='h-12 w-12 rounded-md' />
+                                    {businessInfo.logo && <img src={businessInfo.logo} className='h-12 w-12 rounded-md' />}
                                     <span className='fs-15 font-semibold'>{businessInfo.name}</span>
                                 </div>
                             }

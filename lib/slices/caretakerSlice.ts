@@ -7,10 +7,10 @@ type TinitialState = {
     specialist_id: number,
     page:string,
     section:string,
-    businessInfo?:{
+    businessInfo:{
         name:string,
         logo:string,
-    }
+    }|null
 }
 const initialState: TinitialState = {
     show: false,
@@ -39,6 +39,11 @@ const careTakerSlice = createSlice({
                 if(action.payload.data.businessInfo){
                     state.businessInfo=action.payload.data.businessInfo;
                 }
+            }else{
+                state.clinic_id=0;
+                state.doctor_id=0;
+                state.specialist_id=0
+                state.businessInfo=null
             }
         }
     }

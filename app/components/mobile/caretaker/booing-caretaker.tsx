@@ -19,10 +19,10 @@ export const BookNowService = ({ service_id, service_name, logo }: { service_id:
         <button className='flex justify-center border border-color-primary py-1 px-2 rounded-md grow font-semibold bg-white' onClick={handelClick}>Book Now</button>
     )
 }
-export const SendEnquiryBtn = ({ section }: { section: string }) => {
+export const SendEnquiryBtn = ({ section,service_name }: { section: string,service_name:string }) => {
     const dispatch = useDispatch();
     const handelClick = () => {
-        dispatch(handelBookBtnClick({ show: true, page: "caretaker_home", section: section, data: {} }))
+        dispatch(handelBookBtnClick({ show: true, page: "caretaker_home", section: section, data: {businessInfo:{name:service_name,logo:""}} }))
     }
     return (
         <div className='border border-color-primary py-2 rounded-md grow text-center font-semibold bg-white' onClick={handelClick}>Send Enquiry</div>
