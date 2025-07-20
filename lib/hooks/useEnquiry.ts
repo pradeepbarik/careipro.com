@@ -10,7 +10,7 @@ const useEnquiry = ({ state, city, vaertical, market_name = "" }: { state: strin
         specialist_id: number,
         page: string,
         section: string
-    }, onSuccess: () => void) => {
+    }, onSuccess: (data?: any) => void, extraParams: { showSuccessAlert: boolean } = { showSuccessAlert: true }) => {
         if (!data.name) {
             toast.error("Please enter your name")
             return;
@@ -40,8 +40,10 @@ const useEnquiry = ({ state, city, vaertical, market_name = "" }: { state: strin
             page: data.page,
             section: data.section
         }).then(({ data, message }) => {
-            toast.success(message)
-            onSuccess()
+            if (extraParams.showSuccessAlert) {
+                toast.success(message)
+            }
+            onSuccess(data)
         })
     }
     return {

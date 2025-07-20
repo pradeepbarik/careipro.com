@@ -1,12 +1,13 @@
 import { ChangeEvent, useEffect, useState } from 'react';
-import { fetchAppointmentHistory, Tappointment, fetchAppointmentDetail, TappointmentDetail, fetchCaseDetails, uploadPrescriptionPostCurl, deletePrescriptionCurl } from '@/lib/services/apicalls';
+import { fetchAppointmentHistory, Tappointment, fetchAppointmentDetail, TappointmentDetail, fetchCaseDetails, uploadPrescriptionPostCurl, deletePrescriptionCurl, TcaseInfo } from '@/lib/services/apicalls';
 const useAppointment = ({ init, case_id, appointmentId, page }: { init: boolean, case_id?: number, appointmentId?: number, page: "history" | "detail" }) => {
     const [appointments, setAppointments] = useState<Tappointment[]>([]);
-    const [appointment, setAppointment] = useState<Tappointment|null>(null);
-    const [appointmentDetail, setAppointmentDetail] = useState<TappointmentDetail | null >(null);
+    const [appointment, setAppointment] = useState<Tappointment | null>(null);
+    const [appointmentDetail, setAppointmentDetail] = useState<TappointmentDetail | null>(null);
     const [caseAppointmentIds, setCaseAppointmentIds] = useState<number[]>([]);
     const [showReviewModal, setShowReviewModal] = useState<boolean>(false);
     const [activeAppointmentId, setActiveAppointmentId] = useState<number>(appointmentId || 0);
+    const [appointmentInfo, setAppointmentInfo] = useState<Record<number, TcaseInfo>>({})
     const [caseAppointmentDetails, setCaseAppointmentDetails] = useState<{ [id: number]: TappointmentDetail }>({});
     const appointmentsHistory = () => {
         fetchAppointmentHistory(0, 100).then(({ data }) => {
@@ -14,7 +15,7 @@ const useAppointment = ({ init, case_id, appointmentId, page }: { init: boolean,
         })
     }
     const getAppointmentDetail = (id: number) => {
-        fetchAppointmentDetail(case_id || 0, id || 0).then(({ data }) => {
+        fetchAppointmentDetail(case_id || 0, id || 0, appointmentInfo[id]?._id || "").then(({ data }) => {
             setAppointmentDetail(data)
             setCaseAppointmentDetails((prevState) => ({
                 ...prevState,
@@ -24,7 +25,14 @@ const useAppointment = ({ init, case_id, appointmentId, page }: { init: boolean,
     }
     const caseDetails = () => {
         fetchCaseDetails(case_id || 0).then(({ data }) => {
-            setCaseAppointmentIds(data.booking_ids)
+            let booking_ids = [];
+            let bookingIdDetail: Record<number, TcaseInfo> = {};
+            for (let bd of data.booking_ids) {
+                booking_ids.push(bd.appointment_id)
+                bookingIdDetail[bd.appointment_id] = bd;
+            }
+            setAppointmentInfo(bookingIdDetail);
+            setCaseAppointmentIds(booking_ids)
         })
     }
     const onSwipeEnd = (index: number) => {
@@ -52,7 +60,7 @@ const useAppointment = ({ init, case_id, appointmentId, page }: { init: boolean,
         })
     }
     useEffect(() => {
-        if (init === true && appointmentId && page==="detail") {
+        if (init === true && appointmentId && page === "detail") {
             caseDetails();
         }
         if (init === true && page === "history") {

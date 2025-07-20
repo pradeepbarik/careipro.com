@@ -33,26 +33,29 @@ const useLogin = ({ redirectUrl = "", allowLoggedInUser = false, onLoginSuccess 
             setStep(2);
         })
     }
+    const refreshRoute=()=>{
+        router.refresh();
+    }
     const login = () => {
         if (otp.length === 0) {
             toast.info("Please enter OTP");
             return;
         }
         setLoader(true);
-        httpPost("/auth/login", { case: "login", mobile: mobile, otp: otp }).then(({ data }) => {
+        httpPost("/auth/login", { case: "login", mobile: mobile, otp: otp }).then(async ({ data }) => {
             setLoader(false);
-            let expire=moment().add(2,'years').format('YYYY-MM-DD');
-            setCookie(userSecreateKey, (<any>data).secreate_key,{expire:expire});
+            let expire = moment().add(2, 'years').format('YYYY-MM-DD');
+            await setCookie(userSecreateKey, (<any>data).secreate_key, { expire: expire });
             localStorage.setItem(userinfo, JSON.stringify(data));
             if (onLoginSuccess) {
                 dispatch(initUserDetail({ is_loggedin: true, user_info: data }));
                 onLoginSuccess();
                 return;
             }
-            if (redirectUrl !== "") {
+            if (redirectUrl) {
                 router.push(redirectUrl);
             } else {
-                router.back();
+                router.refresh();
             }
         }).catch((err: any) => {
             setLoader(false);
@@ -80,15 +83,15 @@ const useLogin = ({ redirectUrl = "", allowLoggedInUser = false, onLoginSuccess 
             toast.error("Please enter your City");
             return;
         }
-        httpPost("/auth/login", { case: "signup", mobile: mobile, otp: otp, first_name: userInfo.first_name, last_name: userInfo.last_name, age: userInfo.age, gender: userInfo.gender, state: userInfo.state, city: userInfo.city }).then(({ data }) => {
+        httpPost("/auth/login", { case: "signup", mobile: mobile, otp: otp, first_name: userInfo.first_name, last_name: userInfo.last_name, age: userInfo.age, gender: userInfo.gender, state: userInfo.state, city: userInfo.city }).then(async ({ data }) => {
             setLoader(false);
             localStorage.setItem(userinfo, JSON.stringify(data));
-            let expire=moment().add(2,'years').format('YYYY-MM-DD');
-            setCookie(userSecreateKey, (<any>data).secreate_key,{expire:expire});
-            if (redirectUrl !== "") {
+            let expire = moment().add(2, 'years').format('YYYY-MM-DD');
+            await setCookie(userSecreateKey, (<any>data).secreate_key, { expire: expire });
+            if (redirectUrl) {
                 router.push(redirectUrl);
             } else {
-                router.back();
+                router.refresh();
             }
         }).catch((err: any) => {
             setLoader(false);
@@ -114,7 +117,9 @@ const useLogin = ({ redirectUrl = "", allowLoggedInUser = false, onLoginSuccess 
     return {
         step,
         loader,
-        mobile, setMobile, mobileExit, otp, setOtp, userInfo, setUserInfo, editMobileClick, sendOtp, login, signUp, logOut
+        mobile, setMobile, mobileExit, otp, setOtp, userInfo, setUserInfo, editMobileClick, sendOtp, login, signUp,
+         logOut,
+         refreshRoute
     }
 }
 export default useLogin;

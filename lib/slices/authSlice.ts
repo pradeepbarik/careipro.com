@@ -19,6 +19,7 @@ type initialState = {
         referal_code: string,
         secreate_key: string,
         user_type: string,
+        is_clinic_owner:number
     } | null,
     cookies: Record<string, string>
 }

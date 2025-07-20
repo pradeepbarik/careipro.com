@@ -8,7 +8,7 @@ export const useCookies = () => {
         if (extraParams && extraParams.httpOnly) {
             api += `&httpOnly=${extraParams.httpOnly}`;
         }
-        axios.get(api);
+        return axios.get(api);
     }
     const getCookie = (name: string) => {
         // return cookies().get(name);

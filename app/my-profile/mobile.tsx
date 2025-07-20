@@ -13,7 +13,7 @@ import useLogin from "@/lib/hooks/login/useLogin";
 const MY_PROFILE_ROUTES = "my-profile";
 const BUSINESS_ROUTES = "business";
 const MyProfileMobile = ({ cookies }: { cookies: Record<string, string> }) => {
-    const { logOut } = useLogin({ allowLoggedInUser: true });
+    const { logOut,refreshRoute } = useLogin({ allowLoggedInUser: true, redirectUrl: "" });
     const user_info = cookies[userinfo] ? JSON.parse(cookies[userinfo]) : null;
     //const { user_info } = useSelector((state: RootState) => state.authSlice);
     const [showLoginModal, setShowLoginModal] = useState(false);
@@ -26,12 +26,6 @@ const MyProfileMobile = ({ cookies }: { cookies: Record<string, string> }) => {
                         <span className='relative'>
                             Hi, {user_info?.fn} {user_info?.ln}
                             {user_info.ico === '1' && <span className='absolute fs-12 left-full -top-3 border px-1 py-1 color-white rounded-md leading-[1]' style={{ background: "#2fc384" }}>Owner</span>}
-                        </span>
-                    </span>
-                    <span onClick={logOut} className='flex gap-1 items-center color-secondary font-semibold border border-color-secondary px-1 rounded-md'>
-                        <BiLogOutCircle className='text-xl' />
-                        <span className='py-1'>
-                            Log out
                         </span>
                     </span>
                 </div>
@@ -50,8 +44,8 @@ const MyProfileMobile = ({ cookies }: { cookies: Record<string, string> }) => {
                                             </Link>
                                         </li>
                                     }
-                                     {user_info.bt === "CARETAKER" &&
-                                     <li>
+                                    {user_info.bt === "CARETAKER" &&
+                                        <li>
                                             <Link href={`/${BUSINESS_ROUTES}/enquiries`} className='flex items-center h-12'>
                                                 <AiOutlineCarryOut className='fs-16' />
                                                 <span className='ml-2 fs-16'>
@@ -59,7 +53,7 @@ const MyProfileMobile = ({ cookies }: { cookies: Record<string, string> }) => {
                                                 </span>
                                             </Link>
                                         </li>
-                                     }
+                                    }
                                     <li>
                                         <Link href={`/${BUSINESS_ROUTES}/my-jobs`} className='flex items-center h-12'>
                                             <AiOutlineCarryOut className='fs-16' />
@@ -115,6 +109,7 @@ const MyProfileMobile = ({ cookies }: { cookies: Record<string, string> }) => {
                                 </span>
                             </Link>
                         </li> */}
+                        {user_info.ut==="user" &&
                         <li>
                             <Link href={"/my-appointments"} className='flex items-center h-12'>
                                 <AiOutlineNotification className='fs-16' />
@@ -122,7 +117,7 @@ const MyProfileMobile = ({ cookies }: { cookies: Record<string, string> }) => {
                                     Open Jobs at Hospitals
                                 </span>
                             </Link>
-                        </li>
+                        </li>}
                         <li>
                             <Link href={"/support/share-feedback"} className='flex items-center h-12'>
                                 <AiOutlineComment className='fs-16' />
@@ -131,14 +126,15 @@ const MyProfileMobile = ({ cookies }: { cookies: Record<string, string> }) => {
                                 </span>
                             </Link>
                         </li>
+                         {user_info.ut==="user" &&
                         <li>
-                            <Link href={"my-appointments"} className='flex items-center h-12'>
+                            <Link href={"Register-clinic-hospital"} className='flex items-center h-12'>
                                 <AiOutlineTag className='fs-16' />
                                 <span className='ml-2 fs-16'>
                                     Register your Hospital / Clinic
                                 </span>
                             </Link>
-                        </li>
+                        </li>}
                         <li>
                             <Link href={"/Business-With-Careipro"} className='flex items-center h-12'>
                                 <AiOutlineTag className='fs-16' />
@@ -147,24 +143,22 @@ const MyProfileMobile = ({ cookies }: { cookies: Record<string, string> }) => {
                                 </span>
                             </Link>
                         </li>
-
-
                         <li>
-                            <Link href={"/my-appointments"} className='flex items-center h-12'>
+                            <Link href={"/contact-us"} className='flex items-center h-12'>
                                 <AiOutlinePhone className='fs-16' />
                                 <span className='ml-2 fs-16'>
-                                    Need Help?
+                                    Contact us
                                 </span>
                             </Link>
                         </li>
-                        <li>
+                        {/* <li>
                             <Link href={"/my-appointments"} className='flex items-center h-12'>
                                 <AiOutlineQuestionCircle className='fs-16' />
                                 <span className='ml-2 fs-16'>
                                     FAQs
                                 </span>
                             </Link>
-                        </li>
+                        </li> */}
                         <li>
                             <Link href={"/about-us"} className='flex items-center h-12'>
                                 <AiOutlineInfoCircle className='fs-16' />
@@ -174,6 +168,14 @@ const MyProfileMobile = ({ cookies }: { cookies: Record<string, string> }) => {
                             </Link>
                         </li>
                     </ul>
+                </div>
+                <div className='px-4 text-center fixed bottom-4 w-full'>
+                    <span onClick={logOut} className='inline-flex gap-1 items-center color-secondary font-semibold border border-color-secondary px-1 rounded-md'>
+                        <BiLogOutCircle className='text-xl' />
+                        <span className='py-1'>
+                            Log out
+                        </span>
+                    </span>
                 </div>
             </div>
         )
@@ -234,21 +236,21 @@ const MyProfileMobile = ({ cookies }: { cookies: Record<string, string> }) => {
                             </Link>
                         </li>
                         <li>
-                            <Link href={"/my-appointments"} className='flex items-center h-12'>
+                            <Link href={"/contact-us"} className='flex items-center h-12'>
                                 <AiOutlinePhone className='fs-16' />
                                 <span className='ml-2 fs-16'>
-                                    Need Help?
+                                    Contact us
                                 </span>
                             </Link>
                         </li>
-                        <li>
+                        {/* <li>
                             <Link href={"/my-appointments"} className='flex items-center h-12'>
                                 <AiOutlineQuestionCircle className='fs-16' />
                                 <span className='ml-2 fs-16'>
                                     FAQs
                                 </span>
                             </Link>
-                        </li>
+                        </li> */}
                         <li>
                             <Link href={"/about-us"} className='flex items-center h-12'>
                                 <AiOutlineInfoCircle className='fs-16' />
@@ -261,7 +263,7 @@ const MyProfileMobile = ({ cookies }: { cookies: Record<string, string> }) => {
                 </div>
             </div>
             <SlideUpModal open={showLoginModal} onClose={() => { setShowLoginModal(false) }} heading='Login / Signup'>
-                <Login onLoginSuccess={() => { setShowLoginModal(false) }} allowLoggedInUser={true} />
+                <Login onLoginSuccess={() => { setShowLoginModal(false);refreshRoute() }} allowLoggedInUser={true} />
             </SlideUpModal>
         </>
     )

@@ -82,15 +82,21 @@ export type TappointmentDetail = {
       tag: string, score: number, topic: string, sub_topic: string
    }> | null
 }
-export const fetchAppointmentDetail = (case_id: number, appointment_id: number) => {
+export const fetchAppointmentDetail = (case_id: number, appointment_id: number,mid:string="") => {
    try {
-      return authenicatedFetchJson<IResponse<TappointmentDetail>>(`/user/appointment-detail?case_id=${case_id}&appointment_id=${appointment_id}`);
+      return authenicatedFetchJson<IResponse<TappointmentDetail>>(`/user/appointment-detail?case_id=${case_id}&appointment_id=${appointment_id}&mid=${mid}`);
    } catch (err: any) {
       return buildResponse<TappointmentDetail>({} as TappointmentDetail);
    }
 }
+export type TcaseInfo = {
+   _id: string,
+   appointment_id: number,
+   user_id: number,
+   user_type: string,
+}
 type TcaseDetail = {
-   booking_ids: number[]
+   booking_ids: Array<TcaseInfo>
 }
 export const fetchCaseDetails = (case_id: number) => {
    try {
@@ -105,12 +111,12 @@ export const uploadPrescriptionPostCurl = (data: FormData) => {
 export const deletePrescriptionCurl = (params: { prescription: string, booking_id: number }) => {
    return httpPost<{}>(`/user/delete-prescription`, { prescription: params.prescription, booking_id: params.booking_id }, { passSecreateKey: true });
 }
-export const shareFeedbackPostCurl = (params: { rating: number, name: string, mobile: string, comment: string,campaign:string,specialist_id?:number }) => {
+export const shareFeedbackPostCurl = (params: { rating: number, name: string, mobile: string, comment: string, campaign: string, specialist_id?: number }) => {
    return httpPost<{}>(`/share-feedback`, params, { passSecreateKey: true, passGuserSecreateKey: true });
 }
-export const doctorNotFoundFeedbackPostCurl = (params: { rating: number, name: string, mobile: string, comment: string,campaign:string,specialist_id?:number }) => {
+export const doctorNotFoundFeedbackPostCurl = (params: { rating: number, name: string, mobile: string, comment: string, campaign: string, specialist_id?: number }) => {
    return httpPost<{}>(`/doctor-not-found`, params, { passSecreateKey: true, passGuserSecreateKey: true });
 }
 export const fetchShareFeedbackList = () => {
-   return fetchJson<Array<{ id: number, rating: number, name: string, mobile: string, comment: string,campaign:string }>>(`/shared-feedback`, false, {}, { passGuserSecreateKey: true,passSecreateKey:true })
+   return fetchJson<Array<{ id: number, rating: number, name: string, mobile: string, comment: string, campaign: string }>>(`/shared-feedback`, false, {}, { passGuserSecreateKey: true, passSecreateKey: true })
 }
