@@ -61,7 +61,7 @@ const ContactUsMobile = () => {
                 <h2 className="font-bold text-2xl text-center">Get in Touch</h2>
                 <div className="px-12 color-white font-semibold mt-2">
                     <p>If you have any queries get in touch with us.</p>
-                    <p>We'll be happy to help you.</p>
+                    <p>{`We'll be happy to help you.`}</p>
                 </div>
             </div>
             <div className="px-2">
