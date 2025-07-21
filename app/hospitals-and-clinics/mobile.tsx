@@ -41,7 +41,7 @@ const HospitalsMobile = ({ state, city, pageData }: Tprops) => {
             {pageData.sections.map((section) =>
                 <div key={section.heading}>
                     <SectionHeading heading={section.heading} >
-                        {<Link href={section.view_all_url} className="button inline-flex items-center ml-auto" data-variant="contained" data-size="xs">View All<BiChevronRight className="fs-17" /></Link>}
+                        {section.view_all_url && <Link href={section.view_all_url} className="button inline-flex items-center ml-auto" data-variant="contained" data-size="xs">View All<BiChevronRight className="fs-17" /></Link>}
                     </SectionHeading>
                     {section.viewType === "1:n" ?
                         <>
