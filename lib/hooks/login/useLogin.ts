@@ -33,7 +33,7 @@ const useLogin = ({ redirectUrl = "", allowLoggedInUser = false, onLoginSuccess 
             setStep(2);
         })
     }
-    const refreshRoute=()=>{
+    const refreshRoute = () => {
         router.refresh();
     }
     const login = () => {
@@ -99,10 +99,10 @@ const useLogin = ({ redirectUrl = "", allowLoggedInUser = false, onLoginSuccess 
         })
     }
     const logOut = async () => {
-        deleteCookie(userinfo)
-        await deleteCookie(userSecreateKey)
-        localStorage.clear();
         dispatch(initUserDetail({ is_loggedin: false, user_info: null }));
+        await deleteCookie(userinfo);
+        await deleteCookie(userSecreateKey);
+        localStorage.clear();
         router.refresh();
     }
     useEffect(() => {
@@ -118,8 +118,8 @@ const useLogin = ({ redirectUrl = "", allowLoggedInUser = false, onLoginSuccess 
         step,
         loader,
         mobile, setMobile, mobileExit, otp, setOtp, userInfo, setUserInfo, editMobileClick, sendOtp, login, signUp,
-         logOut,
-         refreshRoute
+        logOut,
+        refreshRoute
     }
 }
 export default useLogin;
