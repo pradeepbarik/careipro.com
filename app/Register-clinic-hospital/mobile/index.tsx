@@ -1,7 +1,7 @@
 'use client'
-import Header from "../components/mobile/header";
-import { Input } from '@/app/components/mobile/ui';
+import Header from "../../components/mobile/header";
 import { BiChevronRight } from "react-icons/bi";
+import EnquiryForm, { JoinNowBtn,RequestDemoBtn } from "./enquiry-form";
 const RegisterClinicHospitalMobile = () => {
     return (
         <>
@@ -10,14 +10,7 @@ const RegisterClinicHospitalMobile = () => {
                 <h2 className="color-white text-2xl font-extrabold text-center py-2">Grow Your Clinic or Hospital with <span style={{ color: "#104734" }}>Careipro.com</span></h2>
                 <p className="color-white text-center font-semibold">Quality care is the key to growth.Join our platform to highlight your superior service and gain more patients</p>
                 <div className="flex justify-center">
-                    <button
-                        className="button mt-4"
-                        data-variant="outlined"
-                        onClick={() => {
-                        }}
-                    >
-                        Join Now
-                    </button>
+                    <JoinNowBtn />
                 </div>
             </div>
             <div className="text-xl font-bold px-2 py-1 mt-2">Why you should join with us?</div>
@@ -80,17 +73,10 @@ const RegisterClinicHospitalMobile = () => {
                     </ul>
                 </div>
             </div>
-            <div className="px-2">
-                <div>
-                    <Input placeholder="Your Name" lable="Name" value={""} />
-                </div>
-                <div>
-                    <Input placeholder="Contact No" lable="Contact No" type="mobile" value={""} />
-                </div>
-                <div>
-                    <Input placeholder="Contact No" lable="Contact No" type="mobile" value={""} />
-                </div>
+            <div className="flex justify-center mt-4">
+                <RequestDemoBtn />
             </div>
+            <EnquiryForm />
         </>
     );
 };
