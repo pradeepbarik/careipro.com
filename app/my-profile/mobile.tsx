@@ -12,11 +12,15 @@ import Login from '@/app/components/mobile/login';
 import useLogin from "@/lib/hooks/login/useLogin";
 const MY_PROFILE_ROUTES = "my-profile";
 const BUSINESS_ROUTES = "business";
-const MyProfileMobile = ({ cookies }: { cookies: Record<string, string> }) => {
-    const { logOut,refreshRoute } = useLogin({ allowLoggedInUser: true, redirectUrl: "" });
+const MyProfileMobile = ({ cookies,deleteCookie }: { cookies: Record<string, string> ,deleteCookie: (name: string) => Promise<void>}) => {
+    const { refreshRoute } = useLogin({ allowLoggedInUser: true, redirectUrl: "" });
     const user_info = cookies[userinfo] ? JSON.parse(cookies[userinfo]) : null;
-    //const { user_info } = useSelector((state: RootState) => state.authSlice);
     const [showLoginModal, setShowLoginModal] = useState(false);
+    const logOut=async()=>{
+        deleteCookie(userSecreateKey);
+        deleteCookie(userinfo);
+        refreshRoute();
+    }
     if (cookies[userSecreateKey] || user_info !== null) {
         return (
             <div className='bg-white' style={{ minHeight: "100vh" }}>

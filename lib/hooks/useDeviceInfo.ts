@@ -6,6 +6,10 @@ const useDeviceInfo = () => {
     const ua = get('user-agent')
     const device = new UAParser(ua || '').getDevice();
     const allCookies = cookies().getAll();
-    return {device,cookies:arrayToObj<string>(allCookies,{key:"name",value:"value"})}
+    const deleteCookie=async(name:string)=>{
+        'use server'
+        cookies().delete(name)
+    }
+    return {device,deleteCookie,cookies:arrayToObj<string>(allCookies,{key:"name",value:"value"})}
 }
 export default useDeviceInfo;

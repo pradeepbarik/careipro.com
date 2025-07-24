@@ -45,7 +45,7 @@ export async function GET(request: NextRequest) {
         return response;
     } else if (searchParams.get('action') === 'delete_cookie') {
         let name = searchParams.get('name') || "";
-        //cookies().delete(name);
+        cookies().delete(name);
         const response = NextResponse.json({ message: "delete cookie!" })
         response.cookies.delete(name);
         return response;
