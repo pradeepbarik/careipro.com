@@ -12,13 +12,13 @@ import Login from '@/app/components/mobile/login';
 import useLogin from "@/lib/hooks/login/useLogin";
 const MY_PROFILE_ROUTES = "my-profile";
 const BUSINESS_ROUTES = "business";
-const MyProfileMobile = ({ cookies,deleteCookie }: { cookies: Record<string, string> ,deleteCookie: (name: string) => Promise<void>}) => {
+const MyProfileMobile = ({ cookies, deleteCookie }: { cookies: Record<string, string>, deleteCookie: (name: string) => Promise<void> }) => {
     const { refreshRoute } = useLogin({ allowLoggedInUser: true, redirectUrl: "" });
     const user_info = cookies[userinfo] ? JSON.parse(cookies[userinfo]) : null;
     const [showLoginModal, setShowLoginModal] = useState(false);
-    const logOut=async()=>{
-        deleteCookie(userSecreateKey);
-        deleteCookie(userinfo);
+    const logOut = async () => {
+        await deleteCookie(userSecreateKey);
+        await deleteCookie(userinfo);
         refreshRoute();
     }
     if (cookies[userSecreateKey] || user_info !== null) {
@@ -113,15 +113,15 @@ const MyProfileMobile = ({ cookies,deleteCookie }: { cookies: Record<string, str
                                 </span>
                             </Link>
                         </li> */}
-                        {user_info.ut==="user" &&
-                        <li>
-                            <Link href={"/my-appointments"} className='flex items-center h-12'>
-                                <AiOutlineNotification className='fs-16' />
-                                <span className='ml-2 fs-16'>
-                                    Open Jobs at Hospitals
-                                </span>
-                            </Link>
-                        </li>}
+                        {user_info.ut === "user" &&
+                            <li>
+                                <Link href={"/my-appointments"} className='flex items-center h-12'>
+                                    <AiOutlineNotification className='fs-16' />
+                                    <span className='ml-2 fs-16'>
+                                        Open Jobs at Hospitals
+                                    </span>
+                                </Link>
+                            </li>}
                         <li>
                             <Link href={"/support/share-feedback"} className='flex items-center h-12'>
                                 <AiOutlineComment className='fs-16' />
@@ -130,15 +130,15 @@ const MyProfileMobile = ({ cookies,deleteCookie }: { cookies: Record<string, str
                                 </span>
                             </Link>
                         </li>
-                         {user_info.ut==="user" &&
-                        <li>
-                            <Link href={"Register-clinic-hospital"} className='flex items-center h-12'>
-                                <AiOutlineTag className='fs-16' />
-                                <span className='ml-2 fs-16'>
-                                    Register your Hospital / Clinic
-                                </span>
-                            </Link>
-                        </li>}
+                        {user_info.ut === "user" &&
+                            <li>
+                                <Link href={"Register-clinic-hospital"} className='flex items-center h-12'>
+                                    <AiOutlineTag className='fs-16' />
+                                    <span className='ml-2 fs-16'>
+                                        Register your Hospital / Clinic
+                                    </span>
+                                </Link>
+                            </li>}
                         <li>
                             <Link href={"/Business-With-Careipro"} className='flex items-center h-12'>
                                 <AiOutlineTag className='fs-16' />
@@ -267,7 +267,7 @@ const MyProfileMobile = ({ cookies,deleteCookie }: { cookies: Record<string, str
                 </div>
             </div>
             <SlideUpModal open={showLoginModal} onClose={() => { setShowLoginModal(false) }} heading='Login / Signup'>
-                <Login onLoginSuccess={() => { setShowLoginModal(false);refreshRoute() }} allowLoggedInUser={true} />
+                <Login onLoginSuccess={() => { setShowLoginModal(false); refreshRoute() }} allowLoggedInUser={true} />
             </SlideUpModal>
         </>
     )

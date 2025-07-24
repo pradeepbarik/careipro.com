@@ -1,4 +1,4 @@
-import { headers,cookies } from 'next/headers'
+import { headers, cookies } from 'next/headers'
 import { UAParser } from 'ua-parser-js';
 import { arrayToObj } from '../helper';
 const useDeviceInfo = () => {
@@ -6,10 +6,9 @@ const useDeviceInfo = () => {
     const ua = get('user-agent')
     const device = new UAParser(ua || '').getDevice();
     const allCookies = cookies().getAll();
-    const deleteCookie=async(name:string)=>{
-        'use server'
-        cookies().delete(name)
+    const deleteCookie = async (name: string) => {
+        (await cookies()).delete(name)
     }
-    return {device,deleteCookie,cookies:arrayToObj<string>(allCookies,{key:"name",value:"value"})}
+    return { device, deleteCookie, cookies: arrayToObj<string>(allCookies, { key: "name", value: "value" }) }
 }
 export default useDeviceInfo;
