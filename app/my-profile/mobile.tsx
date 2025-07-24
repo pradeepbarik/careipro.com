@@ -1,8 +1,6 @@
 "use client"
 import { useState } from 'react';
 import Link from 'next/link';
-import { RootState } from '@/lib/store';
-import { useSelector } from 'react-redux';
 import { BiUserCircle, BiLogOutCircle } from "react-icons/bi";
 import { AiOutlineCarryOut, AiOutlineEdit, AiOutlineHeart, AiOutlineTeam, AiOutlineTag, AiOutlineNotification, AiOutlineComment, AiOutlinePhone, AiOutlineQuestionCircle, AiOutlineInfoCircle } from "react-icons/ai";
 import { userSecreateKey, userinfo } from '@/constants/storage_keys';
@@ -84,14 +82,14 @@ const MyProfileMobile = ({ cookies }: { cookies: Record<string, string> }) => {
                                 </span>
                             </Link>
                         </li>
-                        <li>
+                        {/* <li>
                             <Link href={"/my-appointments"} className='flex items-center h-12'>
                                 <AiOutlineHeart className='fs-16' />
                                 <span className='ml-2 fs-16'>
                                     My Favourites
                                 </span>
                             </Link>
-                        </li>
+                        </li> */}
                         <li>
                             <Link href={`/${MY_PROFILE_ROUTES}/profile-detail`} className='flex items-center h-12'>
                                 <AiOutlineEdit className='fs-16' />
@@ -108,7 +106,7 @@ const MyProfileMobile = ({ cookies }: { cookies: Record<string, string> }) => {
                                 </span>
                             </Link>
                         </li> */}
-                        {user_info.ut === "user" &&
+                        {(user_info.ut === "user" && false) &&
                             <li>
                                 <Link href={"/my-appointments"} className='flex items-center h-12'>
                                     <AiOutlineNotification className='fs-16' />
@@ -134,14 +132,14 @@ const MyProfileMobile = ({ cookies }: { cookies: Record<string, string> }) => {
                                     </span>
                                 </Link>
                             </li>}
-                        <li>
+                        {/* <li>
                             <Link href={"/Business-With-Careipro"} className='flex items-center h-12'>
                                 <AiOutlineTag className='fs-16' />
                                 <span className='ml-2 fs-16'>
                                     Business Opertunities
                                 </span>
                             </Link>
-                        </li>
+                        </li> */}
                         <li>
                             <Link href={"/contact-us"} className='flex items-center h-12'>
                                 <AiOutlinePhone className='fs-16' />
@@ -202,14 +200,14 @@ const MyProfileMobile = ({ cookies }: { cookies: Record<string, string> }) => {
                                 </span>
                             </Link>
                         </li>
-                        <li>
+                        {/* <li>
                             <Link href={"/Business-with-Careipro"} className='flex items-center h-12'>
                                 <AiOutlineTag className='fs-16' />
                                 <span className='ml-2 fs-16'>
                                     Business Opertunities
                                 </span>
                             </Link>
-                        </li>
+                        </li> */}
                         {/* <li>
                             <Link href={"/my-appointments"} className='flex items-center h-12'>
                                 <AiOutlineTeam className='fs-16' />
@@ -218,14 +216,14 @@ const MyProfileMobile = ({ cookies }: { cookies: Record<string, string> }) => {
                                 </span>
                             </Link>
                         </li> */}
-                        <li>
+                        {/* <li>
                             <Link href={"/my-appointments"} className='flex items-center h-12'>
                                 <AiOutlineNotification className='fs-16' />
                                 <span className='ml-2 fs-16'>
                                     Open Jobs
                                 </span>
                             </Link>
-                        </li>
+                        </li> */}
                         <li>
                             <Link href={"/support/share-feedback"} className='flex items-center h-12'>
                                 <AiOutlineComment className='fs-16' />
