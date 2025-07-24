@@ -7,6 +7,7 @@ const useDeviceInfo = () => {
     const device = new UAParser(ua || '').getDevice();
     const allCookies = cookies().getAll();
     const deleteCookie = async (name: string) => {
+        'use server';
         (await cookies()).delete(name)
     }
     return { device, deleteCookie, cookies: arrayToObj<string>(allCookies, { key: "name", value: "value" }) }
