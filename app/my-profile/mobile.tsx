@@ -19,7 +19,7 @@ const MyProfileMobile = ({ cookies, deleteCookie }: { cookies: Record<string, st
     const logOut = async () => {
         await deleteCookie(userSecreateKey);
         await deleteCookie(userinfo);
-        refreshRoute();
+       // refreshRoute();
     }
     if (cookies[userSecreateKey] || user_info !== null) {
         return (

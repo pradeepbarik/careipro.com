@@ -8,7 +8,9 @@ const useDeviceInfo = () => {
     const allCookies = cookies().getAll();
     const deleteCookie = async (name: string) => {
         'use server';
-        (await cookies()).delete(name)
+        console.log("delete cookie", name);
+        cookies().delete(name);
+        console.log(cookies().getAll())
     }
     return { device, deleteCookie, cookies: arrayToObj<string>(allCookies, { key: "name", value: "value" }) }
 }
