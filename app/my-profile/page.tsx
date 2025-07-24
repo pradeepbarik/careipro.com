@@ -2,11 +2,11 @@ import { cookies } from "next/headers";
 import MyProfileMobile from "./mobile";
 import useDeviceInfo from "@/lib/hooks/useDeviceInfo";
 const MyProfile = () => {
-    const { device,cookies,deleteCookie } = useDeviceInfo();
+    const { device,cookies } = useDeviceInfo();
     if (device.type === "mobile") {
         return (
             <>
-                <MyProfileMobile cookies={cookies} deleteCookie={deleteCookie} />
+                <MyProfileMobile cookies={cookies}/>
             </>
         )
     }

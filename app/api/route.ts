@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
-import { userSecreateKey,userinfo } from '@/constants/storage_keys';
+import { userSecreateKey, userinfo } from '@/constants/storage_keys';
 import { fetchJson, IResponse } from "@/lib/services/http-server";
 export async function GET(request: NextRequest) {
     let { searchParams, hostname } = new URL(request.url);
-    if(process.env.NEXT_PUBLIC_MODE ==="production"){
+    if (process.env.NEXT_PUBLIC_MODE === "production") {
         hostname = process.env.NEXT_PUBLIC_HOST || hostname;
     }
     if (searchParams.get('action') === 'set_cookie') {
@@ -25,7 +25,7 @@ export async function GET(request: NextRequest) {
                 })
                 cookies().set({
                     name: userinfo,
-                    value:JSON.stringify(data),
+                    value: JSON.stringify(data),
                     domain: '.' + hostname,
                     expires: expiretime,
                     httpOnly: httpOnly
@@ -45,9 +45,13 @@ export async function GET(request: NextRequest) {
         return response;
     } else if (searchParams.get('action') === 'delete_cookie') {
         let name = searchParams.get('name') || "";
-        cookies().delete(name);
+        cookies().set({
+            name: name,
+            value: "",
+            domain: '.' + hostname,
+            maxAge: 0,
+        })
         const response = NextResponse.json({ message: "delete cookie!" })
-        response.cookies.delete(name);
         return response;
     }
 }
