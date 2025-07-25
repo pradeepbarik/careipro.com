@@ -3,6 +3,7 @@ import dynamic from 'next/dynamic';
 import { permanentRedirect, RedirectType } from 'next/navigation'
 import useDeviceInfo from "@/lib/hooks/useDeviceInfo";
 import { fetchClinicDetail } from '@/lib/hooks/useClinics';
+import PageVisitLogger from "@/app/components/client-components/page-visit-logger";
 const ClinicDetailMobile = dynamic(() => import('./mobile'));
 export async function generateMetadata({ searchParams }: { searchParams: any }): Promise<Metadata> {
     const { data } = await fetchClinicDetail({ state: searchParams.state, city: searchParams.city, clinic_bid: `C${searchParams.clinic_id}-${searchParams.state_city}`, clinic_id: searchParams.clinic_id, market_name: searchParams.market_name });
@@ -33,6 +34,12 @@ const ClinicDetail = async ({ searchParams }: { searchParams: { seo_url: string,
         return (
             <>
                 <ClinicDetailMobile data={data} searchParams={searchParams} />
+                <PageVisitLogger data={{
+                    page_name:"clinic_detail",
+                    state:searchParams.state,
+                    city:searchParams.city,
+                    clinic_id:searchParams.clinic_id,
+                }} />
             </>
         )
     }

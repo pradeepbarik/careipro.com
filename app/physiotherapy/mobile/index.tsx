@@ -6,6 +6,8 @@ import { clinicBannerImage } from '@/lib/image';
 import Specializations from './specializations';
 import Clinics from "./clinics";
 import Link from "next/link";
+import SectionBanners from "@/app/components/mobile/section-banners";
+import { TSectionBanner, TSiteBanner } from "@/lib/types/home-page";
 const PhysiotherapyMobile = async ({ state, city }: { state: string, city: string }) => {
     const pageData = await fetchPhysiotherapyHomePageData(state, city)
     return (
@@ -14,9 +16,10 @@ const PhysiotherapyMobile = async ({ state, city }: { state: string, city: strin
             {pageData.sections.map((section, i) =>
                 <div className='mt-2' key={`section-${i}`}>
                     {section.heading && <SectionHeading className='px-2' heading={section.heading} />}
+
                     {section.section_type === "banner" ? <>
                         <div className='px-1'>
-                            <SwiperBanner banners={(section.banners || [])?.map((banner) =>
+                            <SwiperBanner banners={(section.banners as TSiteBanner[] || [])?.map((banner) =>
                                 <div key={banner.id} className='rounded-md overflow-hidden'>
                                     <img className='w-full h-32 rounded-md' src={clinicBannerImage(banner.image)} alt={banner.alt_text} />
                                 </div>
@@ -32,7 +35,9 @@ const PhysiotherapyMobile = async ({ state, city }: { state: string, city: strin
                         </div>
                     </> : section.section_type === "clinics" ? <div className="px-2">
                         <Clinics data={section.clinics || []} state={state} city={city} />
-                    </div> : <>
+                    </div> : section.section_type === "banners" ? <>
+                        {section.banners && <SectionBanners banners={section.banners as TSectionBanner[]} />}
+                    </> : <>
 
                     </>
                     }

@@ -3,6 +3,7 @@ import dynamic from 'next/dynamic'
 import useDeviceInfo from "@/lib/hooks/useDeviceInfo";
 import { fetCaretakersHomePageData } from '@/lib/hooks/caretaker/useCaretaker';
 import { fetchCategories } from "@/lib/hooks/useCategories";
+import PageVisitLogger from "../components/client-components/page-visit-logger";
 const CaretakersMobile = dynamic(() => import('@/app/care-taker/mobile'));
 type TProps = {
     params: { [key: string]: string },
@@ -30,7 +31,14 @@ const CareTaker = async ({ searchParams }: TProps) => {
     ])
     if (device.type === "mobile") {
         return (
-            <CaretakersMobile state={searchParams.state} city={searchParams.city} market_name={searchParams.market_name} pageData={pageData} categories={categories} />
+            <>
+                <CaretakersMobile state={searchParams.state} city={searchParams.city} market_name={searchParams.market_name} pageData={pageData} categories={categories} />
+                <PageVisitLogger data={{
+                    page_name: "caretaker_home",
+                    state: searchParams.state,
+                    city: searchParams.city,
+                }} />
+            </>
         )
     }
     return <>

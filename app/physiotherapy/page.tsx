@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import dynamic from 'next/dynamic'
 import useDeviceInfo from "@/lib/hooks/useDeviceInfo";
-const PhysiotherapyMobile = dynamic(()=>import('./mobile/index'));
+import PageVisitLogger from "../components/client-components/page-visit-logger";
+const PhysiotherapyMobile = dynamic(() => import('./mobile/index'));
 type TProps = {
     params: { [key: string]: string },
     searchParams: { [key: string]: string }
@@ -20,16 +21,23 @@ export async function generateMetadata({ searchParams }: { searchParams: { city:
         },
     }
 }
-const Physiotherapy=({ searchParams }: TProps)=>{
-     const { device } = useDeviceInfo();
-      if (device.type === "mobile") {
+const Physiotherapy = ({ searchParams }: TProps) => {
+    const { device } = useDeviceInfo();
+    if (device.type === "mobile") {
         return (
-            <PhysiotherapyMobile state={searchParams.state} city={searchParams.city}/>
+            <>
+                <PhysiotherapyMobile state={searchParams.state} city={searchParams.city} />
+                <PageVisitLogger data={{
+                    page_name: "physiotherapy_home",
+                    state: searchParams.state,
+                    city: searchParams.city,
+                }} />
+            </>
         )
     }
     return (
         <>
-        
+
         </>
     )
 }

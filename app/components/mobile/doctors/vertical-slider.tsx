@@ -74,7 +74,7 @@ const NIsToOneDoctorsSliders = ({ data, type = 'DOCTOR', showAvaileTime }: { dat
                                         <BiRightArrowAlt className="text-2xl color-primary"/>
                                     </Link>
                                     : <>
-                                        <button className="button one-line" onClick={() => { }}>Book Appointment</button>
+                                        <Link className="button one-line" href={doctorDetailPageUrl({ doctor_id: doctor.doctor_id, clinic_id: doctor.clinic_id, service_loc_id: doctor.service_location_id, seo_url: doctor.doctor_seo_url, city: doctor.city, state: doctor.state, market_name: doctor.market_name })}>Book Appointment</Link>
                                     </>}
                             </div>
                         </div>

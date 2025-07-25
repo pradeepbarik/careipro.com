@@ -24,10 +24,15 @@ const ClinicDetailMobile = ({ data, searchParams }: { data: TclinicDetail, searc
                         <div className="grow flex flex-col">
                             <h2 className={"color-primary fs-17 font-semibold"}>{data.clinic_info.name}</h2>
                             {/* <span>5 Years in healthcare</span> */}
-                            <span>
-                                {data.clinic_info.locality} {data.clinic_info.market_name},{data.clinic_info.city} &nbsp;
+                            <span className="flex gap-1">
+                                <span>
+                                    {data.clinic_info.locality} {data.clinic_info.market_name},{data.clinic_info.city}
+                                </span>
                                 {!data.clinic_info.show_patients_feedback ?
-                                    <Link href={`https://www.google.com/maps/dir/?api=1&destination=${data.clinic_info.location_lat},${data.clinic_info.location_lng}`} target="_blank" className="color-secondary border border-color-secondary rounded-md px-1 py-1 one-line">View on map {'>'}</Link> : <></>
+                                    <span className="ml-auto">
+                                        <Link href={`https://www.google.com/maps/dir/?api=1&destination=${data.clinic_info.location_lat},${data.clinic_info.location_lng}`} target="_blank" className="color-secondary border border-color-secondary rounded-md px-1 py-1 ml-auto one-line">View on map {'>'}</Link>
+                                    </span>
+                                    : <></>
                                 }
                             </span>
                             {data.clinic_info.show_patients_feedback ?

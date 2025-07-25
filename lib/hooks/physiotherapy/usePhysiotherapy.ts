@@ -1,5 +1,6 @@
 import { cache } from 'react';
 import { fetchJson, IResponse } from "@/lib/services/http-server";
+import { TSectionBanner,TSiteBanner } from '@/lib/types/home-page';
 export type TSpecialization = {
     id: number,
     name: string,
@@ -56,13 +57,7 @@ export type TPhysiotherapyHomepageData = {
         specialist_ids: number[],
         doctor_ids: number[],
         clinic_ids: number[],
-        banners?: Array<{
-            id: number,
-            image: string,
-            alt_text: string,
-            device_type: "mobile" | "desktop" | "all",
-            link: string
-        }>,
+        banners?: Array<TSiteBanner|TSectionBanner>,
         specialists?: Array<TSpecialization>,
         banner?: {
             banner: string,

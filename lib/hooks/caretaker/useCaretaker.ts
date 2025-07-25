@@ -1,5 +1,6 @@
 import { cache } from 'react';
 import { fetchJson, IResponse } from "@/lib/services/http-server";
+import { TSectionBanner, TSiteBanner } from '@/lib/types/home-page';
 export const getSendEnquiryWhatsappMessage = (sentTo: "clinic" | "support", clinic_name = "") => {
     if (sentTo === "clinic") {
         return `Hi,\nI found about your service on careipro.com. I need some more info about your service`;
@@ -61,6 +62,7 @@ export type TCareTakerClinic = {
     }>,
     doctors_cnt: number,
 }
+
 export type TCaretakersHomePageData = {
     specialists: Array<{
         id: number,
@@ -81,13 +83,7 @@ export type TCaretakersHomePageData = {
         clinic_ids: Array<number>,
         doctors: Array<TCaretaker>,
         clinics: Array<TCareTakerClinic>,
-        banners?: Array<{
-            id: number,
-            image: string,
-            link: string,
-            alt_text: string,
-            device_type: "desktop" | "mobile" | "all"
-        }>,
+        banners?: Array<TSiteBanner> | Array<TSectionBanner>,
     }>
 }
 export const fetCaretakersHomePageData = async (state: string, city: string) => {

@@ -10,9 +10,11 @@ import { doctorSpecialityIcon, doctorProfilePic, clinicProfilePic, clinicBannerI
 import ViewAllCategories from '../components/mobile/doctors/view-all-categores';
 import { getSendEnquiryWhatsappMessage } from '@/lib/hooks/caretaker/useCaretaker';
 import { support_no } from '@/constants/site-config';
-import { BookCaretakerButton, BookNowService,SendEnquiryBtn, CaretakerBookClinicButton } from '@/app/components/mobile/caretaker/booing-caretaker';
+import { BookCaretakerButton, BookNowService, SendEnquiryBtn, CaretakerBookClinicButton } from '@/app/components/mobile/caretaker/booing-caretaker';
 import BannerView from '@/app/components/mobile/banner-view';
 import SendEnquiryForm from '@/app/components/mobile/send-enquiry-form';
+import { TSiteBanner, TSectionBanner } from '@/lib/types/home-page';
+import SectionBanners from '../components/mobile/section-banners';
 const CaretakersMobile = async ({ state, city, pageData, categories }: { state: string, city: string, market_name?: string, pageData: TCaretakersHomePageData, categories: TCategories }) => {
     return (
         <>
@@ -20,7 +22,7 @@ const CaretakersMobile = async ({ state, city, pageData, categories }: { state: 
             <div>
                 {pageData.sections.map((section, i) => <div key={`section-${i}`}>
                     {section.section_type === "site_banner" ? <div className='relative'>
-                        <BannerView banners={(section.banners ? section.banners : []).filter(banner => banner.device_type === "mobile" || banner.device_type === "all").map(banner => ({
+                        <BannerView banners={((section.banners ? section.banners : []) as TSiteBanner[]).filter((banner) => banner.device_type === "mobile" || banner.device_type === "all").map(banner => ({
                             src: clinicBannerImage(banner.image),
                             media_type: "image",
                             duration: 5,
@@ -37,7 +39,7 @@ const CaretakersMobile = async ({ state, city, pageData, categories }: { state: 
                                 <div className='font-semibold flex items-center gap-1'>
                                     <BiGroup /> 40 Staffs
                                 </div>
-                                <SendEnquiryBtn section='service_at_hospital' service_name='Need Caretaker at hospital?'/>
+                                <SendEnquiryBtn section='service_at_hospital' service_name='Need Caretaker at hospital?' />
                             </div>
                             <div className='grow bg-white shadow-md rounded-md overflow-hidden p-2' style={{ background: "#a3eeff45" }}>
                                 <div className='font-semibold fs-16'>Patient Caretaker</div>
@@ -49,7 +51,7 @@ const CaretakersMobile = async ({ state, city, pageData, categories }: { state: 
                                 <div className='font-semibold flex items-center gap-1'>
                                     <BiGroup /> 125 Staffs
                                 </div>
-                                <SendEnquiryBtn section='service_at_home' service_name='Need Caretaker at home?'/>
+                                <SendEnquiryBtn section='service_at_home' service_name='Need Caretaker at home?' />
                             </div>
                         </div>
                     </> : (section.section_type === "popular_specialist" && section.viewType === "send_enquiry") ? <>
@@ -168,6 +170,9 @@ const CaretakersMobile = async ({ state, city, pageData, categories }: { state: 
                                 </div>
                             </div>
                         )}
+                    </> : section.section_type === "banners" ? <>
+                        {section.heading && <SectionHeading heading={section.heading} />}
+                        {section.banners && <SectionBanners banners={section.banners as TSectionBanner[]} />}
                     </> : <></>}
                 </div>)}
             </div>

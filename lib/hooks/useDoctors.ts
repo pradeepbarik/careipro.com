@@ -3,6 +3,7 @@ import { fetchJson, IResponse } from '@/lib/services/http-server';
 import { TDoctor, TDoctorDetail, TDoctorvailableData } from '../types/doctor';
 import { TSeodt } from '../types';
 import { get_current_datetime } from '@/lib/helper/date-time';
+import { TSectionBanner } from '../types/home-page';
 export type TDoctorsPageData = {
     specialists: Array<{
         id: number,
@@ -18,7 +19,8 @@ export type TDoctorsPageData = {
         section_type: string,
         doctors_count: number,
         view_all_url: string,
-        doctors: Array<TDoctor>
+        doctors: Array<TDoctor>,
+        banners?: Array<TSectionBanner>
     }>
 }
 export const fetchDoctorsPageData = async (state: string, city: string) => {

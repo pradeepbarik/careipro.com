@@ -3,6 +3,7 @@ import { fetchJson, getCityCachePath, IResponse } from '@/lib/services/http-serv
 import { TClinic, TClinicTopDoctor } from '../types/clinic';
 import { TSeodt } from '../types';
 import { get_current_datetime } from '@/lib/helper/date-time';
+import { TSectionBanner } from '../types/home-page';
 export type TClinicsPageData = {
     specialists: Array<{
         id: number,
@@ -19,6 +20,7 @@ export type TClinicsPageData = {
         clinics_count: number,
         view_all_url: string,
         clinics: Array<TClinic>
+        banners?: Array<TSectionBanner>
     }>,
     primary_market: string
 }

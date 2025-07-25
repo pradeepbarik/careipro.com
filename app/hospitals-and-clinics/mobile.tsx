@@ -14,6 +14,7 @@ import ViewAllCategories from "@/app/components/mobile/clinics/view-all-categore
 import { doctorSpecialityIcon } from '@/lib/image';
 import { TCategories } from "@/lib/hooks/useCategories";
 import ClientHandler from './client-handler';
+import SectionBanners from "../components/mobile/section-banners";
 type Tprops = {
     state: string,
     city: string,
@@ -38,22 +39,30 @@ const HospitalsMobile = ({ state, city, pageData }: Tprops) => {
                     )}
                 </div>
             </div>
-            {pageData.sections.map((section) =>
-                <div key={section.heading}>
-                    <SectionHeading heading={section.heading} >
-                        {section.view_all_url && <Link href={section.view_all_url} className="button inline-flex items-center ml-auto" data-variant="contained" data-size="xs">View All<BiChevronRight className="fs-17" /></Link>}
-                    </SectionHeading>
-                    {section.viewType === "1:n" ?
-                        <>
-                            <OneIsToNClinicsSliders clinics={section.clinics} />
-                        </>
-                        : section.viewType === "n:1" ?
+            {pageData.sections.map((section, i) =>
+                <div key={`section-${i}`} id={`section-${i}`}>
+                    {section.section_type === "clinic" ? <>
+                        {section.heading &&
+                            <SectionHeading heading={section.heading} >
+                                {section.view_all_url && <Link href={section.view_all_url} className="button inline-flex items-center ml-auto" data-variant="contained" data-size="xs">View All<BiChevronRight className="fs-17" /></Link>}
+                            </SectionHeading>
+                        }
+                        {section.viewType === "1:n" ?
                             <>
-                                <NIsToOneClinicsSliders clinics={section.clinics} />
+                                <OneIsToNClinicsSliders clinics={section.clinics} />
                             </>
-                            :
-                            <></>
-                    }
+                            : section.viewType === "n:1" ?
+                                <>
+                                    <NIsToOneClinicsSliders clinics={section.clinics} />
+                                </>
+                                :
+                                <></>
+                        }
+                    </> : section.section_type === "banners" ? <>
+                        {section.heading && <SectionHeading heading={section.heading} />}
+                        {section.banners && <SectionBanners banners={section.banners} />}
+                    </> : <></>}
+
                 </div>
             )}
             <Footer>
@@ -67,7 +76,7 @@ const HospitalsMobile = ({ state, city, pageData }: Tprops) => {
                     <ServiceAvailbeCities />
                 </Suspense>
             </Footer>
-            <ClientHandler/>
+            <ClientHandler />
         </>
     )
 }
