@@ -1,5 +1,6 @@
 'use client'
 import { useEffect, useState } from "react";
+import { useRouter } from 'next/navigation'
 import { useSelector } from "react-redux";
 import { toast } from 'react-toastify'
 import { httpPost, authenicatedFetchJson } from "@/lib/services/http-client";
@@ -16,6 +17,7 @@ type TBookingSuccessResponse = {
 type TSuggestedPatientInfo = { id: number, patient_name: string, patient_mobile: string, patient_gender: string, patient_age: string, patient_address: string };
 const patientInfoInitState = { case_id: 0, patient_name: "", patient_mobile: "", patient_address: "", patient_age: "", patient_gender: "", dataFillMode: "form" };
 const useBooking = ({ service_loc_id, doctor_id, clinic_id, open,settings,availability }: { service_loc_id: number, doctor_id: number, clinic_id: number, open: boolean, settings: TDoctorDetail['settings'],availability?:TDoctorvailableData }) => {
+    const router=useRouter();
     const { is_loggedin, user_info } = useSelector((state: RootState) => state.authSlice);
     const { refreshAppointmentReminders } = useReminder({});
     const [showModal, setShowModal] = useState(open);
@@ -49,6 +51,7 @@ const useBooking = ({ service_loc_id, doctor_id, clinic_id, open,settings,availa
         }, { passSecreateKey: true }).then((data) => {
             toast.success(data.message);
             setBookingDetail(data.data);
+            router.refresh();
         }).catch((err: any) => {
             toast.error(err.message)
         });

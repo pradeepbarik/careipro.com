@@ -1,11 +1,11 @@
 'use client'
-import { BiEdit } from "react-icons/bi";
+import { BiEdit, BiInfoCircle } from "react-icons/bi";
 import classes from './style.module.scss';
 import { Slides, Input, Button, RadioButton, SlideUpModal } from "../ui";
 import useLogin from "@/lib/hooks/login/useLogin";
 import CitySelection from '../city-selection';
-const Login = ({ redirectUrl = "",onLoginSuccess,allowLoggedInUser }: { redirectUrl?: string,onLoginSuccess?:()=>void,allowLoggedInUser?:boolean }) => {
-    const { step, loader, mobile, setMobile, mobileExit, otp, setOtp, userInfo, setUserInfo, editMobileClick, sendOtp, login, signUp } = useLogin({ redirectUrl,onLoginSuccess,allowLoggedInUser });
+const Login = ({ redirectUrl = "", onLoginSuccess, allowLoggedInUser }: { redirectUrl?: string, onLoginSuccess?: () => void, allowLoggedInUser?: boolean }) => {
+    const { step, loader, mobile, setMobile, mobileExit, otp, setOtp, userInfo, setUserInfo, editMobileClick, sendOtp, login, signUp } = useLogin({ redirectUrl, onLoginSuccess, allowLoggedInUser });
     return (
         <>
             <div className="mx-10 mt-4 relative">
@@ -22,6 +22,11 @@ const Login = ({ redirectUrl = "",onLoginSuccess,allowLoggedInUser }: { redirect
                         <form autoComplete={"off"}>
                             <div>
                                 <Input type="mobile" value={mobile} lable="Enter Your Mobile No" onChange={(e) => { setMobile(e.target.value) }} />
+                                <div>
+                                    <label className="block text-sm text-gray-500 mt-2 items-start"><BiInfoCircle className="inline-block color-secondary text-xl mr-1" />
+                                        To book an appointment for your family member or friends, <b className="underline">enter your mobile number</b> to create an account. You can provide a <b>different contact number</b> for the patient during booking.
+                                    </label>
+                                </div>
                             </div>
                             <div className="mt-4 py-2 flex">
                                 <Button className="ml-auto" onClick={sendOtp} >
@@ -70,7 +75,7 @@ const Login = ({ redirectUrl = "",onLoginSuccess,allowLoggedInUser }: { redirect
                                         </div>
                                     </div>
                                     <div className="flex gap-2 mt-2">
-                                        <Input type="text" lable="First Name"  value={userInfo.first_name} onChange={(e) => { setUserInfo({ ...userInfo, first_name: e.target.value }) }} />
+                                        <Input type="text" lable="First Name" value={userInfo.first_name} onChange={(e) => { setUserInfo({ ...userInfo, first_name: e.target.value }) }} />
                                         <Input type="text" lable="Last Name" value={userInfo.last_name} onChange={(e) => { setUserInfo({ ...userInfo, last_name: e.target.value }) }} />
                                     </div>
                                     <div className="flex gap-2 items-center mt-2">
@@ -82,6 +87,11 @@ const Login = ({ redirectUrl = "",onLoginSuccess,allowLoggedInUser }: { redirect
                                             <Input type="text" lable="City" value={userInfo.city} autoComplete='do-not-autofill' />
                                         </div>
                                     </CitySelection>
+                                    <div>
+                                        <label className="block text-sm text-gray-500 mt-2 items-start"><BiInfoCircle className="inline-block color-secondary text-xl mr-1" />
+                                            To book an appointment for your family member or friends, <b className="underline">enter your name</b> to create an account. You can provide a <b>different contact number</b> for the patient during booking.
+                                        </label>
+                                    </div>
                                     <Button className="mt-4 w-full" onClick={signUp} >Sign up</Button>
                                 </form>
                             </>

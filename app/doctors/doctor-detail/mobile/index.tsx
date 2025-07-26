@@ -173,13 +173,13 @@ const DoctorDetailMobile = async ({ data, availableData, searchParams }: {
         {data.settings.book_by === "call" &&
             <div className="bg-white sticky bottom-0 w-full px-2 py-1" style={{ bottom: 0 }}
             >
-                <button className="button w-full h-14 fs-16 flex flex-col">
+                <a href={`tel:${data.clinic_mobile}`} className="button w-full h-14 fs-16 flex flex-col">
                     <span className="flex items-center">
                         <BsTelephone className="" style={{ fontSize: '1rem' }} />
                         Call Now
                     </span>
                     <span className="text-sm">For Appointment</span>
-                </button>
+                </a>
             </div>
         }
         <AppointmentReminder position="reminder-section" doctor_id={data.doctor_id} />

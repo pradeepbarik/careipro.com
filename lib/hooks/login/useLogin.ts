@@ -26,6 +26,10 @@ const useLogin = ({ redirectUrl = "", allowLoggedInUser = false, onLoginSuccess 
             toast.info("Please enter your mobile no.")
             return;
         }
+        if(mobile.length!==10){
+            toast.error("Mobile number must be 10 Digit");
+            return;
+        }
         setLoader(true);
         httpPost<{ mobile_exist: boolean }>("/auth/login", { case: "send_otp", mobile: mobile }).then(({ data }) => {
             setLoader(false);
@@ -88,6 +92,11 @@ const useLogin = ({ redirectUrl = "", allowLoggedInUser = false, onLoginSuccess 
             localStorage.setItem(userinfo, JSON.stringify(data));
             let expire = moment().add(2, 'years').format('YYYY-MM-DD');
             await setCookie(userSecreateKey, (<any>data).secreate_key, { expire: expire });
+             if (onLoginSuccess) {
+                dispatch(initUserDetail({ is_loggedin: true, user_info: data }));
+                onLoginSuccess();
+                return;
+            }
             if (redirectUrl) {
                 router.push(redirectUrl);
             } else {

@@ -1,6 +1,7 @@
 'use client'
 import { useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 import moment from 'moment';
 import { BiUser, BiPhone, BiCheck, BiCalendar, BiSolidChevronRight, BiHome } from "react-icons/bi";
 import { SlideUpModal, Input, Button, RadioButton, PriceFormat, TextArea } from '@/app/components/mobile/ui';
@@ -9,8 +10,7 @@ import useBooking from '@/lib/hooks/useBooking';
 import { TDoctorvailableData, TDoctorDetail } from '@/lib/types/doctor';
 import { RootState } from '@/lib/store';
 import Login from '@/app/components/mobile/login';
-import { toast } from 'react-toastify';
-const BookAppointment = ({ open, service_charge, site_service_charge, service_loc_id, doctor_id, clinic_id, availability, settings, emergencyBookingClose,bookingCloseMessage }: { open: boolean, emergencyBookingClose?: number,bookingCloseMessage?:string, service_loc_id: number, clinic_id: number, doctor_id: number, service_charge: number, site_service_charge: number, settings: TDoctorDetail['settings'], availability?: TDoctorvailableData }) => {
+const BookAppointment = ({ open, service_charge, site_service_charge, service_loc_id, doctor_id, clinic_id, availability, settings, emergencyBookingClose, bookingCloseMessage }: { open: boolean, emergencyBookingClose?: number, bookingCloseMessage?: string, service_loc_id: number, clinic_id: number, doctor_id: number, service_charge: number, site_service_charge: number, settings: TDoctorDetail['settings'], availability?: TDoctorvailableData }) => {
     const autoSuggestRef = useRef<HTMLInputElement>(null);
     const { user_info } = useSelector((state: RootState) => {
         return {
@@ -32,13 +32,15 @@ const BookAppointment = ({ open, service_charge, site_service_charge, service_lo
     }
     if (emergencyBookingClose == 1) {
         return (
-            <button className="button w-full h-10 fs-16" onClick={()=>{toast.warning(bookingCloseMessage)}}>Book Appointment</button>
+            <button className="button w-full h-10 fs-16" onClick={() => { toast.warning(bookingCloseMessage) }}>Book Appointment</button>
         )
     }
     return (
         <>
-
-            <button className="button w-full h-10 fs-16" onClick={onBookbtnClick}>Book Appointment</button>
+            {user_info === null ?
+                <button className="button w-full h-10 fs-16" onClick={onBookbtnClick}>Login & Book Appointment</button> :
+                <button className="button w-full h-10 fs-16" onClick={onBookbtnClick}>Book Appointment</button>
+            }
             <SlideUpModal heading='Book Apoointment' open={showModal} onClose={() => { setShowModal(false) }}>
                 {booingDetail !== null ?
                     <>
