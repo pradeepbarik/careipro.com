@@ -5,6 +5,7 @@ import useHandelDataHref from "@/lib/hooks/useHandelDataHref";
 const GlobalComponent = () => {
     useAuth();
     useHandelDataHref();
-    return <></>
+    return <>
+    </>
 }
 export default GlobalComponent;
