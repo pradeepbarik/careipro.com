@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import dynamic from 'next/dynamic'
 import useDeviceInfo from "@/lib/hooks/useDeviceInfo";
 import PageVisitLogger from "../components/client-components/page-visit-logger";
-import LoginToast from "../components/mobile/login-toast";
 import { userSecreateKey } from '@/constants/storage_keys';
 const CityHomeMobile = dynamic(() => import('@/app/components/pages/home/city-home.mobile'));
+const LoginToast = dynamic(()=>import("@/app/components/mobile/login-toast"));
 const CityHomeDesktop = dynamic(() => import('@/app/components/pages/home/city-home.desktop'));
 type TProps = {
   params: { [key: string]: string },

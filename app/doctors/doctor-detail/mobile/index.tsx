@@ -14,6 +14,7 @@ import { TsearchParams } from '../types';
 import { doctorDetailPageUrl } from '@/lib/helper/link';
 import SendEnquiry from "@/app/hospitals-and-clinics/clinic-detail/mobile/send-enquiry";
 import EmergencyBookingCloseAlert from '@/app/components/mobile/doctors/doctor-detail/emergency-booking-close-alert';
+import NeedHelpBtn from "@/app/components/mobile/need-help-btn";
 const OverView = dynamic(() => import('./overview'))
 const AppointmentBookingTiming = dynamic(() => import('./booking-timing'));
 const Photos = dynamic(() => import('./photos'))
@@ -183,6 +184,7 @@ const DoctorDetailMobile = async ({ data, availableData, searchParams }: {
             </div>
         }
         <AppointmentReminder position="reminder-section" doctor_id={data.doctor_id} />
+        <NeedHelpBtn style={{bottom:"6rem"}}/>
     </>)
 }
 export default DoctorDetailMobile;
