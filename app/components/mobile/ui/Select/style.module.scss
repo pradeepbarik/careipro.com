@@ -1,0 +1,137 @@
+.container {
+  position: relative;
+  flex: 1;
+
+  .overlay {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 7;
+  }
+
+  .selectContainer {
+    min-height: var(--text-box-height);
+    border: 1px solid;
+    border-radius: 7px;
+    line-height: 1;
+    font-size: 1.1rem;
+    border-color: var(--border-color);
+    padding: 0.8rem;
+    letter-spacing: 1px;
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    .selectedItem {
+      font-weight: 500;
+      font-size: 1rem;
+      color: var(--black-primary);
+      text-transform: capitalize;
+      letter-spacing: 0.5px;
+    }
+
+    .multiSelectCnt {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 5px 1rem;
+      border-radius: var(--lg-border-radius);
+      background-color: var(--page-background-color);
+
+      & > .selectedItem {
+        font-size: 0.8rem;
+        margin-right: 10px;
+      }
+
+      & > svg {
+        color: var(--grey-slate-800);
+      }
+    }
+  }
+
+  .dropDownContainer[data-isopen="false"] {
+    display: none;
+  }
+
+  .dropDownContainer[data-isopen="true"] {
+    position: absolute;
+    z-index: 10;
+    border-radius: var(--sm-border-radius);
+    background: var(--white-primary);
+    box-shadow: var(--box-shadow-secondary);
+    width: 100%;
+    max-height: 400px;
+    margin-top: 0.4rem;
+    overflow-y: auto;
+
+    .multiDrpDnCont {
+      display: flex;
+      align-items: center;
+      position: relative;
+
+      & > input {
+        margin-right: 10px;
+        display: none;
+      }
+
+      .dropDownItme:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    .dropDownItme {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--grey-slate-900);
+      letter-spacing: 0.5px;
+      width: 100%;
+      padding: 0.8rem 0.8rem;
+      text-transform: capitalize;
+      cursor: pointer;
+
+      &:hover {
+        background: var(--hover-primary);
+      }
+    }
+
+    .dropDownItme:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  .searchFilter {
+    position: sticky;
+    top: 0;
+    background: white;
+    padding: 0.5rem 0.5rem;
+
+    > svg {
+      position: absolute;
+      top: 1.29rem;
+      left: 1.3rem;
+    }
+
+    > input {
+      height: var(--text-box-height);
+      border: 1px solid;
+      border-radius: 7px;
+      outline: none;
+      line-height: 1;
+      font-size: 1.1rem;
+      border-color: var(--border-color);
+      padding: 0rem 0.8rem;
+      letter-spacing: 1px;
+      width: 100%;
+      text-indent: 1.8rem;
+    }
+  }
+}

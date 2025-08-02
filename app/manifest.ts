@@ -4,7 +4,7 @@ export default function manifest(): MetadataRoute.Manifest {
     name: 'Careipro',
     short_name: 'Careipro',
     description: 'Careipro lite',
-    start_url: 'http://dev.careipro.com?pwa=1',
+    start_url: 'https://careipro.com?source=pwa',
     display: 'standalone',
     background_color: '#4898b2',
     theme_color: '#4898b2',
