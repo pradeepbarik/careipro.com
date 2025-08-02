@@ -7,8 +7,8 @@ const SectionBanners = ({ banners }: { banners: Array<TSectionBanner> }) => {
         <>
             <div className="flex justify-center gap-2 px-2 overflow-auto">
                 {banners.map((banner, index) => (
-                    <div style={{ ...banner.display_style }}>
-                        {banner.send_enquiry ? <React.Fragment >
+                    <div key={`banner-${index}`} style={{ ...banner.display_style }}>
+                        {banner.send_enquiry ? <React.Fragment>
                             <EnquiryBanner banner={banner} />
                         </React.Fragment> : banner.redirection_url ?
                             <>
