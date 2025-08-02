@@ -35,6 +35,17 @@ export type TSectionBanner = {
     alt_text: string,
     redirection_url: string,
     send_enquiry: number,
+    enquiry_data?:{
+        clinic_id:number,
+        vertical:string,
+        state:string,
+        city:string,
+        doctor_id:number,
+        page:string,
+        section:string,
+        contact_no:string,
+        specialist_id?:number
+    },
     display_style: Record<string, any>,
 }
 export type TSiteBanner = {

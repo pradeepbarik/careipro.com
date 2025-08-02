@@ -2,7 +2,6 @@
 import axios from 'axios';
 import { API_BASE_URL } from '@/constants/client-apis';
 import { userinfo, g_user_secreate_key } from '@/constants/storage_keys';
-import { headers } from 'next/headers';
 type TResponse<T> = {
    code: number,
    state: boolean,

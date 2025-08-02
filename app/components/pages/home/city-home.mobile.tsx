@@ -71,7 +71,7 @@ const CityHome = async ({ state, city }: { state: string, city: string }) => {
                 </div>)}
             <Footer>
                 <Suspense>
-                    <ServiceAvailbeCities />
+                    {/* <ServiceAvailbeCities /> */}
                     <CategoriesFooter heading='Find Doctors By Specialist' state={state} city={city} group_category='DOCTOR' page="DOCTORS" />
                 </Suspense>
             </Footer>
