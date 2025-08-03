@@ -2,7 +2,6 @@ import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { fetchJson } from "@/lib/services/http-client";
 import { IResponse } from "@/lib/services/http-server";
-import useSiteVisiterLogger from "@/lib/hooks/useSiteVisiterLogger";
 type TAppointmentDetail = {
     clinic_name: string
     consulting_timing_messages: string
@@ -20,10 +19,18 @@ type TAppointmentDetail = {
     booking_charge:string,
     service_charge:string,
     total_amount:string,
-    state:string,
-    city:string,
+    clinic_state:string,
+    clinic_city:string,
+    clinic_contact_no:string,
     doctor_id:number,
-    clinic_id:number
+    clinic_id:number,
+    show_rebook_btn:number,
+    doctor_seo_url:string,
+    doctor_business_type:string,
+    servicelocation_id:number,
+    clinic_market_name:string,
+    collect_payment_upi_id:string,
+    payment_status:string
 }
 const useAppointmentStatusCheck = () => {
     const searchParams = useSearchParams();
