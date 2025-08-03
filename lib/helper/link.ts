@@ -38,3 +38,6 @@ export const categoryResultPageLink = (params: { state: string, city: string, se
     }
     return `/${params.seo_url}-In-${capitalizeEachWordFirstLetter(params.city)}-Of-${capitalizeEachWordFirstLetter(params.state)}/${params.seo_id}`;
 }
+export const upiPaymentLink=(upiid:string,total_amount:number,message:string)=>{
+    return `upi://pay?pa=${upiid}&pn=&am=${total_amount}&cu=INR`;
+}

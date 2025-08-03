@@ -21,7 +21,6 @@ const SectionBanners = ({ banners }: { banners: Array<TSectionBanner> }) => {
                     </div>
                 ))}
             </div>
-
         </>
     );
 };
