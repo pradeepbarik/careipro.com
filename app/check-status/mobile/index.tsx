@@ -1,6 +1,6 @@
 'use client'
 import Link from "next/link";
-import { BiChevronsRight, BiPhoneOutgoing, BiTimeFive } from "react-icons/bi";
+import { BiChevronsRight, BiPhoneOutgoing, BiTimeFive, BiCopy } from "react-icons/bi";
 import Header from "@/app/components/mobile/header";
 import { Button, Input, SectionHeading } from "@/app/components/mobile/ui";
 import useAppointmentStatusCheck from '../useAppointmentStatusCheck';
@@ -8,9 +8,11 @@ import moment from "moment";
 import { formatCurrency, formatDoctorName } from "@/lib/helper/format-text";
 import PageVisitLogger from "@/app/components/client-components/page-visit-logger";
 import { support_no } from "@/constants/site-config";
-import { doctorDetailPageUrl, upiPaymentLink } from "@/lib/helper/link";
+import { doctorDetailPageUrl } from "@/lib/helper/link";
+import { toast } from "react-toastify";
+import ClinicDoctors from "@/app/components/mobile/clinics/clinic-doctors";
 const CheckStatusMobile = () => {
-    const { appointmentDetail } = useAppointmentStatusCheck();
+    const { appointmentDetail, clinicDetail } = useAppointmentStatusCheck();
     return (
         <>
             <Header heading="Appointment Status Check" template='SUBPAGE' />
@@ -40,6 +42,15 @@ const CheckStatusMobile = () => {
                         <div className="flex">Address: <b className="ml-auto">{appointmentDetail.patient_address}</b></div>
                         <div className="py-1 flex">Appointment Booked by <b className="ml-auto">{appointmentDetail.firstname + " " + appointmentDetail.lastname}</b></div>
                         <div className="flex">Booking Time : <b className="ml-auto">{moment(appointmentDetail.booking_time).format("DD MMM hh:mm a")}</b></div>
+                        <div className="flex">Booking Status :
+                            {appointmentDetail.status === "confirmed" || 1 == 1 ?
+                                <b className="ml-auto text-lg color-primary">Confirmed</b> :
+                                appointmentDetail.status === "doctor_cancelled" ?
+                                    <b className="ml-auto text-lg color-secondary">Cancelled By Clinic</b> :
+                                    appointmentDetail.status === "consulted" ?
+                                        <b className="ml-auto text-lg text-green-600">Consulted</b> :
+                                        <></>}
+                        </div>
                         <hr className="my-1" />
                         <div>
                             Doctor Name : <b>{formatDoctorName(appointmentDetail.doctor_name)}</b>
@@ -68,15 +79,40 @@ const CheckStatusMobile = () => {
                         </div>
                         <hr className="my-1" />
                         <div className="py-1 flex fs-16 font-semibold">
-                            Total Amount
-                            <b className={`ml-auto ${appointmentDetail.payment_status === "paid" ? 'color-primary' : 'color-secondary'}`}>{formatCurrency(parseInt(appointmentDetail.total_amount))}</b>
+                            {appointmentDetail.payment_status === "paid" ? "Total Amount Paid :" : "Amount to be paid :"}
+                            <b className={`ml-auto ${appointmentDetail.payment_status === "paid" ? 'color-primary' : 'color-secondary'}`}>
+                                {formatCurrency(parseInt(appointmentDetail.total_amount))}
+                            </b>
                         </div>
                         {(appointmentDetail.payment_status === "pending" && appointmentDetail.collect_payment_upi_id) ?
-                            <div className="py-1 flex gap-2 fs-15 font-semibold">
-                                <span className="fs-14">To Avoid appointment cancellation Make payment:</span>
-                                <a className="button one-line ml-auto px-3" href={upiPaymentLink(appointmentDetail.collect_payment_upi_id, parseInt(appointmentDetail.total_amount), "")}>Pay Now</a>
+                            <div>
+                                <hr className="my-1" />
+                                <div className="py-1 flex gap-2 fs-15 font-semibold">
+                                    <span className="fs-14">Make payment through below UPI:</span>
+                                </div>
+                                <div className="flex mt-1">
+                                    UPI ID
+                                    <span className="ml-auto font-semibold flex gap-2 items-center" onClick={() => { navigator.clipboard.writeText(appointmentDetail.collect_payment_upi_id); toast.success("UPI ID copied!", { autoClose: 1000 }) }}>
+                                        {appointmentDetail.collect_payment_upi_id}
+                                        <span className="flex gap-1 border rounded-full px-1 items-center border-gray-300">
+                                            <BiCopy className="color-primary" />
+                                            Copy
+                                        </span>
+                                    </span>
+                                </div>
+                                <div className="flex mt-3">
+                                    UPI ID Mobile no
+                                    <span className="ml-auto font-semibold flex gap-2 items-center" onClick={() => { navigator.clipboard.writeText(appointmentDetail.collect_payment_upi_mobile); toast.success("UPI Mobile no copied!", { autoClose: 1000 }) }}>
+                                        {appointmentDetail.collect_payment_upi_mobile}
+                                        <span className="flex gap-1 border rounded-full px-1 items-center border-gray-300">
+                                            <BiCopy className="color-primary" />
+                                            Copy
+                                        </span>
+                                    </span>
+                                </div>
                             </div> : <></>}
                     </div>
+
                     <div className="font-semibold text-lg px-4 py-2">Need any help?</div>
                     <div className="flex gap-4 px-4">
                         <a href={`tel:${support_no}`} className="button grow" data-variant="outlined" data-color="secondary">Careipro Support&nbsp;&nbsp;<BiPhoneOutgoing /></a>
@@ -91,6 +127,12 @@ const CheckStatusMobile = () => {
                     }} />
                 </>
                 : <div></div>}
+            {clinicDetail ? <>
+                <SectionHeading heading={`Other Doctors in ${clinicDetail.clinic_info.name}`} />
+                <div className="">
+                    <ClinicDoctors clinic_info={clinicDetail.clinic_info} doctors={clinicDetail.doctors} specializations={clinicDetail.specializations} />
+                </div>
+            </> : <></>}
 
         </>
     )
