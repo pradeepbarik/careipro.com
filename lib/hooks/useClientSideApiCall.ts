@@ -1,5 +1,6 @@
 import { fetchJson, authenicatedFetchJson, httpPost } from '@/lib/services/http-client';
 import { IResponse, buildResponse } from '@/lib/services/http-client';
+import { cache } from 'react';
 export type TAllcities = {
     states: Array<{ id: number, name: string, icon: null | string, is_serviceable: 0 | 1 }>,
     data: Record<string, Array<{ id: number, name: string, city_icon: string | null, is_serviceable: 0 | 1, name_ln: string, state: string }>>
@@ -187,3 +188,160 @@ export const fetchStaffsList = async () => {
         return buildResponse<Array<TStaff>>([]);
     }
 }
+export type TclinicDetail = {
+    clinic_info: {
+        id: number;
+        name: string;
+        email: string;
+        mobile: string;
+        location: string;
+        city: string;
+        locality: string;
+        location_lat: number;
+        location_lng: number;
+        status: string;
+        approved: number;
+        verified: number;
+        active: number;
+        logo: string | null;
+        seo_url: string;
+        page_title: string;
+        meta_description: string;
+        branch_id: 1;
+        is_prime: 1;
+        alt_mob_no: string | null;
+        state: string | null;
+        market_name: string;
+        category: string;
+        bid: string;
+        partner_type: string;
+        business_type: string;
+        whatsapp_number: string | null,
+        whatsapp_channel_link: string | null,
+        tag_line: string | null,
+        enable_enquiry: number,
+        show_patients_feedback: number,
+        rating: number | null,
+    },
+    hasBanner: boolean,
+    banners: Array<{ image: string }>,
+    timing: {
+        clinic_id: number;
+        sunday: number;
+        sunday_1st_session_start: string;
+        sunday_1st_session_end: string;
+        sunday_2nd_session_start: string;
+        sunday_2nd_session_end: string;
+        monday: number;
+        monday_1st_session_start: string;
+        monday_1st_session_end: string;
+        monday_2nd_session_start: string;
+        monday_2nd_session_end: string;
+        tuesday: number;
+        tuesday_1st_session_start: string;
+        tuesday_1st_session_end: string;
+        tuesday_2nd_session_start: string;
+        tuesday_2nd_session_end: string;
+        wednesday: number;
+        wednesday_1st_session_start: string;
+        wednesday_1st_session_end: string;
+        wednesday_2nd_session_start: string;
+        wednesday_2nd_session_end: string;
+        thursday: number;
+        thursday_1st_session_start: string;
+        thursday_1st_session_end: string;
+        thursday_2nd_session_start: string;
+        thursday_2nd_session_end: string;
+        friday: number;
+        friday_1st_session_start: string;
+        friday_1st_session_end: string;
+        friday_2nd_session_start: string;
+        friday_2nd_session_end: string;
+        saturday: number;
+        saturday_1st_session_start: string;
+        saturday_1st_session_end: string;
+        saturday_2nd_session_start: string;
+        saturday_2nd_session_end: string
+    },
+    specializations: Record<string, Array<{
+        id: number;
+        name: string;
+        parent_id: number;
+        icon: string;
+        seo_url: string;
+        page_title: string;
+        meta_description: string;
+        group_category: string;
+        seo_id: string;
+        score: number | null;
+        doctor_ids: string;
+    }>>,
+    doctors: Record<string, {
+        id: number;
+        doctor_id: number;
+        clinic_id: number;
+        service_charge: number;
+        site_service_charge: number;
+        availability: string;
+        slno_type: string;
+        consulting_time: string;
+        sunday: number;
+        sunday_1st_session_start: string;
+        sunday_1st_session_end: string;
+        sunday_2nd_session_start: string;
+        sunday_2nd_session_end: string;
+        monday: 0;
+        monday_1st_session_start: string;
+        monday_1st_session_end: string;
+        monday_2nd_session_start: string;
+        monday_2nd_session_end: string;
+        tuesday: number;
+        tuesday_1st_session_start: string;
+        tuesday_1st_session_end: string;
+        tuesday_2nd_session_start: string;
+        tuesday_2nd_session_end: string;
+        wednesday: number;
+        wednesday_1st_session_start: string;
+        wednesday_1st_session_end: string;
+        wednesday_2nd_session_start: string;
+        wednesday_2nd_session_end: string;
+        thursday: number;
+        thursday_1st_session_start: string;
+        thursday_1st_session_end: string;
+        thursday_2nd_session_start: string;
+        thursday_2nd_session_end: string;
+        friday: number;
+        friday_1st_session_start: string;
+        friday_1st_session_end: string;
+        friday_2nd_session_start: string;
+        friday_2nd_session_end: string;
+        saturday: number;
+        saturday_1st_session_start: string;
+        saturday_1st_session_end: string;
+        saturday_2nd_session_start: string;
+        saturday_2nd_session_end: string;
+        doctor_name: string;
+        profile_pic: string;
+        short_name: string | null;
+        gender: string;
+        experience: number;
+        position: string;
+        description: string | null;
+        seo_url: string;
+        registration_no: string | null;
+        category: string;
+        qualification_disp: string;
+        specialists: string;
+    }>,
+    totalDoctors: number,
+    pageUrl: string,
+}
+export const fetchClinicDetail = cache(async (params: { state: string, city: string, market_name: string, clinic_id: number, clinic_bid: string }) => {
+    try {
+        let data = await fetchJson<TclinicDetail>(`/cache/${params.state.replace(" ", "-").toLowerCase()}/${params.city.replace(" ", "-").toLowerCase()}/clinic-details/${params.clinic_bid}/details.json`);
+        return { data: data }
+    } catch (err: any) {
+        const res = await fetchJson<IResponse<TclinicDetail>>(`/get-clinic-detail?state=${params.state}&city=${params.city}&clinic_id=${params.clinic_id}`);
+        return { data: res.data }
+    }
+})

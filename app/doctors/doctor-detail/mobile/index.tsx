@@ -99,7 +99,7 @@ const DoctorDetailMobile = async ({ data, availableData, searchParams }: {
                         <span>Direction</span>
                     </a>
                 </div> :
-                <div className="flex gap-4">
+                <div className="flex gap-4 mt-2">
                     <a target="_blank" href={`https://www.google.com/maps/dir/?api=1&destination=${data.location_lat},${data.location_lng}`} className="button flex-1 py-1" data-variant="outlined">
                         <Nearme pathStyle={{ stroke: "var(--primary-color)" }} className="mr-2" />
                         Direction
