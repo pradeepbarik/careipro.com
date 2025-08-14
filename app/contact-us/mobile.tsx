@@ -80,14 +80,6 @@ const ContactUsMobile = () => {
                 <span className="grow"><hr className="border-2" /></span>
             </div>
             <div className="px-6 mt-4 flex flex-col gap-2">
-                <Link href={`tel:6372545020`} className="button gap-3 rounded-full" data-variant={"outlined"}>
-                    <BiPhone className="text-2xl" />
-                    <span className="text-md"> Call - 6372545020</span>
-                </Link>
-                <Link href={`tel:8114885516`} className="button gap-3 rounded-full" data-variant={"outlined"}>
-                    <BiPhone className="text-2xl" />
-                    <span className="text-md"> Call - 8895508593</span>
-                </Link>
                 <Link href={`tel:${support_no}`} className="button gap-3 rounded-full" data-variant={"outlined"}>
                     <BiPhone className="text-2xl" />
                     <span className="text-md"> Call Now</span>
