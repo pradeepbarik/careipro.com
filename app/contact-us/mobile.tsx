@@ -86,7 +86,7 @@ const ContactUsMobile = () => {
                 </Link>
                 <Link href={`tel:8114885516`} className="button gap-3 rounded-full" data-variant={"outlined"}>
                     <BiPhone className="text-2xl" />
-                    <span className="text-md"> Call - 8114885516</span>
+                    <span className="text-md"> Call - 8895508593</span>
                 </Link>
                 <Link href={`tel:${support_no}`} className="button gap-3 rounded-full" data-variant={"outlined"}>
                     <BiPhone className="text-2xl" />
