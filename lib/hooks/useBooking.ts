@@ -51,7 +51,7 @@ const useBooking = ({ service_loc_id, doctor_id, clinic_id, open,settings,availa
         }, { passSecreateKey: true }).then((data) => {
             toast.success(data.message);
             setBookingDetail(data.data);
-            router.refresh();
+            //router.refresh();
         }).catch((err: any) => {
             toast.error(err.message)
         });

@@ -39,7 +39,7 @@ const useReminder=({doctor_id,clinic_id}:{doctor_id?:number,clinic_id?:number})=
         setIsBrowser(true);
     }, []);
     useEffect(()=>{
-        if(is_loggedin && (user_info && user_info.user_type==="user" || 1==1) && appointmentsFetched===false){
+        if(is_loggedin && (user_info && user_info.user_type==="user") && appointmentsFetched===false){
             refreshAppointmentReminders();
         }
     },[is_loggedin])
