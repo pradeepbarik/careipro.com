@@ -184,7 +184,7 @@ const DoctorDetailMobile = async ({ data, availableData, searchParams }: {
             </div>
         }
         <AppointmentReminder position="reminder-section" doctor_id={data.doctor_id} />
-        <NeedHelpBtn style={{bottom:"6rem"}}/>
+        <NeedHelpBtn style={{bottom:"7rem"}}/>
     </>)
 }
 export default DoctorDetailMobile;

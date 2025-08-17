@@ -82,7 +82,7 @@ export type TappointmentDetail = {
       tag: string, score: number, topic: string, sub_topic: string
    }> | null
 }
-export const fetchAppointmentDetail = (case_id: number, appointment_id: number,mid:string="") => {
+export const fetchAppointmentDetail = (case_id: number, appointment_id: number, mid: string = "") => {
    try {
       return authenicatedFetchJson<IResponse<TappointmentDetail>>(`/user/appointment-detail?case_id=${case_id}&appointment_id=${appointment_id}&mid=${mid}`);
    } catch (err: any) {
@@ -119,4 +119,7 @@ export const doctorNotFoundFeedbackPostCurl = (params: { rating: number, name: s
 }
 export const fetchShareFeedbackList = () => {
    return fetchJson<Array<{ id: number, rating: number, name: string, mobile: string, comment: string, campaign: string }>>(`/shared-feedback`, false, {}, { passGuserSecreateKey: true, passSecreateKey: true })
+}
+export const fetchShortUrlInfo = (shortcode: string) => {
+   return fetchJson<IResponse<{ url: string }>>(`/short-url-info?short_code=${shortcode}`);
 }

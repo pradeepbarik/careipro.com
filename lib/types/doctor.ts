@@ -101,6 +101,14 @@ export type TDoctorDetail=TWeeklyConsultingTiming & {
     clinic_market: string,
     whatsapp_number:string,
     whatsapp_channel_link:string,
+    doctor_availability?: {
+        date: string;
+        first_session_start_time: string;
+        first_session_end_time: string;
+        second_session_start_time: string;
+        second_session_end_time: string;
+        service_loc_id: number;
+    },
     settings: {
         payment_type:string,
         advance_booking_enable:number,
