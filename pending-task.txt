@@ -1,26 +1,8 @@
-1- generate lead from banner
 2- doctor section wise filter
 3- show doctor based on next availble time order asc
 4- show homeopathy ayurvedic indication in doctor list card and doctor detail page
 5- precription full screen view 
+3- ask patient to give rating for previous booking
 
 1- reschedule & rebooking when doctor counsult date or time change
 2- sending report to clinic visit count and doctor wise visit count,call click count,whatsapp btn click count send enquiry count
-
-
-
-Dr. {#var#} {#var#} - {#var#} is available on {#var#} in {#var#} at {#var#}
-For Book Appointment Call : {#var#}
-visit https://careipro.com and Book your appointment online
-
-Thank you,
-Contact: {#var#}
-Careipro Support
-
-Dr. Nishikanta ENT - Specialist is available on 03-Aug-2025 in Krishna medicare at Bhadrak
-For Book Appointment Call : 8197511563
-visit https://careipro.com and Book your appointment online
-
-Thank you,
-Contact: 8197511563
-Careipro Support

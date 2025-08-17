@@ -43,7 +43,7 @@ const CheckStatusMobile = () => {
                         <div className="py-1 flex">Appointment Booked by <b className="ml-auto">{appointmentDetail.firstname + " " + appointmentDetail.lastname}</b></div>
                         <div className="flex">Booking Time : <b className="ml-auto">{moment(appointmentDetail.booking_time).format("DD MMM hh:mm a")}</b></div>
                         <div className="flex">Booking Status :
-                            {appointmentDetail.status === "confirmed" || 1 == 1 ?
+                            {appointmentDetail.status === "confirmed" ?
                                 <b className="ml-auto text-lg color-primary">Confirmed</b> :
                                 appointmentDetail.status === "doctor_cancelled" ?
                                     <b className="ml-auto text-lg color-secondary">Cancelled By Clinic</b> :
@@ -63,7 +63,7 @@ const CheckStatusMobile = () => {
                                 <BiTimeFive className="inline mr-1" /> {appointmentDetail.consulting_timing_messages}
                             </div> : <></>
                         }
-                        {appointmentDetail.show_rebook_btn ? <>
+                        {(appointmentDetail.show_rebook_btn || appointmentDetail.status==="doctor_cancelled") ? <>
                             <div className="py-2">
                                 <Link href={doctorDetailPageUrl({ doctor_id: appointmentDetail.doctor_id, clinic_id: appointmentDetail.clinic_id, service_loc_id: appointmentDetail.servicelocation_id, city: appointmentDetail.clinic_city, state: appointmentDetail.clinic_state, market_name: appointmentDetail.clinic_market_name, seo_url: appointmentDetail.doctor_seo_url })} className="button" data-color="primary" >Book your Next Appointment</Link>
                             </div>

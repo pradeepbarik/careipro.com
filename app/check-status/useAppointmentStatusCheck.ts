@@ -3,6 +3,15 @@ import { useEffect, useState } from "react";
 import { fetchJson } from "@/lib/services/http-client";
 import { IResponse } from "@/lib/services/http-server";
 import { fetchClinicDetail, TclinicDetail } from '@/lib/hooks/useClientSideApiCall';
+type TDoctorAvailability = {
+    date: string;
+    first_session_start_time: string;
+    first_session_end_time: string;
+    second_session_start_time: string;
+    second_session_end_time: string;
+    service_loc_id: number;
+};
+
 type TAppointmentDetail = {
     clinic_name: string
     consulting_timing_messages: string
@@ -34,7 +43,8 @@ type TAppointmentDetail = {
     collect_payment_upi_mobile: string,
     payment_status: string,
     status: string,
-    bid: string
+    bid: string,
+    doctor_availability?: TDoctorAvailability
 }
 const useAppointmentStatusCheck = () => {
     const searchParams = useSearchParams();
@@ -49,7 +59,7 @@ const useAppointmentStatusCheck = () => {
         }
     }
     useEffect(() => {
-        fetchJson<IResponse<TAppointmentDetail>>(`/appointment-status?booking_id=${searchParams.get("id")}`, false, {}, { passGuserSecreateKey: true, passSecreateKey: true }).then(({ data }) => {
+        fetchJson<IResponse<TAppointmentDetail>>(`/appointment-status?booking_id=${searchParams.get("id")}&req_action=${searchParams.get("req_action")||""}`, false, {}, { passGuserSecreateKey: true, passSecreateKey: true }).then(({ data }) => {
             setAppointmentDetail(data);
             getClinicDetails(data)
         })

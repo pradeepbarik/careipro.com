@@ -1,12 +1,26 @@
-import { SectionHeading,SectionSubHeading } from "@/app/components/mobile/ui"
+import { SectionHeading, SectionSubHeading } from "@/app/components/mobile/ui"
 import { TDoctorDetail, TDoctorvailableData } from '@/lib/types/doctor';
 import WeeklyConsultingTiming from "@/app/components/mobile/doctors/doctor-detail/weekly-consulting-timing";
 import NextConsultTime from '@/app/components/mobile/doctors/doctor-detail/next-consult-time';
+import moment from "@/lib/helper/date-time";
+import { BiInfoCircle } from "react-icons/bi";
+
 const OverView = ({ data, availableData }: { data: TDoctorDetail, availableData: TDoctorvailableData }) => {
     return (
         <>
             <SectionSubHeading heading='Consulting Timing' />
             <div className='bg-white px-2 py-2 mb-2 shadow-sm'>
+                {data.doctor_availability ? <>
+                    <div className="shadow px-2 py-2 border flex items-center rounded-md gap-2 font-semibold bg-orange-200">
+                        Next Consult Date : {moment(data.doctor_availability.date).format("DD MMM")}
+                        <span className="flex flex-col ml-auto">
+                            <span>{data.doctor_availability.first_session_start_time} - {data.doctor_availability.first_session_end_time}</span>
+                            {data.doctor_availability.second_session_start_time && <>
+                                <span>{data.doctor_availability.second_session_start_time} - {data.doctor_availability.second_session_start_time}</span>
+                            </>}
+                        </span>
+                    </div>
+                </> : <></>}
                 {data.availability === "per_week" ? <WeeklyConsultingTiming data={{
                     sunday: data.sunday,
                     sunday_1st_session_start: data.sunday_1st_session_start,
@@ -58,8 +72,8 @@ const OverView = ({ data, availableData }: { data: TDoctorDetail, availableData:
                     )}
                 </div>
             </>}
-            {data.settings.raw_information && 
-            <div dangerouslySetInnerHTML={{ __html: data.settings.raw_information }} className="px-2 py-2 bg-white shadow-sm mb-2" ></div>
+            {data.settings.raw_information &&
+                <div dangerouslySetInnerHTML={{ __html: data.settings.raw_information }} className="px-2 py-2 bg-white shadow-sm mb-2" ></div>
             }
         </>
     )
