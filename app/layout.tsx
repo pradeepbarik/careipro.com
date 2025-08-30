@@ -16,6 +16,9 @@ export default function RootLayout({
     <>
       <StoreProvider cookies={cookies}>
         <html lang="en">
+          <head>
+            <meta name="google-site-verification" content="GjLSsc0BtdO76sWYmp5iWVMoxZgmpCTgth0CorCfg4k" />
+          </head>
           <body className="theme_defult">
           {device.type === "mobile"? 
             <MobileLayout>{children}</MobileLayout>:
