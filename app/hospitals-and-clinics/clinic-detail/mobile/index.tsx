@@ -157,10 +157,10 @@ const ClinicDetailMobile = ({ data, searchParams }: { data: TclinicDetail, searc
                             Whatsapp
                         </a>
                     }
-                    <button className="button ripple flex-1">
+                    <a href={`tel:${data.clinic_info.mobile}`} className="button ripple flex-1">
                         <BsTelephone className="mr-2" />
                         Contact With Clinic
-                    </button>
+                    </a>
 
                     {data.clinic_info.whatsapp_number && false &&
                         <div className="flex items-center">
