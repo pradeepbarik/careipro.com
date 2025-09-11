@@ -21,6 +21,8 @@ export type TPopularDoctor = {
     clinic_seo_url: string,
     service_location_id: number,
     availability: string,
+    available_date:string,
+    available_dates?: Record<string, boolean>,
 }
 export type TSuggestedCity = {
     state: string

@@ -2,15 +2,15 @@ import { SectionHeading, SectionSubHeading } from "@/app/components/mobile/ui"
 import { TDoctorDetail, TDoctorvailableData } from '@/lib/types/doctor';
 import WeeklyConsultingTiming from "@/app/components/mobile/doctors/doctor-detail/weekly-consulting-timing";
 import NextConsultTime from '@/app/components/mobile/doctors/doctor-detail/next-consult-time';
-import moment from "@/lib/helper/date-time";
-import { BiInfoCircle } from "react-icons/bi";
+import moment, { get_current_datetime } from "@/lib/helper/date-time";
 
 const OverView = ({ data, availableData }: { data: TDoctorDetail, availableData: TDoctorvailableData }) => {
+    let showNextConsultDate = (data.doctor_availability && data.doctor_availability.date && moment(get_current_datetime()).diff(moment(data.doctor_availability.date),'days')<0)?true:false;
     return (
         <>
             <SectionSubHeading heading='Consulting Timing' />
             <div className='bg-white px-2 py-2 mb-2 shadow-sm'>
-                {data.doctor_availability ? <>
+                {(data.doctor_availability && showNextConsultDate) ? <>
                     <div className="shadow px-2 py-2 border flex items-center rounded-md gap-2 font-semibold bg-orange-200">
                         Next Consult Date : {moment(data.doctor_availability.date).format("DD MMM")}
                         <span className="flex flex-col ml-auto">

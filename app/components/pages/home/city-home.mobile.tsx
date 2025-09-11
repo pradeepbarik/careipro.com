@@ -51,7 +51,7 @@ const CityHome = async ({ state, city }: { state: string, city: string }) => {
                             <PopularClinics clinics={data.popularClinics} />
                         </> : (section.name === "popular_doctors" && data.popularDoctors) ? <>
                             {section.heading && <SectionHeading heading={section.heading} />}
-                            <PopularDoctor data={data.popularDoctors} />
+                            <PopularDoctor data={data.popularDoctors} showFilter={true} />
                         </> : (section.name === "doctor_category" && data.doctorCategory) ? <>
                             {section.heading && <SectionHeading heading={section.heading} />}
                             <DoctorCategory data={data.doctorCategory} />
@@ -60,10 +60,10 @@ const CityHome = async ({ state, city }: { state: string, city: string }) => {
                             {data.petCareInfo && <Petcare data={data.petCareInfo} />}
                         </> : (section.name === "doctors" && (section.doctor_ids && section.doctor_ids.length > 0) && data.doctors) ? <>
                             {section.heading && <SectionHeading heading={section.heading} />}
-                            <PopularDoctor data={getSectionDoctors(section.doctor_ids || [])} />
+                            <PopularDoctor data={getSectionDoctors(section.doctor_ids || [])} showFilter={true} />
                         </> : (section.name === "doctors" && (section.specialist_id && data.specialistDoctors && data.specialistDoctors[section.specialist_id.toString()])) ? <>
                             {section.heading && <SectionHeading heading={section.heading} />}
-                            <PopularDoctor data={data.specialistDoctors[section.specialist_id.toString()]} />
+                            <PopularDoctor data={data.specialistDoctors[section.specialist_id.toString()]} showFilter={true} />
                         </> : (section.name === "banners" && section.banners) ? <>
                             {section.heading && <SectionHeading heading={section.heading} />}
                             <SectionBanners banners={section.banners} />
