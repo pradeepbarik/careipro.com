@@ -15,7 +15,6 @@ import PopularClinics from '../../mobile/home/popular-clinics';
 import SetStateCity from '../../client-components/set-state-city';
 import AppointmentReminder from '../../mobile/appointment-reminder';
 import SectionBanners from '@/app/components/mobile/section-banners';
-import NeedHelpBtn from '../../mobile/need-help-btn';
 const CityHome = async ({ state, city }: { state: string, city: string }) => {
     const data = await getCityHomePageData(state, city);
     const getSectionDoctors = (doctorIds: number[]) => {
@@ -77,7 +76,6 @@ const CityHome = async ({ state, city }: { state: string, city: string }) => {
             </Footer>
             <SetStateCity state={state} city={city} />
             <AppointmentReminder position={"section-1"} />
-            <NeedHelpBtn/>
         </>
     )
 }
