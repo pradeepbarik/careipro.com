@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { permanentRedirect, RedirectType } from 'next/navigation'
 import dynamic from 'next/dynamic';
+import PageVisitLogger from '@/app/components/client-components/page-visit-logger';
 import { fetchDoctors } from '@/lib/hooks/useDoctors';
 import useDeviceInfo from "@/lib/hooks/useDeviceInfo";
 const DoctorListMobile = dynamic(() => import("@/app/doctors/doctors-list/mobile"));
@@ -29,6 +30,14 @@ const DoctorsList = async ({ searchParams }: { searchParams: any }) => {
     if (device.type === "mobile") {
         return (<>
             <DoctorListMobile params={searchParams} data={data.data} />
+            <PageVisitLogger data={{
+                page_type: "listing",
+                page_name: "doctors_list",
+                state: searchParams.state,
+                city: searchParams.city,
+                cat_id: searchParams.cat_id,
+                group_category: searchParams.group_cat
+            }} />
         </>)
     } else {
         return (<>

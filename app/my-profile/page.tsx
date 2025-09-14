@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import MyProfileMobile from "./mobile";
 import useDeviceInfo from "@/lib/hooks/useDeviceInfo";
+import PageVisitLogger from '@/app/components/client-components/page-visit-logger';
 export async function generateMetadata({ searchParams }: { searchParams: { city: string, state: string } }): Promise<Metadata> {
     return {
         title: `Login signup Contact Us,careipro business all options - careipro.com`,
@@ -21,6 +22,11 @@ const MyProfile = () => {
         return (
             <>
                 <MyProfileMobile cookies={cookies}/>
+                <PageVisitLogger data={{
+                    page_name: "my_profile",
+                    state: "",
+                    city: "",
+                }} />
             </>
         )
     }

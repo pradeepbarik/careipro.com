@@ -4,10 +4,15 @@ import useSiteVisiterLogger from "@/lib/hooks/useSiteVisiterLogger"
 import { useEffect } from "react";
 type TLogData = {
     page_name: string,
+    page_type?: "detail" | "listing" | "",
     state: string,
     city: string,
     clinic_id?: number,
     doctor_id?: number,
+    cat_id?: string,
+    group_category?: string,
+    vertical?: string,
+    referer?: string,
     utm_campaign?: string,
     utm_medium?: string,
     utm_source?: string,
@@ -19,8 +24,8 @@ const PageVisitLogger = ({ data }: { data: TLogData }) => {
         logPageVisit({
             utm_campaign: searchParams.get("utm_campaign") || "",
             utm_medium: searchParams.get("utm_medium") || "",
-            utm_source: searchParams.get("utm_source")||"",
-            referer:document.referrer,
+            utm_source: searchParams.get("utm_source") || "",
+            referer: document.referrer,
             ...data,
         })
     }, [])

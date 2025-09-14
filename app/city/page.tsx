@@ -3,6 +3,7 @@ import dynamic from 'next/dynamic'
 import useDeviceInfo from "@/lib/hooks/useDeviceInfo";
 import PageVisitLogger from "../components/client-components/page-visit-logger";
 import { userSecreateKey } from '@/constants/storage_keys';
+import NeedHelpBtn from '@/app/components/mobile/need-help-btn';
 const CityHomeMobile = dynamic(() => import('@/app/components/pages/home/city-home.mobile'));
 const LoginToast = dynamic(()=>import("@/app/components/mobile/login-toast"));
 const CityHomeDesktop = dynamic(() => import('@/app/components/pages/home/city-home.desktop'));
@@ -36,6 +37,7 @@ const CityHomePage = ({ searchParams }: TProps) => {
           state: searchParams.state,
           city: searchParams.city,
         }} />
+        <NeedHelpBtn style={{bottom: '25vh'}}/>
       </>
     )
   } else {

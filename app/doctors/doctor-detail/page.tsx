@@ -23,14 +23,14 @@ export async function generateMetadata({ searchParams }: { searchParams: any }):
 const DoctorDetail = async ({ searchParams }: {
     searchParams: TsearchParams
 }) => {
-    const { device } = useDeviceInfo();
+    const { device,cookies } = useDeviceInfo();
     const [data,availableData] = await Promise.all([
         fetchDoctorDetail({ doctor_id: searchParams.doctor_id, clinic_id: searchParams.clinic_id, service_loc_id: searchParams.service_loc_id, seo_url: searchParams.seo_url, market_name: searchParams.market_name, state: searchParams.state, city: searchParams.city }),
         fetchDoctorAvailableTime(searchParams.service_loc_id)
     ])
     if (device.type === "mobile") {
         return (<>
-            <DoctorDetailMobile data={data.data} searchParams={searchParams} availableData={availableData} />
+            <DoctorDetailMobile data={data.data} searchParams={searchParams} availableData={availableData} cookies={cookies} />
             <PageVisitLogger data={{
                     page_name:"doctor_detail",
                     state:searchParams.state,

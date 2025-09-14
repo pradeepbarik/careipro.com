@@ -15,16 +15,19 @@ import { doctorDetailPageUrl } from '@/lib/helper/link';
 import SendEnquiry from "@/app/hospitals-and-clinics/clinic-detail/mobile/send-enquiry";
 import EmergencyBookingCloseAlert from '@/app/components/mobile/doctors/doctor-detail/emergency-booking-close-alert';
 import NeedHelpBtn from "@/app/components/mobile/need-help-btn";
+import { userSecreateKey } from '@/constants/storage_keys';
+const LoginToast = dynamic(() => import("@/app/components/mobile/login-toast"));
 const OverView = dynamic(() => import('./overview'))
 const AppointmentBookingTiming = dynamic(() => import('./booking-timing'));
 const Photos = dynamic(() => import('./photos'))
 export const getSendEnquiryWhatsappMessage = (doctor_name = "") => {
     return `Hi,\nI found your clinic on careipro.com. I want more information about *${doctor_name}*`;
 }
-const DoctorDetailMobile = async ({ data, availableData, searchParams }: {
+const DoctorDetailMobile = async ({ data, availableData, searchParams, cookies }: {
     data: TDoctorDetail,
     availableData: TDoctorvailableData,
     searchParams: TsearchParams,
+    cookies: Record<string, any>
 }) => {
     const pageUrl = doctorDetailPageUrl({ doctor_id: data.doctor_id, service_loc_id: data.id, clinic_id: data.clinic_id, seo_url: data.seo_url, state: data.clinic_state, city: data.clinic_city, market_name: data.clinic_market })
     let ctaBtnCount = 2;
@@ -184,7 +187,14 @@ const DoctorDetailMobile = async ({ data, availableData, searchParams }: {
             </div>
         }
         <AppointmentReminder position="reminder-section" doctor_id={data.doctor_id} />
-        <NeedHelpBtn style={{bottom:"7rem"}}/>
+        {!cookies[userSecreateKey] ?
+            <>
+                <LoginToast message='Please <b>Login/Signup</b> To <b>Book appointment</b>' style={{bottom:"3.5rem"}} />
+                <NeedHelpBtn style={{ bottom: "30vh" }} />
+            </> : <>
+                <NeedHelpBtn style={{ bottom: "5rem" }} />
+            </>}
+
     </>)
 }
 export default DoctorDetailMobile;
