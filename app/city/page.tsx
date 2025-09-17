@@ -4,8 +4,9 @@ import useDeviceInfo from "@/lib/hooks/useDeviceInfo";
 import PageVisitLogger from "../components/client-components/page-visit-logger";
 import { userSecreateKey } from '@/constants/storage_keys';
 import NeedHelpBtn from '@/app/components/mobile/need-help-btn';
+import FooterMenu from '@/app/components/mobile/bottom-menu';
 const CityHomeMobile = dynamic(() => import('@/app/components/pages/home/city-home.mobile'));
-const LoginToast = dynamic(()=>import("@/app/components/mobile/login-toast"));
+const LoginToast = dynamic(() => import("@/app/components/mobile/login-toast"));
 const CityHomeDesktop = dynamic(() => import('@/app/components/pages/home/city-home.desktop'));
 type TProps = {
   params: { [key: string]: string },
@@ -26,18 +27,19 @@ export async function generateMetadata({ searchParams }: { searchParams: { city:
   }
 }
 const CityHomePage = ({ searchParams }: TProps) => {
-  const { device,cookies } = useDeviceInfo();
+  const { device, cookies } = useDeviceInfo();
   if (device.type === "mobile") {
     return (
       <>
         <CityHomeMobile state={searchParams.state} city={searchParams.city} />
-        {!cookies[userSecreateKey] && <LoginToast/>}
+        {/* {!cookies[userSecreateKey] && <LoginToast style={{bottom:"4rem"}}/>} */}
         <PageVisitLogger data={{
           page_name: "city_home",
           state: searchParams.state,
           city: searchParams.city,
         }} />
-        <NeedHelpBtn style={{bottom: '25vh'}}/>
+        <FooterMenu cookies={cookies} />
+        {/* <NeedHelpBtn style={{ bottom: '25vh' }} /> */}
       </>
     )
   } else {

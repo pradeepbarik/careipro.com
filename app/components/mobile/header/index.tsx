@@ -1,7 +1,7 @@
 'use client'
 import Link from 'next/link';
 import { AiFillCaretDown } from "react-icons/ai";
-import { BiSolidUserCircle,BiSolidChevronLeft } from "react-icons/bi";
+import { BiSupport,BiSolidChevronLeft,BiUser } from "react-icons/bi";
 import classes from "./header.module.scss";
 export const BackButton = () => {
     return (
@@ -36,8 +36,8 @@ const Header = ({ template = "HOMEPAGE", heading = "", state, city }: { template
                         <AiFillCaretDown />
                     </Link>
                     <div>
-                        <Link href={"/my-profile"} className='flex gap-1 items-center border rounded-lg px-1 py-1 color-primary'>
-                            <BiSolidUserCircle className='text-lg' />
+                        <Link href={"/my-profile"} title='Help Center' className='flex gap-1 items-center border-color-secondary border rounded-lg px-1 py-1 color-secondary'>
+                            <BiUser className='text-lg' />
                             <span>My Profile</span>
                         </Link>
                     </div>
