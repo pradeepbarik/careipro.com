@@ -13,7 +13,7 @@ export const useAuth = () => {
   const {setCookie}=useCookies()
   const {cookies}=useSelector((state:RootState)=>state.authSlice)
   const registerGuestVisiter = () => {
-    let guest_user_secreate_key = localStorage.getItem(g_user_secreate_key);
+    let guest_user_secreate_key = window.localStorage.getItem(g_user_secreate_key);
     if (guest_user_secreate_key) {
       return;
     }
@@ -27,12 +27,12 @@ export const useAuth = () => {
     }
     registerGuestUser(logdata).then(({data,code})=>{
       if(code===200){
-        localStorage.setItem(g_user_secreate_key,data.secreate_key)
+        window.localStorage.setItem(g_user_secreate_key,data.secreate_key)
       }
     });
   }
   useEffect(() => {
-    let user_info = localStorage.getItem(userinfo)? JSON.parse(localStorage.getItem(userinfo)||""):null;
+    let user_info = window.localStorage.getItem(userinfo)? JSON.parse(window.localStorage.getItem(userinfo)||""):null;
     if (user_info !== null) {
       dispatch(
         initUserDetail({
@@ -45,7 +45,7 @@ export const useAuth = () => {
       }
     } else {
       dispatch(initUserDetail({ is_loggedin: false, user_info: {} }))
-      let guest_user_secreate_key = localStorage.getItem(g_user_secreate_key);
+      let guest_user_secreate_key = window.localStorage.getItem(g_user_secreate_key);
       if (!guest_user_secreate_key) {
         registerGuestVisiter();
       } else {

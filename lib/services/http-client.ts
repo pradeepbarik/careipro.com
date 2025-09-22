@@ -27,11 +27,11 @@ export const fetchJson = async <R>(url: string, log_api: boolean = false, header
    }
    try {
       if (extraParams && extraParams.passSecreateKey) {
-         let user = JSON.parse(localStorage.getItem(userinfo) || JSON.stringify({}));
+         let user = JSON.parse(window.localStorage.getItem(userinfo) || JSON.stringify({}));
          headers['x-api-key'] = user.secreate_key || "";
       }
       if (extraParams && extraParams.passGuserSecreateKey) {
-         let secreatekey = localStorage.getItem(g_user_secreate_key)
+         let secreatekey = window.localStorage.getItem(g_user_secreate_key)
          headers['g-api-key'] = secreatekey || "";
       }
       let response = await fetch(API_BASE_URL + url, {
@@ -51,7 +51,7 @@ export const authenicatedFetchJson = async <R>(url: string, log_api: boolean = f
       console.log("api:", API_BASE_URL + url);
    }
    try {
-      let user = JSON.parse(localStorage.getItem(userinfo) || "");
+      let user = JSON.parse(window.localStorage.getItem(userinfo) || "");
       let response = await fetch(API_BASE_URL + url, {
          method: 'GET',
          headers: {
@@ -72,11 +72,11 @@ export const httpPost = <R>(url: string, body: any, extraParams?: { passSecreate
          headers: {}
       };
       if (extraParams && extraParams.passSecreateKey) {
-         let user = JSON.parse(localStorage.getItem(userinfo) || JSON.stringify({}));
+         let user = JSON.parse(window.localStorage.getItem(userinfo) || JSON.stringify({}));
          config.headers['x-api-key'] = user.secreate_key || "";
       }
       if (extraParams && extraParams.passGuserSecreateKey) {
-         let secreatekey = localStorage.getItem(g_user_secreate_key)
+         let secreatekey =window. localStorage.getItem(g_user_secreate_key)
          config.headers['g-api-key'] = secreatekey || "";
       }
       if (extraParams && extraParams.fileUpload) {
