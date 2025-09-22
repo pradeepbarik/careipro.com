@@ -1,8 +1,9 @@
 'use client'
 import Link from 'next/link';
 import { AiFillCaretDown } from "react-icons/ai";
-import { BiSupport,BiSolidChevronLeft,BiUser } from "react-icons/bi";
+import { BiSupport, BiSolidChevronLeft, BiUser } from "react-icons/bi";
 import classes from "./header.module.scss";
+import { ReactNode } from 'react';
 export const BackButton = () => {
     return (
         <BiSolidChevronLeft className='color-black h-7 w-7 rounded-full p-1' onClick={() => {
@@ -10,7 +11,7 @@ export const BackButton = () => {
         }} />
     )
 }
-const Header = ({ template = "HOMEPAGE", heading = "", state, city }: { template?: "HOMEPAGE" | "SUBPAGE", heading?: string, state?: string, city?: string }) => {
+const Header = ({ template = "HOMEPAGE", heading = "", state, city, rightContainer }: { template?: "HOMEPAGE" | "SUBPAGE", heading?: string, state?: string, city?: string, rightContainer?: ReactNode }) => {
     if (template === "SUBPAGE") {
         return (
             <div style={{ height: "3.5rem" }}>
@@ -21,6 +22,7 @@ const Header = ({ template = "HOMEPAGE", heading = "", state, city }: { template
                     <h1 className='fs-17 font-semibold'>
                         {heading}
                     </h1>
+                    {rightContainer ? rightContainer : <></>}
                 </div>
             </div>
 

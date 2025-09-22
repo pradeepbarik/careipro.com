@@ -15,6 +15,7 @@ import { doctorDetailPageUrl } from '@/lib/helper/link';
 import SendEnquiry from "@/app/hospitals-and-clinics/clinic-detail/mobile/send-enquiry";
 import EmergencyBookingCloseAlert from '@/app/components/mobile/doctors/doctor-detail/emergency-booking-close-alert';
 import NeedHelpBtn from "@/app/components/mobile/need-help-btn";
+import LikeShare from "@/app/components/mobile/doctors/doctor-detail/like-share";
 import { userSecreateKey } from '@/constants/storage_keys';
 const LoginToast = dynamic(() => import("@/app/components/mobile/login-toast"));
 const OverView = dynamic(() => import('./overview'))
@@ -35,7 +36,9 @@ const DoctorDetailMobile = async ({ data, availableData, searchParams, cookies }
         ctaBtnCount += 1;
     }
     return (<>
-        <Header heading={data.doctor_name} template="SUBPAGE" />
+        <Header heading={data.doctor_name} template="SUBPAGE" rightContainer={
+            <LikeShare url={pageUrl} doctor_name={data.doctor_name} position={data.position||data.qualification_disp} clinic_name={data.clinic_name} service_charge={data.service_charge} />
+        } />
         <div className='flex px-2 py-2 mt-2 gap-3 bg-white shadow-sm'>
             <img src={doctorProfilePic(data.profile_pic)} alt={`${data.doctor_name} profile pic`} className='h-20 w-20 rounded-md shrink-0' />
             <div className="grow">
@@ -189,7 +192,7 @@ const DoctorDetailMobile = async ({ data, availableData, searchParams, cookies }
         <AppointmentReminder position="reminder-section" doctor_id={data.doctor_id} />
         {!cookies[userSecreateKey] ?
             <>
-                <LoginToast message='Please <b>Login/Signup</b> To <b>Book appointment</b>' style={{bottom:"3.5rem"}} />
+                <LoginToast message='Please <b>Login/Signup</b> To <b>Book appointment</b>' style={{ bottom: "3.5rem" }} />
                 <NeedHelpBtn style={{ bottom: "30vh" }} />
             </> : <>
                 <NeedHelpBtn style={{ bottom: "5rem" }} />
