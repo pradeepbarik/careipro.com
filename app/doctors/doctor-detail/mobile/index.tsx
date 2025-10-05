@@ -37,7 +37,7 @@ const DoctorDetailMobile = async ({ data, availableData, searchParams, cookies }
     }
     return (<>
         <Header heading={data.doctor_name} template="SUBPAGE" rightContainer={
-            <LikeShare url={pageUrl} doctor_name={data.doctor_name} position={data.position||data.qualification_disp} clinic_name={data.clinic_name} service_charge={data.service_charge} />
+            <LikeShare url={pageUrl} doctor_name={data.doctor_name} position={data.position||data.qualification_disp} clinic_name={data.clinic_name} service_charge={data.service_charge} doctor_id={data.doctor_id} clinic_id={data.clinic_id} />
         } />
         <div className='flex px-2 py-2 mt-2 gap-3 bg-white shadow-sm'>
             <img src={doctorProfilePic(data.profile_pic)} alt={`${data.doctor_name} profile pic`} className='h-20 w-20 rounded-md shrink-0' />

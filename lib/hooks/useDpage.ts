@@ -2,7 +2,7 @@ import { cache } from "react";
 import { fetchJson, IResponse } from "../services/http-server";
 
 export type Section = {
-    section_name:string,
+    section_name: string,
     heading: string;
     subHeading: string;
     sectionType: "form" | string;
@@ -16,7 +16,7 @@ export type Section = {
 };
 
 type InputField = {
-    key:string,
+    key: string,
     label: string;
     placeHolder: string;
     required: boolean;
@@ -47,11 +47,22 @@ export type PageData = {
     sections: Section[];
 };
 export const fetchDPageData = cache(async (state: string, city: string, pageType: string, pageId: number) => {
-    try {
-        const res = await fetchJson<PageData>(`/cache/${state.toLowerCase().replace(' ', '-')}/${city.toLowerCase().replace(' ', '-')}/pages/${pageType.toUpperCase()}_${pageId}.json`);
-        return res;
-    } catch (err: any) {
-        const { data } = await fetchJson<IResponse<PageData>>(`/init-cache/init-page-data?state=${state.replace(' ', '-')}&city=${city.replace(' ', '-')}&page_type=${pageType.toUpperCase()}&page_id=${pageId}`);
-        return data;
+    if (state && city) {
+        try {
+           // const res = await fetchJson<PageData>(`/cache/${state.toLowerCase().replace(' ', '-')}/${city.toLowerCase().replace(' ', '-')}/pages/${pageType.toUpperCase()}_${pageId}.json`);
+            const res = await fetchJson<PageData>(`/cache/pages/${pageType.toUpperCase()}_${pageId}.json`);
+            return res;
+        } catch (err: any) {
+            const { data } = await fetchJson<IResponse<PageData>>(`/init-cache/init-page-data?state=${state.replace(' ', '-')}&city=${city.replace(' ', '-')}&page_type=${pageType.toUpperCase()}&page_id=${pageId}`);
+            return data;
+        }
+    } else {
+        try {
+            const res = await fetchJson<PageData>(`/cache/pages/${pageType.toUpperCase()}_${pageId}.json`);
+            return res;
+        } catch (err: any) {
+            const { data } = await fetchJson<IResponse<PageData>>(`/init-cache/init-page-data?state=&city=&page_type=${pageType.toUpperCase()}&page_id=${pageId}`);
+            return data;
+        }
     }
 })

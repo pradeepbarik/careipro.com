@@ -1,30 +1,15 @@
 'use client'
-import { formatCurrency } from "@/lib/helper/format-text";
-import { BiHeart, BiShareAlt } from "react-icons/bi";
-
-const LikeShare = ({url,doctor_name,position,clinic_name,service_charge}:{url:string,doctor_name:string,position:string,clinic_name:string,service_charge:string}) => {
-   
-    const onLikeClick = () => {
-    
-   }
-    const onShareClick = async () => {
-     const shareData = {
-            title: `Dr. ${doctor_name} - ${position} at ${clinic_name}`,
-            text: `Book appointment with Dr. ${doctor_name} - ${position} at ${clinic_name}. Consultaion Fee : ${formatCurrency(parseInt(service_charge))}. Find more doctors at careipro.com`,
-            url: url,
-        };
-        try {
-            await navigator.share(shareData);
-            console.log("shared successfully")
-        } catch (err) {
-            console.log("shared failed", err)
-        }
-   }
+import { BiHeart, BiShareAlt,BiSolidHeart } from "react-icons/bi";
+import useLikeShare from "@/lib/hooks/useLikeShare";
+const LikeShare = ({ url, doctor_name, position, clinic_name, service_charge, doctor_id, clinic_id }: { url: string, doctor_name: string, position: string, clinic_name: string, service_charge: string, doctor_id: number, clinic_id: number }) => {
+    const { onLikeClick, onShareClick,isLiked } = useLikeShare({ url, doctor_name, position, clinic_name, service_charge, doctor_id, clinic_id });
     return (
         <div className="flex gap-2 ml-auto">
-                        <BiHeart className="h-7 w-7 p-1 color-black"  />
-                        <BiShareAlt className="h-7 w-7 p-1 color-black" onClick={onShareClick} />
-                    </div>
+            {isLiked ?
+            <BiSolidHeart className="h-7 w-7 p-1 color-primary" onClick={()=>{onLikeClick(0)}}/>:
+            <BiHeart className="h-7 w-7 p-1 color-primary" onClick={()=>{onLikeClick(1)}} />}
+            <BiShareAlt className="h-7 w-7 p-1 color-black" onClick={onShareClick} />
+        </div>
     )
 }
 export default LikeShare;

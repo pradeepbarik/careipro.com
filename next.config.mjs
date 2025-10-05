@@ -93,8 +93,20 @@ const nextConfig = {
                 destination:'/all-specialists'
             },
             {
-                source:'/:state/page/:seo_url-in-:city/:page_type-:page_id',
+                source:'/Read-Articles-for-:city-in-:state',
+                destination:'/articles'
+            },
+            {
+                source:'/:state/:seo_url-in-:city/:page_type-:page_id',
                 destination:'/dynamic-page'
+            },
+            {
+                source:'/articles/:seo_url/:page_type-:page_id',
+                destination:'/dynamic-page'
+            },
+            {
+                source:'/quick-actions-in-:city-of-:state',
+                destination:'/quick-actions'
             },
             {
                 source:'/:city-in-:state',
