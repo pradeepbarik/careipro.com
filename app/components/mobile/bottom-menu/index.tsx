@@ -59,7 +59,7 @@ const FooterMenu = ({ cookies }: { cookies: Record<string, any> }) => {
           <BiHomeHeart className='text-xl' />
           Home
         </Link> */}
-          <Link href={"/my-favourites"} className='grow-[1] basis-0 shrink-0 gap-1 py-2 flex justify-center items-center flex-col'>
+          <Link href={`/Read-Articles-for-${cookies["city"].toLowerCase()}-in-${cookies["state"].toLowerCase()}`} className='grow-[1] basis-0 shrink-0 gap-1 py-2 flex justify-center items-center flex-col'>
             <BiCategory className='text-xl' />
             Articles
           </Link>
