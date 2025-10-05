@@ -50,7 +50,7 @@ const useLogin = ({ redirectUrl = "", allowLoggedInUser = false, onLoginSuccess 
             setLoader(false);
             let expire = moment().add(2, 'years').format('YYYY-MM-DD');
             await setCookie(userSecreateKey, (<any>data).secreate_key, { expire: expire });
-            localStorage.setItem(userinfo, JSON.stringify(data));
+            window.localStorage.setItem(userinfo, JSON.stringify(data));
             if (onLoginSuccess) {
                 dispatch(initUserDetail({ is_loggedin: true, user_info: data }));
                 onLoginSuccess();
@@ -94,7 +94,7 @@ const useLogin = ({ redirectUrl = "", allowLoggedInUser = false, onLoginSuccess 
         }
         httpPost("/auth/login", { case: "signup", mobile: mobile, otp: otp, first_name: userInfo.first_name, last_name: userInfo.last_name, age: userInfo.age, gender: userInfo.gender, state: userInfo.state, city: userInfo.city }).then(async ({ data }) => {
             setLoader(false);
-            localStorage.setItem(userinfo, JSON.stringify(data));
+            window.localStorage.setItem(userinfo, JSON.stringify(data));
             let expire = moment().add(2, 'years').format('YYYY-MM-DD');
             await setCookie(userSecreateKey, (<any>data).secreate_key, { expire: expire });
             if (onLoginSuccess) {
@@ -116,14 +116,14 @@ const useLogin = ({ redirectUrl = "", allowLoggedInUser = false, onLoginSuccess 
         dispatch(initUserDetail({ is_loggedin: false, user_info: null }));
         await deleteCookie(userinfo);
         await deleteCookie(userSecreateKey);
-        localStorage.clear();
+        window.localStorage.clear();
         router.refresh();
     }
     useEffect(() => {
         if (allowLoggedInUser === true) {
             return;
         }
-        let isloggedin = localStorage.getItem(userinfo) ? true : false;
+        let isloggedin = window.localStorage.getItem(userinfo) ? true : false;
         if (isloggedin) {
             router.push('/');
         }

@@ -1,7 +1,6 @@
 'use client'
 import { createPortal } from 'react-dom';
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Pagination } from "swiper/modules";
 import { BiBell } from "react-icons/bi";
 import 'swiper/css';
 import 'swiper/css/pagination';
@@ -9,7 +8,7 @@ import useReminder from '@/lib/hooks/useReminder';
 import { formatDoctorName } from '@/lib/helper/format-text';
 const AppointmentReminder = ({ position, doctor_id, clinic_id }: { position: string, doctor_id?: number, clinic_id?: number }) => {
     const { isBrowser, is_loggedin, user_type, appoinments } = useReminder({ doctor_id: doctor_id, clinic_id: clinic_id })
-    if (isBrowser && position && is_loggedin && (user_type === "user" || 1 == 1) && appoinments.length > 0) {
+    if (isBrowser && position && is_loggedin && (user_type === "user" || user_type === "agency") && appoinments.length > 0) {
         return (
             <>
                 {createPortal(<div>

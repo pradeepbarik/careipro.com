@@ -5,6 +5,9 @@ export const doctorSpecialityIcon=(icon:string)=>{
 export const verticalIcon=(icon:string)=>{
     return `${ASSET_URL}/images/verticals/${icon}`;
 }
+export const getIconUrl=(icon:string)=>{
+    return `${ASSET_URL}/images/icons/${icon}`;
+}
 export const getCityIcon=(icon:string)=>{
     if(icon){
         return `${ASSET_URL}/images/city-icon/${icon}`;

@@ -1,4 +1,5 @@
 'use client'
+import { useRouter } from 'next/navigation' 
 import { useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
@@ -11,6 +12,7 @@ import { TDoctorvailableData, TDoctorDetail } from '@/lib/types/doctor';
 import { RootState } from '@/lib/store';
 import Login from '@/app/components/mobile/login';
 const BookAppointment = ({ open, service_charge, site_service_charge, service_loc_id, doctor_id, clinic_id, availability, settings, emergencyBookingClose, bookingCloseMessage }: { open: boolean, emergencyBookingClose?: number, bookingCloseMessage?: string, service_loc_id: number, clinic_id: number, doctor_id: number, service_charge: number, site_service_charge: number, settings: TDoctorDetail['settings'], availability?: TDoctorvailableData }) => {
+    const router=useRouter();
     const autoSuggestRef = useRef<HTMLInputElement>(null);
     const { user_info } = useSelector((state: RootState) => {
         return {
@@ -29,6 +31,7 @@ const BookAppointment = ({ open, service_charge, site_service_charge, service_lo
     const onloginSuccess = () => {
         setShowLoginModal(false);
         setShowModal(true);
+        router.refresh();
     }
     if (emergencyBookingClose == 1) {
         return (

@@ -1,7 +1,8 @@
 'use client'
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import { BiChevronRight } from "react-icons/bi";
 import Link from "next/link";
+import { useRouter } from 'next/navigation'
 import Header from "@/app/components/mobile/header";
 import useAppointment from "@/lib/hooks/user-profile/useAppointment";
 import { formatDoctorName } from '@/lib/helper/format-text';
@@ -9,9 +10,43 @@ import Ratingstars from '@/app/components/mobile/ui/rating-stars';
 import ReviewTags from "@/app/components/mobile/review-tags";
 import { SlideUpModal } from "@/app/components/mobile/ui";
 import useSubmitRatingReview from "@/lib/hooks/user-profile/useSubmitRatingReview";
-const MyAppointmentsMobile = () => {
-    const { appointments,appointment,setAppointment } = useAppointment({ init: true, page: "history" });
+import { useSelector } from "react-redux";
+import { RootState } from "@/lib/store";
+import Login from '@/app/components/mobile/login';
+import { userSecreateKey } from '@/constants/storage_keys';
+
+const MyAppointmentsMobile = ({ cookies }: { cookies: Record<string, any> }) => {
+    const router=useRouter();
+    const { appointments, appointment, setAppointment } = useAppointment({ init: true, page: "history" });
     const { reviewTags, showReviewModal, setShowReviewModal, setSelectedRating, SelectedRating, selectedReviewTagsArr, setSelectedReviewTagsArr, setSelectedReviewTags, onSelectReviewTag, reviewText, setReviewText, submitRatingReview, submitRating } = useSubmitRatingReview({});
+    const { user_info } = useSelector((state: RootState) => {
+        return {
+            user_info: state.authSlice.user_info
+        }
+    })
+    const [showLoginModal, setShowLoginModal] = useState(true);
+    if (user_info === null || cookies[userSecreateKey] === undefined) {
+        return (
+            <>
+                <Header heading="My Appointments" template="SUBPAGE" />
+                <div>
+                    <div className="flex flex-col items-center justify-center py-10">
+                        <img src="/icon/no-data.svg" alt="Login Required" className="w-24 h-24 mb-4" />
+                        <p className="text-center text-lg font-semibold mb-2">Please login to view your booking history.</p>
+                        <button
+                            className="button px-6 py-2 rounded-2xl bg-primary text-white font-semibold"
+                            onClick={() => { setShowLoginModal(true); }}
+                        >
+                            Login / Signup
+                        </button>
+                    </div>
+                </div>
+                <SlideUpModal open={showLoginModal} heading='Login / Signup' onClose={() => { setShowLoginModal(false) }}>
+                    <Login allowLoggedInUser={true} onLoginSuccess={() => { setShowLoginModal(false); router.refresh(); }} />
+                </SlideUpModal>
+            </>
+        )
+    }
     return (
         <>
             <Header heading="My Appointments" template="SUBPAGE" />
@@ -49,7 +84,7 @@ const MyAppointmentsMobile = () => {
                         <div className="flex border-t py-2 items-center">
                             <div className="w-9/12 font-semibold">
                                 Share your experience
-                                <Ratingstars given_rating={appointment.rating||0} className="text-2xl color-primary" onChange={(r) => { 
+                                <Ratingstars given_rating={appointment.rating || 0} className="text-2xl color-primary" onChange={(r) => {
                                     setSelectedRating(r)
                                     setSelectedReviewTagsArr(appointment.review_tags_arr || [])
                                     setSelectedReviewTags(appointment.review_tags || [])
@@ -89,7 +124,7 @@ const MyAppointmentsMobile = () => {
                         <textarea className="w-full h-24 border textarea" placeholder="Write anything else (Optional)" value={reviewText} onChange={(e) => { setReviewText(e.target.value) }}></textarea>
                     </div>
                     <button className="button w-full" onClick={() => {
-                        if(appointment){
+                        if (appointment) {
                             submitRatingReview({
                                 rev_id: appointment.review_id || 0,
                                 appointment_id: appointment.booking_id,
@@ -98,7 +133,7 @@ const MyAppointmentsMobile = () => {
                                 service_loc_id: appointment.servicelocation_id,
                                 consultation_date: appointment.consult_date,
                             }, () => {
-                               
+
                             })
                         }
                     }}>Submit Review</button>

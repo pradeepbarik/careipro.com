@@ -6,7 +6,7 @@ const DynamicPage = dynamic(() => import('./mobile'));
 export async function generateMetadata({ searchParams }: { searchParams: any }): Promise<Metadata> {
     const data = await fetchDPageData(searchParams.state, searchParams.city, searchParams.page_type, searchParams.page_id)
     return {
-        title: data.seoDt.pageTitle,
+        title: data.seoDt.pageTitle.replace("{city}", searchParams.city),
         description: data.seoDt.pageDescription,
         robots: {
             index: true,
@@ -20,7 +20,7 @@ export async function generateMetadata({ searchParams }: { searchParams: any }):
 }
 const FormPage = async ({ searchParams }: { searchParams: { city: string, state: string, page_type: string, page_id: number } }) => {
     const { device } = useDeviceInfo();
-    const pageData = await fetchDPageData(searchParams.state, searchParams.city, searchParams.page_type, searchParams.page_id);
+    const pageData = await fetchDPageData(searchParams.state||"", searchParams.city||"", searchParams.page_type, searchParams.page_id);
     if (device.type === "mobile") {
         return (
             <>

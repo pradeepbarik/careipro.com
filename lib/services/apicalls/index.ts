@@ -111,6 +111,16 @@ export const uploadPrescriptionPostCurl = (data: FormData) => {
 export const deletePrescriptionCurl = (params: { prescription: string, booking_id: number }) => {
    return httpPost<{}>(`/user/delete-prescription`, { prescription: params.prescription, booking_id: params.booking_id }, { passSecreateKey: true });
 }
+export const addToFavourites = (params: { doctor_id: number, clinic_id: number,favourite: 0|1 }) => {
+   return httpPost<{}>(`/user/favourite`, params, { passSecreateKey: true });
+}
+export const myFavourites = () => {
+   try {
+      return authenicatedFetchJson<IResponse<{doctor_ids: number[]}>>("/user/favourite");
+   } catch (err: any) {
+      return buildResponse<{doctor_ids: number[]}>({doctor_ids: []});
+   }
+}
 export const shareFeedbackPostCurl = (params: { rating: number, name: string, mobile: string, comment: string, campaign: string, specialist_id?: number }) => {
    return httpPost<{}>(`/share-feedback`, params, { passSecreateKey: true, passGuserSecreateKey: true });
 }
