@@ -38,7 +38,7 @@ const CityHomePage = ({ searchParams }: TProps) => {
           state: searchParams.state,
           city: searchParams.city,
         }} />
-        <FooterMenu cookies={cookies} />
+        <FooterMenu cookies={{state:searchParams.state,city:searchParams.city}} />
         {/* <NeedHelpBtn style={{ bottom: '25vh' }} /> */}
       </>
     )
