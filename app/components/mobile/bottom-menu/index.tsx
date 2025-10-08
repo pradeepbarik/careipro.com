@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { BiHomeHeart, BiBookHeart, BiCalendar, BiUser, BiAlignLeft, BiSupport, BiBriefcase, BiCategory } from "react-icons/bi";
 import { userSecreateKey } from '@/constants/storage_keys';
 
-const FooterMenu = ({ cookies }: { cookies: Record<string, any> }) => {
+const FooterMenu = ({ cookies, searchParams }: { cookies: Record<string, any>, searchParams: { [key: string]: string } }) => {
   const [scrollDirection, setScrollDirection] = useState("");
   const [lastScrollY, setLastScrollY] = useState(0);
   useEffect(() => {
@@ -29,7 +29,7 @@ const FooterMenu = ({ cookies }: { cookies: Record<string, any> }) => {
     <div className="bg-white border-t fixed bottom-0 left-0 right-0 w-full overflow-hidden px-2" style={{ transition: "bottom .3s", bottom: scrollDirection === "down" ? "-4.5rem" : "0", borderTopLeftRadius: "2.2rem", borderTopRightRadius: "2.2rem", boxShadow: "0 -2px 6px rgba(0,0,0,0.1)" }}>
       {cookies[userSecreateKey] ?
         <div className='flex font-semibold py-1'>
-          <Link href={`/Read-Articles-for-${cookies["city"].toLowerCase()}-in-${cookies["state"].toLowerCase()}`} className='grow-[1] basis-0 shrink-0 gap-1 py-2 flex justify-center items-center flex-col'>
+          <Link href={`/Read-Articles-for-${searchParams["city"].toLowerCase()}-in-${searchParams["state"].toLowerCase()}`} className='grow-[1] basis-0 shrink-0 gap-1 py-2 flex justify-center items-center flex-col'>
             <BiCategory className='text-xl' />
             Articles
           </Link>
@@ -45,7 +45,7 @@ const FooterMenu = ({ cookies }: { cookies: Record<string, any> }) => {
             <BiCalendar className='text-xl' />
             Bookings
           </Link>
-          <Link href={`/quick-actions-in-${cookies["city"]}-of-${cookies["state"]}`} className='grow-[1] basis-0 shrink-0 gap-1 py-2 flex justify-center items-center flex-col'>
+          <Link href={`/quick-actions-in-${searchParams["city"]}-of-${searchParams["state"]}`} className='grow-[1] basis-0 shrink-0 gap-1 py-2 flex justify-center items-center flex-col'>
             <BiAlignLeft className='text-xl' />
             More
           </Link>
@@ -59,7 +59,7 @@ const FooterMenu = ({ cookies }: { cookies: Record<string, any> }) => {
           <BiHomeHeart className='text-xl' />
           Home
         </Link> */}
-          <Link href={`/Read-Articles-for-${cookies["city"].toLowerCase()}-in-${cookies["state"].toLowerCase()}`} className='grow-[1] basis-0 shrink-0 gap-1 py-2 flex justify-center items-center flex-col'>
+          <Link href={`/Read-Articles-for-${searchParams["city"].toLowerCase()}-in-${searchParams["state"].toLowerCase()}`} className='grow-[1] basis-0 shrink-0 gap-1 py-2 flex justify-center items-center flex-col'>
             <BiCategory className='text-xl' />
             Articles
           </Link>
@@ -94,7 +94,7 @@ const FooterMenu = ({ cookies }: { cookies: Record<string, any> }) => {
             Login
           </Link>
         } */}
-          <Link href={`/quick-actions-in-${cookies["city"]}-of-${cookies["state"]}`} className='grow-[1] basis-0 shrink-0 gap-1 py-2 flex justify-center items-center flex-col'>
+          <Link href={`/quick-actions-in-${searchParams["city"]}-of-${searchParams["state"]}`} className='grow-[1] basis-0 shrink-0 gap-1 py-2 flex justify-center items-center flex-col'>
             <BiAlignLeft className='text-xl' />
             More
           </Link>
