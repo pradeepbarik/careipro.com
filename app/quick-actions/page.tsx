@@ -2,7 +2,7 @@ import dynamic from "next/dynamic";
 import type { Metadata } from "next";
 import useDeviceInfo from "@/lib/hooks/useDeviceInfo";
 const QuickActionsPageMobile = dynamic(() => import("./mobile"), { ssr: false });
-export async function generateMetadata({searchParams}:{searchParams:{city: string, state: string}}): Promise<Metadata> {
+export async function generateMetadata({ searchParams }: { searchParams: { city: string, state: string } }): Promise<Metadata> {
     return {
         title: `Quick actions for ${searchParams.city}, ${searchParams.state} | Careipro`,
         description: `Quick action like join with careipro,open jobs,looking for franchise on careipro.com`,
@@ -14,16 +14,19 @@ export async function generateMetadata({searchParams}:{searchParams:{city: strin
                 follow: true,
             }
         },
+        alternates: {
+            canonical: `/quick-actions-in-${searchParams.city}-of-${searchParams.state}` // Relative path will be combined with metadataBase
+        }
     }
 }
-const QuickActionsPage = ({searchParams}:{searchParams:{city: string, state: string}}) => {
-    const { device,cookies } = useDeviceInfo();
-    if (device.type==="mobile") return (
+const QuickActionsPage = ({ searchParams }: { searchParams: { city: string, state: string } }) => {
+    const { device, cookies } = useDeviceInfo();
+    if (device.type === "mobile") return (
         <>
             <QuickActionsPageMobile cookies={cookies} />
         </>
     );
-  return <div>Quick Actions Page</div>;
+    return <div>Quick Actions Page</div>;
 };
 
 export default QuickActionsPage;

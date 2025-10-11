@@ -20,7 +20,7 @@ export async function generateMetadata({ searchParams }: { searchParams: any }):
                 index: true,
                 follow: true,
             }
-        }
+        },
     }
 }
 const ClinicDetail = async ({ searchParams }: { searchParams: { seo_url: string, state: string, city: string, clinic_id: number, state_city: string, market_name: string, sub_page: string } }) => {

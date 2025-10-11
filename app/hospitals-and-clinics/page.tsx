@@ -13,6 +13,13 @@ export async function generateMetadata({ searchParams }: { searchParams: { city:
         robots: {
             index: true,
             follow: true,
+            googleBot: {
+                index: true,
+                follow: true,
+            }
+        },
+        alternates: {
+            canonical: `/Hospitals-And-Clinics-In-${searchParams.city}-Of-${searchParams.state}` // Relative path will be combined with metadataBase
         },
     }
 }

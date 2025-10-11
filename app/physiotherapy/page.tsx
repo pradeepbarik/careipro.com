@@ -19,6 +19,9 @@ export async function generateMetadata({ searchParams }: { searchParams: { city:
                 follow: true,
             }
         },
+        alternates:{
+            canonical: `Physiotherapist-In-${searchParams.city}-Of-${searchParams.state}` // Relative path will be combined with metadataBase
+        }
     }
 }
 const Physiotherapy = ({ searchParams }: TProps) => {

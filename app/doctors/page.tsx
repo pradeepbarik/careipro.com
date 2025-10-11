@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { headers } from 'next/headers';
 import dynamic from 'next/dynamic'
 import useDeviceInfo from "@/lib/hooks/useDeviceInfo";
 import { fetchDoctorsPageData } from "@/lib/hooks/useDoctors";
@@ -20,6 +21,9 @@ export async function generateMetadata({ searchParams }: { searchParams: { city:
                 follow: true,
             }
         },
+        alternates: {
+            canonical:`/Doctors-In-${searchParams.city}-In-${searchParams.state}`
+        }
     }
 }
 const Doctors = async ({ searchParams }: { searchParams: { city: string, state: string } }) => {

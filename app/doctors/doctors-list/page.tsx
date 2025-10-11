@@ -18,6 +18,9 @@ export async function generateMetadata({ searchParams }: { searchParams: any }):
                 follow: true,
             }
         },
+        alternates:{
+            canonical:`/${searchParams.seo_url}-In-${searchParams.city}-Of-${searchParams.state}/CATG${searchParams.cat_id}-${searchParams.group_cat}` // Relative path will be combined with metadataBase
+        }
     }
 }
 const DoctorsList = async ({ searchParams }: { searchParams: any }) => {

@@ -10,7 +10,18 @@ type TProps = {
 export async function generateMetadata({ searchParams }: { searchParams: { city: string, state: string } }): Promise<Metadata> {
     return {
         title: `Find Best body massage service at home in ${searchParams.city} - careipro.com`,
-        description: `Best body massage centers and therapist are availble in ${searchParams.city}.Visit careipro.com`
+        description: `Best body massage centers and therapist are availble in ${searchParams.city}.Visit careipro.com`,
+        robots: {
+            index: true,
+            follow: true,
+            googleBot: {
+                index: true,
+                follow: true,
+            }
+        },
+        alternates:{
+            canonical:`Massage-Service-In-${searchParams.city}-Of-${searchParams.state}` // Relative path will be combined with metadataBase
+        }
     }
 }
 const MassageService = async ({ searchParams }: TProps) => {

@@ -21,6 +21,9 @@ export async function generateMetadata({ searchParams }: { searchParams: { city:
                 follow: true,
             }
         },
+        alternates:{
+            canonical:`caretakers-In-${searchParams.city}-Of-${searchParams.state}` // Relative path will be combined with metadataBase
+        }
     }
 }
 const CareTaker = async ({ searchParams }: TProps) => {
