@@ -24,6 +24,9 @@ export async function generateMetadata({ searchParams }: { searchParams: { city:
         follow: true,
       }
     },
+     alternates: {
+          canonical: `/${searchParams.city}-In-${searchParams.state}`, // Relative path will be combined with metadataBase
+    },
   }
 }
 const CityHomePage = ({ searchParams }: TProps) => {

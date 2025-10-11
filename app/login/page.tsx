@@ -15,6 +15,9 @@ export async function generateMetadata(): Promise<Metadata> {
                 follow: true,
             }
         },
+        alternates:{
+            canonical:`/login` // Relative path will be combined with metadataBase
+        }
     }
 }
 const Login=()=>{

@@ -15,6 +15,9 @@ export async function generateMetadata({ searchParams }: { searchParams: { city:
                 follow: true,
             }
         },
+        alternates: {
+            canonical: `/service-available-cities` // Relative path will be combined with metadataBase
+        }
     }
 }
 const ServiceAvailbeCities = async () => {

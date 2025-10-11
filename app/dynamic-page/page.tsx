@@ -15,6 +15,9 @@ export async function generateMetadata({ searchParams }: { searchParams: any }):
                 index: true,
                 follow: true,
             }
+        },
+        alternates:{
+            canonical: `/${searchParams.state}/${searchParams.seo_url}-in-${searchParams.city}/${searchParams.page_type}-${searchParams.page_id}` // Relative path will be combined with metadataBase
         }
     }
 }

@@ -1,16 +1,27 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import useDeviceInfo from "@/lib/hooks/useDeviceInfo";
-import {fetchAllCategories} from '@/lib/hooks/useCategories';
+import { fetchAllCategories } from '@/lib/hooks/useCategories';
 const AllSpecialistMobile = dynamic(() => import("./mobile"));
-type TProps={
+type TProps = {
     params: { [key: string]: string },
-    searchParams: { [key: string]: string}
+    searchParams: { [key: string]: string }
 }
 export async function generateMetadata({ searchParams }: { searchParams: { city: string, state: string } }): Promise<Metadata> {
     return {
         title: `Doctor specialities,disease categories,medicine store,caretaker,physiotherapy in ${searchParams.city} - careipro.com`,
-        description: `Doctor specialities,disease categories,medicine store,caretaker,physiotherapy in ${searchParams.city}.  Visit careipro.com`
+        description: `Doctor specialities,disease categories,medicine store,caretaker,physiotherapy in ${searchParams.city}.  Visit careipro.com`,
+        robots: {
+            index: true,
+            follow: true,
+            googleBot: {
+                index: true,
+                follow: true,
+            }
+        }, 
+        alternates: {
+            canonical: `/Doctor-Specialists-And-Services-In-${searchParams.city}-Of-${searchParams.state}` // Relative path will be combined with metadataBase
+        }
     }
 }
 const AllSpecialists = ({ searchParams }: TProps) => {

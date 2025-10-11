@@ -17,6 +17,9 @@ export async function generateMetadata({ searchParams }: { searchParams: any }):
                 index: true,
                 follow: true,
             }
+        },
+        alternates:{
+            canonical:`/${searchParams.seo_url}-At-${searchParams.market_name}-In-${searchParams.city}-Of-${searchParams.state}/DR${searchParams.doctor_id}-SL${searchParams.service_loc_id}-C${searchParams.clinic_id}`
         }
     }
 }
