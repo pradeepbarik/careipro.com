@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from 'next/navigation'
 import { useSelector } from "react-redux";
 import { toast } from 'react-toastify'
-import { httpPost, authenicatedFetchJson } from "@/lib/services/http-client";
+import { httpPost, authenicatedFetchJson, fetchJson } from "@/lib/services/http-client";
 import { RootState } from '@/lib/store';
 import useReminder from '@/lib/hooks/useReminder';
 import { IResponse } from "../services/http-server";
@@ -13,6 +13,15 @@ type TBookingSuccessResponse = {
     booking_id: number,
     consult_date: string,
     today_booking_id: string
+}
+type TdoctorConsultDate = {
+    date: string,
+    first_session_start_time: string,
+    first_session_end_time: string,
+    second_session_start_time: string,
+    second_session_end_time: string,
+    third_session_start_time: string,
+    third_session_end_time: string
 }
 type TSuggestedPatientInfo = { id: number, patient_name: string, patient_mobile: string, patient_gender: string, patient_age: string, patient_address: string };
 const patientInfoInitState = { case_id: 0, patient_name: "", patient_mobile: "", patient_address: "", patient_age: "", patient_gender: "", dataFillMode: "form" };
@@ -26,6 +35,9 @@ const useBooking = ({ service_loc_id, doctor_id, clinic_id, open,settings,availa
     const [showSuggestions, setShowSuggestion] = useState(false);
     const [allPatients, setAllPatients] = useState<Array<TSuggestedPatientInfo>>([])
     const [patients, setPatients] = useState<Array<TSuggestedPatientInfo>>([])
+    const [consultDates,setConsultDates]=useState<Array<TdoctorConsultDate>>([])
+    const [consultDate,setConsultDate]=useState<TdoctorConsultDate | null>(null)
+    const [group_name,setGroupName]=useState<string>("");
     const onSelectSuggestedPatient = (patientinfo: TSuggestedPatientInfo) => {
         setShowSuggestion(false);
         setPatientInfo({ ...patientInfo, case_id: patientinfo.id, patient_name: patientinfo.patient_name, patient_mobile:patientinfo.patient_mobile,patient_gender: patientinfo.patient_gender, patient_age: patientinfo.patient_age, patient_address: patientinfo.patient_address,dataFillMode:"autosuggest" })
@@ -34,6 +46,19 @@ const useBooking = ({ service_loc_id, doctor_id, clinic_id, open,settings,availa
         if (user_info === null) {
             toast.info("Please login to your account")
             return;
+        }
+        if(settings.show_group_name_while_booking && group_name===""){
+            toast.error("Please select session")
+            return;
+        }
+        let extraParams={};
+        if(settings.advance_booking_enable && consultDate){
+            extraParams={...extraParams, consult_date:consultDate.date}
+        }else if(settings.advance_booking_enable && availability){
+            extraParams={...extraParams, consult_date:availability.available_date}
+        }
+        if(settings.show_group_name_while_booking && group_name){
+            extraParams={...extraParams, group_name}
         }
         httpPost<TBookingSuccessResponse>("/book-appointment", {
             userid: user_info.id,
@@ -47,7 +72,7 @@ const useBooking = ({ service_loc_id, doctor_id, clinic_id, open,settings,availa
             patient_age: patientInfo.patient_age,
             patient_gender: patientInfo.patient_gender,
             case_id: patientInfo.case_id || "",
-            consult_date:settings.advance_booking_enable? availability?.available_date : "",
+            ...extraParams
         }, { passSecreateKey: true }).then((data) => {
             toast.success(data.message);
             setBookingDetail(data.data);
@@ -100,11 +125,19 @@ const useBooking = ({ service_loc_id, doctor_id, clinic_id, open,settings,availa
                 setAllPatients(data)
             })
         }
+        if(settings.advance_booking_enable){
+            fetchJson<IResponse<Array<TdoctorConsultDate>>>(`/get-consult-dates?clinic_id=${clinic_id}&doctor_id=${doctor_id}&service_loc_id=${service_loc_id}`).then(({data})=>{
+                setConsultDates(data)
+                if(data.length>0){
+                    setConsultDate(data[0])
+                }
+            })
+        }
     },[])
     return {
         showModal, setShowModal, showSuggestions, setShowSuggestion, onSelectSuggestedPatient, patients,
         patientInfo, setPatientInfo, booingDetail,
-        bookAppointment, onOk
+        bookAppointment, onOk,consultDates,consultDate,setConsultDate,group_name,setGroupName
     }
 }
 export default useBooking

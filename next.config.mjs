@@ -67,6 +67,9 @@ const nextConfig = {
             {
                 source:'/:seo_url-At-:market_name-In-:city-Of-:state/DR:doctor_id-SL:service_loc_id-C:clinic_id',
                 destination:'/doctors/doctor-detail'
+            },{
+                source:'/:seo_url-At-:market_name-In-:city-Of-:state/DR:doctor_id-SL:service_loc_id-C:clinic_id/help-center',
+                destination:'/doctor-help-center'
             },
             {
                 source:'/:seo_url-At-:market_name-In-:city-Of-:state/DR:doctor_id-SL:service_loc_id-C:clinic_id/:sub_page',
