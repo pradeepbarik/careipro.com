@@ -101,6 +101,8 @@ export type TDoctorDetail=TWeeklyConsultingTiming & {
     clinic_market: string,
     whatsapp_number:string,
     whatsapp_channel_link:string,
+    clinic_dtlpg_url?:string,
+    other_doc_cnt?: number,
     doctor_availability?: {
         date: string;
         first_session_start_time: string;
@@ -144,6 +146,7 @@ export type TDoctorDetail=TWeeklyConsultingTiming & {
         short_description:string,seo_url:string,group_category:string,seo_id:string
     }[]},
     business_type:string,
+    total_liked?:number,
     seo_dt:{
         seo_url:string,
         short_seo_url:string

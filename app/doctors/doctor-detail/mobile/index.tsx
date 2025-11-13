@@ -1,9 +1,10 @@
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import { BsTelephone, BsWhatsapp, BsGeoAlt } from "react-icons/bs";
-import { BiGridAlt, BiMessageRoundedDots, BiTimeFive } from "react-icons/bi";
+import { BiGridAlt, BiMessageRoundedDots, BiTimeFive, BiCommentDots } from "react-icons/bi";
 import Header from '@/app/components/mobile/header';
 import BookAppointment from "@/app/components/mobile/doctors/doctor-detail/book-appointment";
+import DoctorFeedback from "@/app/components/mobile/doctors/doctor-detail/doctor-feedback";
 import { SectionHeading } from '@/app/components/mobile/ui';
 import AppointmentReminder from '@/app/components/mobile/appointment-reminder';
 import Nearme from '@/assets/icon/nearme';
@@ -31,16 +32,18 @@ const DoctorDetailMobile = async ({ data, availableData, searchParams, cookies }
     cookies: Record<string, any>
 }) => {
     const pageUrl = doctorDetailPageUrl({ doctor_id: data.doctor_id, service_loc_id: data.id, clinic_id: data.clinic_id, seo_url: data.seo_url, state: data.clinic_state, city: data.clinic_city, market_name: data.clinic_market })
-    let ctaBtnCount = 2;
+    let ctaBtnCount = data.clinic_id !== 8 ? 3 : 2;
     if (data.whatsapp_number) {
         ctaBtnCount += 1;
     }
     return (<>
         <Header heading={data.doctor_name} template="SUBPAGE" rightContainer={
-            <LikeShare url={pageUrl} doctor_name={data.doctor_name} position={data.position||data.qualification_disp} clinic_name={data.clinic_name} service_charge={data.service_charge} doctor_id={data.doctor_id} clinic_id={data.clinic_id} />
+            <LikeShare total_liked={data.total_liked || 0} url={pageUrl} doctor_name={data.doctor_name} position={data.position || data.qualification_disp} clinic_name={data.clinic_name} service_charge={data.service_charge} doctor_id={data.doctor_id} clinic_id={data.clinic_id} />
         } />
         <div className='flex px-2 py-2 mt-2 gap-3 bg-white shadow-sm'>
-            <img src={doctorProfilePic(data.profile_pic)} alt={`${data.doctor_name} profile pic`} className='h-20 w-20 rounded-md shrink-0' />
+            <div>
+                <img src={doctorProfilePic(data.profile_pic)} alt={`${data.doctor_name} profile pic`} className='h-20 w-20 rounded-md shrink-0' />
+            </div>
             <div className="grow">
                 <div className="flex">
                     <div className="flex flex-col">
@@ -71,7 +74,11 @@ const DoctorDetailMobile = async ({ data, availableData, searchParams, cookies }
             <div className='flex gap-2 items-center'>
                 <img src={clinicProfilePic(data.clinic_logo || "")} className="rounded-full h-20 w-20 shrink-0" />
                 <div className='flex flex-col grow'>
-                    <h2 className='font-semibold fs-17'>{data.clinic_name}</h2>
+                    {data.clinic_dtlpg_url ?
+                        <Link href={data.clinic_dtlpg_url} className='font-semibold fs-17'>{data.clinic_name}</Link>
+                        :
+                        <h2 className='font-semibold fs-17'>{data.clinic_name}</h2>
+                    }
                     <span className="flex items-center gap-1">
                         <BsGeoAlt />
                         {data.clinic_locality} in {data.clinic_market}, {data.clinic_city}
@@ -104,6 +111,12 @@ const DoctorDetailMobile = async ({ data, availableData, searchParams, cookies }
                         <Nearme className="border rounded-md p-2 w-12 h-10" style={{ fontSize: '2.2rem', background: "#f7f7f7" }} pathStyle={{ stroke: "black" }} />
                         <span>Direction</span>
                     </a>
+                    <DoctorFeedback doctor_id={data.doctor_id} clinic_id={data.clinic_id} service_loc_id={data.id}/>
+                    {(data.other_doc_cnt && data.other_doc_cnt > 0) ?
+                    <Link href={data?.clinic_dtlpg_url || ""} className="flex flex-col items-center w-24 shrink-0">
+                        <img src="/icon/male-doctor.svg" className="border rounded-md p-2 w-12 h-10" style={{ fontSize: '2.2rem' }} />
+                        <span>Our Doctors</span>
+                    </Link>:<></>}
                 </div> :
                 <div className="flex gap-4 mt-2">
                     <a target="_blank" href={`https://www.google.com/maps/dir/?api=1&destination=${data.location_lat},${data.location_lng}`} className="button flex-1 py-1" data-variant="outlined">
@@ -172,10 +185,11 @@ const DoctorDetailMobile = async ({ data, availableData, searchParams, cookies }
                     </div>
                 </> : searchParams.sub_page === "Patient-Reviews" ? <>
                     reviews
-                </> : <><OverView data={data} availableData={availableData} />
+                </> : <>
+                    <OverView data={data} availableData={availableData} />
                 </>}
         {(data.settings.book_by === "app") && <div className="bg-white sticky bottom-0 w-full px-2 py-1" style={{ bottom: 0 }}>
-            <BookAppointment emergencyBookingClose={data.settings.emergency_booking_close} bookingCloseMessage={data.settings.booking_close_message} open={searchParams.book_appointment === '1' ? true : false} clinic_id={data.clinic_id} service_loc_id={data.id} doctor_id={data.doctor_id} service_charge={parseInt(data.service_charge)} site_service_charge={parseInt(data.site_service_charge)} settings={data.settings} availability={availableData} />
+            <BookAppointment emergencyBookingClose={data.settings.emergency_booking_close} bookingCloseMessage={data.settings.booking_close_message} open={searchParams.book_appointment === '1' ? true : false} clinic_id={data.clinic_id} service_loc_id={data.id} doctor_id={data.doctor_id} service_charge={parseInt(data.service_charge)} site_service_charge={parseInt(data.site_service_charge)} settings={data.settings} availability={availableData} slno_groups={data.slno_groups || []} pageUrl={pageUrl} />
         </div>}
         {data.settings.book_by === "call" &&
             <div className="bg-white sticky bottom-0 w-full px-2 py-1" style={{ bottom: 0 }}
@@ -193,9 +207,9 @@ const DoctorDetailMobile = async ({ data, availableData, searchParams, cookies }
         {!cookies[userSecreateKey] ?
             <>
                 <LoginToast message='Please <b>Login/Signup</b> To <b>Book appointment</b>' style={{ bottom: "3.5rem" }} />
-                <NeedHelpBtn style={{ bottom: "30vh" }} />
+                {/* <NeedHelpBtn style={{ bottom: "30vh" }} /> */}
             </> : <>
-                <NeedHelpBtn style={{ bottom: "5rem" }} />
+                {/* <NeedHelpBtn style={{ bottom: "5rem" }} /> */}
             </>}
 
     </>)

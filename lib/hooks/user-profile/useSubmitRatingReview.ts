@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import {toast} from 'react-toastify';
+import { toast } from 'react-toastify';
 import { submitReviewsPostCurl } from "../useClientSideApiCall";
 type TReviewRags = Array<{
     topic: string,
@@ -9,7 +9,7 @@ type TReviewRags = Array<{
         selectionType: "single" | "multiple"
     }>
 }>
-const useSubmitRatingReview = ({review_text=""}:{review_text?:string}) => {
+const useSubmitRatingReview = ({ review_text = "" }: { review_text?: string }) => {
     const reviewTags: TReviewRags = [
         {
             topic: "About Doctor",
@@ -64,7 +64,7 @@ const useSubmitRatingReview = ({review_text=""}:{review_text?:string}) => {
     ]
     const [SelectedRating, setSelectedRating] = useState<number>(0);
     const [rating, setRating] = useState<number>(0);
-    const [reviewText, setReviewText] = useState<string>(review_text||"");
+    const [reviewText, setReviewText] = useState<string>(review_text || "");
     const [showReviewModal, setShowReviewModal] = useState<boolean>(false);
     const [selectedReviewTags, setSelectedReviewTags] = useState<Array<{ tag: string, score: number, topic: string, sub_topic: string }>>([]);
     const [selectedReviewTagsArr, setSelectedReviewTagsArr] = useState<string[]>([]);
@@ -112,59 +112,61 @@ const useSubmitRatingReview = ({review_text=""}:{review_text?:string}) => {
         }
     }
     const submitRatingReview = (params: {
-        rev_id:number,
+        rev_id: number,
         clinic_id: number,
         doctor_id: number,
         service_loc_id: number,
         appointment_id: number,
-        consultation_date: string
-    },cb:()=>void) => {
+        consultation_date: string,
+        case?:"appointment_review" | "general_review"
+    }, cb: () => void) => {
         submitReviewsPostCurl({
-            rev_id:params.rev_id,
+            rev_id: params.rev_id,
             appoitment_id: params.appointment_id,
-            doctor_id:params.doctor_id,
+            doctor_id: params.doctor_id,
             service_loc_id: params.service_loc_id,
             clinic_id: params.clinic_id,
             consultation_date: params.consultation_date,
             rating: SelectedRating,
             visited_for: "",
             experience: reviewText,
-            review_tags: selectedReviewTags
-        }).then((data)=>{
+            review_tags: selectedReviewTags,
+            case: params.case || "appointment_review"
+        }).then((data) => {
             toast.success(data.message)
             setShowReviewModal(false)
             cb()
-        }).catch((err)=>{
+        }).catch((err) => {
             toast.error(err.message)
         })
     }
-    const submitRating=(params:{
-        rev_id:number,
+    const submitRating = (params: {
+        rev_id: number,
         clinic_id: number,
         doctor_id: number,
         service_loc_id: number,
         appointment_id: number,
         consultation_date: string
-    },cb:()=>void)=>{
+    }, cb: () => void) => {
         submitReviewsPostCurl({
-            rev_id:params.rev_id,
+            rev_id: params.rev_id,
             appoitment_id: params.appointment_id,
-            doctor_id:params.doctor_id,
+            doctor_id: params.doctor_id,
             service_loc_id: params.service_loc_id,
             clinic_id: params.clinic_id,
             rating: SelectedRating,
             consultation_date: params.consultation_date,
-        }).then((data)=>{
+        }).then((data) => {
             toast.success(data.message)
             setShowReviewModal(false)
             cb()
-        }).catch((err)=>{
+        }).catch((err) => {
             toast.error(err.message)
         })
     }
-    useEffect(()=>{
+    useEffect(() => {
         setReviewText(review_text)
-    },[review_text])
+    }, [review_text])
     return {
         reviewTags,
         showReviewModal,
@@ -179,7 +181,7 @@ const useSubmitRatingReview = ({review_text=""}:{review_text?:string}) => {
         setSelectedReviewTagsArr,
         onSelectReviewTag,
         submitRatingReview,
-        submitRating
+        submitRating,
     };
 }
 export default useSubmitRatingReview;

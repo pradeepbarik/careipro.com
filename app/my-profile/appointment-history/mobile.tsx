@@ -1,6 +1,6 @@
 'use client'
 import { Fragment, useState } from "react";
-import { BiChevronRight } from "react-icons/bi";
+import { BiChevronRight,BiRotateLeft } from "react-icons/bi";
 import Link from "next/link";
 import { useRouter } from 'next/navigation'
 import Header from "@/app/components/mobile/header";
@@ -94,8 +94,9 @@ const MyAppointmentsMobile = ({ cookies }: { cookies: Record<string, any> }) => 
                                 }} />
                             </div>
                             {appointment.active === 1 &&
-                                <div className="ml-auto font-semibold">
-                                    <Link href={appointment.seo_url} className="button py-2 text one-line text-xs rounded-2xl text-center">Book Appointment</Link>
+                                <div className="ml-auto font-semibold flex items-center border rounded-md px-2 shadow-sm">
+                                    <BiRotateLeft className="color-secondary text-lg"/>
+                                    <Link href={appointment.seo_url} className="color-secondary py-2 text one-line text-xs rounded-2xl text-center">Re-Book</Link>
                                 </div>
                             }
                         </div>

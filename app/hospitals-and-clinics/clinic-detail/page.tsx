@@ -26,10 +26,10 @@ export async function generateMetadata({ searchParams }: { searchParams: any }):
 const ClinicDetail = async ({ searchParams }: { searchParams: { seo_url: string, state: string, city: string, clinic_id: number, state_city: string, market_name: string, sub_page: string } }) => {
     const { device } = useDeviceInfo();
     let { data } = await fetchClinicDetail({ state: searchParams.state, city: searchParams.city, clinic_bid: `C${searchParams.clinic_id}-${searchParams.state_city}`, clinic_id: searchParams.clinic_id, market_name: searchParams.market_name });
-    if (searchParams.seo_url !== data.clinic_info.seo_url) {
-        permanentRedirect(data.pageUrl, RedirectType.push);
-        return <></>
-    }
+    // if (searchParams.seo_url !== data.clinic_info.seo_url) {
+    //     permanentRedirect(data.pageUrl, RedirectType.push);
+    //     return <></>
+    // }
     if (device.type === "mobile") {
         return (
             <>

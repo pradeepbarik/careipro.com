@@ -26,7 +26,7 @@ const FooterMenu = ({ cookies, searchParams }: { cookies: Record<string, any>, s
     };
   }, [lastScrollY]); // Re-run effect if lastScrollY changes
   return (
-    <div className="bg-white border-t fixed bottom-0 left-0 right-0 w-full overflow-hidden px-2" style={{ transition: "bottom .3s", bottom: scrollDirection === "down" ? "-4.5rem" : "0", borderTopLeftRadius: "2.2rem", borderTopRightRadius: "2.2rem", boxShadow: "0 -2px 6px rgba(0,0,0,0.1)" }}>
+    <div className="bg-white border-t fixed bottom-0 left-0 right-0 w-full overflow-hidden px-2" style={{ transition: "bottom .3s", bottom: scrollDirection === "down" ? "-6.5rem" : "0", borderTopLeftRadius: "2.2rem", borderTopRightRadius: "2.2rem", boxShadow: "0 -2px 6px rgba(0,0,0,0.1)" }}>
       {cookies[userSecreateKey] ?
         <div className='flex font-semibold py-1'>
           <Link href={`/Read-Articles-for-${searchParams["city"].toLowerCase()}-in-${searchParams["state"].toLowerCase()}`} className='grow-[1] basis-0 shrink-0 gap-1 py-2 flex justify-center items-center flex-col'>
@@ -37,11 +37,11 @@ const FooterMenu = ({ cookies, searchParams }: { cookies: Record<string, any>, s
             <BiBookHeart className='text-xl' />
             Favourites
           </Link>
-          <Link href={"/contact-us"} className='grow-[1] basis-0 shrink-0 gap-1 py-2 flex justify-center items-center flex-col color-secondary'>
+          <Link href={"/contact-us"} className='grow-[1] basis-0 shrink-0 gap-1 py-2 flex justify-center items-center flex-col color-secondary text-center'>
             <BiSupport className='text-xl' />
             Need Help?
           </Link>
-          <Link href={"/my-profile/appointment-history"} className='grow-[1] basis-0 shrink-0 gap-1 py-2 flex justify-center items-center flex-col'>
+          <Link href={"/my-profile/appointment-history"} className='grow-[1] basis-0 shrink-0 gap-1 py-2 flex justify-center items-center flex-col text-center'>
             <BiCalendar className='text-xl' />
             Bookings
           </Link>
@@ -67,7 +67,7 @@ const FooterMenu = ({ cookies, searchParams }: { cookies: Record<string, any>, s
             <BiBookHeart className='text-xl' />
             Favourites
           </Link> */}
-          <Link href={"/contact-us"} className='grow-[1] basis-0 shrink-0 gap-1 py-2 flex justify-center items-center flex-col color-secondary'>
+          <Link href={"/contact-us"} className='grow-[1] basis-0 shrink-0 gap-1 py-2 flex justify-center items-center flex-col color-secondary text-center'>
             <BiSupport className='text-xl' />
             Need Help?
           </Link>
@@ -79,9 +79,9 @@ const FooterMenu = ({ cookies, searchParams }: { cookies: Record<string, any>, s
           <BiBriefcase className='text-xl' />
           Jobs
         </Link> */}
-          <Link href={"/my-profile/appointment-history"} className='grow-[1] basis-0 shrink-0 gap-1 py-2 flex justify-center items-center flex-col'>
+          <Link href={"/my-profile/appointment-history"} className='grow-[1] basis-0 shrink-0 gap-1 py-2 flex justify-center items-center flex-col text-center'>
             <BiCalendar className='text-xl' />
-            Bookings
+           Bookings
           </Link>
           {/* {cookies[userSecreateKey] ?
           <Link href={"/my-profile"} className='grow-[1] basis-0 shrink-0 gap-1 py-2 flex justify-center items-center flex-col'>

@@ -26,10 +26,10 @@ export async function generateMetadata({ searchParams }: { searchParams: any }):
 const DoctorsList = async ({ searchParams }: { searchParams: any }) => {
     const { device } = useDeviceInfo();
     const data = await fetchDoctors({ state: searchParams.state, city: searchParams.city, cat_id: searchParams.cat_id, group_category: searchParams.group_cat, seo_url: searchParams.seo_url })
-    if (data.data.seo_dt.short_seo_url !== searchParams.seo_url) {
-        permanentRedirect("/" + data.data.seo_dt.seo_url, RedirectType.push);
-        return <></>
-    }
+    // if (data.data.seo_dt.short_seo_url !== searchParams.seo_url) {
+    //     permanentRedirect("/" + data.data.seo_dt.seo_url, RedirectType.push);
+    //     return <></>
+    // }
     if (device.type === "mobile") {
         return (<>
             <DoctorListMobile params={searchParams} data={data.data} />
