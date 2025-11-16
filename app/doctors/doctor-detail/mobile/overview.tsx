@@ -5,7 +5,7 @@ import NextConsultTime from '@/app/components/mobile/doctors/doctor-detail/next-
 import moment, { get_current_datetime } from "@/lib/helper/date-time";
 
 const OverView = ({ data, availableData }: { data: TDoctorDetail, availableData: TDoctorvailableData }) => {
-    let showNextConsultDate = (data.doctor_availability && data.doctor_availability.date && moment(get_current_datetime()).diff(moment(data.doctor_availability.date),'days')<0)?true:false;
+    let showNextConsultDate = (data.doctor_availability && data.doctor_availability.date && moment(get_current_datetime()).diff(moment(data.doctor_availability.date), 'days') < 0) ? true : false;
     return (
         <>
             <SectionSubHeading heading='Consulting Timing' />
@@ -74,6 +74,12 @@ const OverView = ({ data, availableData }: { data: TDoctorDetail, availableData:
             </>}
             {data.settings.raw_information &&
                 <div dangerouslySetInnerHTML={{ __html: data.settings.raw_information }} className="px-2 py-2 bg-white shadow-sm mb-2" ></div>
+            }
+            {data.description ?
+                <>
+                    <SectionHeading heading={`About ${data.doctor_name}`} />
+                    <div dangerouslySetInnerHTML={{ __html: data.description }} className="px-2 py-2 bg-white shadow-sm mb-2" ></div>
+                </>:<></>
             }
         </>
     )

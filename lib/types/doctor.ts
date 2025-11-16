@@ -153,6 +153,7 @@ export type TDoctorDetail=TWeeklyConsultingTiming & {
         title:string,
         description:string,
         h1:string,
+        ldjson:string
     }
 }
 export type TDoctorvailableData={
