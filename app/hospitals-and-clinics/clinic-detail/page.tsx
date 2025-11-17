@@ -30,7 +30,7 @@ const ClinicDetail = async ({ searchParams }: { searchParams: { seo_url: string,
     //     permanentRedirect(data.pageUrl, RedirectType.push);
     //     return <></>
     // }
-    if (device.type === "mobile") {
+    if (device.type === "mobile" || 1==1) {
         return (
             <>
                 <ClinicDetailMobile data={data} searchParams={searchParams} />

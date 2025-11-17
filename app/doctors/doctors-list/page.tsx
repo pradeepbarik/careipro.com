@@ -30,7 +30,7 @@ const DoctorsList = async ({ searchParams }: { searchParams: any }) => {
     //     permanentRedirect("/" + data.data.seo_dt.seo_url, RedirectType.push);
     //     return <></>
     // }
-    if (device.type === "mobile") {
+    if (device.type === "mobile" || 1==1) {
         return (<>
             <DoctorListMobile params={searchParams} data={data.data} />
             <PageVisitLogger data={{
