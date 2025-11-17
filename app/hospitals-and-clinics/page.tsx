@@ -28,7 +28,7 @@ const Hospitals = async ({ searchParams }: { searchParams: { city: string, state
     const [pageData] = await Promise.all([
         fetchClinicsPageData(searchParams.state.toLocaleLowerCase(), searchParams.city.toLocaleLowerCase()),
     ])
-    if (device.type === "mobile") {
+    if (device.type === "mobile" || 1==1) {
         return (
             <>
                 <HospitalsMobile city={searchParams.city} state={searchParams.state} pageData={pageData} />

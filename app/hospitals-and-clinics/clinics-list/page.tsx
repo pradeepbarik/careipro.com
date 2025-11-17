@@ -28,7 +28,7 @@ const Clinics = async ({ searchParams }: { searchParams: any }) => {
         fetchClinicsList({ state: searchParams.state, city: searchParams.city, market_name: searchParams.market_name, cat_id: searchParams.cat_id, group_category: searchParams.group_cat }),
         fetchClinicTopDoctors({ state: searchParams.state, city: searchParams.city, market_name: searchParams.market_name })
     ])
-    if (device.type === "mobile") {
+    if (device.type === "mobile" || 1==1) {
         return (<>
             <ClinicListMobile params={searchParams} data={clinicListData.data} topDoctorsData={clinicSTopDoctorsData.data} />
         </>)
