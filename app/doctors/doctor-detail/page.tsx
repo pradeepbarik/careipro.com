@@ -15,7 +15,7 @@ export async function generateMetadata({ searchParams }: { searchParams: any }):
         openGraph: {
             title: data.data.seo_dt.title,
             description: data.data.seo_dt.description,
-            url: `/${searchParams.seo_url}-At-${searchParams.market_name}-In-${searchParams.city}-Of-${searchParams.state}/DR${searchParams.doctor_id}-SL${searchParams.service_loc_id}-C${searchParams.clinic_id}`,
+            url: `https://careipro.com/${searchParams.seo_url}-At-${searchParams.market_name}-In-${searchParams.city}-Of-${searchParams.state}/DR${searchParams.doctor_id}-SL${searchParams.service_loc_id}-C${searchParams.clinic_id}`,
             siteName: 'Careipro',
             images: [
                 doctorProfilePic(data.data.profile_pic)
@@ -32,7 +32,7 @@ export async function generateMetadata({ searchParams }: { searchParams: any }):
             }
         },
         alternates: {
-            canonical: `/${searchParams.seo_url}-At-${searchParams.market_name}-In-${searchParams.city}-Of-${searchParams.state}/DR${searchParams.doctor_id}-SL${searchParams.service_loc_id}-C${searchParams.clinic_id}`
+            canonical: `https://careipro.com/${searchParams.seo_url}-At-${searchParams.market_name}-In-${searchParams.city}-Of-${searchParams.state}/DR${searchParams.doctor_id}-SL${searchParams.service_loc_id}-C${searchParams.clinic_id}`
         }
     }
 }
@@ -78,21 +78,23 @@ const DoctorDetail = async ({ searchParams }: {
     };
     if (device.type === "mobile") {
         return (<>
-        <Script
+            <Script
                 id="json-ld-site-detail" // Unique ID for the script
                 type="application/ld+json"
-                dangerouslySetInnerHTML={{ __html: JSON.stringify({
-                    "@context": "https://schema.org",
-                    "@type": "WebSite",
-                    "name": "Careipro",
-                    "url": "https://careipro.com/",
-                }) }}
+                dangerouslySetInnerHTML={{
+                    __html: JSON.stringify({
+                        "@context": "https://schema.org",
+                        "@type": "WebSite",
+                        "name": "Careipro",
+                        "url": "https://careipro.com/",
+                    })
+                }}
                 strategy="beforeInteractive"
             />
             <Script
                 id="json-ld-doctor-detail" // Unique ID for the script
                 type="application/ld+json"
-                dangerouslySetInnerHTML={{ __html:data.data.seo_dt.ldjson || JSON.stringify(ldJson) }}
+                dangerouslySetInnerHTML={{ __html: data.data.seo_dt.ldjson || JSON.stringify(ldJson) }}
                 strategy="beforeInteractive"
             />
             <DoctorDetailMobile data={data.data} searchParams={searchParams} availableData={availableData} cookies={cookies} />
