@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@next/third-parties": "^16.0.3",
     "@reduxjs/toolkit": "^2.2.6",
     "@types/ua-parser-js": "^0.7.39",
     "axios": "^1.7.2",

@@ -76,7 +76,7 @@ const DoctorDetail = async ({ searchParams }: {
         //     "ratingCount": data.data.total_reviews.toString()
         // }
     };
-    if (device.type === "mobile") {
+    if (device.type === "mobile" || 1==1) {
         return (<>
             <Script
                 id="json-ld-site-detail" // Unique ID for the script
