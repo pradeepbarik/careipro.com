@@ -22,7 +22,7 @@ export async function generateMetadata({ searchParams }: { searchParams: { city:
             }
         },
         alternates: {
-            canonical:`/Doctors-In-${searchParams.city}-In-${searchParams.state}`
+            canonical:`/Doctors-In-${searchParams.city}-Of-${searchParams.state}`
         }
     }
 }

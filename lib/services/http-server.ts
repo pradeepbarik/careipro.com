@@ -37,6 +37,7 @@ export const fetchJson = async <R>(url: string, log_api: boolean = false, option
     }
     return response.json();
   } catch (err: any) {
+    console.error("fetchJson error:", API_BASE_URL + url, err);
     throw new Error(err.message)
   }
 }
