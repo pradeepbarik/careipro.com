@@ -25,7 +25,7 @@ const nextConfig = {
     rewrites: async()=> {
         return [
             {
-                source:'/Doctors-In-:city-of-:state',
+                source:'/Doctors-In-:city-(of|in)-:state',
                 destination:'/doctors'
             },
             {
@@ -61,7 +61,7 @@ const nextConfig = {
                 destination:'/petcare'
             },
             {
-                source:'/:seo_url-In-:city-of-:state/CATG:cat_id-:group_cat',
+                source: '/:seo_url([a-zA-Z0-9-_]+)-In-:city([a-zA-Z-]+)-of-:state/CATG:cat_id-:group_cat',
                 destination:'/doctors/doctors-list'
             },
             {
