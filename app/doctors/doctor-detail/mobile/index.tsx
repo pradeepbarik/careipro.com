@@ -15,9 +15,10 @@ import { TsearchParams } from '../types';
 import { doctorDetailPageUrl } from '@/lib/helper/link';
 import SendEnquiry from "@/app/hospitals-and-clinics/clinic-detail/mobile/send-enquiry";
 import EmergencyBookingCloseAlert from '@/app/components/mobile/doctors/doctor-detail/emergency-booking-close-alert';
-import NeedHelpBtn from "@/app/components/mobile/need-help-btn";
+//import NeedHelpBtn from "@/app/components/mobile/need-help-btn";
 import LikeShare from "@/app/components/mobile/doctors/doctor-detail/like-share";
 import { userSecreateKey } from '@/constants/storage_keys';
+const RatingReminder = dynamic(() => import('@/app/components/mobile/rating-reminder'));
 const LoginToast = dynamic(() => import("@/app/components/mobile/login-toast"));
 const OverView = dynamic(() => import('./overview'))
 const AppointmentBookingTiming = dynamic(() => import('./booking-timing'));
@@ -41,8 +42,8 @@ const DoctorDetailMobile = async ({ data, availableData, searchParams, cookies }
             <LikeShare total_liked={data.total_liked || 0} url={pageUrl} doctor_name={data.doctor_name} position={data.position || data.qualification_disp} clinic_name={data.clinic_name} service_charge={data.service_charge} doctor_id={data.doctor_id} clinic_id={data.clinic_id} />
         } />
         <div className='flex px-2 py-2 mt-2 gap-3 bg-white shadow-sm'>
-            <div>
-                <img src={doctorProfilePic(data.profile_pic)} alt={`${data.doctor_name} profile pic`} className='h-20 w-20 rounded-md shrink-0' />
+            <div className="w-20 shrink-0">
+                <img src={doctorProfilePic(data.profile_pic)} alt={`${data.doctor_name} profile pic`} className='h-20 w-full rounded-md shrink-0' />
             </div>
             <div className="grow">
                 <div className="flex">
@@ -111,12 +112,12 @@ const DoctorDetailMobile = async ({ data, availableData, searchParams, cookies }
                         <Nearme className="border rounded-md p-2 w-12 h-10" style={{ fontSize: '2.2rem', background: "#f7f7f7" }} pathStyle={{ stroke: "black" }} />
                         <span>Direction</span>
                     </a>
-                    <DoctorFeedback doctor_id={data.doctor_id} clinic_id={data.clinic_id} service_loc_id={data.id}/>
+                    <DoctorFeedback doctor_id={data.doctor_id} clinic_id={data.clinic_id} service_loc_id={data.id} />
                     {(data.other_doc_cnt && data.other_doc_cnt > 0) ?
-                    <Link href={data?.clinic_dtlpg_url || ""} className="flex flex-col items-center w-24 shrink-0">
-                        <img src="/icon/male-doctor.svg" className="border rounded-md p-2 w-12 h-10" style={{ fontSize: '2.2rem' }} />
-                        <span>Our Doctors</span>
-                    </Link>:<></>}
+                        <Link href={data?.clinic_dtlpg_url || ""} className="flex flex-col items-center w-24 shrink-0">
+                            <img src="/icon/male-doctor.svg" className="border rounded-md p-2 w-12 h-10" style={{ fontSize: '2.2rem' }} />
+                            <span>Our Doctors</span>
+                        </Link> : <></>}
                 </div> :
                 <div className="flex gap-4 mt-2">
                     <a target="_blank" href={`https://www.google.com/maps/dir/?api=1&destination=${data.location_lat},${data.location_lng}`} className="button flex-1 py-1" data-variant="outlined">
@@ -209,6 +210,7 @@ const DoctorDetailMobile = async ({ data, availableData, searchParams, cookies }
                 <LoginToast message='Please <b>Login/Signup</b> To <b>Book appointment</b>' style={{ bottom: "3.5rem" }} />
                 {/* <NeedHelpBtn style={{ bottom: "30vh" }} /> */}
             </> : <>
+                <RatingReminder catid={0} doctor_id={data.doctor_id} />
                 {/* <NeedHelpBtn style={{ bottom: "5rem" }} /> */}
             </>}
 

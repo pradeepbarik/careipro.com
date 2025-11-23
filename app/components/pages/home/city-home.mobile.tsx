@@ -7,15 +7,20 @@ import Specializations from '../../mobile/home/specializations';
 import Verticals from '../../mobile/home/verticals';
 import DoctorCategory from '../../mobile/home/doctor-category';
 import Petcare from '../../mobile/home/pet-care';
-import ServiceAvailbeCities from '../../mobile/footer/service-available-cities';
+//import ServiceAvailbeCities from '../../mobile/footer/service-available-cities';
 import CategoriesFooter from '../../mobile/footer/categories';
 import NearbyCities from '../../mobile/home/nearby-cities';
 import PopularDoctor from '../../mobile/home/popular-doctor';
 import PopularClinics from '../../mobile/home/popular-clinics';
 import SetStateCity from '../../client-components/set-state-city';
-import AppointmentReminder from '../../mobile/appointment-reminder';
 import SectionBanners from '@/app/components/mobile/section-banners';
-const CityHome = async ({ state, city }: { state: string, city: string }) => {
+import dynamic from 'next/dynamic';
+import { userSecreateKey, userinfo } from '@/constants/storage_keys';
+import Login from '../../mobile/login';
+import LoginToast from '../../mobile/login-toast';
+const AppointmentReminder = dynamic(() => import("../../mobile/appointment-reminder"), { ssr: false });
+const RatingReminder = dynamic(() => import("../../mobile/rating-reminder"), { ssr: false });
+const CityHome = async ({ state, city, cookies }: { state: string, city: string, cookies: any }) => {
     const data = await getCityHomePageData(state, city);
     const getSectionDoctors = (doctorIds: number[]) => {
         let doctors: any[] = [];
@@ -75,7 +80,13 @@ const CityHome = async ({ state, city }: { state: string, city: string }) => {
                 </Suspense>
             </Footer>
             <SetStateCity state={state} city={city} />
-            <AppointmentReminder position={"section-1"} />
+            {cookies[userSecreateKey] && cookies[userinfo] ?
+                <>
+                    <AppointmentReminder position={"section-1"} />
+                    <RatingReminder catid={0} doctor_id={0} />
+                </>:<>
+                </>
+            }
         </>
     )
 }

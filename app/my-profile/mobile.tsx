@@ -193,6 +193,14 @@ const MyProfileMobile = ({ cookies }: { cookies: Record<string, string> }) => {
                 <div className='px-4'>
                     <ul>
                         <li>
+                            <Link href={"/login"} className='flex items-center h-12'>
+                                <BiUserCircle className='fs-16' />
+                                <span className='ml-2 fs-16'>
+                                    Login/Signup
+                                </span>
+                            </Link>
+                        </li>
+                        <li>
                             <Link href={"/Register-clinic-hospital"} className='flex items-center h-12'>
                                 <AiOutlineTag className='fs-16' />
                                 <span className='ml-2 fs-16'>
