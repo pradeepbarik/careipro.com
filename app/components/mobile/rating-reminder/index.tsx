@@ -13,7 +13,7 @@ import useSubmitRatingReview from "@/lib/hooks/user-profile/useSubmitRatingRevie
 import Ratingstars from "../ui/rating-stars";
 import ReviewTags from "../review-tags";
 const RatingReminder = ({ catid, doctor_id }: { catid: number, doctor_id: number }) => {
-    const { reminders, onRatingSubmitted,removeRatingReminder,removeReminderId } = useRatingReminder({ catid, doctor_id });
+    const { reminders, onRatingSubmitted, removeRatingReminder, removeReminderId } = useRatingReminder({ catid, doctor_id });
     const { reviewTags, showReviewModal, setShowReviewModal, setSelectedRating, SelectedRating, selectedReviewTagsArr, onSelectReviewTag, reviewText, setReviewText, submitRatingReview, reset } = useSubmitRatingReview({});
     const [scrollDirection, setScrollDirection] = useState("");
     const [lastScrollY, setLastScrollY] = useState(0);
@@ -42,7 +42,7 @@ const RatingReminder = ({ catid, doctor_id }: { catid: number, doctor_id: number
         };
     }, [lastScrollY]); // Re-run effect if lastScrollY changes
     useEffect(() => {
-       
+
     }, [reminders.length])
     if (reminders.length === 0) {
         return null;
@@ -53,42 +53,46 @@ const RatingReminder = ({ catid, doctor_id }: { catid: number, doctor_id: number
                 {reminders.length > 1 ?
                     <Swiper slidesPerView={'auto'}
                         spaceBetween={10}>
-                        {reminders.map((reminder,i) =>
+                        {reminders.map((reminder, i) =>
                             <SwiperSlide style={{ width: `85%` }} key={reminder.id}>
-                                <div className="p-2 shadow-md rounded-md border bg-orange-50 flex items-center gap-4" style={{opacity: removeReminderId === reminder.id ? 0 : 1, transition:"opacity .5s"}}>
+                                <div className="p-2 shadow-md rounded-md border bg-orange-50 flex gap-4" style={{ opacity: removeReminderId === reminder.id ? 0 : 1, transition: "opacity .5s" }}>
                                     <div className="grow">
                                         <div>How was your last visit experience?</div>
                                         <div className="flex items-center">
                                             <span className="font-semibold">{formatDoctorName(reminder.doctor_name)}</span>
                                             <div className="flex justify-around ml-auto">
-                                                <BiStar size={24} className="text-yellow-700" onClick={() => { openReviewModal(reminder, 1) }} />
-                                                <BiStar size={24} className="text-yellow-700" onClick={() => { openReviewModal(reminder, 2) }} />
-                                                <BiStar size={24} className="text-yellow-700" onClick={() => { openReviewModal(reminder, 3) }} />
-                                                <BiStar size={24} className="text-yellow-700" onClick={() => { openReviewModal(reminder, 4) }} />
-                                                <BiStar size={24} className="text-yellow-700" onClick={() => { openReviewModal(reminder, 5) }} />
+                                                <BiStar size={22} className="text-yellow-700" onClick={() => { openReviewModal(reminder, 1) }} />
+                                                <BiStar size={22} className="text-yellow-700" onClick={() => { openReviewModal(reminder, 2) }} />
+                                                <BiStar size={22} className="text-yellow-700" onClick={() => { openReviewModal(reminder, 3) }} />
+                                                <BiStar size={22} className="text-yellow-700" onClick={() => { openReviewModal(reminder, 4) }} />
+                                                <BiStar size={22} className="text-yellow-700" onClick={() => { openReviewModal(reminder, 5) }} />
                                             </div>
                                         </div>
                                     </div>
-                                    <BiX size={24} className="bg-white shadow-md rounded-full ml-auto cursor-pointer" onClick={()=>{removeRatingReminder(reminder.id)}} />
+                                    <div className="w-4">
+                                        <BiX size={22} className="bg-white shadow-md rounded-full ml-auto cursor-pointer absolute right-0 top-0" onClick={() => { removeRatingReminder(reminder.id) }} />
+                                    </div>
                                 </div>
                             </SwiperSlide>
                         )}
                     </Swiper> : <>
-                        <div className="p-2 shadow-md rounded-md border bg-orange-50 flex items-center gap-4">
+                        <div className="p-2 shadow-md rounded-md border bg-orange-50 flex gap-4 relative">
                             <div className="grow">
                                 <div>How was your last visit experience?</div>
                                 <div className="flex items-center">
                                     <span className="font-semibold">{formatDoctorName(reminders[0].doctor_name)}</span>
                                     <div className="flex justify-around ml-auto">
-                                        <BiStar size={24} className="text-yellow-700" onClick={()=>{openReviewModal(reminders[0],1)}} />
-                                        <BiStar size={24} className="text-yellow-700" onClick={()=>{openReviewModal(reminders[0],2)}} />
-                                        <BiStar size={24} className="text-yellow-700" onClick={()=>{openReviewModal(reminders[0],3)}} />
-                                        <BiStar size={24} className="text-yellow-700" onClick={()=>{openReviewModal(reminders[0],4)}} />
-                                        <BiStar size={24} className="text-yellow-700" onClick={()=>{openReviewModal(reminders[0],5)}} />
+                                        <BiStar size={22} className="text-yellow-700" onClick={() => { openReviewModal(reminders[0], 1) }} />
+                                        <BiStar size={22} className="text-yellow-700" onClick={() => { openReviewModal(reminders[0], 2) }} />
+                                        <BiStar size={22} className="text-yellow-700" onClick={() => { openReviewModal(reminders[0], 3) }} />
+                                        <BiStar size={22} className="text-yellow-700" onClick={() => { openReviewModal(reminders[0], 4) }} />
+                                        <BiStar size={22} className="text-yellow-700" onClick={() => { openReviewModal(reminders[0], 5) }} />
                                     </div>
                                 </div>
                             </div>
-                            <BiX size={24} className="bg-white shadow-md rounded-full ml-auto cursor-pointer" onClick={()=>{removeRatingReminder(reminders[0].id)}} />
+                            <div className="w-4">
+                                <BiX size={22} className="bg-white shadow-md rounded-full ml-auto cursor-pointer absolute -top-1 -right-1" onClick={() => { removeRatingReminder(reminders[0].id) }} />
+                            </div>
                         </div>
                     </>}
             </div>, document.body)}
