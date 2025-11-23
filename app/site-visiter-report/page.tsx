@@ -1,6 +1,4 @@
-'use client';
 import { Metadata } from "next";
-
 export async function generateMetadata({ searchParams }: { searchParams: any }): Promise<Metadata> {
     return {
         title: "Page visitors",
