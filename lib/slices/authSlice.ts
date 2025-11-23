@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import {RootState} from '@/lib/store'
+import { RootState } from '@/lib/store'
 type initialState = {
     show_login_modal: boolean,
     is_loggedin: boolean,
@@ -19,7 +19,14 @@ type initialState = {
         referal_code: string,
         secreate_key: string,
         user_type: string,
-        is_clinic_owner:number
+        is_clinic_owner: number,
+        emp_id:number|null,
+        emp_info?: {
+            branch_id: number,
+            department_id: number,
+            status:string
+            user_app_access:string[]
+        }
     } | null,
     cookies: Record<string, string>
 }
@@ -53,6 +60,6 @@ const authSlice = createSlice({
         }
     }
 })
-export const selectAuthSlice=(state:RootState)=>state.authSlice;
+export const selectAuthSlice = (state: RootState) => state.authSlice;
 export const { initCookies, initUserDetail, setGuestUserSecreateKey } = authSlice.actions;
 export default authSlice.reducer;

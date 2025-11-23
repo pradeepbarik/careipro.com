@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import dynamic from 'next/dynamic'
 import useDeviceInfo from "@/lib/hooks/useDeviceInfo";
 import PageVisitLogger from "../components/client-components/page-visit-logger";
-import { userSecreateKey } from '@/constants/storage_keys';
-import NeedHelpBtn from '@/app/components/mobile/need-help-btn';
+//import { userSecreateKey } from '@/constants/storage_keys';
+//import NeedHelpBtn from '@/app/components/mobile/need-help-btn';
 import FooterMenu from '@/app/components/mobile/bottom-menu';
 const CityHomeMobile = dynamic(() => import('@/app/components/pages/home/city-home.mobile'));
 const LoginToast = dynamic(() => import("@/app/components/mobile/login-toast"));
@@ -34,7 +34,7 @@ const CityHomePage = ({ searchParams }: TProps) => {
   if (device.type === "mobile" || 1==1) {
     return (
       <>
-        <CityHomeMobile state={searchParams.state} city={searchParams.city} />
+        <CityHomeMobile state={searchParams.state} city={searchParams.city} cookies={cookies} />
         {/* {!cookies[userSecreateKey] && <LoginToast style={{bottom:"4rem"}}/>} */}
         <PageVisitLogger data={{
           page_name: "city_home",

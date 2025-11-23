@@ -23,7 +23,7 @@ export async function generateMetadata({ searchParams }: { searchParams: any }):
 }
 const Aboutus = () => {
   const { device } = useDeviceInfo();
-  if (device.type === "mobile") {
+  if (device.type === "mobile" || 1==1) {
     return (
       <>
         <AboutUsMobile />
