@@ -18,7 +18,7 @@ export async function generateMetadata({ searchParams }: { searchParams: any }):
             }
         },
         alternates:{
-        canonical: `https://careipro.com/${searchParams.state}/${searchParams.city.replace(" ", "-")}/${searchParams.seo_url}-In-${searchParams.market_name}/CLINICS-CATG${searchParams.cat_id}-${searchParams.group_cat}` // Relative path will be combined with metadataBase
+        canonical: `https://careipro.com/${searchParams.state.toLowerCase().replace(" ", "-")}/${searchParams.city.toLowerCase().replace(" ", "-")}/${searchParams.seo_url}-In-${searchParams.market_name}/CLINICS-CATG${searchParams.cat_id}-${searchParams.group_cat}` // Relative path will be combined with metadataBase
         }
     }
 }
