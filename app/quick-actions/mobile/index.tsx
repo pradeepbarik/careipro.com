@@ -23,7 +23,7 @@ const QuickActionsPageMobile = ({ cookies }: { cookies: Record<string, any> }) =
                     </span>
                 </div>
                 <div className="grow flex p-2">
-                    <Link href={"/Register-clinic-hospital"} title="Best patient,clinic,hospital management software for healthcare service providers" className="button rounded-full py-1 mt-auto ml-auto" data-color="secondary" data-variant="outlined">Explore Now</Link>
+                    <Link href={"/register-clinic-hospital"} title="Best patient,clinic,hospital management software for healthcare service providers" className="button rounded-full py-1 mt-auto ml-auto" data-color="secondary" data-variant="outlined">Explore Now</Link>
                 </div>
             </div>
         </div>
@@ -47,27 +47,27 @@ const QuickActionsPageMobile = ({ cookies }: { cookies: Record<string, any> }) =
                         </span>
                     </div>
                     <div className="self-center mt-auto">
-                        <Link href={`${cookies["state"]}/apply-for-delivery-staff-jobs-in-${cookies['city']}/FORM-29`} title={`Delivery Staff jobs in ${cookies['city']}`} className="button ripple">Apply Now</Link>
+                        <Link href={`/${cookies["state"].toLowerCase()}/${cookies["city"].toLowerCase().replace(/\s+/g, '-')}/apply-for-delivery-staff-jobs/FORM-29`} title={`Delivery Staff jobs in ${cookies['city']}`} className="button ripple">Apply Now</Link>
                     </div>
                 </div>
             </div>
             <SectionHeading heading="Join with us :" />
             <div className="grid grid-cols-3 gap-2">
-                <Link href={`${cookies["state"]}/hire-caretaker-in-${cookies['city']}/FORM-25`} title={`Caretaker jobs in ${cookies['city']}`} className="bg-white rounded-lg overflow-hidden border border-gray-300 py-1 flex flex-col">
+                <Link href={`/${cookies["state"].toLowerCase()}/${cookies["city"].toLowerCase().replace(/\s+/g, '-')}/hire-caretaker/FORM-25`} title={`Caretaker jobs in ${cookies['city']}`} className="bg-white rounded-lg overflow-hidden border border-gray-300 py-1 flex flex-col">
                     <div className="text-sm text-center font-semibold underline">Caretaker</div>
                     <img src={getIconUrl("female-caretaker.webp")} alt="Caretaker jobs" />
                     <div className="px-2 mt-auto">
                         <button className="button rounded-full py-1 w-full" data-color="secondary" data-variant="outlined">Join Now</button>
                     </div>
                 </Link>
-                <Link href={`${cookies["state"]}/hiring-massage-therapist-for-senior-citizens-in-${cookies['city']}/FORM-27`} title={`Massage jobs in ${cookies['city']}`} className="bg-white rounded-lg overflow-hidden border border-gray-300 py-1 flex flex-col">
+                <Link href={`/${cookies["state"].toLowerCase()}/${cookies["city"].toLowerCase().replace(/\s+/g, '-')}/hiring-massage-therapist-for-senior-citizens/FORM-27`} title={`Massage jobs in ${cookies['city']}`} className="bg-white rounded-lg overflow-hidden border border-gray-300 py-1 flex flex-col">
                     <div className="text-sm text-center font-semibold underline">Massage</div>
                     <img src={getIconUrl("massage-male.jpeg")} alt="Massage Therapist jobs" />
                     <div className="px-2 mt-auto">
                         <button className="button rounded-full py-1 w-full" data-color="secondary" data-variant="outlined">Join Now</button>
                     </div>
                 </Link>
-                <Link href={`${cookies["state"]}/join-blood-donor-group-in-${cookies['city']}/FORM-28`} title={`Blood Donor in ${cookies['city']}`} className="bg-white rounded-lg overflow-hidden border border-gray-300 py-1 flex flex-col">
+                <Link href={`/${cookies["state"].toLowerCase()}/${cookies["city"].toLowerCase().replace(/\s+/g, '-')}/join-blood-donor-group/FORM-28`} title={`Blood Donor in ${cookies['city']}`} className="bg-white rounded-lg overflow-hidden border border-gray-300 py-1 flex flex-col">
                     <div className="text-sm text-center font-semibold underline">Blood Donor</div>
                     <img src={getIconUrl("blood-donor.jpg")} alt="Blood Donor" />
                     <div className="px-2 mt-auto">
@@ -96,7 +96,7 @@ const QuickActionsPageMobile = ({ cookies }: { cookies: Record<string, any> }) =
                         </span>
                     </div>
                     <div className="self-center mt-auto">
-                        <Link href={`${cookies["state"]}/apply-for-medical-staff-jobs-in-${cookies['city']}/FORM-30`} title={`Apply for medical Staff jobs in ${cookies['city']}`} className="button ripple">Apply Now</Link>
+                        <Link href={`/${cookies["state"].toLowerCase()}/${cookies["city"].toLowerCase().replace(/\s+/g, '-')}/apply-for-medical-staff-jobs/FORM-30`} title={`Apply for medical Staff jobs in ${cookies['city']}`} className="button ripple">Apply Now</Link>
                     </div>
                 </div>
             </div>

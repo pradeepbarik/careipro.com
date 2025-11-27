@@ -29,7 +29,7 @@ const FooterMenu = ({ cookies, searchParams }: { cookies: Record<string, any>, s
     <div className="bg-white border-t fixed bottom-0 left-0 right-0 w-full overflow-hidden px-2" style={{ transition: "bottom .3s", bottom: scrollDirection === "down" ? "-6.5rem" : "0", borderTopLeftRadius: "2.2rem", borderTopRightRadius: "2.2rem", boxShadow: "0 -2px 6px rgba(0,0,0,0.1)" }}>
       {cookies[userSecreateKey] ?
         <div className='flex font-semibold py-1'>
-          <Link href={`/Read-Articles-for-${searchParams["city"].toLowerCase()}-in-${searchParams["state"].toLowerCase()}`} className='grow-[1] basis-0 shrink-0 gap-1 py-2 flex justify-center items-center flex-col'>
+          <Link href={`/${searchParams["state"].toLowerCase()}/${searchParams["city"].toLowerCase().replace(" ", "-")}/healthcare-articles`} className='grow-[1] basis-0 shrink-0 gap-1 py-2 flex justify-center items-center flex-col'>
             <BiCategory className='text-xl' />
             Articles
           </Link>
@@ -45,7 +45,7 @@ const FooterMenu = ({ cookies, searchParams }: { cookies: Record<string, any>, s
             <BiCalendar className='text-xl' />
             Bookings
           </Link>
-          <Link href={`/quick-actions-in-${searchParams["city"]}-of-${searchParams["state"]}`} className='grow-[1] basis-0 shrink-0 gap-1 py-2 flex justify-center items-center flex-col'>
+          <Link href={`/${searchParams["state"].toLowerCase()}/${searchParams["city"].toLowerCase().replace(" ", "-")}/quick-actions`} className='grow-[1] basis-0 shrink-0 gap-1 py-2 flex justify-center items-center flex-col'>
             <BiAlignLeft className='text-xl' />
             More
           </Link>
@@ -59,7 +59,7 @@ const FooterMenu = ({ cookies, searchParams }: { cookies: Record<string, any>, s
           <BiHomeHeart className='text-xl' />
           Home
         </Link> */}
-          <Link href={`/Read-Articles-for-${searchParams["city"].toLowerCase()}-in-${searchParams["state"].toLowerCase()}`} className='grow-[1] basis-0 shrink-0 gap-1 py-2 flex justify-center items-center flex-col'>
+          <Link href={`/${searchParams["state"].toLowerCase()}/${searchParams["city"].toLowerCase().replace(" ", "-")}/healthcare-articles`} className='grow-[1] basis-0 shrink-0 gap-1 py-2 flex justify-center items-center flex-col'>
             <BiCategory className='text-xl' />
             Articles
           </Link>
@@ -94,7 +94,7 @@ const FooterMenu = ({ cookies, searchParams }: { cookies: Record<string, any>, s
             Login
           </Link>
         } */}
-          <Link href={`/quick-actions-in-${searchParams["city"]}-of-${searchParams["state"]}`} className='grow-[1] basis-0 shrink-0 gap-1 py-2 flex justify-center items-center flex-col'>
+          <Link href={`/${searchParams["state"].toLowerCase()}/${searchParams["city"].toLowerCase().replace(" ", "-")}/quick-actions`} className='grow-[1] basis-0 shrink-0 gap-1 py-2 flex justify-center items-center flex-col'>
             <BiAlignLeft className='text-xl' />
             More
           </Link>

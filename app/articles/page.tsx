@@ -15,7 +15,7 @@ export async function generateMetadata({ searchParams }: { searchParams: any }):
             }
         },
         alternates:{
-            canonical: `/Read-Articles-for-${searchParams.city}-in-${searchParams.state}` // Relative path will be combined with metadataBase
+            canonical: `https://careipro.com/${searchParams.state}/${searchParams.city}/Read-Articles` // Relative path will be combined with metadataBase
         }
     }
 }

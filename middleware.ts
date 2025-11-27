@@ -6,9 +6,9 @@ export function middleware(request: NextRequest) {
         let state = cookies().get("state")?.value;
         let city = cookies().get("city")?.value;
         if (state && city) {
-            return NextResponse.rewrite(new URL(`/${city}-In-${state}`, request.url));
+            return NextResponse.rewrite(new URL(`/${state.replace(" ", "-")}/${city.replace(" ", "-")}`, request.url));
         } else {
-            return NextResponse.rewrite(new URL(`/Bhadrak-In-Odisha`, request.url));
+            return NextResponse.rewrite(new URL(`/Odisha/Bhadrak`, request.url));
         }
     }
 }

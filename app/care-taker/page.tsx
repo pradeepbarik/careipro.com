@@ -22,7 +22,7 @@ export async function generateMetadata({ searchParams }: { searchParams: { city:
             }
         },
         alternates:{
-            canonical:`caretakers-In-${searchParams.city}-Of-${searchParams.state}` // Relative path will be combined with metadataBase
+            canonical:`https://careipro.com/${searchParams.state}/${searchParams.city}/Caretakers` // Relative path will be combined with metadataBase
         }
     }
 }
@@ -32,7 +32,7 @@ const CareTaker = async ({ searchParams }: TProps) => {
         fetCaretakersHomePageData(searchParams.state.toLocaleLowerCase(), searchParams.city.toLocaleLowerCase()),
         fetchCategories("CARETAKER")
     ])
-    if (device.type === "mobile") {
+    if (device.type === "mobile" || 1==1) {
         return (
             <>
                 <CaretakersMobile state={searchParams.state} city={searchParams.city} market_name={searchParams.market_name} pageData={pageData} categories={categories} />

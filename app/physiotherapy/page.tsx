@@ -20,13 +20,13 @@ export async function generateMetadata({ searchParams }: { searchParams: { city:
             }
         },
         alternates:{
-            canonical: `Physiotherapist-In-${searchParams.city}-Of-${searchParams.state}` // Relative path will be combined with metadataBase
+            canonical: `https://careipro.com/${searchParams.state}/${searchParams.city}/Physiotherapy-Centers` // Relative path will be combined with metadataBase
         }
     }
 }
 const Physiotherapy = ({ searchParams }: TProps) => {
     const { device } = useDeviceInfo();
-    if (device.type === "mobile") {
+    if (device.type === "mobile" || 1==1) {
         return (
             <>
                 <PhysiotherapyMobile state={searchParams.state} city={searchParams.city} />
