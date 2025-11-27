@@ -9,13 +9,17 @@ import { doctorProfilePic } from '@/lib/image';
 const DoctorDetailMobile = dynamic(() => import('./mobile'));
 export async function generateMetadata({ searchParams }: { searchParams: any }): Promise<Metadata> {
     const data = await fetchDoctorDetail({ doctor_id: searchParams.doctor_id, clinic_id: searchParams.clinic_id, service_loc_id: searchParams.service_loc_id, seo_url: searchParams.seo_url, market_name: searchParams.market_name, state: searchParams.state, city: searchParams.city })
+    let url=`https://careipro.com/${searchParams.state.replace(" ", "-")}/${searchParams.city.replace(" ", "-")}/${searchParams.seo_url}-In-${searchParams.market_name.replace(" ", "-")}/DR${searchParams.doctor_id}-SL${searchParams.service_loc_id}-C${searchParams.clinic_id}`;
+    if(searchParams.sub_page){
+        url+=`/${searchParams.sub_page}`;
+    }
     return {
         title: data.data.seo_dt.title,
         description: data.data.seo_dt.description,
         openGraph: {
             title: data.data.seo_dt.title,
             description: data.data.seo_dt.description,
-            url: `https://careipro.com/${searchParams.seo_url}-At-${searchParams.market_name}-In-${searchParams.city}-Of-${searchParams.state}/DR${searchParams.doctor_id}-SL${searchParams.service_loc_id}-C${searchParams.clinic_id}`,
+            url: `${url}`,
             siteName: 'Careipro',
             images: [
                 doctorProfilePic(data.data.profile_pic)
@@ -32,7 +36,7 @@ export async function generateMetadata({ searchParams }: { searchParams: any }):
             }
         },
         alternates: {
-            canonical: `https://careipro.com/${searchParams.seo_url}-At-${searchParams.market_name}-In-${searchParams.city}-Of-${searchParams.state}/DR${searchParams.doctor_id}-SL${searchParams.service_loc_id}-C${searchParams.clinic_id}`
+            canonical: `${url}`
         }
     }
 }

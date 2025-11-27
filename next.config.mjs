@@ -25,7 +25,11 @@ const nextConfig = {
     rewrites: async()=> {
         return [
             {
-                source:'/Doctors-In-:city-(of|in)-:state',
+                source:'/(Doctors|Best-Doctors)-In-:city-(of|in)-:state',
+                destination:'/doctors'
+            },
+            {
+                source:'/:state/:city/(Doctors|Best-Doctors)',
                 destination:'/doctors'
             },
             {
@@ -33,7 +37,15 @@ const nextConfig = {
                 destination:'/physiotherapy'   
             },
             {
+                source:'/:state/:city/(Physiotherapy-Centers|Physiotherapists|Best-Physiotherapy-Centers|Best-Physiotherapists)',
+                destination:'/physiotherapy'   
+            },
+            {
                 source:'/Medicines-In-:city-of-:state',
+                destination:'/medicine'
+            },
+            {
+                source:'/:state/:city/Medicines-Stores-Pharmacies',
                 destination:'/medicine'
             },
             {
@@ -41,7 +53,15 @@ const nextConfig = {
                 destination:'/care-taker'
             },
             {
+                source:'/:state/:city/(Caretakers|Best-Caretakers|Caregivers)',
+                destination:'/care-taker'
+            },
+            {
                 source:'/Massage-Service-In-:city-of-:state',
+                destination:'/massage-service'
+            },
+            {
+                source:'/:state/:city/(Massage-Service-Spas|Massage-Services|Best-Massage-Service-Spas|Best-Massage-Services)',
                 destination:'/massage-service'
             },
             {
@@ -57,7 +77,15 @@ const nextConfig = {
                 destination:'/hospitals-and-clinics'
             },
             {
+                source:'/:state/:city/Hospitals-And-Clinics',
+                destination:'/hospitals-and-clinics'
+            },
+            {
                 source:'/Pet-Care-Clinics-In-:city-of-:state',
+                destination:'/petcare'
+            },
+            {
+                source:'/:state/:city/Pet-Care-Clinics',
                 destination:'/petcare'
             },
             {
@@ -65,10 +93,27 @@ const nextConfig = {
                 destination:'/doctors/doctors-list'
             },
             {
+                source: '/:state/:city([a-zA-Z-]+)/:seo_url([a-zA-Z0-9-_]+)/CATG:cat_id-:group_cat',
+                destination:'/doctors/doctors-list'
+            },
+            {
+                source:'/:state/:city/:seo_url([a-zA-Z0-9-_]+)-CATG:cat_id-:group_cat',
+                destination:'/doctors/doctors-list'
+            },
+            {
                 source:'/:seo_url-At-:market_name-In-:city-Of-:state/DR:doctor_id-SL:service_loc_id-C:clinic_id',
                 destination:'/doctors/doctor-detail'
-            },{
+            },
+            {
+                source:'/:state/:city/:seo_url-In-:market_name/DR:doctor_id-SL:service_loc_id-C:clinic_id',
+                destination:'/doctors/doctor-detail'
+            },
+            {
                 source:'/:seo_url-At-:market_name-In-:city-Of-:state/DR:doctor_id-SL:service_loc_id-C:clinic_id/help-center',
+                destination:'/doctor-help-center'
+            },
+            {
+                source:'/:state/:city/:seo_url-In-:market_name/DR:doctor_id-SL:service_loc_id-C:clinic_id/help-center',
                 destination:'/doctor-help-center'
             },
             {
@@ -76,7 +121,15 @@ const nextConfig = {
                 destination:'/doctors/doctor-detail'
             },
             {
+                source:'/:state/:city/:seo_url-In-:market_name/DR:doctor_id-SL:service_loc_id-C:clinic_id/:sub_page',
+                destination:'/doctors/doctor-detail'
+            },
+            {
                 source:'/:seo_url-At-:market_name-In-:city-of-:state/CLINICS-CATG:cat_id-:group_cat',
+                destination:'/hospitals-and-clinics/clinics-list'
+            },
+            {
+                source:'/:state/:city/:seo_url-In-:market_name/CLINICS-CATG:cat_id-:group_cat',
                 destination:'/hospitals-and-clinics/clinics-list'
             },
             {
@@ -84,11 +137,23 @@ const nextConfig = {
                 destination:'/hospitals-and-clinics/clinics-list'
             },
             {
+                source:'/:state/:city/:seo_url/CLINICS-CATG:cat_id-:group_cat',
+                destination:'/hospitals-and-clinics/clinics-list'
+            },
+            {
                 source:'/:seo_url-At-:market_name-In-:city-of-:state/:business_type(CT|C|PTY):clinic_id-:state_city',
                 destination:'/hospitals-and-clinics/clinic-detail'
             },
             {
+                source:'/:state/:city/:seo_url-In-:market_name/:business_type(CT|C|PTY):clinic_id-:state_city',
+                destination:'/hospitals-and-clinics/clinic-detail'
+            },
+            {
                 source:'/:seo_url-At-:market_name-In-:city-of-:state/:business_type(CT|C|PTY):clinic_id-:state_city/:sub_page',
+                destination:'/hospitals-and-clinics/clinic-detail'
+            },
+             {
+                source:'/:state/:city/:seo_url-In-:market_name/:business_type(CT|C|PTY):clinic_id-:state_city/:sub_page',
                 destination:'/hospitals-and-clinics/clinic-detail'
             },
             {
@@ -96,7 +161,15 @@ const nextConfig = {
                 destination:'/all-specialists'
             },
             {
+                source:'/:state/:city/doctor-specialists-and-services',
+                destination:'/all-specialists'
+            },
+            {
                 source:'/Read-Articles-for-:city-in-:state',
+                destination:'/articles'
+            },
+            {
+                source:'/:state/:city/(Read-Articles|Healthcare-Articles)',
                 destination:'/articles'
             },
             {
@@ -104,15 +177,31 @@ const nextConfig = {
                 destination:'/dynamic-page'
             },
             {
-                source:'/articles/:seo_url/:page_type-:page_id',
+                source:'/:state/:city/:seo_url/:page_type-:page_id',
                 destination:'/dynamic-page'
             },
+            // {
+            //     source:'/articles/:seo_url/:page_type-:page_id',
+            //     destination:'/dynamic-page'
+            // },
             {
                 source:'/quick-actions-in-:city-of-:state',
                 destination:'/quick-actions'
             },
             {
+                source:'/:state/:city/Quick-Actions',
+                destination:'/quick-actions'
+            },
+            {
                 source:'/:city-in-:state',
+                destination:'/city'
+            },
+            {
+                source:'/:state/:city.xml',
+                destination:'/city-sitemap?state=:state&city=:city'
+            },
+            {
+                source:'/:state/:city',
                 destination:'/city'
             }
         ]

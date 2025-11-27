@@ -25,7 +25,8 @@ export async function generateMetadata({ searchParams }: { searchParams: { city:
       }
     },
      alternates: {
-          canonical: `/${searchParams.city}-In-${searchParams.state}`, // Relative path will be combined with metadataBase
+          //canonical: `/${searchParams.city}-In-${searchParams.state}`, // Relative path will be combined with metadataBase
+          canonical: `${searchParams.state}/${searchParams.city}`
     },
   }
 }

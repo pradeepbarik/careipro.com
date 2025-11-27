@@ -31,7 +31,7 @@ const Header = ({ template = "HOMEPAGE", heading = "", state, city, rightContain
     return <>
         <div style={{ height: "3.7rem" }}>
             <div className={`flex items-center px-2 py-2 fixed bg-white ${classes.container}`}>
-                <img src="careipro-primary-logo.png" alt='Careipro logo' className={`${classes.logo}`} />
+                <img src="/careipro-primary-logo.png" alt='Careipro logo' className={`${classes.logo}`} />
                 <div className='ml-auto flex items-center gap-2'>
                     <Link href={"/service-available-cities"} className={`px-2 py-1 ml-2 flex items-center fs-13 ${classes.citySelection}`}>
                         {city ? city : 'Your Location'}

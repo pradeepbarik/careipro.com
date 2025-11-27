@@ -15,7 +15,7 @@ export async function generateMetadata({ searchParams }: { searchParams: { city:
             }
         },
         alternates: {
-            canonical: `/quick-actions-in-${searchParams.city}-of-${searchParams.state}` // Relative path will be combined with metadataBase
+            canonical: `https://careipro.com/${searchParams.state.toLowerCase()}/${searchParams.city.toLowerCase().replace(" ", "-")}/quick-actions` // Relative path will be combined with metadataBase
         }
     }
 }

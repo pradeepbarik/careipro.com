@@ -16,7 +16,7 @@ export async function generateMetadata({ searchParams }: { searchParams: { city:
             }
         },
         alternates: {
-            canonical: `/Register-clinic-hospital` // Relative path will be combined with metadataBase
+            canonical: `/register-clinic-hospital` // Relative path will be combined with metadataBase
         }
     }
 }

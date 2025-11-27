@@ -189,8 +189,10 @@ const DoctorDetailMobile = async ({ data, availableData, searchParams, cookies }
                 </> : <>
                     <OverView data={data} availableData={availableData} />
                 </>}
-        {(data.settings.book_by === "app") && <div className="bg-white sticky bottom-0 w-full px-2 py-1" style={{ bottom: 0 }}>
-            <BookAppointment emergencyBookingClose={data.settings.emergency_booking_close} bookingCloseMessage={data.settings.booking_close_message} open={searchParams.book_appointment === '1' ? true : false} clinic_id={data.clinic_id} service_loc_id={data.id} doctor_id={data.doctor_id} service_charge={parseInt(data.service_charge)} site_service_charge={parseInt(data.site_service_charge)} settings={data.settings} availability={availableData} slno_groups={data.slno_groups || []} pageUrl={pageUrl} />
+        {(data.settings.book_by === "app") && <div className="mt-12">
+            <div className="bg-white fixed bottom-0 w-full px-2 py-1" style={{ bottom: 0 }}>
+                <BookAppointment emergencyBookingClose={data.settings.emergency_booking_close} bookingCloseMessage={data.settings.booking_close_message} open={searchParams.book_appointment === '1' ? true : false} clinic_id={data.clinic_id} service_loc_id={data.id} doctor_id={data.doctor_id} service_charge={parseInt(data.service_charge)} site_service_charge={parseInt(data.site_service_charge)} settings={data.settings} availability={availableData} slno_groups={data.slno_groups || []} pageUrl={pageUrl} />
+            </div>
         </div>}
         {data.settings.book_by === "call" &&
             <div className="bg-white sticky bottom-0 w-full px-2 py-1" style={{ bottom: 0 }}

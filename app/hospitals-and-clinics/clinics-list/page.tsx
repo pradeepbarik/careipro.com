@@ -18,7 +18,7 @@ export async function generateMetadata({ searchParams }: { searchParams: any }):
             }
         },
         alternates:{
-        canonical: `${searchParams.seo_url}-At-${searchParams.market_name}-In-${searchParams.city}-Of-${searchParams.state}/CLINICS-CATG${searchParams.cat_id}-${searchParams.group_cat}` // Relative path will be combined with metadataBase
+        canonical: `https://careipro.com/${searchParams.state}/${searchParams.city.replace(" ", "-")}/${searchParams.seo_url}-In-${searchParams.market_name}/CLINICS-CATG${searchParams.cat_id}-${searchParams.group_cat}` // Relative path will be combined with metadataBase
         }
     }
 }

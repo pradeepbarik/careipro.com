@@ -22,7 +22,8 @@ export async function generateMetadata({ searchParams }: { searchParams: { city:
             }
         },
         alternates: {
-            canonical:`/Doctors-In-${searchParams.city}-Of-${searchParams.state}`
+            //canonical:`/Doctors-In-${searchParams.city}-Of-${searchParams.state}`
+            canonical:`https://careipro.com/${searchParams.state.replace(" ", "-")}/${searchParams.city.replace(" ", "-")}/best-doctors`
         }
     }
 }

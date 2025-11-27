@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import useDeviceInfo from "@/lib/hooks/useDeviceInfo";
-import { fetchAllCategories } from '@/lib/hooks/useCategories';
 const AllSpecialistMobile = dynamic(() => import("./mobile"));
 type TProps = {
     params: { [key: string]: string },
@@ -20,13 +19,13 @@ export async function generateMetadata({ searchParams }: { searchParams: { city:
             }
         }, 
         alternates: {
-            canonical: `/Doctor-Specialists-And-Services-In-${searchParams.city}-Of-${searchParams.state}` // Relative path will be combined with metadataBase
+            canonical: `/${searchParams.state.toLowerCase()}/${searchParams.city.toLowerCase().replace(" ", "-")}/doctor-specialists-and-services` // Relative path will be combined with metadataBase
         }
     }
 }
 const AllSpecialists = ({ searchParams }: TProps) => {
     const { device } = useDeviceInfo()
-    if (device.type === 'mobile') {
+    if (device.type === 'mobile' || 1==1) {
         return (
             <>
                 <AllSpecialistMobile state={searchParams.state} city={searchParams.city} />

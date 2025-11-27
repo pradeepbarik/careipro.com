@@ -20,7 +20,7 @@ export async function generateMetadata({ searchParams }: { searchParams: { city:
             }
         },
         alternates:{
-            canonical:`Massage-Service-In-${searchParams.city}-Of-${searchParams.state}` // Relative path will be combined with metadataBase
+            canonical:`https://careipro.com/${searchParams.state}/${searchParams.city}/Massage-Service-Spas` // Relative path will be combined with metadataBase
         }
     }
 }
