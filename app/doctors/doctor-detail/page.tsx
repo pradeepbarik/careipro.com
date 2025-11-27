@@ -9,7 +9,7 @@ import { doctorProfilePic } from '@/lib/image';
 const DoctorDetailMobile = dynamic(() => import('./mobile'));
 export async function generateMetadata({ searchParams }: { searchParams: any }): Promise<Metadata> {
     const data = await fetchDoctorDetail({ doctor_id: searchParams.doctor_id, clinic_id: searchParams.clinic_id, service_loc_id: searchParams.service_loc_id, seo_url: searchParams.seo_url, market_name: searchParams.market_name, state: searchParams.state, city: searchParams.city })
-    let url=`https://careipro.com/${searchParams.state.toLowerCase().replace(" ", "-")}/${searchParams.city.toLowerCase().replace(" ", "-")}/${searchParams.seo_url}-in-${searchParams.market_name.replace(" ", "-")}/DR${searchParams.doctor_id}-SL${searchParams.service_loc_id}-C${searchParams.clinic_id}`;
+    let url=`https://careipro.com/${searchParams.state.toLowerCase().replace(" ", "-")}/${searchParams.city.toLowerCase().replace(" ", "-")}/${searchParams.seo_url}-In-${searchParams.market_name.replace(" ", "-")}/DR${searchParams.doctor_id}-SL${searchParams.service_loc_id}-C${searchParams.clinic_id}`;
     if(searchParams.sub_page){
         url+=`/${searchParams.sub_page}`;
     }
