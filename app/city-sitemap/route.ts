@@ -17,6 +17,9 @@ export async function GET(request: NextRequest) {
     const params = pathname.replace(".xml", "").split('/').slice(1, 3);
     const state = params[0];
     const city = params[1];
+    if(state==undefined || city==undefined){
+        return new Response("State and City are required", { status: 400 });
+    }
     let date = new Date();
     const baseUrl = 'https://careipro.com';
     let citySitemapData: TcitySitemapData = { verticals: [], doctors: [], clinics: [], doctorListPages: [] };
