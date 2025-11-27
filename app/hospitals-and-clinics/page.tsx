@@ -19,7 +19,7 @@ export async function generateMetadata({ searchParams }: { searchParams: { city:
             }
         },
         alternates: {
-            canonical: `https://careipro.com/${searchParams.state}/${searchParams.city}/Hospitals-And-Clinics` // Relative path will be combined with metadataBase
+            canonical: `https://careipro.com/${searchParams.state.toLowerCase()}/${searchParams.city.toLowerCase().replace(" ", "-")}/hospitals-and-clinics` // Relative path will be combined with metadataBase
         },
     }
 }
