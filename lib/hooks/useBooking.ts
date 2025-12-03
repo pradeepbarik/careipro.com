@@ -38,6 +38,8 @@ const useBooking = ({ service_loc_id, doctor_id, clinic_id, open,settings,availa
     const [consultDates,setConsultDates]=useState<Array<TdoctorConsultDate>>([])
     const [consultDate,setConsultDate]=useState<TdoctorConsultDate | null>(null)
     const [group_name,setGroupName]=useState<string>("");
+    const [patientExtraInfo, setPatientExtraInfo] = useState<TDoctorDetail["settings"]["patient_info_required"]>(settings.patient_info_required || []);
+
     const onSelectSuggestedPatient = (patientinfo: TSuggestedPatientInfo) => {
         setShowSuggestion(false);
         setPatientInfo({ ...patientInfo, case_id: patientinfo.id, patient_name: patientinfo.patient_name, patient_mobile:patientinfo.patient_mobile,patient_gender: patientinfo.patient_gender, patient_age: patientinfo.patient_age, patient_address: patientinfo.patient_address,dataFillMode:"autosuggest" })
@@ -72,6 +74,7 @@ const useBooking = ({ service_loc_id, doctor_id, clinic_id, open,settings,availa
             patient_age: patientInfo.patient_age,
             patient_gender: patientInfo.patient_gender,
             case_id: patientInfo.case_id || "",
+            patient_extra_info:patientExtraInfo,
             ...extraParams
         }, { passSecreateKey: true }).then((data) => {
             toast.success(data.message);
@@ -137,7 +140,7 @@ const useBooking = ({ service_loc_id, doctor_id, clinic_id, open,settings,availa
     return {
         showModal, setShowModal, showSuggestions, setShowSuggestion, onSelectSuggestedPatient, patients,
         patientInfo, setPatientInfo, booingDetail,
-        bookAppointment, onOk,consultDates,consultDate,setConsultDate,group_name,setGroupName
+        bookAppointment, onOk,consultDates,consultDate,setConsultDate,group_name,setGroupName,patientExtraInfo, setPatientExtraInfo
     }
 }
 export default useBooking

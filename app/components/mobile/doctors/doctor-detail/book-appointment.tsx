@@ -1,6 +1,6 @@
 'use client'
 import { useRouter } from 'next/navigation'
-import { useRef, useState } from 'react';
+import { Fragment, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import moment from 'moment';
@@ -20,7 +20,7 @@ const BookAppointment = ({ open, service_charge, site_service_charge, service_lo
             user_info: state.authSlice.user_info
         }
     })
-    const { showModal, setShowModal, showSuggestions, setShowSuggestion, onSelectSuggestedPatient, patients, onOk, patientInfo, setPatientInfo, booingDetail, bookAppointment, consultDates, consultDate, setConsultDate, group_name, setGroupName } = useBooking({ service_loc_id, doctor_id, clinic_id: clinic_id, open: open, settings: settings, availability: availability });
+    const { showModal, setShowModal, showSuggestions, setShowSuggestion, onSelectSuggestedPatient, patients, onOk, patientInfo, setPatientInfo, booingDetail, bookAppointment, consultDates, consultDate, setConsultDate, group_name, setGroupName, patientExtraInfo, setPatientExtraInfo } = useBooking({ service_loc_id, doctor_id, clinic_id: clinic_id, open: open, settings: settings, availability: availability });
     const [showLoginModal, setShowLoginModal] = useState(false);
     const onBookbtnClick = () => {
         if (user_info === null) {
@@ -46,10 +46,10 @@ const BookAppointment = ({ open, service_charge, site_service_charge, service_lo
                     <button className="button w-full h-10 fs-16" onClick={onBookbtnClick}>Login & Book Appointment</button> :
                     <button className="button w-full h-10 fs-16" onClick={onBookbtnClick}>Book Appointment</button>
                 }
-                <Link href={pageUrl+"/help-center"} className="button w-32" data-variant="outlined" data-color="secondary">Need Help?</Link>
+                <Link href={pageUrl + "/help-center"} className="button w-32" data-variant="outlined" data-color="secondary">Need Help?</Link>
             </div>
             <SlideUpModal heading='Book Appointment' open={showModal} onClose={() => { setShowModal(false) }} footer={<>
-               {booingDetail===null && <Button className='w-full mt-4' onClick={bookAppointment}>Book Appointment</Button>}
+                {booingDetail === null && <Button className='w-full mt-4' onClick={bookAppointment}>Book Appointment</Button>}
             </>} footerHeight='3rem'>
                 {booingDetail !== null ?
                     <>
@@ -137,6 +137,25 @@ const BookAppointment = ({ open, service_charge, site_service_charge, service_lo
                                         { label: "Female", value: "female" },
                                     ]} onChange={(v) => { setPatientInfo({ ...patientInfo, patient_gender: v.toString() }) }} />
                                 </div>
+                            </div>
+                            <div className="grid grid-cols-2 gap-x-2 gap-y-1 px-2">
+                                {patientExtraInfo && (patientExtraInfo || []).map((elm, i) =>
+                                    <Fragment key={elm.key}>
+                                        {(elm.display_to === "all" || (elm.display_to === "user" && user_info?.user_type === "user") || (elm.display_to === "clinic_staff" && (user_info?.user_type === "clinic_staff" || user_info?.user_type === "NSCM" || user_info?.user_type === "agency"))) ? <>
+                                            <Input
+                                                lable={elm.label}
+                                                onChange={(e) => {
+                                                    let fields = [...patientExtraInfo];
+                                                    fields[i].value = e.target.value;
+                                                    setPatientExtraInfo(fields);
+                                                }}
+                                                value={elm.value}
+                                                type={elm.type}
+                                                required
+                                            />
+                                        </> : <></>}
+                                    </Fragment>
+                                )}
                             </div>
                             <div className='mt-2'>
                                 <TextArea className='font-semibold fs-16' value={patientInfo.patient_address} onChange={(e) => { setPatientInfo({ ...patientInfo, patient_address: e.target.value }) }} lable='Patient Address' />
