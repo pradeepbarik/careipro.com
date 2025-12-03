@@ -55,7 +55,7 @@ export const categoryResultPageLink = (params: { state: string, city: string, se
         return `/${params.state.toLowerCase()}/${params.city.toLowerCase().replace(' ', '-')}/${params.seo_url}/CLINICS-${params.seo_id}`;
     }
     //return `/${params.seo_url}-In-${capitalizeEachWordFirstLetter(params.city)}-Of-${capitalizeEachWordFirstLetter(params.state)}/${params.seo_id}`;
-    return `/${params.state.toLowerCase()}/${params.city.toLowerCase()}/${params.seo_url}-${params.seo_id}`;
+    return `/${params.state.toLowerCase()}/${params.city.toLowerCase()}/${params.seo_url}/${params.seo_id}`;
     
 }
 export const upiPaymentLink = (upiid: string, total_amount: number, message: string) => {

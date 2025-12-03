@@ -138,6 +138,7 @@ export type TDoctorDetail=TWeeklyConsultingTiming & {
         sun_booking_start_time:string,
         enable_enquiry:number,
         show_patients_feedback:number,
+        patient_info_required?:Array<{ label: string, key: string, type: string, value: string,display_to:"user"|"clinic_staff"|"all" }>
     }
     slno_groups?:Array<TSlnoGroup>,
     allSpecializations:{[group_category:string]:{
