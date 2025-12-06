@@ -34,6 +34,8 @@ export const doctorDetailPageUrl = (params: { doctor_id: number, service_loc_id:
     }
     if (params.clinic_id) {
         url += `-C${params.clinic_id}`;
+    }else{
+        url += `-C0`;
     }
     return url;
 }

@@ -1,13 +1,12 @@
 import Link from "next/link";
 import dynamic from "next/dynamic";
-import { BsTelephone, BsWhatsapp, BsGeoAlt } from "react-icons/bs";
-import { BiGridAlt, BiMessageRoundedDots, BiTimeFive, BiCommentDots } from "react-icons/bi";
+import { BsTelephone } from "react-icons/bs";
+import { BiGridAlt, BiMessageRoundedDots, BiTimeFive, BiLocationPlus, BiPhone, BiChevronRight, BiTagAlt,BiLogoWhatsapp } from "react-icons/bi";
 import Header from '@/app/components/mobile/header';
 import BookAppointment from "@/app/components/mobile/doctors/doctor-detail/book-appointment";
-import DoctorFeedback from "@/app/components/mobile/doctors/doctor-detail/doctor-feedback";
-import { SectionHeading } from '@/app/components/mobile/ui';
+//import DoctorFeedback from "@/app/components/mobile/doctors/doctor-detail/doctor-feedback";
+//import { SectionHeading } from '@/app/components/mobile/ui';
 import AppointmentReminder from '@/app/components/mobile/appointment-reminder';
-import Nearme from '@/assets/icon/nearme';
 import { TDoctorDetail, TDoctorvailableData } from '@/lib/types/doctor';
 import { doctorProfilePic, clinicProfilePic } from '@/lib/image';
 import { formatCurrency } from '@/lib/helper/format-text';
@@ -26,6 +25,36 @@ const Photos = dynamic(() => import('./photos'))
 export const getSendEnquiryWhatsappMessage = (doctor_name = "") => {
     return `Hi,\nI found your clinic on careipro.com. I want more information about *${doctor_name}*`;
 }
+// const CtaButtons = ({ clinic_mobile, whatsapp_number, whatsapp_channel_link, other_doc_cnt, doctor_name, location_lat, location_lng }: { clinic_mobile: string, whatsapp_number: string, whatsapp_channel_link: string, other_doc_cnt: number, location_lat: number, location_lng: number, doctor_name: string }) => {
+//     return <>
+//         <div className="flex mt-3 justify-between overflow-auto hide-scroll-bar">
+//             {whatsapp_channel_link && false &&
+//                 <span className="flex flex-col items-center w-24 shrink-0">
+//                     <BsWhatsapp className="border rounded-md p-2 w-12 h-10 color-white" style={{ fontSize: '2.2rem', background: "#61AA84" }} />
+//                     <span>Join Channel</span>
+//                 </span>
+//             }
+//             {whatsapp_number &&
+//                 <a className="flex flex-col items-center w-24 shrink-0" target="_blank" href={`https://wa.me/${whatsapp_number}?text=${encodeURI(getSendEnquiryWhatsappMessage(doctor_name))}`}>
+//                     <BsWhatsapp className="border rounded-md p-2 w-12 h-10 color-white" style={{ fontSize: '2.2rem', background: "#61AA84" }} />
+//                     <span>Whatsapp</span>
+//                 </a>
+//             }
+//             {clinic_mobile &&
+//                 <Link href={`tel:${clinic_mobile}`} className="flex flex-col items-center w-24 shrink-0">
+//                     <BsTelephone className="border rounded-md p-2 w-12 h-10 bg-primary color-white" style={{ fontSize: '2.2rem' }} />
+//                     <span>Call Now</span>
+//                 </Link>
+//             }
+//             {location_lat && location_lng &&
+//                 <a target="_blank" href={`https://www.google.com/maps/dir/?api=1&destination=${location_lat},${location_lng}`} className="flex flex-col items-center w-24 shrink-0">
+//                     <Nearme className="border rounded-md p-2 w-12 h-10" style={{ fontSize: '2.2rem', background: "#f7f7f7" }} pathStyle={{ stroke: "black" }} />
+//                     <span>Direction</span>
+//                 </a>
+//             }
+//         </div>
+//     </>
+// }
 const DoctorDetailMobile = async ({ data, availableData, searchParams, cookies }: {
     data: TDoctorDetail,
     availableData: TDoctorvailableData,
@@ -33,7 +62,7 @@ const DoctorDetailMobile = async ({ data, availableData, searchParams, cookies }
     cookies: Record<string, any>
 }) => {
     const pageUrl = doctorDetailPageUrl({ doctor_id: data.doctor_id, service_loc_id: data.id, clinic_id: data.clinic_id, seo_url: data.seo_url, state: data.clinic_state, city: data.clinic_city, market_name: data.clinic_market })
-    let ctaBtnCount = data.clinic_id !== 8 ? 3 : 2;
+    let ctaBtnCount = data.clinic_id !== 8 ? 2 : 2;
     if (data.whatsapp_number) {
         ctaBtnCount += 1;
     }
@@ -53,97 +82,74 @@ const DoctorDetailMobile = async ({ data, availableData, searchParams, cookies }
                         {data.qualification_disp && <span>{data.qualification_disp}</span>}
                         <span>{data.experience} Years of Exp</span>
                     </div>
-                    {/* <span className="ml-auto flex items-center">
-                        <span className='font-bold text-xl'>{formatCurrency(parseInt(data.service_charge))}</span>
-                    </span> */}
                 </div>
-                <div className="w-full flex flex-wrap gap-2 overflow-auto px-2 py-1 hide-scroll-bar">
-                    {data.specialization?.split(",").map((spl) =>
-                        <span key={spl} className='border px-1 rounded-md shrink-0' style={{ background: "#ededed" }}>
-                            {spl}
-                        </span>
-                    )}
+            </div>
+        </div>
+        <div className="px-2 mt-1">
+            <div className="bg-gray-50 rounded-md px-2 border flex gap-1 items-center py-2">
+                <BiTagAlt className="rotate-90 color-primary shrink-0" style={{ fontSize: '1rem' }} />
+                <span className="font-semibold fs-15">Specialization</span>
+                <div className="ml-auto text-right">
+                    {data.specialization?.replaceAll(",", ", ")}
                 </div>
+            </div>
+            {data.clinic_id > 0 &&
+            <div className="bg-gray-50 rounded-md px-2 border flex gap-1 items-center py-2 mt-2">
+                <img src={clinicProfilePic(data.clinic_logo || "")} className="h-6 w-6 rounded-md shrink-0" />
+                <span className="ml-2 font-semibold fs-16">{data.clinic_name}</span>
+                {data.other_doc_cnt && data.other_doc_cnt > 0 ? <>
+                    <Link href={data.clinic_dtlpg_url || ''} className="ml-auto flex items-center gap-1 text-xs color-primary font-semibold text-nowrap">
+                        <span>+{data.other_doc_cnt} {data.other_doc_cnt > 1 ? 'Doctors' : 'Doctor'}</span>
+                        <BiChevronRight className="text-xl" />
+                    </Link>
+                </> : <></>}
+            </div>}
+            <div className="bg-gray-50 rounded-md px-2 border flex gap-2 items-center py-2 mt-1">
+                <BiLocationPlus style={{ fontSize: '1rem' }} />
+                <span className="font-semibold">Location</span>
+                <a target="_blank" href={`https://www.google.com/maps/dir/?api=1&destination=${data.location_lat},${data.location_lng}`} className="ml-auto text-right flex">
+                 {data.clinic_locality} in {data.clinic_market}, {data.clinic_city}
+                    <BiChevronRight className="text-xl" />
+                </a>
+            </div>
+            <div className="bg-gray-50 rounded-md px-2 border flex gap-2 py-2 mt-1">
+                <BiPhone style={{ fontSize: '1rem' }} />
+                <span className="font-semibold">Contact</span>
+                <a href={`tel:${data.clinic_mobile}`} className="ml-auto flex">
+                    {data.clinic_mobile}
+                    <span className="mx-1 border-color-primary border rounded-md px-2 color-primary font-semibold">Call Now</span>
+                    {/* <BiChevronRight className="text-xl" /> */}
+                </a>
+            </div>
+            {data.whatsapp_number ?<>
+            <div className="bg-gray-50 rounded-md px-2 border flex gap-2 py-2 mt-1">
+                <BiLogoWhatsapp style={{ fontSize: '1rem' }} />
+                <span className="font-semibold">Whatsapp</span>
+                <a href={`https://wa.me/${data.whatsapp_number}?text=${encodeURI(getSendEnquiryWhatsappMessage(data.doctor_name))}`} className="ml-auto flex">
+                    {data.whatsapp_number}
+                    <BiChevronRight className="text-xl" />
+                </a>
+            </div>
+            </>:<></>}
+            {/* <div className="bg-gray-50 rounded-md px-2 border flex py-2 mt-1">
+                <BiTimeFive style={{ fontSize: '1rem' }} />
+                <span className="ml-2 font-semibold">Consulting Timings</span>
+                <span className="ml-auto">{''}</span>
+            </div> */}
+            <div className="bg-gray-50 rounded-md px-2 border flex py-2 mt-1">
+                <BiTimeFive style={{ fontSize: '1rem' }} />
+                <span className="ml-2 font-semibold">Consulting Fee</span>
+                <span className="ml-auto font-bold">{formatCurrency(parseInt(data.service_charge))}</span>
             </div>
         </div>
         <div className="relative">
             {data.settings.emergency_booking_close == 1 && <EmergencyBookingCloseAlert message={data.settings.booking_close_message} />}
         </div>
         <div id="reminder-section"></div>
-        <SectionHeading heading='Clinic Information' />
-        <div className='bg-white px-2 py-2 shadow-sm'>
-            <div className='flex gap-2 items-center'>
-                <img src={clinicProfilePic(data.clinic_logo || "")} className="rounded-full h-20 w-20 shrink-0" />
-                <div className='flex flex-col grow'>
-                    {data.clinic_dtlpg_url ?
-                        <Link href={data.clinic_dtlpg_url} className='font-semibold fs-17'>{data.clinic_name}</Link>
-                        :
-                        <h2 className='font-semibold fs-17'>{data.clinic_name}</h2>
-                    }
-                    <span className="flex items-center gap-1">
-                        <BsGeoAlt />
-                        {data.clinic_locality} in {data.clinic_market}, {data.clinic_city}
-                    </span>
-                    <span className="font-bold">Consultaion Fee : <span className="color-primary">{formatCurrency(parseInt(data.service_charge))}</span></span>
-                    {/* <div className="flex items-center mt-1">
-                        <a href={`tel:${data.clinic_mobile}`} className="flex items-center gap-1 fs-15 color-primary"><BsTelephone /> +91 {data.clinic_mobile}</a>
-                    </div> */}
-                </div>
-            </div>
-            {ctaBtnCount > 2 ?
-                <div className="flex mt-3 justify-between overflow-auto hide-scroll-bar">
-                    {data.whatsapp_channel_link && false &&
-                        <span className="flex flex-col items-center w-24 shrink-0">
-                            <BsWhatsapp className="border rounded-md p-2 w-12 h-10 color-white" style={{ fontSize: '2.2rem', background: "#61AA84" }} />
-                            <span>Join Channel</span>
-                        </span>
-                    }
-                    {data.whatsapp_number &&
-                        <a className="flex flex-col items-center w-24 shrink-0" target="_blank" href={`https://wa.me/${data.whatsapp_number}?text=${encodeURI(getSendEnquiryWhatsappMessage(data.doctor_name))}`}>
-                            <BsWhatsapp className="border rounded-md p-2 w-12 h-10 color-white" style={{ fontSize: '2.2rem', background: "#61AA84" }} />
-                            <span>Whatsapp</span>
-                        </a>
-                    }
-                    <Link href={`tel:${data.clinic_mobile}`} className="flex flex-col items-center w-24 shrink-0">
-                        <BsTelephone className="border rounded-md p-2 w-12 h-10 bg-primary color-white" style={{ fontSize: '2.2rem' }} />
-                        <span>Call Now</span>
-                    </Link>
-                    <a target="_blank" href={`https://www.google.com/maps/dir/?api=1&destination=${data.location_lat},${data.location_lng}`} className="flex flex-col items-center w-24 shrink-0">
-                        <Nearme className="border rounded-md p-2 w-12 h-10" style={{ fontSize: '2.2rem', background: "#f7f7f7" }} pathStyle={{ stroke: "black" }} />
-                        <span>Direction</span>
-                    </a>
-                    <DoctorFeedback doctor_id={data.doctor_id} clinic_id={data.clinic_id} service_loc_id={data.id} />
-                    {(data.other_doc_cnt && data.other_doc_cnt > 0) ?
-                        <Link href={data?.clinic_dtlpg_url || ""} className="flex flex-col items-center w-24 shrink-0">
-                            <img src="/icon/male-doctor.svg" className="border rounded-md p-2 w-12 h-10" style={{ fontSize: '2.2rem' }} />
-                            <span>Our Doctors</span>
-                        </Link> : <></>}
-                </div> :
-                <div className="flex gap-4 mt-2">
-                    <a target="_blank" href={`https://www.google.com/maps/dir/?api=1&destination=${data.location_lat},${data.location_lng}`} className="button flex-1 py-1" data-variant="outlined">
-                        <Nearme pathStyle={{ stroke: "var(--primary-color)" }} className="mr-2" />
-                        Direction
-                    </a>
-                    <Link href={`tel:${data.clinic_mobile}`} className="flex-1 button py-1">
-                        <BsTelephone className="mr-2" style={{ fontSize: '1rem' }} />
-                        Call Now
-                    </Link>
-
-                </div>
-            }
-            {/* <div className="mt-2 flex">
-                <a href={`tel:${data.clinic_mobile}`} className="ml-auto button flex items-center gap-2" data-variant="outlined" data-color="secondary">
-                    <BsTelephone />
-                    Call Now
-                </a>
-            </div> */}
-            {/* <ClinicInfo data={data} /> */}
-        </div>
-        {data.settings.enable_enquiry ? <>
+        {data.settings.enable_enquiry && false ? <>
             <SendEnquiry businessType={data.business_type} state={data.clinic_state || ""} city={data.clinic_city} clini_id={data.clinic_id} doctor_id={data.doctor_id} />
-
         </> : <></>}
-        <div className="flex overflow-auto px-2 py-2 gap-2 hide-scroll-bar mt-2 sticky bg-page-background-50" style={{ top: "4rem" }}>
+         <div className="flex overflow-auto px-2 py-2 gap-2 hide-scroll-bar mt-2 sticky bg-page-background-50" style={{ top: "4rem" }}>
             <Link href={`${pageUrl}`} className={`text-nowrap border bg-white rounded-lg px-2 py-1 font-semibold flex items-center ${(searchParams.sub_page == undefined || searchParams.sub_page === "") ? 'bg-primary color-white' : ''}`}>
                 <BiGridAlt />
                 <span className="ml-1 fs-15">Overview</span>
@@ -161,17 +167,13 @@ const DoctorDetailMobile = async ({ data, availableData, searchParams, cookies }
                     <span className="text-nowrap fs-15">Good Experience In</span>
                 </Link>
             }
-            {/* <Link href={`${pageUrl}/photos`} className={`bg-white border rounded-lg font-semibold px-2 py-1 flex items-center shrink-0 gap-1 ${(searchParams.sub_page === "photos") ? 'bg-primary color-white' : ''}`}>
-                <BiGridAlt />
-                <span className="text-nowrap fs-15">Photos</span>
-            </Link> */}
             {data.settings.show_patients_feedback ?
                 <Link href={`${pageUrl}/Patient-Reviews`} className={`bg-white border rounded-lg font-semibold px-2 py-1 flex items-center shrink-0 gap-1 ${(searchParams.sub_page === "feedback") ? 'bg-primary color-white' : ''}`}>
                     <BiMessageRoundedDots />
                     <span className="text-nowrap fs-15">Reviews</span>
                 </Link> : <></>
             }
-        </div>
+        </div> 
         {!searchParams.sub_page ?
             <OverView data={data} availableData={availableData} />
             : searchParams.sub_page === "photos" ? <Photos />
