@@ -85,6 +85,9 @@ const DoctorDetailMobile = async ({ data, availableData, searchParams, cookies }
                 </div>
             </div>
         </div>
+        <div className="relative">
+            {data.settings.emergency_booking_close == 1 && <EmergencyBookingCloseAlert message={data.settings.booking_close_message} />}
+        </div>
         <div className="px-2 mt-1">
             <div className="bg-gray-50 rounded-md px-2 border flex gap-1 items-center py-2">
                 <BiTagAlt className="rotate-90 color-primary shrink-0" style={{ fontSize: '1rem' }} />
@@ -141,9 +144,6 @@ const DoctorDetailMobile = async ({ data, availableData, searchParams, cookies }
                 <span className="ml-2 font-semibold">Consulting Fee</span>
                 <span className="ml-auto font-bold">{formatCurrency(parseInt(data.service_charge))}</span>
             </div>
-        </div>
-        <div className="relative">
-            {data.settings.emergency_booking_close == 1 && <EmergencyBookingCloseAlert message={data.settings.booking_close_message} />}
         </div>
         <div id="reminder-section"></div>
         {data.settings.enable_enquiry && false ? <>

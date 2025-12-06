@@ -7,7 +7,7 @@ const EmergencyBookingCloseAlert = ({ message }: { message: string }) => {
         return <></>
     }
     return (
-        <div className="absolute top-2 px-2 left-0 w-full slideDown">
+        <div className="absolute top-2 px-2 left-0 w-full slideDown z-10">
             <div className="bg-amber-300 border px-2 rounded-md w-full flex items-center gap-2 fs-15 py-2">
                 <BiBell className='text-xl'/>
                 {message}
