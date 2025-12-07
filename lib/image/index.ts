@@ -1,5 +1,8 @@
 const ASSET_URL=process.env.NEXT_PUBLIC_ASSETS_URL
 export const doctorSpecialityIcon=(icon:string)=>{
+    if(icon===''){
+        return '';
+    }
     return `${ASSET_URL}/images/doctor-specialist/${icon}`;
 }
 export const verticalIcon=(icon:string)=>{
