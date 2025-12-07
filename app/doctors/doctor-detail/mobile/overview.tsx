@@ -1,5 +1,6 @@
 import { SectionHeading, SectionSubHeading } from "@/app/components/mobile/ui"
 import { TDoctorDetail, TDoctorvailableData } from '@/lib/types/doctor';
+import { BiChevronRight, BiTimeFive } from "react-icons/bi";
 import WeeklyConsultingTiming from "@/app/components/mobile/doctors/doctor-detail/weekly-consulting-timing";
 import NextConsultTime from '@/app/components/mobile/doctors/doctor-detail/next-consult-time';
 import moment, { get_current_datetime } from "@/lib/helper/date-time";
@@ -8,7 +9,48 @@ const OverView = ({ data, availableData }: { data: TDoctorDetail, availableData:
     let showNextConsultDate = (data.doctor_availability && data.doctor_availability.date && moment(get_current_datetime()).diff(moment(data.doctor_availability.date), 'days') < 0) ? true : false;
     return (
         <>
-            {!data.settings.display_consulting_timing ?
+            {data.settings.display_consulting_timing ? <>
+                <div className="px-2">
+                    {data.settings.display_consulting_timing ? <>
+                        <div className="bg-gray-100 rounded-md border mt-1">
+                            <div className="flex items-center px-2 mt-1">
+                                <BiTimeFive style={{ fontSize: '1rem' }} />
+                                <span className="ml-2 font-semibold">Consulting Timings :</span>
+                                <BiChevronRight className="text-xl ml-auto rotate-90" />
+                            </div>
+                            <div>
+                                {Array.isArray(data.settings.display_consulting_timing) ? data.settings.display_consulting_timing.map((dt, idx) =>
+                                    <div key={idx} className="flex items-center border-dashed border-b px-2 py-1">
+                                        <span className="font-semibold">{dt.label}:</span>
+                                        <span className="flex flex-col ml-auto">
+                                            {dt.value.map((time, ti) => <span key={ti}>{time}</span>)}
+                                        </span>
+                                    </div>
+                                ) : <span>{data.settings.display_consulting_timing}</span>}
+                            </div>
+                        </div>
+                    </> : <></>}
+                    {data.settings.display_booking_timing ? <>
+                        <div className="bg-gray-100 rounded-md border mt-2">
+                            <div className="flex items-center px-2 mt-1">
+                                <BiTimeFive style={{ fontSize: '1rem' }} />
+                                <span className="ml-2 font-semibold">Booking Timings :</span>
+                                <BiChevronRight className="text-xl ml-auto rotate-90" />
+                            </div>
+                            <div>
+                                {Array.isArray(data.settings.display_booking_timing) ? data.settings.display_booking_timing.map((dt, idx) =>
+                                    <div key={idx} className="flex items-center border-dashed border-b px-2 py-1">
+                                        <span className="font-semibold">{dt.label}:</span>
+                                        <span className="flex flex-col ml-auto">
+                                            {dt.value.map((time, ti) => <span key={ti}>{time}</span>)}
+                                        </span>
+                                    </div>
+                                ) : <span>{data.settings.display_booking_timing}</span>}
+                            </div>
+                        </div>
+                    </> : <></>}
+                </div>
+            </> :
                 <>
                     <SectionSubHeading heading='Consulting Timing' />
                     <div className='bg-white px-2 py-2 mb-2 shadow-sm'>
@@ -64,7 +106,7 @@ const OverView = ({ data, availableData }: { data: TDoctorDetail, availableData:
                         }
                     </div>
                 </>
-                : <></>}
+            }
             {data.allSpecializations && data.allSpecializations["DISEASE"] && <>
                 <SectionHeading heading='Good Experience in treatment of' />
                 <div className="px-2 py-2 grid grid-cols-2 gap-2">
