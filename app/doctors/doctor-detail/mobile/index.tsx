@@ -134,35 +134,11 @@ const DoctorDetailMobile = async ({ data, availableData, searchParams, cookies }
                     </a>
                 </div>
             </> : <></>}
-            {/* <div className="bg-gray-50 rounded-md px-2 border flex py-2 mt-1">
-                <BiTimeFive style={{ fontSize: '1rem' }} />
-                <span className="ml-2 font-semibold">Consulting Timings</span>
-                <span className="ml-auto">{''}</span>
-            </div> */}
             <div className="bg-gray-100 rounded-md px-2 border flex items-center py-2 mt-1">
                 <BiMoney style={{ fontSize: '1rem' }} />
                 <span className="ml-2 font-semibold">Consulting Fee</span>
                 <span className="ml-auto font-bold">{formatCurrency(parseInt(data.service_charge))}</span>
             </div>
-            {data.settings.display_consulting_timing ? <>
-                <div className="bg-gray-100 rounded-md border mt-1">
-                    <div className="flex items-center px-2 mt-1">
-                        <BiTimeFive style={{ fontSize: '1rem' }} />
-                        <span className="ml-2 font-semibold">Consulting Timings :</span>
-                        <BiChevronRight className="text-xl ml-auto rotate-90" />
-                    </div>
-                    <div>
-                        {Array.isArray(data.settings.display_consulting_timing) ? data.settings.display_consulting_timing.map((dt, idx) =>
-                            <div key={idx} className="flex items-center border-dashed border-b px-2 py-1">
-                                <span className="font-semibold">{dt.label}:</span>
-                                <span className="flex flex-col ml-auto">
-                                    {dt.value.map((time, ti) => <span key={ti}>{time}</span>)}
-                                </span>
-                            </div>
-                        ) : <span>{data.settings.display_consulting_timing}</span>}
-                    </div>
-                </div>
-            </> : <></>}
         </div>
         <div id="reminder-section"></div>
         {data.settings.enable_enquiry && false ? <>
