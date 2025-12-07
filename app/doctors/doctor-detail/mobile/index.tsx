@@ -129,8 +129,8 @@ const DoctorDetailMobile = async ({ data, availableData, searchParams, cookies }
                     <BiLogoWhatsapp style={{ fontSize: '1rem' }} />
                     <span className="font-semibold">Whatsapp</span>
                     <a href={`https://wa.me/${data.whatsapp_number}?text=${encodeURI(getSendEnquiryWhatsappMessage(data.doctor_name))}`} className="ml-auto flex">
-                        {data.whatsapp_number}
-                        <BiChevronRight className="text-xl" />
+                        {showMaskedMobile(data.whatsapp_number)}
+                        <span className="mx-1 border-color-primary border rounded-md px-2 color-primary font-semibold">Message</span>
                     </a>
                 </div>
             </> : <></>}
