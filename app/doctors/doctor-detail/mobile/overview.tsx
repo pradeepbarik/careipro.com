@@ -4,6 +4,7 @@ import { BiChevronRight, BiTimeFive } from "react-icons/bi";
 import WeeklyConsultingTiming from "@/app/components/mobile/doctors/doctor-detail/weekly-consulting-timing";
 import NextConsultTime from '@/app/components/mobile/doctors/doctor-detail/next-consult-time';
 import moment, { get_current_datetime } from "@/lib/helper/date-time";
+import { doctorSpecialityIcon } from "@/lib/image";
 
 const OverView = ({ data, availableData }: { data: TDoctorDetail, availableData: TDoctorvailableData }) => {
     let showNextConsultDate = (data.doctor_availability && data.doctor_availability.date && moment(get_current_datetime()).diff(moment(data.doctor_availability.date), 'days') < 0) ? true : false;
@@ -112,7 +113,7 @@ const OverView = ({ data, availableData }: { data: TDoctorDetail, availableData:
                 <div className="px-2 py-2 grid grid-cols-2 gap-2">
                     {data.allSpecializations["DISEASE"].map((cat) =>
                         <div key={cat.seo_id} className="flex items-center gap-2 px-2 py-1 border border-color-grey rounded-md bg-white">
-                            <img src={cat.icon || "/icon/disease-defult-icon.png"} className="w-10 h-10" />
+                            <img src={doctorSpecialityIcon(cat.icon) || "/icon/disease-defult-icon.png"} className="w-10 h-10" />
                             <span>{cat.name}</span>
                         </div>
                     )}
