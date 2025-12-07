@@ -1,6 +1,6 @@
 import dynamic from 'next/dynamic'
 import type { Metadata } from 'next';
-import { GoogleTagManager } from '@next/third-parties/google';
+//import { GoogleTagManager } from '@next/third-parties/google';
 import "./globals.scss";
 import StoreProvider from "./StoreProvider";
 import GlobalComponent from "./components/client-components/global";
@@ -22,10 +22,10 @@ export default function RootLayout({
           <head>
             <meta name="google-site-verification" content="GjLSsc0BtdO76sWYmp5iWVMoxZgmpCTgth0CorCfg4k" />
           </head>
-          <GoogleTagManager
+          {/* <GoogleTagManager
             gtmId="GTM-555K6X5G"
             dataLayerName="dataLayer"
-          />
+          /> */}
           <body className="theme_defult">
             <noscript>
               <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-555K6X5G"
