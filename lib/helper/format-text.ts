@@ -78,3 +78,9 @@ export const groupCategoryHeading=(business_type:string)=>{
         return "Find best Doctor by specialization";
     }
 }
+export const showMaskedMobile=(mobile:string)=>{
+    if(mobile.length===10){
+        return mobile.substr(0,3)+'XXXX'+mobile.substr(7,10);
+    }
+    return mobile;
+}

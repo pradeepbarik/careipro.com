@@ -1,7 +1,7 @@
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import { BsTelephone } from "react-icons/bs";
-import { BiGridAlt, BiMessageRoundedDots, BiTimeFive, BiLocationPlus, BiPhone, BiChevronRight, BiTagAlt,BiLogoWhatsapp } from "react-icons/bi";
+import { BiGridAlt, BiMessageRoundedDots, BiTimeFive, BiLocationPlus, BiPhone, BiChevronRight, BiTagAlt, BiLogoWhatsapp, BiMoney } from "react-icons/bi";
 import Header from '@/app/components/mobile/header';
 import BookAppointment from "@/app/components/mobile/doctors/doctor-detail/book-appointment";
 //import DoctorFeedback from "@/app/components/mobile/doctors/doctor-detail/doctor-feedback";
@@ -9,7 +9,7 @@ import BookAppointment from "@/app/components/mobile/doctors/doctor-detail/book-
 import AppointmentReminder from '@/app/components/mobile/appointment-reminder';
 import { TDoctorDetail, TDoctorvailableData } from '@/lib/types/doctor';
 import { doctorProfilePic, clinicProfilePic } from '@/lib/image';
-import { formatCurrency } from '@/lib/helper/format-text';
+import { formatCurrency, showMaskedMobile } from '@/lib/helper/format-text';
 import { TsearchParams } from '../types';
 import { doctorDetailPageUrl } from '@/lib/helper/link';
 import SendEnquiry from "@/app/hospitals-and-clinics/clinic-detail/mobile/send-enquiry";
@@ -89,7 +89,7 @@ const DoctorDetailMobile = async ({ data, availableData, searchParams, cookies }
             {data.settings.emergency_booking_close == 1 && <EmergencyBookingCloseAlert message={data.settings.booking_close_message} />}
         </div>
         <div className="px-2 mt-1">
-            <div className="bg-gray-50 rounded-md px-2 border flex gap-1 items-center py-2">
+            <div className="bg-gray-100 rounded-md px-2 border flex gap-1 items-center py-2">
                 <BiTagAlt className="rotate-90 color-primary shrink-0" style={{ fontSize: '1rem' }} />
                 <span className="font-semibold fs-15">Specialization</span>
                 <div className="ml-auto text-right">
@@ -97,59 +97,78 @@ const DoctorDetailMobile = async ({ data, availableData, searchParams, cookies }
                 </div>
             </div>
             {data.clinic_id > 0 &&
-            <div className="bg-gray-50 rounded-md px-2 border flex gap-1 items-center py-2 mt-2">
-                <img src={clinicProfilePic(data.clinic_logo || "")} className="h-6 w-6 rounded-md shrink-0" />
-                <span className="ml-2 font-semibold fs-16">{data.clinic_name}</span>
-                {data.other_doc_cnt && data.other_doc_cnt > 0 ? <>
-                    <Link href={data.clinic_dtlpg_url || ''} className="ml-auto flex items-center gap-1 text-xs color-primary font-semibold text-nowrap">
-                        <span>+{data.other_doc_cnt} {data.other_doc_cnt > 1 ? 'Doctors' : 'Doctor'}</span>
-                        <BiChevronRight className="text-xl" />
-                    </Link>
-                </> : <></>}
-            </div>}
-            <div className="bg-gray-50 rounded-md px-2 border flex gap-2 items-center py-2 mt-1">
+                <div className="bg-gray-100 rounded-md px-2 border flex gap-1 items-center py-2 mt-2">
+                    <img src={clinicProfilePic(data.clinic_logo || "")} className="h-6 w-6 rounded-md shrink-0" />
+                    <span className="ml-2 font-semibold fs-16">{data.clinic_name}</span>
+                    {data.other_doc_cnt && data.other_doc_cnt > 0 ? <>
+                        <Link href={data.clinic_dtlpg_url || ''} className="ml-auto flex items-center gap-1 text-xs color-primary font-semibold text-nowrap">
+                            <span>+{data.other_doc_cnt} {data.other_doc_cnt > 1 ? 'Doctors' : 'Doctor'}</span>
+                            <BiChevronRight className="text-xl" />
+                        </Link>
+                    </> : <></>}
+                </div>}
+            <div className="bg-gray-100 rounded-md px-2 border flex gap-2 items-center py-2 mt-1">
                 <BiLocationPlus style={{ fontSize: '1rem' }} />
                 <span className="font-semibold">Location</span>
                 <a target="_blank" href={`https://www.google.com/maps/dir/?api=1&destination=${data.location_lat},${data.location_lng}`} className="ml-auto text-right flex">
-                 {data.clinic_locality} in {data.clinic_market}, {data.clinic_city}
+                    {data.clinic_locality} in {data.clinic_market}, {data.clinic_city}
                     <BiChevronRight className="text-xl" />
                 </a>
             </div>
-            <div className="bg-gray-50 rounded-md px-2 border flex gap-2 py-2 mt-1">
+            <div className="bg-gray-100 rounded-md px-2 border flex items-center gap-2 py-2 mt-1">
                 <BiPhone style={{ fontSize: '1rem' }} />
                 <span className="font-semibold">Contact</span>
                 <a href={`tel:${data.clinic_mobile}`} className="ml-auto flex">
-                    {data.clinic_mobile}
+                    {showMaskedMobile(data.clinic_mobile)}
                     <span className="mx-1 border-color-primary border rounded-md px-2 color-primary font-semibold">Call Now</span>
                     {/* <BiChevronRight className="text-xl" /> */}
                 </a>
             </div>
-            {data.whatsapp_number ?<>
-            <div className="bg-gray-50 rounded-md px-2 border flex gap-2 py-2 mt-1">
-                <BiLogoWhatsapp style={{ fontSize: '1rem' }} />
-                <span className="font-semibold">Whatsapp</span>
-                <a href={`https://wa.me/${data.whatsapp_number}?text=${encodeURI(getSendEnquiryWhatsappMessage(data.doctor_name))}`} className="ml-auto flex">
-                    {data.whatsapp_number}
-                    <BiChevronRight className="text-xl" />
-                </a>
-            </div>
-            </>:<></>}
+            {data.whatsapp_number ? <>
+                <div className="bg-gray-100 rounded-md px-2 border flex items-center gap-2 py-2 mt-1">
+                    <BiLogoWhatsapp style={{ fontSize: '1rem' }} />
+                    <span className="font-semibold">Whatsapp</span>
+                    <a href={`https://wa.me/${data.whatsapp_number}?text=${encodeURI(getSendEnquiryWhatsappMessage(data.doctor_name))}`} className="ml-auto flex">
+                        {data.whatsapp_number}
+                        <BiChevronRight className="text-xl" />
+                    </a>
+                </div>
+            </> : <></>}
             {/* <div className="bg-gray-50 rounded-md px-2 border flex py-2 mt-1">
                 <BiTimeFive style={{ fontSize: '1rem' }} />
                 <span className="ml-2 font-semibold">Consulting Timings</span>
                 <span className="ml-auto">{''}</span>
             </div> */}
-            <div className="bg-gray-50 rounded-md px-2 border flex py-2 mt-1">
-                <BiTimeFive style={{ fontSize: '1rem' }} />
+            <div className="bg-gray-100 rounded-md px-2 border flex items-center py-2 mt-1">
+                <BiMoney style={{ fontSize: '1rem' }} />
                 <span className="ml-2 font-semibold">Consulting Fee</span>
                 <span className="ml-auto font-bold">{formatCurrency(parseInt(data.service_charge))}</span>
             </div>
+            {data.settings.display_consulting_timing ? <>
+                <div className="bg-gray-100 rounded-md border mt-1">
+                    <div className="flex items-center px-2 mt-1">
+                        <BiTimeFive style={{ fontSize: '1rem' }} />
+                        <span className="ml-2 font-semibold">Consulting Timings :</span>
+                        <BiChevronRight className="text-xl ml-auto rotate-90" />
+                    </div>
+                    <div>
+                        {Array.isArray(data.settings.display_consulting_timing) ? data.settings.display_consulting_timing.map((dt, idx) =>
+                            <div key={idx} className="flex items-center border-dashed border-b px-2 py-1">
+                                <span className="font-semibold">{dt.label}:</span>
+                                <span className="flex flex-col ml-auto">
+                                    {dt.value.map((time, ti) => <span key={ti}>{time}</span>)}
+                                </span>
+                            </div>
+                        ) : <span>{data.settings.display_consulting_timing}</span>}
+                    </div>
+                </div>
+            </> : <></>}
         </div>
         <div id="reminder-section"></div>
         {data.settings.enable_enquiry && false ? <>
             <SendEnquiry businessType={data.business_type} state={data.clinic_state || ""} city={data.clinic_city} clini_id={data.clinic_id} doctor_id={data.doctor_id} />
         </> : <></>}
-         <div className="flex overflow-auto px-2 py-2 gap-2 hide-scroll-bar mt-2 sticky bg-page-background-50" style={{ top: "4rem" }}>
+        <div className="flex overflow-auto px-2 py-2 gap-2 hide-scroll-bar mt-2 sticky bg-page-background-50" style={{ top: "4rem" }}>
             <Link href={`${pageUrl}`} className={`text-nowrap border bg-white rounded-lg px-2 py-1 font-semibold flex items-center ${(searchParams.sub_page == undefined || searchParams.sub_page === "") ? 'bg-primary color-white' : ''}`}>
                 <BiGridAlt />
                 <span className="ml-1 fs-15">Overview</span>
@@ -173,7 +192,7 @@ const DoctorDetailMobile = async ({ data, availableData, searchParams, cookies }
                     <span className="text-nowrap fs-15">Reviews</span>
                 </Link> : <></>
             }
-        </div> 
+        </div>
         {!searchParams.sub_page ?
             <OverView data={data} availableData={availableData} />
             : searchParams.sub_page === "photos" ? <Photos />
