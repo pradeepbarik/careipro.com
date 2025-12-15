@@ -91,7 +91,7 @@ const DoctorDetailMobile = async ({ data, availableData, searchParams, cookies }
         <div className="px-2 mt-1">
             <div className="bg-gray-100 rounded-md px-2 border flex gap-1 items-center py-2">
                 <BiTagAlt className="rotate-90 color-primary shrink-0" style={{ fontSize: '1rem' }} />
-                <span className="font-semibold fs-15">Specialization</span>
+                <h2 className="font-semibold fs-15">Specialization</h2>
                 <div className="ml-auto text-right">
                     {data.specialization?.replaceAll(",", ", ")}
                 </div>
@@ -99,7 +99,7 @@ const DoctorDetailMobile = async ({ data, availableData, searchParams, cookies }
             {data.clinic_id > 0 &&
                 <div className="bg-gray-100 rounded-md px-2 border flex gap-1 items-center py-2 mt-2">
                     <img src={clinicProfilePic(data.clinic_logo || "")} className="h-6 w-6 rounded-md shrink-0" />
-                    <span className="ml-2 font-semibold fs-16">{data.clinic_name}</span>
+                    <h2 className="ml-2 font-semibold fs-16">{data.clinic_name}</h2>
                     {data.other_doc_cnt && data.other_doc_cnt > 0 ? <>
                         <Link href={data.clinic_dtlpg_url || ''} className="ml-auto flex items-center gap-1 text-xs color-primary font-semibold text-nowrap">
                             <span>+{data.other_doc_cnt} {data.other_doc_cnt > 1 ? 'Doctors' : 'Doctor'}</span>
@@ -109,25 +109,26 @@ const DoctorDetailMobile = async ({ data, availableData, searchParams, cookies }
                 </div>}
             <div className="bg-gray-100 rounded-md px-2 border flex gap-2 items-center py-2 mt-1">
                 <BiLocationPlus style={{ fontSize: '1rem' }} />
-                <span className="font-semibold">Location</span>
+                <h2 className="font-semibold">Location</h2>
                 <a target="_blank" href={`https://www.google.com/maps/dir/?api=1&destination=${data.location_lat},${data.location_lng}`} className="ml-auto text-right flex">
                     {data.clinic_locality} in {data.clinic_market}, {data.clinic_city}
                     <BiChevronRight className="text-xl" />
                 </a>
             </div>
+            {data.clinic_mobile ?
             <div className="bg-gray-100 rounded-md px-2 border flex items-center gap-2 py-2 mt-1">
                 <BiPhone style={{ fontSize: '1rem' }} />
-                <span className="font-semibold">Contact</span>
+                <h2 className="font-semibold">Contact</h2>
                 <a href={`tel:${data.clinic_mobile}`} className="ml-auto flex">
                     {showMaskedMobile(data.clinic_mobile)}
                     <span className="mx-1 border-color-primary border rounded-md px-2 color-primary font-semibold">Call Now</span>
                     {/* <BiChevronRight className="text-xl" /> */}
                 </a>
-            </div>
+            </div>:<></>}
             {data.whatsapp_number ? <>
                 <div className="bg-gray-100 rounded-md px-2 border flex items-center gap-2 py-2 mt-1">
                     <BiLogoWhatsapp style={{ fontSize: '1rem' }} />
-                    <span className="font-semibold">Whatsapp</span>
+                    <h2 className="font-semibold">Whatsapp</h2>
                     <a href={`https://wa.me/${data.whatsapp_number}?text=${encodeURI(getSendEnquiryWhatsappMessage(data.doctor_name))}`} className="ml-auto flex">
                         {showMaskedMobile(data.whatsapp_number)}
                         <span className="mx-1 border-color-primary border rounded-md px-2 color-primary font-semibold">Message</span>
@@ -136,7 +137,7 @@ const DoctorDetailMobile = async ({ data, availableData, searchParams, cookies }
             </> : <></>}
             <div className="bg-gray-100 rounded-md px-2 border flex items-center py-2 mt-1">
                 <BiMoney style={{ fontSize: '1rem' }} />
-                <span className="ml-2 font-semibold">Consulting Fee</span>
+                <h2 className="ml-2 font-semibold">Consulting Fee</h2>
                 <span className="ml-auto font-bold">{formatCurrency(parseInt(data.service_charge))}</span>
             </div>
         </div>

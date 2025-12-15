@@ -13,10 +13,10 @@ const OverView = ({ data, availableData }: { data: TDoctorDetail, availableData:
             {data.settings.display_consulting_timing ? <>
                 <div className="px-2">
                     {data.settings.display_consulting_timing ? <>
-                        <div className="bg-gray-100 rounded-md border mt-1">
+                        <div className="bg-white rounded-md border mt-1">
                             <div className="flex items-center px-2 mt-1">
                                 <BiTimeFive style={{ fontSize: '1rem' }} />
-                                <span className="ml-2 font-semibold">Consulting Timings :</span>
+                                <h2 className="ml-2 font-semibold">Consulting Timings :</h2>
                                 <BiChevronRight className="text-xl ml-auto rotate-90" />
                             </div>
                             <div>
@@ -32,10 +32,10 @@ const OverView = ({ data, availableData }: { data: TDoctorDetail, availableData:
                         </div>
                     </> : <></>}
                     {data.settings.display_booking_timing ? <>
-                        <div className="bg-gray-100 rounded-md border mt-2">
+                        <div className="bg-white rounded-md border mt-2">
                             <div className="flex items-center px-2 mt-1">
                                 <BiTimeFive style={{ fontSize: '1rem' }} />
-                                <span className="ml-2 font-semibold">Booking Timings :</span>
+                                <h2 className="ml-2 font-semibold">Booking Timings :</h2>
                                 <BiChevronRight className="text-xl ml-auto rotate-90" />
                             </div>
                             <div>
