@@ -1,10 +1,12 @@
 import { SectionHeading, SectionSubHeading } from "@/app/components/mobile/ui"
 import { TDoctorDetail, TDoctorvailableData } from '@/lib/types/doctor';
 import { BiChevronRight, BiTimeFive } from "react-icons/bi";
-import WeeklyConsultingTiming from "@/app/components/mobile/doctors/doctor-detail/weekly-consulting-timing";
-import NextConsultTime from '@/app/components/mobile/doctors/doctor-detail/next-consult-time';
 import moment, { get_current_datetime } from "@/lib/helper/date-time";
 import { doctorSpecialityIcon } from "@/lib/image";
+import dynamic from "next/dynamic";
+const SimilarBusieness = dynamic(() => import("./similar-doctors"));
+const WeeklyConsultingTiming = dynamic(() => import("@/app/components/mobile/doctors/doctor-detail/weekly-consulting-timing"));
+const NextConsultTime = dynamic(() => import('@/app/components/mobile/doctors/doctor-detail/next-consult-time'));
 
 const OverView = ({ data, availableData }: { data: TDoctorDetail, availableData: TDoctorvailableData }) => {
     let showNextConsultDate = (data.doctor_availability && data.doctor_availability.date && moment(get_current_datetime()).diff(moment(data.doctor_availability.date), 'days') < 0) ? true : false;
@@ -108,11 +110,11 @@ const OverView = ({ data, availableData }: { data: TDoctorDetail, availableData:
                     </div>
                 </>
             }
-            {data.allSpecializations && data.allSpecializations["DISEASE"] && <>
-                <SectionHeading heading='Good Experience in treatment of' />
-                <div className="px-2 py-2 grid grid-cols-2 gap-2">
+            {data.treated_health_conditions?.length==0 && data.allSpecializations && data.allSpecializations["DISEASE"] && <>
+                <SectionHeading heading='Expertise in treatment of' />
+                <div className="px-2 py-2 grid grid-cols-2 gap-2 bg-white">
                     {data.allSpecializations["DISEASE"].map((cat) =>
-                        <div key={cat.seo_id} className="flex items-center gap-2 px-2 py-1 border border-color-grey rounded-md bg-white">
+                        <div key={cat.seo_id} className="flex items-center gap-2">
                             <img src={doctorSpecialityIcon(cat.icon) || "/icon/disease-defult-icon.png"} className="w-10 h-10" />
                             <span>{cat.name}</span>
                         </div>
@@ -122,10 +124,36 @@ const OverView = ({ data, availableData }: { data: TDoctorDetail, availableData:
             {/* {data.settings.raw_information &&
                 <div dangerouslySetInnerHTML={{ __html: data.settings.raw_information }} className="px-2 py-2 bg-white shadow-sm mb-2" ></div>
             } */}
+            {data.treated_health_conditions && data.treated_health_conditions.length > 0 ? <>
+                <SectionHeading heading='Treated Top Health Conditions' />
+                <div className="px-2 py-2 grid grid-cols-2 gap-2 bg-white">
+                    {data.treated_health_conditions.map((condition, idx) =>
+                        <div key={idx} className="flex flex-col gap-1">
+                            <span className="dot">{condition.condition}</span>
+                        </div>
+                    )}
+                </div>
+            </>:<></>}
+            {data.treatments_available && data.treatments_available.length > 0 ? <>
+                <SectionHeading heading='Available Treatments' />
+                <div className="px-2 py-2 grid grid-cols-2 gap-2 bg-white">
+                    {data.treatments_available.map((treatment, idx) =>
+                        <div key={idx} className="flex flex-col gap-1">
+                            <span className="dot">{treatment}</span>
+                        </div>
+                    )}
+                </div>
+            </>:<></>}
             {data.description ?
                 <>
                     <SectionHeading heading={`About ${data.doctor_name}`} />
                     <div dangerouslySetInnerHTML={{ __html: data.description }} className="px-2 py-2 bg-white shadow-sm mb-2" ></div>
+                </> : <></>
+            }
+            {data.similar_doctors && data.similar_doctors.length > 0 ?
+                <>
+                    <SimilarBusieness heading={`Similar Doctors in ${data.clinic_city}`} similar_doctors={data.similar_doctors} />
+
                 </> : <></>
             }
         </>

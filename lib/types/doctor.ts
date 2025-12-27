@@ -66,6 +66,27 @@ export type TSlnoGroup = {
     booking_complete_time: string,
     message: string
 }
+export type TSimilarDoctor = {
+    service_location_id: number,
+    doctor_id: number,
+    clinic: string,
+    clinic_id: number,
+    contact_no: string,
+    service_charge: string,
+    place: string,
+    location: string,
+    doctor_name: string,
+    position: string,
+    doctor_seo_url: string,
+    doctor_profile_pic: null | string,
+    qualification_disp: string,
+    experience: number,
+    market_name: string,
+    city: string,
+    state: string,
+    specialist_id: string,
+    specialist_name: string,
+}
 export type TDoctorDetail = TWeeklyConsultingTiming & {
     id: number,
     doctor_id: number,
@@ -152,7 +173,15 @@ export type TDoctorDetail = TWeeklyConsultingTiming & {
         }[]
     },
     business_type: string,
+    partner_type: string,
     total_liked?: number,
+    similar_doctors?: TSimilarDoctor[],
+    treated_health_conditions?: Array<{
+        condition: string,
+        severity_levels: string[],
+        no_of_cases: number | ""
+    }>,
+    treatments_available?: string[],
     seo_dt: {
         seo_url: string,
         short_seo_url: string
