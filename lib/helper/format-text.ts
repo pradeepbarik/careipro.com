@@ -18,6 +18,13 @@ export const formatDoctorName = (name: string, business_type: string = "DOCTOR")
         return name;
     }
 }
+export const textTruncate = (text: string, maxLength: number) => {
+    if (text.length > maxLength) {
+        return text.substring(0, maxLength) + '...';
+    } else {
+        return text;
+    }
+}
 export const doctorType=(business_type:string)=>{
     if(business_type==="RELAXATION"){
         return "Therapist";

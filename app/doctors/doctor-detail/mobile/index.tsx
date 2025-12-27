@@ -150,7 +150,7 @@ const DoctorDetailMobile = async ({ data, availableData, searchParams, cookies }
                 <BiGridAlt />
                 <span className="ml-1 fs-15">Overview</span>
             </Link>
-            {(data.settings.book_by === "app" && !data.settings.advance_booking_enable) &&
+            {(data.partner_type==="partnered" && data.settings.book_by === "app" && !data.settings.advance_booking_enable) &&
                 <>
                     <Link href={`${pageUrl}/appointment-booking-timings`} className={`bg-white border rounded-lg font-semibold px-2 py-1 flex items-center shrink-0 gap-1 ${(searchParams.sub_page === "appointment-booking-timings") ? 'bg-primary color-white' : ''}`}>
                         <BiTimeFive />
@@ -160,7 +160,7 @@ const DoctorDetailMobile = async ({ data, availableData, searchParams, cookies }
             {(data.allSpecializations["DISEASE"] || []).length > 0 &&
                 <Link href={`${pageUrl}/Expert-In-Disease-Treatment`} className={`bg-white border rounded-lg font-semibold px-2 py-1 flex items-center shrink-0 gap-1 ${(searchParams.sub_page === "Expert-In-Disease-Treatment") ? 'bg-primary color-white' : ''}`}>
                     <img src="/icon/disease-treatment2.png" className="h-6 w-6 rounded-full bg-white" />
-                    <span className="text-nowrap fs-15">Good Experience In</span>
+                    <span className="text-nowrap fs-15">Expertise In</span>
                 </Link>
             }
             {data.settings.show_patients_feedback ?
