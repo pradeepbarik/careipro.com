@@ -41,6 +41,12 @@ const nextConfig = {
                 destination:'/:state/:city/:seo_url-In-:market_name/DR:doctor_id-SL:service_loc_id-C:clinic_id',
                 permanent:true,
                 statusCode:301
+            },
+            {
+                source:'/:seo_url-At-:market_name-In-:city-Of-:state/DR:doctor_id-SL:service_loc_id-C:clinic_id/:sub_page',
+                destination:'/:state/:city/:seo_url-In-:market_name/DR:doctor_id-SL:service_loc_id-C:clinic_id/:sub_page',
+                permanent:true,
+                statusCode:301
             }
         ]
     },
