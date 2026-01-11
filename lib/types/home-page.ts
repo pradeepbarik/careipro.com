@@ -27,6 +27,7 @@ export type TPopularDoctor = {
 export type TSuggestedCity = {
     state: string
     city: string,
+    market_name?: string,
     thumbIcon: string
 }
 export type TSpecility = {
@@ -70,6 +71,7 @@ export type THomePageData = {
         banners?: Array<TSectionBanner>,
     }>,
     nearbyCities?: TSuggestedCity[],
+    cityMarkets?: TSuggestedCity[],
     specializations: Record<number, TSpecility>,
     verticals: Array<{ label: string, icons: string, url: string }>,
     popularDoctors: TPopularDoctor[],

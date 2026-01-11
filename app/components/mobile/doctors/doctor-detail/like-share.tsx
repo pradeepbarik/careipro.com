@@ -1,16 +1,7 @@
 'use client'
 import { BiHeart, BiShareAlt, BiSolidHeart } from "react-icons/bi";
 import useLikeShare from "@/lib/hooks/useLikeShare";
-const FormatTotalLiked = (total_liked?: number) => {
-    if (!total_liked) return '';
-    if (total_liked >= 1000000) {
-        return (total_liked / 1000000).toFixed(1).replace(/\.0$/, '') + 'M+';
-    }
-    if (total_liked >= 1000) {
-        return (total_liked / 1000).toFixed(1).replace(/\.0$/, '') + 'K+';
-    }
-    return total_liked.toString();
-}
+import { FormatTotalLiked } from "@/lib/helper/format-text";
 const LikeShare = ({ url, doctor_name, position, clinic_name, service_charge, doctor_id, clinic_id, total_liked }: { url: string, total_liked?: number, doctor_name: string, position: string, clinic_name: string, service_charge: string, doctor_id: number, clinic_id: number }) => {
     const { onLikeClick, onShareClick, isLiked } = useLikeShare({ url, doctor_name, position, clinic_name, service_charge, doctor_id, clinic_id });
     return (

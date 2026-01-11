@@ -5,7 +5,7 @@ import { SectionHeading } from "../components/mobile/ui";
 import { fetchAllCategories } from '@/lib/hooks/useCategories';
 import { groupCategoryDisplayName, groupCategoryHeading } from "@/lib/helper/format-text";
 import {categoryResultPageLink} from '@/lib/helper/link';
-const AllSpecialistMobile = async ({state,city}:{state:string,city:string}) => {
+const AllSpecialistMobile = async ({state,city,town}:{state:string,city:string,town?:string}) => {
     const data = await fetchAllCategories()
     return (
         <>
@@ -26,7 +26,10 @@ const AllSpecialistMobile = async ({state,city}:{state:string,city:string}) => {
                             <div className="flex gap-x-2 gap-y-1 flex-wrap">
                                 {data.categoryDataMapping[group_category] && data.categoryDataMapping[group_category].no_child_cats.map((parent_id) =>
                                     <Link href={categoryResultPageLink({
-                                        state:state,city:city,seo_url:data.categoryData[parent_id].seo_url,seo_id:data.categoryData[parent_id].seo_id,group_category:data.categoryData[parent_id].group_category
+                                        state:state,city:city,town:town||"",
+                                        seo_url:data.categoryData[parent_id].seo_url,
+                                        seo_id:data.categoryData[parent_id].seo_id,
+                                        group_category:data.categoryData[parent_id].group_category
                                     })} key={parent_id} className="border border-color-grey bg-white px-2 py-2 rounded-md">
                                         <span className="one-line font-semibold color-text-light">{data.categoryData[parent_id].name}</span>
                                     </Link>
@@ -35,7 +38,12 @@ const AllSpecialistMobile = async ({state,city}:{state:string,city:string}) => {
                                     <React.Fragment key={parent_id}>
                                         {data.categoryDataMapping[group_category][parent_id].map(child_cat_id =>
                                             <Link href={categoryResultPageLink({
-                                                state:state,city:city,seo_url:data.categoryData[child_cat_id].seo_url,seo_id:data.categoryData[child_cat_id].seo_id,group_category:data.categoryData[child_cat_id].group_category
+                                                state:state,
+                                                city:city,
+                                                town:town||"",
+                                                seo_url:data.categoryData[child_cat_id].seo_url,
+                                                seo_id:data.categoryData[child_cat_id].seo_id,
+                                                group_category:data.categoryData[child_cat_id].group_category
                                             })} key={child_cat_id} className="border border-color-grey bg-white py-2 rounded-md flex items-center">
                                                 <img src="https://media.istockphoto.com/id/1352426609/vector/woman-with-acne-and-clean-face-skin-line-icon-female-skincare-for-cleansing-face-and-problem.jpg?s=612x612&w=0&k=20&c=pH_T2vq50xyqIrQIYAi_mZJZLlaqdXul1MQvTB9W8OQ=" className="h-7 w-7 rounded-full" />
                                                 <span className="one-line font-semibold color-text-light px-1"> {data.categoryData[child_cat_id].name}</span>

@@ -6,7 +6,7 @@ import { fetchDoctors } from '@/lib/hooks/useDoctors';
 import useDeviceInfo from "@/lib/hooks/useDeviceInfo";
 const DoctorListMobile = dynamic(() => import("@/app/doctors/doctors-list/mobile"));
 export async function generateMetadata({ searchParams }: { searchParams: any }): Promise<Metadata> {
-    const data = await fetchDoctors({ state: searchParams.state, city: searchParams.city, cat_id: searchParams.cat_id, group_category: searchParams.group_cat, seo_url: searchParams.seo_url })
+    const data = await fetchDoctors({ state: searchParams.state, city: searchParams.city, cat_id: searchParams.cat_id, group_category: searchParams.group_cat, seo_url: searchParams.seo_url,town:searchParams.town });
     return {
         title: data.data.seo_dt.title,
         description: data.data.seo_dt.meta_description,
@@ -20,13 +20,13 @@ export async function generateMetadata({ searchParams }: { searchParams: any }):
         },
         alternates:{
             //canonical:`/${searchParams.seo_url}-In-${searchParams.city}-Of-${searchParams.state}/CATG${searchParams.cat_id}-${searchParams.group_cat}` // Relative path will be combined with metadataBase
-            canonical:`https://careipro.com/${searchParams.state.toLowerCase().replace(" ", "-")}/${searchParams.city.toLowerCase().replace(" ", "-")}/${searchParams.seo_url}/CATG${searchParams.cat_id}-${searchParams.group_cat}` // Relative path will be combined with metadataBase
+            canonical:`https://careipro.com/${searchParams.state.toLowerCase().replace(" ", "-")}/${searchParams.city.toLowerCase().replace(" ", "-")}/${searchParams.seo_url}${searchParams.town ? `-in-${searchParams.town.toLowerCase().replace(" ", "-")}` : ""}/CATG${searchParams.cat_id}-${searchParams.group_cat}` // Relative path will be combined with metadataBase
         }
     }
 }
 const DoctorsList = async ({ searchParams }: { searchParams: any }) => {
     const { device } = useDeviceInfo();
-    const data = await fetchDoctors({ state: searchParams.state, city: searchParams.city, cat_id: searchParams.cat_id, group_category: searchParams.group_cat, seo_url: searchParams.seo_url })
+    const data = await fetchDoctors({ state: searchParams.state, city: searchParams.city, town: searchParams.town, cat_id: searchParams.cat_id, group_category: searchParams.group_cat, seo_url: searchParams.seo_url })
     // if (data.data.seo_dt.short_seo_url !== searchParams.seo_url) {
     //     permanentRedirect("/" + data.data.seo_dt.seo_url, RedirectType.push);
     //     return <></>

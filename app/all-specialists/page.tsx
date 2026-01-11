@@ -28,7 +28,7 @@ const AllSpecialists = ({ searchParams }: TProps) => {
     if (device.type === 'mobile' || 1==1) {
         return (
             <>
-                <AllSpecialistMobile state={searchParams.state} city={searchParams.city} />
+                <AllSpecialistMobile state={searchParams.state} city={searchParams.city} town={searchParams.town || ""} />
             </>
         );
     }

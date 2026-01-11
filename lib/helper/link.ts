@@ -7,19 +7,22 @@ export const getCityCacheDir = (state: string, city: string, extraParams?: { mar
     }
     return `/cache/${state.toLowerCase().replace(" ", "-")}/${city.toLowerCase().replace(" ", "-")}/`;
 }
-export const alllCategoriesPageLink = (state: string, city: string) => {
+export const alllCategoriesPageLink = (state: string, city: string,town: string="") => {
     if (state == "" && city == "") {
         return `doctor-specialists-and-services`;
     }
-    return `${state.toLowerCase()}/${city.toLowerCase()}/doctor-specialists-and-services`;
+    return `/${state.toLowerCase()}/${city.toLowerCase()}/doctor-specialists-and-services${town ? "-in-" + town.toLowerCase().replace(" ", "-") : ""}`;
 }
-export const cityPageLink = (state: string, city: string) => {
+export const cityPageLink = (state: string, city: string,market_name?:string) => {
     //return capitalizeEachWordFirstLetter(`${city}-In-${state}`).replace(" ", "-")
+    if(market_name){
+        return `/${state.toLowerCase()}/${market_name.toLowerCase().replace(" ", "-")}-in-${city.toLowerCase().replace(' ', '-')}`;
+    }
     return `/${state.toLowerCase()}/${city.toLowerCase()}`;
 }
-export const doctorsBySpecialistPageUrl = (seo_url: string, seo_id: string, state: string, city: string) => {
+export const doctorsBySpecialistPageUrl = (seo_url: string, seo_id: string, state: string, city: string,extraParams?: { market_name?: string }) => {
     //return `/${seo_url}-In-${capitalizeEachWordFirstLetter(city)}-Of-${capitalizeEachWordFirstLetter(state)}/${seo_id}`
-    return `/${state.toLowerCase()}/${city.toLowerCase().replace(' ', '-')}/${seo_url}/${seo_id}`;
+    return `/${state.toLowerCase()}/${city.toLowerCase().replace(' ', '-')}/${seo_url}${extraParams?.market_name ? `-in-${extraParams.market_name.toLowerCase().replace(" ", "-")}` : ""}/${seo_id}`;
 }
 export const doctorDetailPageUrl = (params: { doctor_id: number, service_loc_id: number, clinic_id: number, seo_url: string, state: string, city: string, market_name: string, type?: string }) => {
     // let url= `/${params.seo_url}-At-${params.market_name.replace(" ", "-")}-In-${params.city}-Of-${params.state}/`;  
@@ -51,13 +54,13 @@ export const clinicsBySpecialistPageUrl = (seo_url: string, seo_id: string, stat
         return `/${state.toLowerCase()}/${city.toLowerCase().replace(' ', '-')}/${seo_url}/CLINICS-${seo_id}`;
     }
 }
-export const categoryResultPageLink = (params: { state: string, city: string, seo_url: string, seo_id: string, group_category: string }) => {
+export const categoryResultPageLink = (params: { state: string, city: string,town?: string, seo_url: string, seo_id: string, group_category: string }) => {
     if (params.group_category === "CLINIC") {
         //return `/${params.seo_url}-In-${capitalizeEachWordFirstLetter(params.city)}-Of-${capitalizeEachWordFirstLetter(params.state)}/CLINICS-${params.seo_id}`;
-        return `/${params.state.toLowerCase()}/${params.city.toLowerCase().replace(' ', '-')}/${params.seo_url}/CLINICS-${params.seo_id}`;
+        return `/${params.state.toLowerCase()}/${params.city.toLowerCase().replace(' ', '-')}/${params.seo_url}${params.town? "-in-" + params.town.toLowerCase().replace(" ", "-") : ""}/CLINICS-${params.seo_id}`;
     }
     //return `/${params.seo_url}-In-${capitalizeEachWordFirstLetter(params.city)}-Of-${capitalizeEachWordFirstLetter(params.state)}/${params.seo_id}`;
-    return `/${params.state.toLowerCase()}/${params.city.toLowerCase()}/${params.seo_url}/${params.seo_id}`;
+    return `/${params.state.toLowerCase()}/${params.city.toLowerCase()}/${params.seo_url}${params.town? "-in-" + params.town.toLowerCase().replace(" ", "-") : ""}/${params.seo_id}`;
     
 }
 export const upiPaymentLink = (upiid: string, total_amount: number, message: string) => {

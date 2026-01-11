@@ -9,13 +9,13 @@ const CategoriesView = ({ data, state, market_name = "", city, heading, page = '
         </h2>
         <div className='bg-white px-2 py-2'>
             <div className='flex flex-wrap gap-2'>
-                {data.noChildCategories.map((cat) => <Link key={cat.seo_id} href={page==='CLINICS'?clinicsBySpecialistPageUrl(data.categoryData[cat.seo_id].seo_url,cat.seo_id,state,city,market_name): doctorsBySpecialistPageUrl(data.categoryData[cat.seo_id].seo_url, cat.seo_id, state, city)} className='px-2 py-1 border border-gray-300 bg-gray-100 rounded-md'>{cat.name}</Link>)}
+                {data.noChildCategories.map((cat) => <Link key={cat.seo_id} href={page==='CLINICS'?clinicsBySpecialistPageUrl(data.categoryData[cat.seo_id].seo_url,cat.seo_id,state,city,market_name): doctorsBySpecialistPageUrl(data.categoryData[cat.seo_id].seo_url, cat.seo_id, state, city,{market_name:market_name})} className='px-2 py-1 border border-gray-300 bg-gray-100 rounded-md'>{cat.name}</Link>)}
             </div>
             {data.hasChildcategories.map((category) => <div key={category.seo_id}>
                 <h3 className='font-medium fs-16 py-2'>{category.name}
                 </h3>
                 <div className='flex flex-wrap gap-2'>
-                    {category.child_categories.map((cat) => <Link key={cat.seo_id} href={page==='CLINICS'?clinicsBySpecialistPageUrl(data.categoryData[cat.seo_id].seo_url,cat.seo_id,state,city,market_name): doctorsBySpecialistPageUrl(data.categoryData[cat.seo_id].seo_url, cat.seo_id, state, city)} className='px-2 py-1 border border-gray-300 bg-gray-100 rounded-md'>{cat.name}</Link>)}
+                    {category.child_categories.map((cat) => <Link key={cat.seo_id} href={page==='CLINICS'?clinicsBySpecialistPageUrl(data.categoryData[cat.seo_id].seo_url,cat.seo_id,state,city,market_name): doctorsBySpecialistPageUrl(data.categoryData[cat.seo_id].seo_url, cat.seo_id, state, city,{market_name:market_name})} className='px-2 py-1 border border-gray-300 bg-gray-100 rounded-md'>{cat.name}</Link>)}
                 </div>
             </div>)}
         </div>

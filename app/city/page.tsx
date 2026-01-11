@@ -12,10 +12,10 @@ type TProps = {
   params: { [key: string]: string },
   searchParams: { [key: string]: string }
 }
-export async function generateMetadata({ searchParams }: { searchParams: { city: string, state: string } }): Promise<Metadata> {
+export async function generateMetadata({ searchParams }: { searchParams: { city: string, state: string,town?: string } }): Promise<Metadata> {
   return {
-    title: `Doctors,clinics,Hospitals,medicine stores,caretakers,Body massage in ${searchParams.city}`,
-    description: `Book Appointment with Doctors,Order medicine from nearby medicine stores,hire caretakers,veterinary doctors for you pets and relaxation by full body massage.Visit careipro.com`,
+    title: `Doctors, Clinics, Medicine,Caretakers & Home Care Services in ${searchParams.town ? searchParams.town + ", " : ""}${searchParams.city} | Careipro`,
+    description: `Find doctors, book appointments, hire caretakers, body massage, pet care & medicine stores in ${searchParams.town ? searchParams.town + ", " : ""}${searchParams.city}. Trusted local healthcare services on Careipro`,
     robots: {
       index: true,
       follow: true,
@@ -35,7 +35,7 @@ const CityHomePage = ({ searchParams }: TProps) => {
   if (device.type === "mobile" || 1==1) {
     return (
       <>
-        <CityHomeMobile state={searchParams.state} city={searchParams.city} cookies={cookies} />
+        <CityHomeMobile state={searchParams.state} city={searchParams.city} town={searchParams.town} cookies={cookies} />
         {/* {!cookies[userSecreateKey] && <LoginToast style={{bottom:"4rem"}}/>} */}
         <PageVisitLogger data={{
           page_name: "city_home",

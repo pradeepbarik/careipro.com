@@ -150,12 +150,6 @@ const OverView = ({ data, availableData }: { data: TDoctorDetail, availableData:
                     <div dangerouslySetInnerHTML={{ __html: data.description }} className="px-2 py-2 bg-white shadow-sm mb-2" ></div>
                 </> : <></>
             }
-            {data.similar_doctors && data.similar_doctors.length > 0 ?
-                <>
-                    <SimilarBusieness heading={`Similar Doctors in ${data.clinic_city}`} similar_doctors={data.similar_doctors} />
-
-                </> : <></>
-            }
         </>
     )
 }
