@@ -22,6 +22,7 @@ const LoginToast = dynamic(() => import("@/app/components/mobile/login-toast"));
 const OverView = dynamic(() => import('./overview'))
 const AppointmentBookingTiming = dynamic(() => import('./booking-timing'));
 const Photos = dynamic(() => import('./photos'))
+const SimilarBusieness = dynamic(() => import("./similar-doctors"));
 export const getSendEnquiryWhatsappMessage = (doctor_name = "") => {
     return `Hi,\nI found your clinic on careipro.com. I want more information about *${doctor_name}*`;
 }
@@ -116,15 +117,15 @@ const DoctorDetailMobile = async ({ data, availableData, searchParams, cookies }
                 </a>
             </div>
             {data.clinic_mobile ?
-            <div className="bg-gray-100 rounded-md px-2 border flex items-center gap-2 py-2 mt-1">
-                <BiPhone style={{ fontSize: '1rem' }} />
-                <h2 className="font-semibold">Contact</h2>
-                <a href={`tel:${data.clinic_mobile}`} className="ml-auto flex">
-                    {showMaskedMobile(data.clinic_mobile)}
-                    <span className="mx-1 border-color-primary border rounded-md px-2 color-primary font-semibold">Call Now</span>
-                    {/* <BiChevronRight className="text-xl" /> */}
-                </a>
-            </div>:<></>}
+                <div className="bg-gray-100 rounded-md px-2 border flex items-center gap-2 py-2 mt-1">
+                    <BiPhone style={{ fontSize: '1rem' }} />
+                    <h2 className="font-semibold">Contact</h2>
+                    <a href={`tel:${data.clinic_mobile}`} className="ml-auto flex">
+                        {showMaskedMobile(data.clinic_mobile)}
+                        <span className="mx-1 border-color-primary border rounded-md px-2 color-primary font-semibold">Call Now</span>
+                        {/* <BiChevronRight className="text-xl" /> */}
+                    </a>
+                </div> : <></>}
             {data.whatsapp_number ? <>
                 <div className="bg-gray-100 rounded-md px-2 border flex items-center gap-2 py-2 mt-1">
                     <BiLogoWhatsapp style={{ fontSize: '1rem' }} />
@@ -150,7 +151,7 @@ const DoctorDetailMobile = async ({ data, availableData, searchParams, cookies }
                 <BiGridAlt />
                 <span className="ml-1 fs-15">Overview</span>
             </Link>
-            {(data.partner_type==="partnered" && data.settings.book_by === "app" && !data.settings.advance_booking_enable) &&
+            {(data.partner_type === "partnered" && data.settings.book_by === "app" && !data.settings.advance_booking_enable) &&
                 <>
                     <Link href={`${pageUrl}/appointment-booking-timings`} className={`bg-white border rounded-lg font-semibold px-2 py-1 flex items-center shrink-0 gap-1 ${(searchParams.sub_page === "appointment-booking-timings") ? 'bg-primary color-white' : ''}`}>
                         <BiTimeFive />
@@ -187,6 +188,7 @@ const DoctorDetailMobile = async ({ data, availableData, searchParams, cookies }
                 </> : <>
                     <OverView data={data} availableData={availableData} />
                 </>}
+        {(data.similar_doctors || []).length > 0 ? <SimilarBusieness heading={`Similar Doctors in ${data.clinic_city}`} similar_doctors={data.similar_doctors || []} /> : null}
         {(data.settings.book_by === "app") && <div className="mt-12">
             <div className="bg-white fixed bottom-0 w-full px-2 py-1" style={{ bottom: 0 }}>
                 <BookAppointment emergencyBookingClose={data.settings.emergency_booking_close} bookingCloseMessage={data.settings.booking_close_message} open={searchParams.book_appointment === '1' ? true : false} clinic_id={data.clinic_id} service_loc_id={data.id} doctor_id={data.doctor_id} service_charge={parseInt(data.service_charge)} site_service_charge={parseInt(data.site_service_charge)} settings={data.settings} availability={availableData} slno_groups={data.slno_groups || []} pageUrl={pageUrl} />

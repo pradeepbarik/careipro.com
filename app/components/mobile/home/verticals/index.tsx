@@ -9,7 +9,7 @@ const Verticals = ({ data }: { data: THomePageData['verticals'] }) => {
                     <div className='w-full h-24 flex items-center'>
                         <img src={verticalIcon(vertical.icons)} alt={vertical.label} className='mx-3' />
                     </div>
-                    <Link href={vertical.url} title={`${vertical.label} - careipro`} className='font-semibold text-center mx-2 py-2 overflow-hidden'>{vertical.label}</Link>
+                    <Link href={'/'+vertical.url} title={`${vertical.label} - careipro`} className='font-semibold text-center mx-2 py-2 overflow-hidden'>{vertical.label}</Link>
                 </div>
             )}
         </div>

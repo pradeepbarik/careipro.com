@@ -20,8 +20,8 @@ import Login from '../../mobile/login';
 import LoginToast from '../../mobile/login-toast';
 const AppointmentReminder = dynamic(() => import("../../mobile/appointment-reminder"), { ssr: false });
 const RatingReminder = dynamic(() => import("../../mobile/rating-reminder"), { ssr: false });
-const CityHome = async ({ state, city, cookies }: { state: string, city: string, cookies: any }) => {
-    const data = await getCityHomePageData(state, city);
+const CityHome = async ({ state, city, town, cookies }: { state: string, city: string, town: string, cookies: any }) => {
+    const data = await getCityHomePageData(state, city, town);
     const getSectionDoctors = (doctorIds: number[]) => {
         let doctors: any[] = [];
         if (data?.doctors) {
@@ -42,11 +42,11 @@ const CityHome = async ({ state, city, cookies }: { state: string, city: string,
                         <>
                             {section.heading && <SectionHeading heading={section.heading} />}
                             {data.nearbyCities &&
-                                <NearbyCities data={data.nearbyCities} />
+                                <NearbyCities data={data.nearbyCities} cityMarkets={data.cityMarkets || []} />
                             }
                         </> : section.name === "specialization" ? <>
                             {section.heading && <SectionHeading heading={section.heading} />}
-                            <Specializations viewType={section.viewType} itemViewType={section.itemViewType === "oneline" ? 'oneline' : 'line_by_line'} itemWidth={section.itemWidth} state={state} city={city} data={data.specializations} specialist_ids={section.specialist_ids || []} />
+                            <Specializations viewType={section.viewType} itemViewType={section.itemViewType === "oneline" ? 'oneline' : 'line_by_line'} itemWidth={section.itemWidth} state={state} city={city} town={town} data={data.specializations} specialist_ids={section.specialist_ids || []} />
                         </> : section.name === "verticals" ? <>
                             {section.heading && <SectionHeading heading={section.heading} />}
                             <Verticals data={data.verticals} />
@@ -76,7 +76,7 @@ const CityHome = async ({ state, city, cookies }: { state: string, city: string,
             <Footer>
                 <Suspense>
                     {/* <ServiceAvailbeCities /> */}
-                    <CategoriesFooter heading='Find Doctors By Specialist' state={state} city={city} group_category='DOCTOR' page="DOCTORS" />
+                    <CategoriesFooter heading='Find Doctors By Specialist' state={state} city={city} market_name={town} group_category='DOCTOR' page="DOCTORS" />
                 </Suspense>
             </Footer>
             <SetStateCity state={state} city={city} />
@@ -84,7 +84,7 @@ const CityHome = async ({ state, city, cookies }: { state: string, city: string,
                 <>
                     <AppointmentReminder position={"section-1"} />
                     <RatingReminder catid={0} doctor_id={0} />
-                </>:<>
+                </> : <>
                 </>
             }
         </>

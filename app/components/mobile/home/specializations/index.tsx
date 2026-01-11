@@ -6,7 +6,7 @@ import { doctorSpecialityIcon } from '@/lib/image';
 import { alllCategoriesPageLink } from '@/lib/helper/link';
 import { array_chunk } from '@/lib/helper';
 
-const Specializations: FC<{ data: Record<number, TSpecility>, specialist_ids: number[], state?: string, city?: string, viewType?: string, itemViewType?: 'line_by_line' | 'oneline',itemWidth?:string }> = ({ data, specialist_ids, state, city, viewType = "", itemViewType = "line_by_line",itemWidth='' }) => {
+const Specializations: FC<{ data: Record<number, TSpecility>, specialist_ids: number[], state?: string, city?: string, town?: string, viewType?: string, itemViewType?: 'line_by_line' | 'oneline',itemWidth?:string }> = ({ data, specialist_ids, state, city, town, viewType = "", itemViewType = "line_by_line",itemWidth='' }) => {
     if (viewType === "2:n") {
         let chunks = array_chunk([...specialist_ids, 0], 2, [])
         return (
@@ -18,11 +18,11 @@ const Specializations: FC<{ data: Record<number, TSpecility>, specialist_ids: nu
                                 {specialist_id !== 0 ?
                                     <>
                                         {itemViewType === "oneline" ?
-                                            <Link title={`${data[specialist_id].name} doctors in ${city}`} href={data[specialist_id].seo_url} key={specialist_id} className={`flex gap-1 items-center border border-color-grey px-2 py-1 rounded-md h-16 bg-white`}>
+                                            <Link title={`${data[specialist_id].name} doctors in ${town ? town + ", " : ""}${city}`} href={data[specialist_id].seo_url} key={specialist_id} className={`flex gap-1 items-center border border-color-grey px-2 py-1 rounded-md h-16 bg-white`}>
                                                 <img src={doctorSpecialityIcon(data[specialist_id].icon)} alt={data[specialist_id].name} className="rounded-full border h-10 w-10 p-1" />
                                                 <span className="text-center fs-12">{data[specialist_id].name}</span>
                                             </Link> :
-                                            <Link title={`${data[specialist_id].name} doctors in ${city}`} href={data[specialist_id].seo_url} key={specialist_id} className={`flex items-center flex-col pt-1 border border-color-grey rounded-md bg-white`}>
+                                            <Link title={`${data[specialist_id].name} doctors in ${town ? town + ", " : ""}${city}`} href={data[specialist_id].seo_url} key={specialist_id} className={`flex items-center flex-col pt-1 border border-color-grey rounded-md bg-white`}>
                                                 <img src={doctorSpecialityIcon(data[specialist_id].icon)} alt={data[specialist_id].name} className="border rounded-full h-10 w-10 p-1" />
                                                 <span className="mt-1 text-center h-10 px-1 fs-12">{data[specialist_id].name}</span>
                                             </Link>
@@ -37,7 +37,7 @@ const Specializations: FC<{ data: Record<number, TSpecility>, specialist_ids: nu
                                                 <span className="font-semibold text-center fs-12">View All</span>
                                             </Link>
                                             :
-                                            <Link title="Find all specialists" href={alllCategoriesPageLink(state || "", city || "")} className="flex flex-col items-center border border-color-grey rounded-md py-1 bg-white">
+                                            <Link title="Find all specialists" href={alllCategoriesPageLink(state || "", city || "",town || "")} className="flex flex-col items-center border border-color-grey rounded-md py-1 bg-white">
                                                 <span className="rounded-full border h-10 w-10 p-1 bg-primary flex justify-center items-center">
                                                     <AiOutlineRight className="color-white text-xl" />
                                                 </span>
@@ -65,7 +65,7 @@ const Specializations: FC<{ data: Record<number, TSpecility>, specialist_ids: nu
                                     <img src={doctorSpecialityIcon(data[specialist_id].icon)} alt={data[specialist_id].name} className="rounded-full bg-white border h-12 w-12 p-1" />
                                     <span className="font-semibold mt-2 text-center fs-12">{data[specialist_id].name}</span>
                                 </Link> :
-                                <Link title="Find all specialists" href={alllCategoriesPageLink(state || "", city || "")} className="flex flex-col items-center">
+                                <Link title="Find all specialists" href={alllCategoriesPageLink(state || "", city || "",town||"")} className="flex flex-col items-center">
                                     <span className="rounded-full border h-12 w-12 p-1 bg-primary flex justify-center items-center">
                                         <AiOutlineRight className="color-white text-xl" />
                                     </span>

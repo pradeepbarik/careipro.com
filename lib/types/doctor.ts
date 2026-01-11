@@ -86,6 +86,8 @@ export type TSimilarDoctor = {
     state: string,
     specialist_id: string,
     specialist_name: string,
+    rating: string,
+    total_liked: number
 }
 export type TDoctorDetail = TWeeklyConsultingTiming & {
     id: number,

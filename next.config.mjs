@@ -121,6 +121,10 @@ const nextConfig = {
                 destination: '/doctors/doctors-list'
             },
             {
+                source: '/:state/:city([a-zA-Z-]+)/:seo_url([a-zA-Z0-9-_]+)-in-:town([a-zA-Z0-9-]+)/CATG:cat_id-:group_cat',
+                destination: '/doctors/doctors-list'
+            },
+            {
                 source: '/:state/:city([a-zA-Z-]+)/:seo_url([a-zA-Z0-9-_]+)/CATG:cat_id-:group_cat',
                 destination: '/doctors/doctors-list'
             },
@@ -193,6 +197,10 @@ const nextConfig = {
                 destination: '/all-specialists'
             },
             {
+                source: '/:state/:city/doctor-specialists-and-services-in-:town',
+                destination: '/all-specialists'
+            },
+            {
                 source: '/Read-Articles-for-:city-in-:state',
                 destination: '/articles'
             },
@@ -227,6 +235,10 @@ const nextConfig = {
             {
                 source: '/:state/:city.xml',
                 destination: '/city-sitemap?state=:state&city=:city'
+            },
+            {
+                source: '/:state/:town-in-:city',
+                destination: '/city'
             },
             {
                 source: '/:state/:city',

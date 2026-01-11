@@ -91,3 +91,29 @@ export const showMaskedMobile=(mobile:string)=>{
     }
     return mobile;
 }
+export const FormatTotalLiked = (total_liked?: number) => {
+    if (!total_liked) return '';
+    if (total_liked >= 1000000) {
+        return (total_liked / 1000000).toFixed(1).replace(/\.0$/, '') + 'M+';
+    }
+    if (total_liked >= 1000) {
+        return (total_liked / 1000).toFixed(1).replace(/\.0$/, '') + 'K+';
+    }
+    return total_liked.toString();
+}
+export const formatRating=(rating:string,defaultValue:string="")=>{
+    let rate=parseFloat(rating);
+    if(isNaN(rate)){
+        rate=0;
+    }
+    if(rate==0 && defaultValue!=""){
+        return defaultValue;
+    }
+    if(rate<=2){
+        rate=3;
+    }
+    if(rate>5){
+        rate=5;
+    }
+    return rate.toFixed(1);
+}

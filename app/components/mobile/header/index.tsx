@@ -11,7 +11,7 @@ export const BackButton = () => {
         }} />
     )
 }
-const Header = ({ template = "HOMEPAGE", heading = "", state, city, rightContainer }: { template?: "HOMEPAGE" | "SUBPAGE", heading?: string, state?: string, city?: string, rightContainer?: ReactNode }) => {
+const Header = ({ template = "HOMEPAGE", heading = "",headingElement="h1", state, city, rightContainer }: { template?: "HOMEPAGE" | "SUBPAGE", heading?: string,headingElement?: "h1" | "h2", state?: string, city?: string, rightContainer?: ReactNode }) => {
     if (template === "SUBPAGE") {
         return (
             <div style={{ height: "3.5rem" }}>
@@ -19,9 +19,12 @@ const Header = ({ template = "HOMEPAGE", heading = "", state, city, rightContain
                     <BiSolidChevronLeft className='font-semibold h-10 w-10 p-2' onClick={() => {
                         window.history.go(-1)
                     }} />
+                    {headingElement==="h2" ? <h2 className='fs-17 font-semibold'>
+                        {heading}
+                    </h2> :
                     <h1 className='fs-17 font-semibold'>
                         {heading}
-                    </h1>
+                    </h1>}
                     {rightContainer ? rightContainer : <></>}
                 </div>
             </div>
