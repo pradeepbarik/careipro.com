@@ -2,7 +2,8 @@
 const get_env_configs = () => {
     let API_BASE_URL = "";
     if (process.env.NEXT_PUBLIC_MODE === "development") {
-        API_BASE_URL = "http://localhost/api"
+        //API_BASE_URL = "http://localhost/api"
+        API_BASE_URL = "https://careipro.com/um-api"
     } else {
         API_BASE_URL = "https://careipro.com/um-api"
     }
