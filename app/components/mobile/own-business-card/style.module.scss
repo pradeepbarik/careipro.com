@@ -1,0 +1,16 @@
+.arrow{
+    font-size: 1.8rem;
+
+}
+// animate slide left to right
+@keyframes slideRight {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(5px);
+    }
+}
+.arrow {
+    animation: slideRight .6s infinite alternate;
+}

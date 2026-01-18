@@ -36,7 +36,7 @@ const DoctorsList = async ({ searchParams }: { searchParams: any }) => {
             <DoctorListMobile params={searchParams} data={data.data} />
             <PageVisitLogger data={{
                 page_type: "listing",
-                page_name: "doctors_list",
+                page_name: data.data.specialist_name,
                 state: searchParams.state,
                 city: searchParams.city,
                 cat_id: searchParams.cat_id,
