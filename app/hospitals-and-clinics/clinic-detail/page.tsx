@@ -35,7 +35,9 @@ const ClinicDetail = async ({ searchParams }: { searchParams: { seo_url: string,
             <>
                 <ClinicDetailMobile data={data} searchParams={searchParams} />
                 <PageVisitLogger data={{
-                    page_name:"clinic_detail",
+                    page_type:"clinic_detail",
+                    page_name: data.clinic_info.name,
+                    section_name:"initial_load",
                     state:searchParams.state,
                     city:searchParams.city,
                     clinic_id:searchParams.clinic_id,

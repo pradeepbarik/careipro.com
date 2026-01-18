@@ -1,8 +1,8 @@
 'use client'
 import Link from "next/link";
-import { BiChevronsRight, BiPhoneOutgoing, BiTimeFive, BiCopy } from "react-icons/bi";
+import { BiChevronsRight, BiPhoneOutgoing, BiTimeFive, BiCopy, BiStar, BiSolidStar } from "react-icons/bi";
 import Header from "@/app/components/mobile/header";
-import { Button, Input, SectionHeading } from "@/app/components/mobile/ui";
+import { Button, Input, SectionHeading, SlideUpModal } from "@/app/components/mobile/ui";
 import useAppointmentStatusCheck from '../useAppointmentStatusCheck';
 import moment from "moment";
 import { formatCurrency, formatDoctorName } from "@/lib/helper/format-text";
@@ -11,8 +11,34 @@ import { support_no } from "@/constants/site-config";
 import { doctorDetailPageUrl } from "@/lib/helper/link";
 import { toast } from "react-toastify";
 import ClinicDoctors from "@/app/components/mobile/clinics/clinic-doctors";
+import useSubmitRatingReview from "@/lib/hooks/user-profile/useSubmitRatingReview";
+import Ratingstars from "@/app/components/mobile/ui/rating-stars";
+import { Fragment, useEffect } from "react";
+import ReviewTags from "@/app/components/mobile/review-tags";
+const getRatingStarColor = (rating: number) => {
+    if (rating <= 1) {
+        return "color-secondary";
+    } else if (rating > 1 && rating <= 2) {
+        return "color-secondary";
+    } else if (rating > 2 && rating <= 3) {
+        return "text-yellow-400";
+    } else if (rating > 3 && rating <= 4) {
+        return "text-yellow-600";
+    } else {
+        return "color-primary";
+    }
+}
 const CheckStatusMobile = () => {
-    const { appointmentDetail, clinicDetail } = useAppointmentStatusCheck();
+    const { appointmentDetail, clinicDetail, getAppointmentDetail, showRatingModal, setShowRatingModal } = useAppointmentStatusCheck();
+    const { reviewTags, showReviewModal, setShowReviewModal, setSelectedRating, SelectedRating, selectedReviewTagsArr, setSelectedReviewTagsArr, setSelectedReviewTags, onSelectReviewTag, reviewText, setReviewText, submitRatingReview, submitRating } = useSubmitRatingReview({ review_text: "" });
+    useEffect(() => {
+        if (appointmentDetail) {
+            setSelectedRating(appointmentDetail.rating || 0);
+            let reviewtags: string[] = (appointmentDetail.review_tags || []).map((tag) => tag.tag);
+            setSelectedReviewTagsArr(reviewtags)
+            setSelectedReviewTags(appointmentDetail.review_tags || []);
+        }
+    }, [appointmentDetail?.id])
     return (
         <>
             <Header heading="Appointment Status Check" template='SUBPAGE' />
@@ -52,18 +78,43 @@ const CheckStatusMobile = () => {
                                         <></>}
                         </div>
                         <hr className="my-1" />
-                        <div>
-                            Doctor Name : <b>{formatDoctorName(appointmentDetail.doctor_name)}</b>
-                        </div>
-                        <div className="py-1">
-                            Clinic Name : <b>{appointmentDetail.clinic_name}</b>
+                        <div className="flex items-center">
+                            <div className="grow">
+                                <div>
+                                    Doctor Name : <b>{formatDoctorName(appointmentDetail.doctor_name)}</b>
+                                </div>
+                                <div className="py-1">
+                                    Clinic Name : <b>{appointmentDetail.clinic_name}</b>
+                                </div>
+                            </div>
+                            <div className="ml-auto flex" onClick={() => { setShowRatingModal(true) }}>
+                                {appointmentDetail.rating && appointmentDetail.rating > 0 ? <>
+                                    {appointmentDetail.rating >= 1 ? <BiSolidStar className={`fs-17 ${getRatingStarColor(appointmentDetail.rating)} zoomOut`} />
+                                        : <BiStar className={`fs-17 ${getRatingStarColor(appointmentDetail.rating)} zoomOut`} />}
+                                    {appointmentDetail.rating >= 2 ? <BiSolidStar className={`fs-17 ${getRatingStarColor(appointmentDetail.rating)} zoomOut`} />
+                                        : <BiStar className={`fs-17 ${getRatingStarColor(appointmentDetail.rating)} zoomOut`} />}
+                                    {appointmentDetail.rating >= 3 ? <BiSolidStar className={`fs-17 ${getRatingStarColor(appointmentDetail.rating)} zoomOut`} />
+                                        : <BiStar className={`fs-17 ${getRatingStarColor(appointmentDetail.rating)} zoomOut`} />}
+                                    {appointmentDetail.rating >= 4 ? <BiSolidStar className={`fs-17 ${getRatingStarColor(appointmentDetail.rating)} zoomOut`} />
+                                        : <BiStar className={`fs-17 ${getRatingStarColor(appointmentDetail.rating)} zoomOut`} />}
+                                    {appointmentDetail.rating >= 5 ? <BiSolidStar className={`fs-17 ${getRatingStarColor(appointmentDetail.rating)} zoomOut`} />
+                                        : <BiStar className={`fs-17 ${getRatingStarColor(appointmentDetail.rating)} zoomOut`} />}   
+                                </> : <>
+                                    <BiStar className={`fs-17 color-secondary zoomOut`} />
+                                    <BiStar className={`fs-17 color-secondary zoomOut`} />
+                                    <BiStar className={`fs-17 text-yellow-400 zoomOut`} />
+                                    <BiStar className={`fs-17 text-yellow-600 zoomOut`} />
+                                    <BiStar className={`fs-17 color-primary zoomOut`} />
+                                </>}
+
+                            </div>
                         </div>
                         {appointmentDetail.consulting_timing_messages ?
                             <div className="flex items-center bg-orange-200 py-1 px-2 rounded-md border border-orange-400 font-semibold">
                                 <BiTimeFive className="inline mr-1" /> {appointmentDetail.consulting_timing_messages}
                             </div> : <></>
                         }
-                        {(appointmentDetail.show_rebook_btn || appointmentDetail.status==="doctor_cancelled") ? <>
+                        {(appointmentDetail.show_rebook_btn || appointmentDetail.status === "doctor_cancelled") ? <>
                             <div className="py-2">
                                 <Link href={doctorDetailPageUrl({ doctor_id: appointmentDetail.doctor_id, clinic_id: appointmentDetail.clinic_id, service_loc_id: appointmentDetail.servicelocation_id, city: appointmentDetail.clinic_city, state: appointmentDetail.clinic_state, market_name: appointmentDetail.clinic_market_name, seo_url: appointmentDetail.doctor_seo_url })} className="button" data-color="primary" >Book your Next Appointment</Link>
                             </div>
@@ -119,6 +170,7 @@ const CheckStatusMobile = () => {
                         <a className="button grow" href={`tel:${appointmentDetail.clinic_contact_no}`}>Contact Clinic&nbsp;&nbsp;<BiPhoneOutgoing /></a>
                     </div>
                     <PageVisitLogger data={{
+                        page_type: "detail",
                         page_name: "appointment_status_check",
                         state: appointmentDetail.clinic_state,
                         city: appointmentDetail.clinic_city,
@@ -133,7 +185,55 @@ const CheckStatusMobile = () => {
                     <ClinicDoctors clinic_info={clinicDetail.clinic_info} doctors={clinicDetail.doctors} specializations={clinicDetail.specializations} />
                 </div>
             </> : <></>}
-
+            <SlideUpModal heading="Share you Review" open={showRatingModal} onClose={() => {
+                setShowRatingModal(false);
+                // if (SelectedRating && appointmentDetail?.rating !== SelectedRating) {
+                //     submitRating({
+                //         rev_id: appointmentDetail?.rev_id || 0,
+                //         appointment_id: appointmentDetail?.id || 0,
+                //         clinic_id: appointmentDetail?.clinic_id || 0,
+                //         doctor_id: appointmentDetail?.doctor_id || 0,
+                //         service_loc_id: appointmentDetail?.servicelocation_id || 0,
+                //         consultation_date: appointmentDetail?.consult_date || ""
+                //     }, () => {
+                //         getAppointmentDetail(appointmentDetail?.id)
+                //     })
+                // }
+            }}>
+                <div>
+                    {reviewTags.map((topic, i) =>
+                        <div key={`topic-${i}`}>
+                            <div className="font-semibold my-2">{topic.topic}</div>
+                            <div className="flex flex-wrap gap-2">
+                                {topic.sub_topics.map((sub_topic) =>
+                                    <Fragment key={sub_topic.sub_topic}>
+                                        <ReviewTags data={sub_topic} topic={topic.topic} selectedTags={selectedReviewTagsArr} onClick={(data) => { onSelectReviewTag(data) }} />
+                                    </Fragment>
+                                )}
+                            </div>
+                        </div>)}
+                    <div className="font-semibold my-2">Overall Experience</div>
+                    <div className="flex justify-center">
+                        <Ratingstars given_rating={SelectedRating} onChange={(r) => { setSelectedRating(r) }} className="color-primary text-3xl" />
+                    </div>
+                    <div className="mt-2">
+                        <textarea className="w-full h-24 border textarea" placeholder="Write anything else (Optional)" value={reviewText} onChange={(e) => { setReviewText(e.target.value) }}></textarea>
+                    </div>
+                    <button className="button w-full" onClick={() => {
+                        submitRatingReview({
+                            rev_id: appointmentDetail?.rev_id || 0,
+                            appointment_id: appointmentDetail?.id || 0,
+                            clinic_id: appointmentDetail?.clinic_id || 0,
+                            doctor_id: appointmentDetail?.doctor_id || 0,
+                            service_loc_id: appointmentDetail?.servicelocation_id || 0,
+                            consultation_date: appointmentDetail?.consult_date || ""
+                        }, () => {
+                            getAppointmentDetail(appointmentDetail?.id)
+                            setShowRatingModal(false);
+                        })
+                    }}>Submit Review</button>
+                </div>
+            </SlideUpModal>
         </>
     )
 }

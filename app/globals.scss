@@ -1,11 +1,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-html{
+
+html {
     scroll-behavior: smooth;
 }
+
 .theme_defult {
-    --rgb-page-background:217, 232, 233;
+    --rgb-page-background: 217, 232, 233;
     --rgb-primary-color: 105, 196, 191;
     --rgb-primary-color: 72, 152, 178;
     // --rgb-primary-color: 58, 126, 151;
@@ -62,6 +64,7 @@ html{
 .fs-18 {
     font-size: calc(1rem / 16 * 18);
 }
+
 .fs-20 {
     font-size: calc(1rem / 16 * 20);
 }
@@ -102,6 +105,7 @@ html{
 .bg-secondary-50 {
     background-color: rgb(var(--rgb-secondary-color), 50%);
 }
+
 .bg-secondary-10 {
     background-color: rgb(var(--rgb-secondary-color), 10%);
 }
@@ -125,12 +129,15 @@ html{
 .bg-pink-50 {
     background-color: rgb(var(--rgb-pink-color), 50%);
 }
+
 .bg-page-background {
-    background-color: rgb(var(--rgb-page-background),1);
+    background-color: rgb(var(--rgb-page-background), 1);
 }
+
 .bg-page-background-50 {
-    background-color: rgb(var(--rgb-page-background),50%);
+    background-color: rgb(var(--rgb-page-background), 50%);
 }
+
 /*font color*/
 .color-primary {
     color: var(--primary-color);
@@ -143,9 +150,11 @@ html{
 .color-secondary {
     color: var(--secondary-color);
 }
-.color-pink{
+
+.color-pink {
     color: rgb(var(--rgb-pink-color), 1);
 }
+
 .color-heading {
     color: #474242;
 }
@@ -170,6 +179,7 @@ html{
 .border-color-secondary {
     border-color: var(--secondary-color);
 }
+
 details {
     summary {
         list-style: none;
@@ -250,17 +260,27 @@ details {
         border-style: solid;
         border-radius: 50%;
     }
-    &.color-primary{
+
+    &.color-primary {
         &::before {
             background-color: var(--primary-color);
             border-color: var(--primary-color);
         }
     }
-    &.color-secondary{
+
+    &.color-secondary {
         &::before {
             background-color: var(--secondary-color);
             border-color: var(--secondary-color);
         }
+    }
+
+    &.color-white {
+        &::before {
+            background-color: #ffff;
+            border-color: #ffff;
+        }
+
     }
 }
 
@@ -281,24 +301,28 @@ details {
         display: inline-block;
     }
 }
-.chip{
+
+.chip {
     display: flex;
     align-items: center;
-    border:1.5px solid var(--border-color);
+    border: 1.5px solid var(--border-color);
     padding: .1rem .4rem;
     border-radius: 1rem;
     font-weight: 500;
-    &.selected{
-        border:1.5px solid var(--border-color);
-       // background-color: var(--border-color-light);
+
+    &.selected {
+        border: 1.5px solid var(--border-color);
+        // background-color: var(--border-color-light);
         background-color: var(--primary-color);
         color: white;
-        &.secondary{
-         background-color: var(--secondary-color);  
-         border:0px solid; 
+
+        &.secondary {
+            background-color: var(--secondary-color);
+            border: 0px solid;
         }
     }
 }
+
 .loader {
     min-width: 1rem;
     min-height: 1rem;
@@ -334,29 +358,33 @@ details {
         scale: 1;
     }
 }
-.slideup{
+
+.slideup {
     animation: slideUp .5s;
     animation-fill-mode: forwards;
 }
+
 @keyframes slideUp {
     0% {
         transform: translateY(20px);
     }
 
     100% {
-         transform: translateY(0px);
+        transform: translateY(0px);
     }
 }
-.slideDown{
+
+.slideDown {
     animation: slideDown .5s;
     animation-fill-mode: forwards;
 }
+
 @keyframes slideDown {
     0% {
         transform: translateY(-20px);
     }
 
     100% {
-         transform: translateY(0px);
+        transform: translateY(0px);
     }
 }

@@ -3,8 +3,9 @@ import { useSearchParams } from "next/navigation";
 import useSiteVisiterLogger from "@/lib/hooks/useSiteVisiterLogger"
 import { useEffect } from "react";
 type TLogData = {
+    page_type?: "detail" | "listing" | "doctor_detail" | "clinic_detail" | "service_detail" | "home" | "other" | "",
     page_name: string,
-    page_type?: "detail" | "listing" | "",
+    section_name?: string,
     state: string,
     city: string,
     clinic_id?: number,

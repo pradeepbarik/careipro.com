@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { authenicatedFetchJson, IResponse } from "@/lib/services/http-client";
-type TUserProfile = {
+export type TUserProfile = {
     booking_limit: number
     city: string
     clinic_id: number,
@@ -48,7 +48,8 @@ type TUserProfile = {
     referal_code: string
     state: string | null,
     sub_district: string
-    user_type: "user" | "clinic_staff" | "NSCM"
+    user_type: "user" | "clinic_staff" | "NSCM",
+    clinic_staff_type:'registered' | 'unregisted_clinic_staff' | ''
     village: string | null
 }
 const useUserProfile = () => {

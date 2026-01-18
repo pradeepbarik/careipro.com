@@ -20,6 +20,8 @@ import Login from '../../mobile/login';
 import LoginToast from '../../mobile/login-toast';
 const AppointmentReminder = dynamic(() => import("../../mobile/appointment-reminder"), { ssr: false });
 const RatingReminder = dynamic(() => import("../../mobile/rating-reminder"), { ssr: false });
+const OwnBusinessCard = dynamic(() => import("../../mobile/own-business-card"), { ssr: false });
+
 const CityHome = async ({ state, city, town, cookies }: { state: string, city: string, town: string, cookies: any }) => {
     const data = await getCityHomePageData(state, city, town);
     const getSectionDoctors = (doctorIds: number[]) => {
@@ -84,6 +86,7 @@ const CityHome = async ({ state, city, town, cookies }: { state: string, city: s
                 <>
                     <AppointmentReminder position={"section-1"} />
                     <RatingReminder catid={0} doctor_id={0} />
+                    <OwnBusinessCard position={"section-1"} cookies={cookies} />
                 </> : <>
                 </>
             }

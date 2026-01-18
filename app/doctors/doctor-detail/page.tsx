@@ -103,7 +103,9 @@ const DoctorDetail = async ({ searchParams }: {
             />
             <DoctorDetailMobile data={data.data} searchParams={searchParams} availableData={availableData} cookies={cookies} />
             <PageVisitLogger data={{
-                page_name: "doctor_detail",
+                page_type:"doctor_detail",
+                page_name: data.data.doctor_name,
+                section_name:"initial_load",
                 state: searchParams.state,
                 city: searchParams.city,
                 doctor_id: searchParams.doctor_id,

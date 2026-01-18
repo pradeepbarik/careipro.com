@@ -13,6 +13,7 @@ type TDoctorAvailability = {
 };
 
 type TAppointmentDetail = {
+    id: number,
     clinic_name: string
     consulting_timing_messages: string
     doctor_name: string,
@@ -44,12 +45,21 @@ type TAppointmentDetail = {
     payment_status: string,
     status: string,
     bid: string,
-    doctor_availability?: TDoctorAvailability
+    doctor_availability?: TDoctorAvailability,
+    rating?: number,
+    rev_id?: number,
+    visited_for?: string,
+    experience?: string,
+    review_tags?: Array<{
+      tag: string, score: number, topic: string, sub_topic: string
+   }> | null
+
 }
 const useAppointmentStatusCheck = () => {
     const searchParams = useSearchParams();
     const [appointmentDetail, setAppointmentDetail] = useState<TAppointmentDetail | null>(null)
     const [clinicDetail, setClinicDetail] = useState<TclinicDetail | null>(null);
+    const [showRatingModal, setShowRatingModal] = useState<boolean>(false);
     const getClinicDetails = async (data: any) => {
         try {
             let clinicdetail = await fetchClinicDetail({ state: data?.clinic_state, city: data?.clinic_city, market_name: data?.clinic_market_name, clinic_id: data?.clinic_id, clinic_bid: data.bid })
@@ -58,14 +68,28 @@ const useAppointmentStatusCheck = () => {
 
         }
     }
-    useEffect(() => {
-        fetchJson<IResponse<TAppointmentDetail>>(`/appointment-status?booking_id=${searchParams.get("id")}&req_action=${searchParams.get("req_action")||""}`, false, {}, { passGuserSecreateKey: true, passSecreateKey: true }).then(({ data }) => {
+    const getAppointmentDetail = async (appointmentId: number | undefined) => {
+        if (!appointmentId) return;
+        fetchJson<IResponse<TAppointmentDetail>>(`/appointment-status?booking_id=${appointmentId}`, false, {}, { passGuserSecreateKey: true, passSecreateKey: true }).then(({ data }) => {
             setAppointmentDetail(data);
             getClinicDetails(data)
         })
+    }
+    useEffect(() => {
+        fetchJson<IResponse<TAppointmentDetail>>(`/appointment-status?booking_id=${searchParams.get("id")}&req_action=${searchParams.get("req_action") || ""}`, false, {}, { passGuserSecreateKey: true, passSecreateKey: true }).then(({ data }) => {
+            setAppointmentDetail(data);
+            getClinicDetails(data)
+            let alreadyshown = sessionStorage.getItem("show_rating_modal_" + data.id);
+            if (!alreadyshown) {
+                if (searchParams.get("action") === "share_review" || searchParams.get("req_action") === "share_review") {
+                    setShowRatingModal(true);
+                    sessionStorage.setItem("show_rating_modal_" + data.id, "1");
+                }
+            }
+        })
     }, [])
     return {
-        appointmentDetail, clinicDetail
+        appointmentDetail, clinicDetail, getAppointmentDetail, showRatingModal, setShowRatingModal
     }
 }
 export default useAppointmentStatusCheck;
