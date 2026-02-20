@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import dynamic from 'next/dynamic'
 import useDeviceInfo from "@/lib/hooks/useDeviceInfo";
 import { fetchClinicsList, fetchClinicTopDoctors } from '@/lib/hooks/useClinics';
+import PageVisitLogger from "@/app/components/client-components/page-visit-logger";
 const ClinicListMobile = dynamic(() => import('./mobile'));
 const ClinicListDesktop = dynamic(() => import('./desktop'));
 export async function generateMetadata({ searchParams }: { searchParams: any }): Promise<Metadata> {
@@ -31,6 +32,14 @@ const Clinics = async ({ searchParams }: { searchParams: any }) => {
     if (device.type === "mobile" || 1==1) {
         return (<>
             <ClinicListMobile params={searchParams} data={clinicListData.data} topDoctorsData={clinicSTopDoctorsData.data} />
+            <PageVisitLogger data={{
+                page_type: "listing",
+                page_name: "clinics_list",
+                state: searchParams.state,
+                city: searchParams.city,
+                cat_id: searchParams.cat_id,
+                group_category: searchParams.group_cat
+            }} />
         </>)
     } else {
         return (<>
