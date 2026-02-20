@@ -13,7 +13,7 @@ export async function generateMetadata({ searchParams }: { searchParams: any }):
         alternates: {
             canonical: data.pageUrl,
         },
-        robots:{
+        robots: {
             index: true,
             follow: true,
             googleBot: {
@@ -30,17 +30,19 @@ const ClinicDetail = async ({ searchParams }: { searchParams: { seo_url: string,
     //     permanentRedirect(data.pageUrl, RedirectType.push);
     //     return <></>
     // }
-    if (device.type === "mobile" || 1==1) {
+    if (device.type === "mobile" || 1 == 1) {
         return (
             <>
                 <ClinicDetailMobile data={data} searchParams={searchParams} />
                 <PageVisitLogger data={{
-                    page_type:"detail",
+                    page_type: "detail",
                     page_name: "clinic_detail",
-                    section_name:"initial_load",
-                    state:searchParams.state,
-                    city:searchParams.city,
-                    clinic_id:searchParams.clinic_id,
+                    section_name: "initial_load",
+                    state: searchParams.state,
+                    city: searchParams.city,
+                    clinic_id: searchParams.clinic_id,
+                    vertical: "CLINIC"
+
                 }} />
             </>
         )

@@ -40,7 +40,8 @@ const DoctorsList = async ({ searchParams }: { searchParams: any }) => {
                 state: searchParams.state,
                 city: searchParams.city,
                 cat_id: searchParams.cat_id,
-                group_category: searchParams.group_cat
+                group_category: searchParams.group_cat,
+                vertical:"DOCTOR"
             }} />
         </>)
     } else {

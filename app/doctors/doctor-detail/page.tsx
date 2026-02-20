@@ -103,7 +103,8 @@ const DoctorDetail = async ({ searchParams }: {
                 state: searchParams.state,
                 city: searchParams.city,
                 doctor_id: searchParams.doctor_id,
-                clinic_id: searchParams.clinic_id
+                clinic_id: searchParams.clinic_id,
+                vertical:"DOCTOR"
             }} />
         </>)
     } else {
