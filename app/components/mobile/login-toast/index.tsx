@@ -11,7 +11,7 @@ const LoginToast = ({message="One Step Away from <b>Full Features!</b>",style={}
            is_loggedin:state.authSlice.is_loggedin
        }
    })
-    const [showToast, setShowToast] = useState(sessionStorage.getItem("dontshowLoginToast") == "1" ? false : true)
+    const [showToast, setShowToast] = useState(typeof sessionStorage !== "undefined" && sessionStorage.getItem("dontshowLoginToast") == "1" ? false : true)
     const hiseToast = () => {
         setShowToast(false)
         sessionStorage.setItem("dontshowLoginToast", "1");

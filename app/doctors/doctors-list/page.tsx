@@ -36,11 +36,12 @@ const DoctorsList = async ({ searchParams }: { searchParams: any }) => {
             <DoctorListMobile params={searchParams} data={data.data} />
             <PageVisitLogger data={{
                 page_type: "listing",
-                page_name: data.data.specialist_name,
+                page_name: "doctors_list",
                 state: searchParams.state,
                 city: searchParams.city,
                 cat_id: searchParams.cat_id,
-                group_category: searchParams.group_cat
+                group_category: searchParams.group_cat,
+                vertical:"DOCTOR"
             }} />
         </>)
     } else {
