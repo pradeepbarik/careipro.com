@@ -309,7 +309,6 @@ const DoctorDetail = async ({ searchParams }: {
                     "@type": "WebPage",
                     "@id": `https://careipro.com${data.data.seo_dt.seo_url}`
                  },
-                 "specialty": data.data.specialization,
                  "sameAs": [
                     "https://careipro.com" + data.data.seo_dt.seo_url
                  ],
@@ -378,7 +377,6 @@ const DoctorDetail = async ({ searchParams }: {
                     "addressLocality": data.data.clinic_city,
                     "addressRegion": data.data.clinic_state,
                     "addressCountry": "India",
-                    "countryCode": "IN"
                 }
             }, {
                 "@type": "BreadcrumbList",
