@@ -305,6 +305,10 @@ const DoctorDetail = async ({ searchParams }: {
                 "description": data.data.description || data.data.seo_dt.description,
                 "telephone": data.data.clinic_mobile,
                 "image": doctorProfilePic(data.data.profile_pic),
+                "mainEntityOfPage":{
+                    "@type": "WebPage",
+                    "@id": `https://careipro.com${data.data.seo_dt.seo_url}`
+                 },
                // "medicalSpecialty": data.data.specialization?.split(',').map((spec: string) => spec.trim()) || [],
                 "address": {
                     "@type": "PostalAddress",
