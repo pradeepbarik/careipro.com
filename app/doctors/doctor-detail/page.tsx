@@ -176,7 +176,7 @@ const DoctorDetail = async ({ searchParams }: {
     }
     if (data.data.allSpecializations && data.data.allSpecializations) {
         if (data.data.allSpecializations["DISEASE"]) {
-            ldjsonConditionalData["treats"] = data.data.allSpecializations["DISEASE"].map((disease) => {
+            ldjsonConditionalData["availableService"] = data.data.allSpecializations["DISEASE"].map((disease) => {
                 return {
                     "@type": "MedicalCondition",
                     "name": disease.name
@@ -296,17 +296,16 @@ const DoctorDetail = async ({ searchParams }: {
     }
     const ldjson2 = {
         "@context": "https://schema.org",
-        "@type": "Doctor",
         "@graph": [
             {
-                "@type": "Doctor",
-                "@id": `https://careipro.com/${data.data.seo_dt.seo_url}`,
+                "@type": "Physician",
+                "@id": `https://careipro.com${data.data.seo_dt.seo_url}`,
                 "name": data.data.doctor_name,
-                "url": `https://careipro.com/${data.data.seo_dt.seo_url}`,
+                "url": `https://careipro.com${data.data.seo_dt.seo_url}`,
                 "description": data.data.description || data.data.seo_dt.description,
                 "telephone": data.data.clinic_mobile,
                 "image": doctorProfilePic(data.data.profile_pic),
-                "medicalSpecialty": data.data.specialization?.split(',').map((spec: string) => spec.trim()) || [],
+               // "medicalSpecialty": data.data.specialization?.split(',').map((spec: string) => spec.trim()) || [],
                 "address": {
                     "@type": "PostalAddress",
                     "streetAddress": data.data.clinic_location + ", " + data.data.clinic_market,
@@ -332,29 +331,16 @@ const DoctorDetail = async ({ searchParams }: {
                     "availability": "https://schema.org/InStock",
                     "validFrom": new Date().toISOString()
                 },
-                "affiliation": {
-                    "@type": "MedicalClinic",
-                    "name": data.data.clinic_name,
-                    "url": `https://careipro.com/${data.data.clinic_dtlpg_url}`,
-                    "address": {
-                        "@type": "PostalAddress",
-                        "streetAddress": data.data.clinic_location + ", " + data.data.clinic_market,
-                        "addressLocality": data.data.clinic_city,
-                        "addressRegion": data.data.clinic_state,
-                        "addressCountry": "India",
-                    }
-                },
                 "hospitalAffiliation": {
                     "@type": "Hospital",
                     "name": data.data.clinic_name,
-                    "url": `https://careipro.com/${data.data.clinic_dtlpg_url}`,
-
+                    "url": `https://careipro.com${data.data.clinic_dtlpg_url}`,
                 },
                 "potentialAction": {
                     "@type": "ReserveAction",
                     "target": {
                         "@type": "EntryPoint",
-                        "urlTemplate": `https://careipro.com/${data.data.seo_dt.seo_url}?booking_appointment=1`,
+                        "urlTemplate": `https://careipro.com${data.data.seo_dt.seo_url}?booking_appointment=1`,
                         "actionPlatform": [
                             "http://schema.org/DesktopWebPlatform",
                             "http://schema.org/MobileWebPlatform"
@@ -369,9 +355,9 @@ const DoctorDetail = async ({ searchParams }: {
                 ...ldjsonConditionalData
             }, {
                 "@type": "MedicalClinic",
-                "@id": `https://careipro.com/${data.data.clinic_dtlpg_url}`,
+                "@id": `https://careipro.com${data.data.clinic_dtlpg_url}`,
                 "name": data.data.clinic_name,
-                "url": `https://careipro.com/${data.data.clinic_dtlpg_url}`,
+                "url": `https://careipro.com${data.data.clinic_dtlpg_url}`,
                 "address": {
                     "@type": "PostalAddress",
                     "streetAddress": data.data.clinic_location + ", " + data.data.clinic_market,
@@ -398,7 +384,7 @@ const DoctorDetail = async ({ searchParams }: {
                         "@type": "ListItem",
                         "position": 3,
                         "name": data.data.doctor_name,
-                        "item": `https://careipro.com/${data.data.seo_dt.seo_url}`
+                        "item": `https://careipro.com${data.data.seo_dt.seo_url}`
                     }
                 ]
             },
