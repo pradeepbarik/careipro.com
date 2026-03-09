@@ -124,8 +124,20 @@ export type TDoctorDetail = TWeeklyConsultingTiming & {
     clinic_market: string,
     whatsapp_number: string,
     whatsapp_channel_link: string,
+    display_consulting_timing?: null | Array<{ label: string, value: string[] }>,
+    display_booking_timing?: null | Array<{ label: string, value: string[] }>,
     clinic_dtlpg_url?: string,
     other_doc_cnt?: number,
+    rating?: number,
+    rating_count?: number,
+    topReviews?: Array<{
+        id:number,
+        rating: number,
+        review_date: string,
+        experience: string,
+        user_name: string
+    }>,
+    offers?: Array<any>,
     doctor_availability?: {
         date: string;
         first_session_start_time: string;

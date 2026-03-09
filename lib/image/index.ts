@@ -23,7 +23,6 @@ export const doctorProfilePic=(image:string)=>{
         return `${ASSET_URL}/images/profile/doctor/${image}`;
     }else{
         return `${ASSET_URL}/images/profile/doctor/default.webp`;
-
     }
 }
 export const clinicProfilePic=(image:string)=>{
@@ -31,7 +30,6 @@ export const clinicProfilePic=(image:string)=>{
         return `${ASSET_URL}/images/clinic/${image}`;
     }else{
         return `${ASSET_URL}/images/clinic/default_clinic.jpg`;
-
     }
 }
 export const clinicBannerImage=(image:string)=>{
