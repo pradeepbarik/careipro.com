@@ -309,6 +309,14 @@ const DoctorDetail = async ({ searchParams }: {
                     "@type": "WebPage",
                     "@id": `https://careipro.com${data.data.seo_dt.seo_url}`
                  },
+                 "specialty": data.data.specialization,
+                 "sameAs": [
+                    "https://careipro.com" + data.data.seo_dt.seo_url
+                 ],
+                 "hasMap": {
+                    "@type": "Map",
+                    "url": `https://www.google.com/maps/search/?api=1&query=${data.data.location_lat},${data.data.location_lng}`
+                 },
                // "medicalSpecialty": data.data.specialization?.split(',').map((spec: string) => spec.trim()) || [],
                 "address": {
                     "@type": "PostalAddress",
@@ -323,7 +331,7 @@ const DoctorDetail = async ({ searchParams }: {
                     "longitude": data.data.location_lng
                 },
                 "areaServed": {
-                    "@type": "City",
+                    "@type": "AdministrativeArea",
                     "name": data.data.clinic_city
                 },
                 "knowsAbout": data.data.specialization?.split(',').map((spec: string) => spec.trim()) || [],
@@ -337,9 +345,11 @@ const DoctorDetail = async ({ searchParams }: {
                 },
                 "hospitalAffiliation": {
                     "@type": "Hospital",
+                    "@id": `https://careipro.com${data.data.clinic_dtlpg_url}`,
                     "name": data.data.clinic_name,
                     "url": `https://careipro.com${data.data.clinic_dtlpg_url}`,
                 },
+                "priceRange": "₹" + data.data.service_charge,
                 "potentialAction": {
                     "@type": "ReserveAction",
                     "target": {
@@ -368,6 +378,7 @@ const DoctorDetail = async ({ searchParams }: {
                     "addressLocality": data.data.clinic_city,
                     "addressRegion": data.data.clinic_state,
                     "addressCountry": "India",
+                    "countryCode": "IN"
                 }
             }, {
                 "@type": "BreadcrumbList",
