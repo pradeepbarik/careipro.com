@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Script from "next/script";
 import { BiSolidMap, BiClinic, BiTimeFive,BiRightArrowAlt } from "react-icons/bi";
 import { TDoctor } from "@/lib/types/doctor";
 import { doctorProfilePic } from '@/lib/image';
@@ -78,6 +79,10 @@ const NIsToOneDoctorsSliders = ({ data, type = 'DOCTOR', showAvaileTime }: { dat
                                     </>}
                             </div>
                         </div>
+                        {doctor.ldjson && <Script type="application/ld+json" id={`ldjson-doctor-card-${doctor.doctor_id}-${doctor.clinic_id}`}>
+                            {doctor.ldjson}
+                        </Script>
+                        }
                     </div>
                 )
             })}

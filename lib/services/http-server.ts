@@ -28,7 +28,7 @@ export const fetchJson = async <R>(url: string, log_api: boolean = false, option
         "x-api-key":options.secreate_key
       }
     }
-    if (log_api) {
+    if (log_api || process.env.NODE_ENV === "development") {
       console.log("api:=====>", API_BASE_URL + url,"configs-->",configs);
     }
     let response = await fetch(API_BASE_URL + url, configs);
