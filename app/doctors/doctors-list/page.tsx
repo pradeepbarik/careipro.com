@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from 'next/script';
 import { permanentRedirect, RedirectType } from 'next/navigation'
 import dynamic from 'next/dynamic';
 import PageVisitLogger from '@/app/components/client-components/page-visit-logger';
@@ -43,6 +44,9 @@ const DoctorsList = async ({ searchParams }: { searchParams: any }) => {
                 group_category: searchParams.group_cat,
                 vertical:"DOCTOR"
             }} />
+            <Script type="application/ld+json" id="ldjson-doctor-list">
+                {data.data.seo_dt.ldjson}
+            </Script>
         </>)
     } else {
         return (<>

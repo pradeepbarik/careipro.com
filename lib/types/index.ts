@@ -4,6 +4,9 @@ export type TSeodt={
     meta_description:string,
     seo_url:string,
     short_seo_url:string
+    ldjson?:string,
+    breadcrumbLdJson?:string,
+    faqLdJson?:string
 }
 export type Tstate = {
     id: number,
