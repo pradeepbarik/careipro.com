@@ -7,7 +7,7 @@ import { fetchDoctors } from '@/lib/hooks/useDoctors';
 import useDeviceInfo from "@/lib/hooks/useDeviceInfo";
 const DoctorListMobile = dynamic(() => import("@/app/doctors/doctors-list/mobile"));
 export async function generateMetadata({ searchParams }: { searchParams: any }): Promise<Metadata> {
-    const data = await fetchDoctors({ state: searchParams.state, city: searchParams.city, cat_id: searchParams.cat_id, group_category: searchParams.group_cat, seo_url: searchParams.seo_url,town:searchParams.town });
+    const data = await fetchDoctors({ state: searchParams.state, city: searchParams.city, cat_id: searchParams.cat_id, group_category: searchParams.group_cat, seo_url: searchParams.seo_url, town: searchParams.town });
     return {
         title: data.data.seo_dt.title,
         description: data.data.seo_dt.meta_description,
@@ -19,9 +19,9 @@ export async function generateMetadata({ searchParams }: { searchParams: any }):
                 follow: true,
             }
         },
-        alternates:{
+        alternates: {
             //canonical:`/${searchParams.seo_url}-In-${searchParams.city}-Of-${searchParams.state}/CATG${searchParams.cat_id}-${searchParams.group_cat}` // Relative path will be combined with metadataBase
-            canonical:`https://careipro.com/${searchParams.state.toLowerCase().replace(" ", "-")}/${searchParams.city.toLowerCase().replace(" ", "-")}/${searchParams.seo_url}${searchParams.town ? `-in-${searchParams.town.toLowerCase().replace(" ", "-")}` : ""}/CATG${searchParams.cat_id}-${searchParams.group_cat}` // Relative path will be combined with metadataBase
+            canonical: `https://careipro.com/${searchParams.state.toLowerCase().replace(" ", "-")}/${searchParams.city.toLowerCase().replace(" ", "-")}/${searchParams.seo_url}${searchParams.town ? `-in-${searchParams.town.toLowerCase().replace(" ", "-")}` : ""}/CATG${searchParams.cat_id}-${searchParams.group_cat}` // Relative path will be combined with metadataBase
         }
     }
 }
@@ -32,7 +32,7 @@ const DoctorsList = async ({ searchParams }: { searchParams: any }) => {
     //     permanentRedirect("/" + data.data.seo_dt.seo_url, RedirectType.push);
     //     return <></>
     // }
-    if (device.type === "mobile" || 1==1) {
+    if (device.type === "mobile" || 1 == 1) {
         return (<>
             <DoctorListMobile params={searchParams} data={data.data} />
             <PageVisitLogger data={{
@@ -42,10 +42,39 @@ const DoctorsList = async ({ searchParams }: { searchParams: any }) => {
                 city: searchParams.city,
                 cat_id: searchParams.cat_id,
                 group_category: searchParams.group_cat,
-                vertical:"DOCTOR"
+                vertical: "DOCTOR"
             }} />
             <Script type="application/ld+json" id="ldjson-doctor-list">
                 {data.data.seo_dt.ldjson}
+            </Script>
+            {data.data.seo_dt.faqLdJson && <Script type="application/ld+json" id="ldjson-faq">
+                {data.data.seo_dt.faqLdJson}
+            </Script>}
+            <Script type="application/ld+json" id="ldjson-breadcrumb">
+                {JSON.stringify({
+                    "@context": "https://schema.org",
+                    "@type": "BreadcrumbList",
+                    "itemListElement":[
+                        {
+                            "@type": "ListItem",
+                            "position": 1,
+                            "name": "Home",
+                            "item": "https://careipro.com/"
+                        },
+                        {
+                            "@type": "ListItem",
+                            "position": 2,
+                            "name": searchParams.city,
+                            "item": `https://careipro.com/${searchParams.state.toLowerCase().replace(" ", "-")}/${searchParams.city.toLowerCase().replace(" ", "-")}`
+                        },
+                        {
+                            "@type": "ListItem",
+                            "position": 3,
+                            "name": data.data.seo_dt.h1,
+                            "item": `https://careipro.com/${data.data.seo_dt.seo_url}`
+                        }
+                    ]
+                })}
             </Script>
         </>)
     } else {
