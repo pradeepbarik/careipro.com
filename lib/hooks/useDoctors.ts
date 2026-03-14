@@ -47,6 +47,10 @@ export type TfetchDoctorsResponse = {
         state: string,
         thumbIcon: string,
         market_name: string
+    }>,
+    faqs?: Array<{
+        question: string,
+        answer: string,
     }>
 }
 export const fetchDoctors = cache(async (params: { state: string, city: string, town?: string, cat_id: number, group_category: string, seo_url: string }) => {

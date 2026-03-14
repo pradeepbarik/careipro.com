@@ -7,6 +7,7 @@ import { capitalizeFirstLetter } from '@/lib/helper/format-text';
 import { doctorsBySpecialistPageUrl } from '@/lib/helper/link';
 import Link from 'next/link';
 import { BiCurrentLocation } from 'react-icons/bi';
+import { SectionHeading } from '@/app/components/mobile/ui';
 const DoctorListMobile = async ({ params, data }: { params: any, data: TfetchDoctorsResponse }) => {
     return (
         <>
@@ -66,6 +67,39 @@ const DoctorListMobile = async ({ params, data }: { params: any, data: TfetchDoc
             </> : <></>}
             <NIsToOneDoctorsSliders data={data.doctors.slice(4, data.doctors.length)} showAvaileTime={true} />
             <LookingFor specialist_id={params.cat_id} />
+            {data.faqs && data.faqs.length > 0 ? <>
+                <div className="px-3 mt-6 mb-4">
+                    <h2 className='font-bold text-lg text-gray-800 mb-4 flex items-center gap-2'>
+                        Frequently Asked Questions
+                    </h2>
+                    <div className="space-y-1">
+                        {data.faqs.map((faq, index) => (
+                            <details 
+                                key={index} 
+                                className="group bg-white rounded-sm border border-gray-100 shadow-sm overflow-hidden"
+                            >
+                                <summary className="flex items-center justify-between cursor-pointer p-2 hover:bg-gray-50 transition-colors">
+                                    <div className="flex items-start gap-3 pr-2">
+                                        <span className="flex-shrink-0 w-6 h-6 bg-primary/10 text-primary rounded-full flex items-center justify-center text-xs font-bold">
+                                            {index + 1}
+                                        </span>
+                                        <span className="font-medium text-gray-800 text-sm leading-relaxed">
+                                            {faq.question}
+                                        </span>
+                                    </div>
+                                </summary>
+                                <div className="px-4 pt-0">
+                                    <div className="pl-9 border-l-2 border-primary/20 ml-3">
+                                        <p className="text-gray-600 text-sm leading-relaxed">
+                                            {faq.answer}
+                                        </p>
+                                    </div>
+                                </div>
+                            </details>
+                        ))}
+                    </div>
+                </div>
+            </> : <></>}
         </>
     )
 }
