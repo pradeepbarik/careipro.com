@@ -6,7 +6,7 @@ const TermsAndConditionsContent = () => {
             </div>
             <div className="px-2 py-4">
                 <p>
-                    Welcome to Careipro. These <b>Terms and Conditions</b> ("Terms") govern your access to and use of the <b>Careipro website</b>,
+                    Welcome to Careipro. These <b>Terms and Conditions</b> ({`"Terms"`}) govern your access to and use of the <b>Careipro website</b>,
                     mobile services, and related platforms (collectively referred to as the “Platform”). By accessing or using the
                     Platform, you agree to comply with and be bound by these Terms.
                 </p>

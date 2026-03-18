@@ -9,6 +9,6 @@ const PetcarePage = () => {
       <PetcareMobile />
     </>;
   }
-  return <PetcareDesktop />;
+  return <PetcareDesktop state="Odisha" city="Bhadrak"  />;
 }
 export default PetcarePage;
