@@ -34,7 +34,7 @@ const Doctors = async ({ searchParams }: { searchParams: { city: string, state: 
         fetchCategories("DOCTOR"),
         fetchCategories("DISEASE")
     ])
-    if (device.type === "mobile" || 1==1) {
+    if (device.type === "mobile") {
         return (
             <>
                 <DoctorsMobile city={searchParams.city} state={searchParams.state} pageData={pageData} categories={categories} diseases={diseases} />
@@ -44,7 +44,7 @@ const Doctors = async ({ searchParams }: { searchParams: { city: string, state: 
     } else {
         return (
             <>
-                <DoctorsDesktop state={searchParams.state} city={searchParams.city} />
+                <DoctorsDesktop city={searchParams.city} state={searchParams.state} pageData={pageData} categories={categories} diseases={diseases} />
             </>
         )
     }

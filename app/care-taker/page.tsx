@@ -5,6 +5,7 @@ import { fetCaretakersHomePageData } from '@/lib/hooks/caretaker/useCaretaker';
 import { fetchCategories } from "@/lib/hooks/useCategories";
 import PageVisitLogger from "../components/client-components/page-visit-logger";
 const CaretakersMobile = dynamic(() => import('@/app/care-taker/mobile'));
+const CareTakerDesktop = dynamic(() => import('@/app/care-taker/desktop'));
 type TProps = {
     params: { [key: string]: string },
     searchParams: { [key: string]: string }
@@ -32,7 +33,7 @@ const CareTaker = async ({ searchParams }: TProps) => {
         fetCaretakersHomePageData(searchParams.state.toLocaleLowerCase(), searchParams.city.toLocaleLowerCase()),
         fetchCategories("CARETAKER")
     ])
-    if (device.type === "mobile" || 1==1) {
+    if (device.type === "mobile") {
         return (
             <>
                 <CaretakersMobile state={searchParams.state} city={searchParams.city} market_name={searchParams.market_name} pageData={pageData} categories={categories} />
@@ -45,7 +46,7 @@ const CareTaker = async ({ searchParams }: TProps) => {
         )
     }
     return <>
-        CareTaker
+        <CareTakerDesktop state={searchParams.state} city={searchParams.city} market_name={searchParams.market_name} pageData={pageData} categories={categories} />
     </>
 }
 export default CareTaker;

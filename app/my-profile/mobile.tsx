@@ -164,6 +164,22 @@ const MyProfileMobile = ({ cookies }: { cookies: Record<string, string> }) => {
                                 </span>
                             </Link>
                         </li>
+                         <li>
+                            <Link href={"/privacy-policy"} className='flex items-center h-12'>
+                                <AiOutlineInfoCircle className='fs-16' />
+                                <span className='ml-2 fs-16'>
+                                    Privacy Policy
+                                </span>
+                            </Link>
+                        </li>
+                        <li>
+                            <Link href={"/terms-and-conditions"} className='flex items-center h-12'>
+                                <AiOutlineInfoCircle className='fs-16' />
+                                <span className='ml-2 fs-16'>
+                                    Terms & Conditions
+                                </span>
+                            </Link>
+                        </li>
                     </ul>
                 </div>
                 <div className='px-4 text-center fixed bottom-4 w-full'>
@@ -261,6 +277,22 @@ const MyProfileMobile = ({ cookies }: { cookies: Record<string, string> }) => {
                                 <AiOutlineInfoCircle className='fs-16' />
                                 <span className='ml-2 fs-16'>
                                     About us
+                                </span>
+                            </Link>
+                        </li>
+                        <li>
+                            <Link href={"/privacy-policy"} className='flex items-center h-12'>
+                                <AiOutlineInfoCircle className='fs-16' />
+                                <span className='ml-2 fs-16'>
+                                    Privacy Policy
+                                </span>
+                            </Link>
+                        </li>
+                        <li>
+                            <Link href={"/terms-and-conditions"} className='flex items-center h-12'>
+                                <AiOutlineInfoCircle className='fs-16' />
+                                <span className='ml-2 fs-16'>
+                                    Terms & Conditions
                                 </span>
                             </Link>
                         </li>

@@ -113,7 +113,7 @@ const nextConfig = {
                 destination: '/petcare'
             },
             {
-                source: '/:state/:city/Pet-Care-Clinics',
+                source: '/:state/:city/(pet-care-clinics|petcare)',
                 destination: '/petcare'
             },
             {

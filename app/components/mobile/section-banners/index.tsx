@@ -2,12 +2,12 @@ import React from 'react';
 import { TSectionBanner } from "@/lib/types/home-page";
 import Link from "next/link";
 import EnquiryBanner from "./enquiry-banner";
-const SectionBanners = ({ banners }: { banners: Array<TSectionBanner> }) => {
+const SectionBanners = ({ banners, height }: { banners: Array<TSectionBanner>, height?: string }) => {
     return (
         <>
             <div className="flex justify-center gap-2 px-2 overflow-auto">
                 {banners.map((banner, index) => (
-                    <div key={`banner-${index}`} style={{ ...banner.display_style }}>
+                    <div key={`banner-${index}`} style={{ ...banner.display_style, height: height || banner.display_style.height }}>
                         {banner.send_enquiry ? <React.Fragment>
                             <EnquiryBanner banner={banner} />
                         </React.Fragment> : banner.redirection_url ?

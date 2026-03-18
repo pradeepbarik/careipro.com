@@ -32,7 +32,7 @@ export async function generateMetadata({ searchParams }: { searchParams: { city:
 }
 const CityHomePage = ({ searchParams }: TProps) => {
   const { device, cookies } = useDeviceInfo();
-  if (device.type === "mobile" || 1==1) {
+  if (device.type === "mobile") {
     return (
       <>
         <CityHomeMobile state={searchParams.state} city={searchParams.city} town={searchParams.town} cookies={cookies} />
@@ -48,7 +48,7 @@ const CityHomePage = ({ searchParams }: TProps) => {
     )
   } else {
     return (
-      <CityHomeDesktop state={searchParams.state} city={searchParams.city} />
+      <CityHomeDesktop state={searchParams.state} city={searchParams.city} town={searchParams.town} cookies={cookies} />
     );
   }
 }
