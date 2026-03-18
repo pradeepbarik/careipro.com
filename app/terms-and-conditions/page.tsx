@@ -30,7 +30,7 @@ const TermAndConditions = async () => {
         )
     }
     return <>
-        <TermAndConditionsDesktop />
+        <TermAndConditionsDesktop state="Odisha" city="Bhadrak" />
     </>
 }
 export default TermAndConditions;

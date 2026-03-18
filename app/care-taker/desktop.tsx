@@ -419,7 +419,7 @@ const HelpBanner = () => {
                     </div>
                     <div className="text-white">
                         <h3 className="text-2xl font-bold">Need Help Finding a Caretaker?</h3>
-                        <p className="text-white/80">We'll find the best caretaker for you at the lowest price</p>
+                        <p className="text-white/80">{`We'll find the best caretaker for you at the lowest price`}</p>
                     </div>
                 </div>
                 <BookCaretakerButton />

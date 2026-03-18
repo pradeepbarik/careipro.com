@@ -30,7 +30,7 @@ const PrivacyPolicy = async () => {
         )
     }
     return <>
-        <PrivacyPolicyDesktop />
+        <PrivacyPolicyDesktop state="Odisha" city="Bhadrak" />
     </>
 }
 export default PrivacyPolicy;
