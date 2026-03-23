@@ -73,10 +73,10 @@ export const fetchDoctorDetail = cache(async (params: {
     seo_url: string
 }) => {
     try {
-        const res = await fetchJson<TDoctorDetail>(`/cache/${params.state.toLowerCase()}/${params.city.toLowerCase()}/doctor-details/DR${params.doctor_id}-SL${params.service_loc_id}-C${params.clinic_id}/details.json`,true);
+        const res = await fetchJson<TDoctorDetail>(`/cache/${params.state.toLowerCase()}/${params.city.toLowerCase()}/doctor-details/SL${params.service_loc_id}/details.json`);
         return { data: res };
     } catch (ex) {
-        const res = await fetchJson<IResponse<TDoctorDetail>>(`/get-doctor-detail?state=${params.state}&city=${params.city}&doctor_id=${params.doctor_id}&clinic_id=${params.clinic_id}&service_loc_id=${params.service_loc_id}&seo_url=${params.seo_url}&market_name=${params.market_name}`, true);
+        const res = await fetchJson<IResponse<TDoctorDetail>>(`/get-doctor-detail?state=${params.state}&city=${params.city}&service_loc_id=${params.service_loc_id}&seo_url=${params.seo_url}`);
         return { data: res.data };
     }
 });
