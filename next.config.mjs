@@ -34,19 +34,26 @@ const nextConfig = {
                 source: '/:seo_url-In-:city-of-:state/CATG:cat_id-:group_cat',
                 destination: '/:state/:city/:seo_url/CATG:cat_id-:group_cat',
                 permanent: true,
-                statusCode : 301
+                statusCode: 301
             },
             {
-                source:'/:seo_url-At-:market_name-In-:city-Of-:state/DR:doctor_id-SL:service_loc_id-C:clinic_id',
-                destination:'/:state/:city/:seo_url-In-:market_name/DR:doctor_id-SL:service_loc_id-C:clinic_id',
-                permanent:true,
-                statusCode:301
+                source: '/:seo_url-At-:market_name-In-:city-Of-:state/DR:doctor_id-SL:service_loc_id-C:clinic_id',
+                //destination:'/:state/:city/:seo_url-In-:market_name/DR:doctor_id-SL:service_loc_id-C:clinic_id',
+                destination: '/:state/:city/doctor/:seo_url-:service_loc_id',
+                permanent: true,
+                statusCode: 301
             },
             {
-                source:'/:seo_url-At-:market_name-In-:city-Of-:state/DR:doctor_id-SL:service_loc_id-C:clinic_id/:sub_page',
-                destination:'/:state/:city/:seo_url-In-:market_name/DR:doctor_id-SL:service_loc_id-C:clinic_id/:sub_page',
-                permanent:true,
-                statusCode:301
+                source: '/:state/:city/:seo_url-In-:market_name/DR:doctor_id-SL:service_loc_id-C:clinic_id',
+                destination: '/:state/:city/doctor/:seo_url-:service_loc_id',
+                permanent: true,
+                statusCode: 301
+            },
+            {
+                source: '/:seo_url-At-:market_name-In-:city-Of-:state/DR:doctor_id-SL:service_loc_id-C:clinic_id/:sub_page',
+                destination: '/:state/:city/:seo_url-In-:market_name/DR:doctor_id-SL:service_loc_id-C:clinic_id/:sub_page',
+                permanent: true,
+                statusCode: 301
             }
         ]
     },
@@ -154,6 +161,14 @@ const nextConfig = {
             },
             {
                 source: '/:state/:city/:seo_url-In-:market_name/DR:doctor_id-SL:service_loc_id-C:clinic_id/:sub_page',
+                destination: '/doctors/doctor-detail'
+            },
+            {
+                source: '/:state/:city/doctor/:seo_url([a-zA-Z0-9-]+)-:service_loc_id([a-zA-Z0-9]+)',
+                destination: '/doctors/doctor-detail'
+            },
+            {
+                source: '/:state/:city/doctor/:seo_url([a-zA-Z0-9-]+)-:service_loc_id([a-zA-Z0-9]+)/:sub_page',
                 destination: '/doctors/doctor-detail'
             },
             {
