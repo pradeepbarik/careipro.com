@@ -168,6 +168,10 @@ const nextConfig = {
                 destination: '/doctors/doctor-detail'
             },
             {
+                source: '/:state/:city/doctor/:seo_url([a-zA-Z0-9-]+)-:service_loc_id([a-zA-Z0-9]+)/help-center',
+                destination: '/doctor-help-center'
+            },
+            {
                 source: '/:state/:city/doctor/:seo_url([a-zA-Z0-9-]+)-:service_loc_id([a-zA-Z0-9]+)/:sub_page',
                 destination: '/doctors/doctor-detail'
             },
