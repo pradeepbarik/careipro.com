@@ -58,7 +58,7 @@ const PopularDoctor2 = ({ data, showFilter }: { data: THomePageData['popularDoct
         chunks = array_chunk([...data], 2, []);
     }
     return <>
-        {showFilter === true &&
+        {showFilter === true && chunks.length > 1 &&
             <div className="flex space-x-2 overflow-x-auto px-2 hide-scroll-bar pb-2">
                 <button className={`px-3 py-1 rounded-full text-sm text-gray-700 border border-gray-300 ${available === 'all' ? 'bg-primary color-white' : 'bg-white'}`} onClick={() => { setAvailable("all") }}>All</button>
                 <button className={`px-3 py-1 rounded-full text-sm text-gray-700 border border-gray-300 ${available === 'today' ? 'bg-primary color-white' : 'bg-white'}`} onClick={() => { setAvailable("today") }}>Available Today</button>
