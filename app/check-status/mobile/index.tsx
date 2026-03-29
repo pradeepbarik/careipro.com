@@ -116,7 +116,7 @@ const CheckStatusMobile = () => {
                         }
                         {(appointmentDetail.show_rebook_btn || appointmentDetail.status === "doctor_cancelled") ? <>
                             <div className="py-2">
-                                <Link href={doctorDetailPageUrl({ doctor_id: appointmentDetail.doctor_id, clinic_id: appointmentDetail.clinic_id, service_loc_id: appointmentDetail.servicelocation_id, city: appointmentDetail.clinic_city, state: appointmentDetail.clinic_state, market_name: appointmentDetail.clinic_market_name, seo_url: appointmentDetail.doctor_seo_url })} className="button" data-color="primary" >Book your Next Appointment</Link>
+                                <Link href={doctorDetailPageUrl({ doctor_id: appointmentDetail.doctor_id, clinic_id: appointmentDetail.clinic_id, service_loc_id: appointmentDetail.servicelocation_id, city: appointmentDetail.clinic_city, state: appointmentDetail.clinic_state, market_name: appointmentDetail.clinic_market_name, seo_url: appointmentDetail.doctor_seo_url,type:appointmentDetail.doctor_business_type })} className="button" data-color="primary" >Book your Next Appointment</Link>
                             </div>
                         </> : <></>}
                         <hr className="my-2" />
@@ -226,7 +226,8 @@ const CheckStatusMobile = () => {
                             clinic_id: appointmentDetail?.clinic_id || 0,
                             doctor_id: appointmentDetail?.doctor_id || 0,
                             service_loc_id: appointmentDetail?.servicelocation_id || 0,
-                            consultation_date: appointmentDetail?.consult_date || ""
+                            consultation_date: appointmentDetail?.consult_date || "",
+                            page_source: "appointment_status_page",
                         }, () => {
                             getAppointmentDetail(appointmentDetail?.id)
                             setShowRatingModal(false);

@@ -17,6 +17,9 @@ import EmergencyBookingCloseAlert from '@/app/components/mobile/doctors/doctor-d
 //import NeedHelpBtn from "@/app/components/mobile/need-help-btn";
 import LikeShare from "@/app/components/mobile/doctors/doctor-detail/like-share";
 import { userSecreateKey } from '@/constants/storage_keys';
+import SectionHeading from "@/app/components/mobile/ui/section-heading";
+import { doctorSpecialityIcon } from "@/lib/image";
+import BreadCrumbs from "@/app/components/mobile/breadcrumb";
 const RatingReminder = dynamic(() => import('@/app/components/mobile/rating-reminder'));
 const LoginToast = dynamic(() => import("@/app/components/mobile/login-toast"));
 const OverView = dynamic(() => import('./overview'))
@@ -62,23 +65,23 @@ const DoctorDetailMobile = async ({ data, availableData, searchParams, cookies }
     searchParams: TsearchParams,
     cookies: Record<string, any>
 }) => {
-    const pageUrl = doctorDetailPageUrl({ doctor_id: data.doctor_id, service_loc_id: data.id, clinic_id: data.clinic_id, seo_url: data.seo_url, state: data.clinic_state, city: data.clinic_city, market_name: data.clinic_market })
+    const pageUrl = doctorDetailPageUrl({ doctor_id: data.doctor_id, service_loc_id: data.id, clinic_id: data.clinic_id, seo_url: data.seo_url, state: data.clinic_state, city: data.clinic_city, market_name: data.clinic_market, type: data.business_type });
     let ctaBtnCount = data.clinic_id !== 8 ? 2 : 2;
     if (data.whatsapp_number) {
         ctaBtnCount += 1;
     }
     return (<>
-        <Header heading={data.doctor_name} template="SUBPAGE" rightContainer={
+        <Header heading={data.doctor_name+`${data.specialty ? ` - ${data.specialty}` : ''}`} template="SUBPAGE" rightContainer={
             <LikeShare total_liked={data.total_liked || 0} url={pageUrl} doctor_name={data.doctor_name} position={data.position || data.qualification_disp} clinic_name={data.clinic_name} service_charge={data.service_charge} doctor_id={data.doctor_id} clinic_id={data.clinic_id} />
         } />
         <div className='flex px-2 py-2 mt-2 gap-3 bg-white shadow-sm'>
             <div className="w-20 shrink-0">
-                <img src={doctorProfilePic(data.profile_pic)} alt={`${data.doctor_name} profile pic`} className='h-20 w-full rounded-md shrink-0' />
+                <img src={doctorProfilePic(data.profile_pic)} alt={`${data.doctor_name} ${data.specialty ? ` - ${data.specialty}` : ''} in ${data.clinic_city}`} className='h-20 w-full rounded-md shrink-0' />
             </div>
             <div className="grow">
                 <div className="flex">
                     <div className="flex flex-col">
-                        <h1 className='font-semibold fs-17'>{data.doctor_name}</h1>
+                        <div className='font-semibold fs-17'>{data.doctor_name}{data.specialty ? ` - ${data.specialty}` : ''}</div>
                         <span>{data.position}</span>
                         {data.qualification_disp && <span>{data.qualification_disp}</span>}
                         <span>{data.experience} Years of Exp</span>
@@ -151,20 +154,20 @@ const DoctorDetailMobile = async ({ data, availableData, searchParams, cookies }
                 <BiGridAlt />
                 <span className="ml-1 fs-15">Overview</span>
             </Link>
-            {(data.partner_type === "partnered" && data.settings.book_by === "app" && !data.settings.advance_booking_enable) &&
+            {/* {(data.partner_type === "partnered" && data.settings.book_by === "app" && !data.settings.advance_booking_enable) &&
                 <>
                     <Link href={`${pageUrl}/appointment-booking-timings`} className={`bg-white border rounded-lg font-semibold px-2 py-1 flex items-center shrink-0 gap-1 ${(searchParams.sub_page === "appointment-booking-timings") ? 'bg-primary color-white' : ''}`}>
                         <BiTimeFive />
                         <span className="text-nowrap fs-15">Booking Time</span>
                     </Link>
-                </>}
+                </>} */}
             {(data.allSpecializations["DISEASE"] || []).length > 0 &&
                 <Link href={`${pageUrl}/Expert-In-Disease-Treatment`} className={`bg-white border rounded-lg font-semibold px-2 py-1 flex items-center shrink-0 gap-1 ${(searchParams.sub_page === "Expert-In-Disease-Treatment") ? 'bg-primary color-white' : ''}`}>
                     <img src="/icon/disease-treatment2.png" className="h-6 w-6 rounded-full bg-white" />
                     <span className="text-nowrap fs-15">Expertise In</span>
                 </Link>
             }
-            {data.settings.show_patients_feedback ?
+            {data.settings.show_patients_feedback && false ?
                 <Link href={`${pageUrl}/Patient-Reviews`} className={`bg-white border rounded-lg font-semibold px-2 py-1 flex items-center shrink-0 gap-1 ${(searchParams.sub_page === "feedback") ? 'bg-primary color-white' : ''}`}>
                     <BiMessageRoundedDots />
                     <span className="text-nowrap fs-15">Reviews</span>
@@ -178,17 +181,44 @@ const DoctorDetailMobile = async ({ data, availableData, searchParams, cookies }
                     <div className="px-2 py-2 grid grid-cols-2 gap-2">
                         {(data.allSpecializations["DISEASE"] || []).map((cat) =>
                             <div key={cat.seo_id} className="flex items-center gap-2 px-2 py-1 border border-color-grey rounded-md bg-white">
-                                <img src={cat.icon || "/icon/disease-defult-icon.png"} className="w-10 h-10" />
+                                <img src={doctorSpecialityIcon(cat.icon) || "/icon/disease-defult-icon.png"} className="w-10 h-10" />
                                 <span>{cat.name}</span>
                             </div>
                         )}
                     </div>
+                    {data.treated_health_conditions && data.treated_health_conditions.length > 0 ? <>
+                        <SectionHeading heading='Treated Top Health Conditions' />
+                        <div className="px-2 py-2 grid grid-cols-2 gap-2 bg-white">
+                            {data.treated_health_conditions.map((condition, idx) =>
+                                <div key={idx} className="flex flex-col gap-1">
+                                    <span className="dot">{condition.condition}</span>
+                                </div>
+                            )}
+                        </div>
+                    </> : <></>}
+                    {data.treatments_available && data.treatments_available.length > 0 ? <>
+                        <SectionHeading heading='Available Treatments' />
+                        <div className="px-2 py-2 grid grid-cols-2 gap-2 bg-white">
+                            {data.treatments_available.map((treatment, idx) =>
+                                <div key={idx} className="flex flex-col gap-1">
+                                    <span className="dot">{treatment}</span>
+                                </div>
+                            )}
+                        </div>
+                    </> : <></>}
+
                 </> : searchParams.sub_page === "Patient-Reviews" ? <>
                     reviews
                 </> : <>
                     <OverView data={data} availableData={availableData} />
                 </>}
         {(data.similar_doctors || []).length > 0 ? <SimilarBusieness heading={`Similar Doctors in ${data.clinic_city}`} similar_doctors={data.similar_doctors || []} /> : null}
+         <BreadCrumbs  data={[
+            { label: "Home", href: "https://careipro.com" },
+            {label:data.clinic_city, href:`https://careipro.com/${searchParams.state}/${searchParams.city}`},
+            { label: `Doctors in ${data.clinic_city}`, href: `https://careipro.com/${searchParams.state}/${searchParams.city}/best-doctors` },
+            {label: data.doctor_name }
+        ]} />
         {(data.settings.book_by === "app") && <div className="mt-12">
             <div className="bg-white fixed bottom-0 w-full px-2 py-1" style={{ bottom: 0 }}>
                 <BookAppointment emergencyBookingClose={data.settings.emergency_booking_close} bookingCloseMessage={data.settings.booking_close_message} open={searchParams.book_appointment === '1' ? true : false} clinic_id={data.clinic_id} service_loc_id={data.id} doctor_id={data.doctor_id} service_charge={parseInt(data.service_charge)} site_service_charge={parseInt(data.site_service_charge)} settings={data.settings} availability={availableData} slno_groups={data.slno_groups || []} pageUrl={pageUrl} />

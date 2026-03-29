@@ -332,6 +332,7 @@ export type TclinicDetail = {
         category: string;
         qualification_disp: string;
         specialists: string;
+        business_type: string;
     }>,
     totalDoctors: number,
     pageUrl: string,

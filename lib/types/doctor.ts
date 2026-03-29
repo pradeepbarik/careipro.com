@@ -9,6 +9,7 @@ export type TDoctor = {
     location_lng: number,
     service_charge: number,
     doctor_name: string,
+    business_type: string,
     position: string,
     qualification_disp: string,
     experience: number,
@@ -88,7 +89,9 @@ export type TSimilarDoctor = {
     specialist_id: string,
     specialist_name: string,
     rating: string,
-    total_liked: number
+    total_liked: number,
+    business_type: string,
+    specialty: string|null
 }
 export type TDoctorDetail = TWeeklyConsultingTiming & {
     id: number,
@@ -129,6 +132,7 @@ export type TDoctorDetail = TWeeklyConsultingTiming & {
     other_doc_cnt?: number,
     rating?: number,
     rating_count?: number,
+    specialty:string|null,
     topReviews?: Array<{
         id:number,
         rating: number,
@@ -195,6 +199,14 @@ export type TDoctorDetail = TWeeklyConsultingTiming & {
         no_of_cases: number | ""
     }>,
     treatments_available?: string[],
+    faqs?:{
+        mainEntity: Array<{
+            name: string,
+            acceptedAnswer: {
+                text: string
+            }
+        }>
+    },
     seo_dt: {
         seo_url: string,
         short_seo_url: string

@@ -1,0 +1,19 @@
+.breadcrumb {
+  list-style: none;
+  display: flex;
+  padding: 0;
+}
+.breadcrumb li {
+  display: inline;
+}
+.breadcrumb li+li:before {
+  content: ">\00a0"; /* Separator */
+  padding: 0 8px;
+  color: #ccc;
+}
+.breadcrumb a {
+  text-decoration: none;
+}
+.breadcrumb span {
+  color: #6c757d; /* Style for current page */
+}
