@@ -37,6 +37,7 @@ const ClinicDoctors = ({ clinic_info, doctors, specializations }: { clinic_info:
             state: clinic_info.state || "",
             specialists: doctor.specialists,
             availability: '',
+            business_type: doctor.business_type,
         }
     })
     if (docs.length === 0) {

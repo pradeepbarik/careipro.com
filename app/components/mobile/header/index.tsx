@@ -16,13 +16,13 @@ const Header = ({ template = "HOMEPAGE", heading = "",headingElement="h1", state
         return (
             <div style={{ height: "3.5rem" }}>
                 <div className={`flex gap-2 items-center px-2 py-2 fixed bg-white ${classes.container}`}>
-                    <BiSolidChevronLeft className='font-semibold h-10 w-10 p-2' onClick={() => {
+                    <BiSolidChevronLeft className='font-semibold h-6 w-6 shrink-0' onClick={() => {
                         window.history.go(-1)
                     }} />
-                    {headingElement==="h2" ? <h2 className='fs-17 font-semibold'>
+                    {headingElement==="h2" ? <h2 className='fs-17 font-semibold one-line'>
                         {heading}
                     </h2> :
-                    <h1 className='fs-17 font-semibold'>
+                    <h1 className='fs-17 font-semibold one-line'>
                         {heading}
                     </h1>}
                     {rightContainer ? rightContainer : <></>}

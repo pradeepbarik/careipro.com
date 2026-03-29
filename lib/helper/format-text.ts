@@ -13,7 +13,11 @@ export const formatCurrency = (amount: number, format: 's' | 'l' = "s") => {
 }
 export const formatDoctorName = (name: string, business_type: string = "DOCTOR") => {
     if (business_type === "DOCTOR") {
-        return `Dr. ${name}`;
+        if (!name.toLowerCase().startsWith("dr.")) {
+             return `Dr. ${name}`;
+        } else {
+            return name;
+        }
     } else {
         return name;
     }

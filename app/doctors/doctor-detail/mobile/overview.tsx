@@ -150,6 +150,39 @@ const OverView = ({ data, availableData }: { data: TDoctorDetail, availableData:
                     <div dangerouslySetInnerHTML={{ __html: data.description }} className="px-2 py-2 bg-white shadow-sm mb-2" ></div>
                 </> : <></>
             }
+            {data.faqs && data.faqs.mainEntity && data.faqs.mainEntity.length > 0 ? <>
+            <div className="px-3 mt-6 mb-4">
+                    <h2 className='font-bold text-lg text-gray-800 mb-4 flex items-center gap-2'>
+                        Frequently Asked Questions
+                    </h2>
+                    <div className="space-y-1">
+                        {data.faqs.mainEntity.map((faq, index) => (
+                            <details 
+                                key={index} 
+                                className="group bg-white rounded-sm border border-gray-100 shadow-sm overflow-hidden"
+                            >
+                                <summary className="flex items-center justify-between cursor-pointer p-2 hover:bg-gray-50 transition-colors">
+                                    <div className="flex items-start gap-3 pr-2">
+                                        <span className="flex-shrink-0 w-6 h-6 bg-primary/10 text-primary rounded-full flex items-center justify-center text-xs font-bold">
+                                            {index + 1}
+                                        </span>
+                                        <span className="font-medium text-gray-800 text-sm leading-relaxed">
+                                            {faq.name}
+                                        </span>
+                                    </div>
+                                </summary>
+                                <div className="px-4 pt-0">
+                                    <div className="pl-4 py-2 border-l-2 border-primary/20">
+                                        <p className="text-gray-600 text-sm leading-relaxed">
+                                            {faq.acceptedAnswer.text}
+                                        </p>
+                                    </div>
+                                </div>
+                            </details>
+                        ))}
+                    </div>
+                </div>
+            </>:<></>}
         </>
     )
 }

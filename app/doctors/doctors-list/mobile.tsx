@@ -8,6 +8,7 @@ import { doctorsBySpecialistPageUrl } from '@/lib/helper/link';
 import Link from 'next/link';
 import { BiCurrentLocation } from 'react-icons/bi';
 import { SectionHeading } from '@/app/components/mobile/ui';
+import BreadCrumbs from '@/app/components/mobile/breadcrumb';
 const DoctorListMobile = async ({ params, data }: { params: any, data: TfetchDoctorsResponse }) => {
     return (
         <>
@@ -32,7 +33,7 @@ const DoctorListMobile = async ({ params, data }: { params: any, data: TfetchDoc
                         <div className='border border-sky-300 rounded-b-md px-2 py-1 flex flex-wrap gap-2 mb-2'>
                             {data.cityMarkets.map((city) => (
                                 <Link
-                                    href={doctorsBySpecialistPageUrl(params.seo_url,`CATG${params.cat_id}-${params.group_cat}`, params.state, params.city,{market_name:city.market_name})}
+                                    href={doctorsBySpecialistPageUrl(params.seo_url, `CATG${params.cat_id}-${params.group_cat}`, params.state, params.city, { market_name: city.market_name })}
                                     key={city.city}
                                     className='px-2 py-2 border rounded-md bg-white text-center click font-medium'
                                 >
@@ -55,7 +56,7 @@ const DoctorListMobile = async ({ params, data }: { params: any, data: TfetchDoc
                     <div className='border border-sky-300 rounded-b-md px-2 py-1 flex flex-wrap gap-2 mb-2'>
                         {data.neabyCities.map((city) => (
                             <Link
-                                href={doctorsBySpecialistPageUrl(params.seo_url,`CATG${params.cat_id}-${params.group_cat}`, params.state, city.city)}
+                                href={doctorsBySpecialistPageUrl(params.seo_url, `CATG${params.cat_id}-${params.group_cat}`, params.state, city.city)}
                                 key={city.city}
                                 className='px-2 py-2 border rounded-md bg-white text-center click font-medium'
                             >
@@ -74,8 +75,8 @@ const DoctorListMobile = async ({ params, data }: { params: any, data: TfetchDoc
                     </h2>
                     <div className="space-y-1">
                         {data.faqs.map((faq, index) => (
-                            <details 
-                                key={index} 
+                            <details
+                                key={index}
                                 className="group bg-white rounded-sm border border-gray-100 shadow-sm overflow-hidden"
                             >
                                 <summary className="flex items-center justify-between cursor-pointer p-2 hover:bg-gray-50 transition-colors">
@@ -100,6 +101,12 @@ const DoctorListMobile = async ({ params, data }: { params: any, data: TfetchDoc
                     </div>
                 </div>
             </> : <></>}
+            <BreadCrumbs data={[
+                { label: "Home", href: "https://careipro.com" },
+                { label: capitalizeFirstLetter(params.city), href: `https://careipro.com/${params.state}/${params.city}` },
+                { label: `Doctors in ${capitalizeFirstLetter(params.city)}`, href: `https://careipro.com/${params.state}/${params.city}/best-doctors` },
+                { label: data.specialist_name },
+            ]} />
         </>
     )
 }

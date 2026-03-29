@@ -19,7 +19,8 @@ const SimilarBusieness = ({ heading, similar_doctors }: { heading: string, simil
                             clinic_id: doctor.clinic_id,
                             city: doctor.city,
                             market_name: doctor.market_name,
-                            state: doctor.state
+                            state: doctor.state,
+                            type: doctor.business_type
                         })} className="flex gap-2">
                             <div className="w-16 shrink-0">
                                 <img src={doctorProfilePic(doctor.doctor_profile_pic || "")} alt={doctor.doctor_name} className="w-16 h-16 rounded-full shrink-0" />

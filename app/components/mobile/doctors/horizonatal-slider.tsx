@@ -8,7 +8,7 @@ const OneIsToNDoctorsSliders = ({ data }: { data: TDoctor[] }) => {
         <>
             <div className="flex gap-2 overflow-auto hide-scroll-bar py-2 px-2">
                 {data.map((doctor) =>{
-                    let docDtlPgUrl=doctorDetailPageUrl({ doctor_id: doctor.doctor_id, clinic_id: doctor.clinic_id, service_loc_id: doctor.service_location_id, seo_url: doctor.doctor_seo_url, city: doctor.city, state: doctor.state, market_name: doctor.market_name });
+                    let docDtlPgUrl=doctorDetailPageUrl({ doctor_id: doctor.doctor_id, clinic_id: doctor.clinic_id, service_loc_id: doctor.service_location_id, seo_url: doctor.doctor_seo_url, city: doctor.city, state: doctor.state, market_name: doctor.market_name,type:doctor.business_type });
                     return (
                     <div key={doctor.service_location_id} className="bg-white shrink-0 border rounded-md p-2 shadow-md click" data-href={docDtlPgUrl} style={{ width: "70%" }}>
                         <div className="flex gap-2" >

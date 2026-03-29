@@ -236,7 +236,8 @@ const AppointmentDetailMobile = ({ case_id, appointmentId }: { case_id: number, 
                                     clinic_id: caseAppointmentDetails[activeAppointmentId].clinic_id,
                                     doctor_id: caseAppointmentDetails[activeAppointmentId].doctor_id,
                                     service_loc_id: caseAppointmentDetails[activeAppointmentId].servicelocation_id,
-                                    consultation_date: caseAppointmentDetails[activeAppointmentId].consult_date
+                                    consultation_date: caseAppointmentDetails[activeAppointmentId].consult_date,
+                                    page_source:"my_profile_appointment_detail_page",
                                 }, () => {
                                     getAppointmentDetail(activeAppointmentId)
                                 })

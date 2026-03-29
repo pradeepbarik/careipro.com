@@ -12,7 +12,7 @@ export async function generateMetadata({ searchParams }: { searchParams: any }):
     //let url = `https://careipro.com/${searchParams.state.toLowerCase().replace(" ", "-")}/${searchParams.city.toLowerCase().replace(" ", "-")}/${searchParams.seo_url}-In-${searchParams.market_name.replace(" ", "-")}/DR${searchParams.doctor_id}-SL${searchParams.service_loc_id}-C${searchParams.clinic_id}`;
     let url = 'https://careipro.com'+data.data.seo_dt.seo_url;
 
-    if (searchParams.sub_page) {
+    if (searchParams.sub_page && false) {
         url += `/${searchParams.sub_page}`;
     }
     return {

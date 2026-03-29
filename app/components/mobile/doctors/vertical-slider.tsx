@@ -9,7 +9,7 @@ const NIsToOneDoctorsSliders = ({ data, type = 'DOCTOR', showAvaileTime }: { dat
     return (
         <div className="">
             {data.map((doctor, i) => {
-                const doctorDtlpgUrl = doctorDetailPageUrl({ doctor_id: doctor.doctor_id, clinic_id: doctor.clinic_id, service_loc_id: doctor.service_location_id, seo_url: doctor.doctor_seo_url, city: doctor.city, state: doctor.state, market_name: doctor.market_name })
+                const doctorDtlpgUrl = doctorDetailPageUrl({ doctor_id: doctor.doctor_id, clinic_id: doctor.clinic_id, service_loc_id: doctor.service_location_id, seo_url: doctor.doctor_seo_url, city: doctor.city, state: doctor.state, market_name: doctor.market_name,type: doctor.business_type })
                 return (
                     <div key={doctor.service_location_id} className="bg-white border-b shadow-md mb-1 click" data-href={doctorDtlpgUrl}>
                         <div className="flex py-2 px-2 gap-3">
@@ -71,11 +71,11 @@ const NIsToOneDoctorsSliders = ({ data, type = 'DOCTOR', showAvaileTime }: { dat
                             <div className="ml-auto flex items-end">
                                 {type === "DOCTOR" ?
                                     // <Link href={doctorDetailPageUrl({ doctor_id: doctor.doctor_id, clinic_id: doctor.clinic_id, service_loc_id: doctor.service_location_id, seo_url: doctor.doctor_seo_url, city: doctor.city, state: doctor.state, market_name: doctor.market_name })} className="button py-2 text one-line text-xs rounded-2xl text-center" data-variant='contained' >Doctor detail</Link>
-                                    <Link href={doctorDetailPageUrl({ doctor_id: doctor.doctor_id, clinic_id: doctor.clinic_id, service_loc_id: doctor.service_location_id, seo_url: doctor.doctor_seo_url, city: doctor.city, state: doctor.state, market_name: doctor.market_name })} title={`${doctor.doctor_name} in ${doctor.clinic},${doctor.city}`} className="border rounded-full border-color-primary" >
+                                    <Link href={doctorDetailPageUrl({ doctor_id: doctor.doctor_id, clinic_id: doctor.clinic_id, service_loc_id: doctor.service_location_id, seo_url: doctor.doctor_seo_url, city: doctor.city, state: doctor.state, market_name: doctor.market_name,type:doctor.business_type })} title={`${doctor.doctor_name} in ${doctor.clinic},${doctor.city}`} className="border rounded-full border-color-primary" >
                                         <BiRightArrowAlt className="text-2xl color-primary"/>
                                     </Link>
                                     : <>
-                                        <Link className="button one-line" href={doctorDetailPageUrl({ doctor_id: doctor.doctor_id, clinic_id: doctor.clinic_id, service_loc_id: doctor.service_location_id, seo_url: doctor.doctor_seo_url, city: doctor.city, state: doctor.state, market_name: doctor.market_name })}>Book Appointment</Link>
+                                        <Link className="button one-line" href={doctorDetailPageUrl({ doctor_id: doctor.doctor_id, clinic_id: doctor.clinic_id, service_loc_id: doctor.service_location_id, seo_url: doctor.doctor_seo_url, city: doctor.city, state: doctor.state, market_name: doctor.market_name, type: doctor.business_type })}>Book Appointment</Link>
                                     </>}
                             </div>
                         </div>

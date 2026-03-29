@@ -118,7 +118,8 @@ const useSubmitRatingReview = ({ review_text = "" }: { review_text?: string }) =
         service_loc_id: number,
         appointment_id: number,
         consultation_date: string,
-        case?: "appointment_review" | "general_review"
+        case?: "appointment_review" | "general_review",
+        page_source?:string
     }, cb: () => void) => {
         submitReviewsPostCurl({
             rev_id: params.rev_id,
@@ -131,7 +132,8 @@ const useSubmitRatingReview = ({ review_text = "" }: { review_text?: string }) =
             visited_for: "",
             experience: reviewText,
             review_tags: selectedReviewTags,
-            case: params.case || "appointment_review"
+            case: params.case || "appointment_review",
+            page_source: params.page_source || ""
         }).then((data) => {
             toast.success(data.message)
             setShowReviewModal(false)
