@@ -70,10 +70,10 @@ const PopularDoctor2 = ({ data, showFilter }: { data: THomePageData['popularDoct
             <span className="mt-2 font-semibold">No doctors available</span>
         </div>
         }
-        <div className='flex overflow-auto cp-section hide-scroll-bar' style={{ gap: '.6rem' }}>
+        <div className={`${chunks.length>1 ? 'flex' : ''} overflow-auto cp-section hide-scroll-bar`} style={{ gap: '.6rem' }}>
             {chunks.map((doctors, i) => {
                 return (
-                    <div key={`doctors-${i}`} className="flex flex-col gap-2 shrink-0" style={{ width: '80%' }}>
+                    <div key={`doctors-${i}`} className="flex flex-col gap-2 shrink-0" style={{ width: chunks.length>1 ? '80%' : '100%' }}>
                         {doctors.map((doctor) =>
                             <div key={doctor.id} className="py-1 px-2 bg-white shadow-md click" data-href={doctor.seo_url}>
                                 <div className="flex gap-2">
