@@ -7,5 +7,6 @@ export type TsearchParams= {
     service_loc_id: number,
     clinic_id: number,
     book_appointment?:'1'|'0',
-    sub_page?:string
+    sub_page?:string,
+    business_type?:string,
 }

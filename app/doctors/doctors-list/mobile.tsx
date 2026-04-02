@@ -102,7 +102,7 @@ const DoctorListMobile = async ({ params, data }: { params: any, data: TfetchDoc
                 </div>
             </> : <></>}
             <BreadCrumbs data={[
-                { label: "Home", href: "https://careipro.com" },
+                { label: "Careipro", href: "https://careipro.com" },
                 { label: capitalizeFirstLetter(params.city), href: `https://careipro.com/${params.state}/${params.city}` },
                 { label: `Doctors in ${capitalizeFirstLetter(params.city)}`, href: `https://careipro.com/${params.state}/${params.city}/best-doctors` },
                 { label: data.specialist_name },

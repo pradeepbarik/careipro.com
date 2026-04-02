@@ -3,7 +3,6 @@ import Link from "next/link";
 import { BiSolidMap, BiClinic, BiRightArrowAlt, BiChevronRight } from "react-icons/bi";
 import { THomePageData, TPopularDoctor } from "@/lib/types/home-page";
 import { array_chunk } from '@/lib/helper';
-import { doctorDetailPageUrl } from "@/lib/helper/link";
 import { useState } from "react";
 import moment, { get_current_datetime } from "@/lib/helper/date-time";
 const PopularDoctor = ({ data }: { data: THomePageData['popularDoctors'] }) => {
