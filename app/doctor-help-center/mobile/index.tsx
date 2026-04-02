@@ -101,7 +101,7 @@ const DoctorHelpCenterMobile = ({ data, searchParams }: { data: TDoctorDetail, s
                 </div>
             </div>
             <BreadCrumbs data={[
-                {label:"Home",href:"https://careipro.com"},
+                {label:"Careipro",href:"https://careipro.com"},
                 {label:searchParams.city,href:`https://careipro.com/${searchParams.state}/${searchParams.city}`},
                 {label:`Doctors in ${searchParams.city}`,href:`https://careipro.com/${searchParams.state}/${searchParams.city}/best-doctors`},
                 {label:formatDoctorName(data.doctor_name),href:data.seo_dt.seo_url},

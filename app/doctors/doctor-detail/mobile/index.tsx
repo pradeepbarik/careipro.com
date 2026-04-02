@@ -214,7 +214,7 @@ const DoctorDetailMobile = async ({ data, availableData, searchParams, cookies }
                 </>}
         {(data.similar_doctors || []).length > 0 ? <SimilarBusieness heading={`Similar Doctors in ${data.clinic_city}`} similar_doctors={data.similar_doctors || []} /> : null}
          <BreadCrumbs  data={[
-            { label: "Home", href: "https://careipro.com" },
+            { label: "Careipro", href: "https://careipro.com" },
             {label:data.clinic_city, href:`https://careipro.com/${searchParams.state}/${searchParams.city}`},
             { label: `Doctors in ${data.clinic_city}`, href: `https://careipro.com/${searchParams.state}/${searchParams.city}/best-doctors` },
             {label: data.doctor_name }
