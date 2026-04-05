@@ -88,3 +88,46 @@ export const fetchDoctorAvailableTime = async (service_loc_id: number) => {
         return { available_date: "", available_on: "", first_session_start_time: "", first_session_end_time: "", second_session_start_time: "", second_session_end_time: "" }
     }
 }
+
+export type TDoctorReview = {
+    id: number,
+    rating: number,
+    review_date: string,
+    experience: string,
+    user_name: string,
+    patient_name: string | null,
+    is_public: number,
+    review_tags: Array<{ tag: string }>
+}
+export const fetchDoctorReviews = cache(async (params: { state: string, city: string, service_loc_id: number, doctor_id: number, clinic_id: number }) => {
+    try {
+        const res = await fetchJson<{ reviews: TDoctorReview[],summary:{
+            doctor_id: number,
+            clinic_id: number,
+            avg_rating: number,
+            total_rating: number,
+            total_review: number,
+            one_star: number,
+            two_star: number,
+            three_star: number,
+            four_star: number,
+            five_star: number
+        }|null }>(`/cache/${params.state.toLowerCase()}/${params.city.toLowerCase()}/doctor-details/SL${params.service_loc_id}/reviews.json`);
+        console.log("Fetched reviews from cache for service_loc_id:", params.service_loc_id, res);
+        return res;
+    } catch (err: any) {
+        const res = await fetchJson<IResponse<{ reviews: TDoctorReview[],summary:{
+            doctor_id: number,
+            clinic_id: number,
+            avg_rating: number,
+            total_rating: number,
+            total_review: number,
+            one_star: number,
+            two_star: number,
+            three_star: number,
+            four_star: number,
+            five_star: number
+        }|null }>>(`/get-doctor-reviews?state=${params.state}&city=${params.city}&service_loc_id=${params.service_loc_id}&doctor_id=${params.doctor_id}&clinic_id=${params.clinic_id}`);
+        return res.data;
+    }
+})

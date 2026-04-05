@@ -1,10 +1,10 @@
 import { SectionHeading, SectionSubHeading } from "@/app/components/mobile/ui"
 import { TDoctorDetail, TDoctorvailableData } from '@/lib/types/doctor';
-import { BiChevronRight, BiTimeFive } from "react-icons/bi";
+import { BiChevronRight, BiSolidStar, BiTimeFive, BiUser } from "react-icons/bi";
 import moment, { get_current_datetime } from "@/lib/helper/date-time";
 import { doctorSpecialityIcon } from "@/lib/image";
 import dynamic from "next/dynamic";
-const SimilarBusieness = dynamic(() => import("./similar-doctors"));
+import Link from "next/link";
 const WeeklyConsultingTiming = dynamic(() => import("@/app/components/mobile/doctors/doctor-detail/weekly-consulting-timing"));
 const NextConsultTime = dynamic(() => import('@/app/components/mobile/doctors/doctor-detail/next-consult-time'));
 
@@ -110,7 +110,7 @@ const OverView = ({ data, availableData }: { data: TDoctorDetail, availableData:
                     </div>
                 </>
             }
-            {data.treated_health_conditions?.length==0 && data.allSpecializations && data.allSpecializations["DISEASE"] && <>
+            {data.treated_health_conditions?.length == 0 && data.allSpecializations && data.allSpecializations["DISEASE"] && <>
                 <SectionHeading heading='Expertise in treatment of' />
                 <div className="px-2 py-2 grid grid-cols-2 gap-2 bg-white">
                     {data.allSpecializations["DISEASE"].map((cat) =>
@@ -133,7 +133,7 @@ const OverView = ({ data, availableData }: { data: TDoctorDetail, availableData:
                         </div>
                     )}
                 </div>
-            </>:<></>}
+            </> : <></>}
             {data.treatments_available && data.treatments_available.length > 0 ? <>
                 <SectionHeading heading='Available Treatments' />
                 <div className="px-2 py-2 grid grid-cols-2 gap-2 bg-white">
@@ -143,22 +143,67 @@ const OverView = ({ data, availableData }: { data: TDoctorDetail, availableData:
                         </div>
                     )}
                 </div>
-            </>:<></>}
+            </> : <></>}
             {data.description ?
                 <>
                     <SectionHeading heading={`About ${data.doctor_name}`} />
                     <div dangerouslySetInnerHTML={{ __html: data.description }} className="px-2 py-2 bg-white shadow-sm mb-2" ></div>
                 </> : <></>
             }
+            {(data.settings.show_patients_feedback) && data.topReviews && data.topReviews?.length > 0 ? <>
+                <SectionHeading heading='Rating & Reviews' />
+                <div className="flex gap-3 border rounded-md mx-2">
+                    <div className="bg-primary color-white shadow-md rounded-tl-md rounded-bl-md p-2 text-center">
+                        <span className="text-3xl">{data.rating}</span><br />
+                        <span>Avg. Rating</span>
+                    </div>
+                    <div>
+                        <p className="font-semibold mt-2">{data.rating_count} Ratings & {data.review_count} Reviews</p>
+                        <p className="">Rating is based on {data.rating_count} patients feedback</p>
+                    </div>
+                </div>
+                <div className="px-2 py-2 grid grid-cols-1 gap-2 bg-white mt-1">
+                    {data.topReviews.map((review, idx) =>
+                        <div key={idx} className="bg-white border rounded-lg px-3 py-3">
+                            <div className="flex items-center gap-2">
+                                <div className="w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center shrink-0">
+                                    <BiUser className="text-gray-500" style={{ fontSize: '1.2rem' }} />
+                                </div>
+                                <div className="flex flex-col">
+                                    <span className="font-semibold fs-15">{review.user_name || 'Anonymous'}</span>
+                                    {review.review_date && <span className="text-gray-500 text-xs">{new Date(review.review_date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</span>}
+                                </div>
+                                <div className="ml-auto flex items-center gap-1 bg-green-50 border border-green-200 rounded-md px-2 py-0.5">
+                                    <BiSolidStar className="text-green-600" style={{ fontSize: '0.8rem' }} />
+                                    <span className="font-semibold text-green-700 text-sm">{review.rating}</span>
+                                </div>
+                            </div>
+                            {review.experience && (
+                                <p className="mt-2 text-gray-700 fs-14 leading-relaxed">{review.experience}</p>
+                            )}
+                            {review.review_tags && (
+                                <div className="mt-2 flex flex-wrap gap-1">
+                                    {review.review_tags.map((tag, index) => (
+                                        <span key={index} className="bg-gray-200 text-gray-700 text-xs px-2 py-1 rounded-md">{tag.tag}</span>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+                    )}
+                    <div>
+                        <Link href={`${data.seo_dt.seo_url}/patient-reviews`} className="button" data-variant="outlined">View More </Link>
+                    </div>
+                </div>
+            </> : <></>}
             {data.faqs && data.faqs.mainEntity && data.faqs.mainEntity.length > 0 ? <>
-            <div className="px-3 mt-6 mb-4">
+                <div className="px-3 mt-6 mb-4">
                     <h2 className='font-bold text-lg text-gray-800 mb-4 flex items-center gap-2'>
                         Frequently Asked Questions
                     </h2>
                     <div className="space-y-1">
                         {data.faqs.mainEntity.map((faq, index) => (
-                            <details 
-                                key={index} 
+                            <details
+                                key={index}
                                 className="group bg-white rounded-sm border border-gray-100 shadow-sm overflow-hidden"
                             >
                                 <summary className="flex items-center justify-between cursor-pointer p-2 hover:bg-gray-50 transition-colors">
@@ -182,7 +227,7 @@ const OverView = ({ data, availableData }: { data: TDoctorDetail, availableData:
                         ))}
                     </div>
                 </div>
-            </>:<></>}
+            </> : <></>}
         </>
     )
 }

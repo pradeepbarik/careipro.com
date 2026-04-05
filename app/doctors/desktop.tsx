@@ -9,11 +9,12 @@ import { TCategories } from "@/lib/hooks/useCategories";
 import { TDoctorsPageData } from "@/lib/hooks/useDoctors";
 import { TDoctor } from "@/lib/types/doctor";
 import { TSectionBanner } from "@/lib/types/home-page";
-import { doctorSpecialityIcon } from '@/lib/image';
+import { doctorProfilePic, doctorSpecialityIcon } from '@/lib/image';
 import CategoriesFooter from '../components/mobile/footer/categories';
 import ServiceAvailbeCities from '../components/mobile/footer/service-available-cities';
 import PageHeader from "../components/desktop/header";
 import DesktopFooter from "../components/desktop/footer";
+import { doctorDetailPageUrl } from "@/lib/helper/link";
 // Hero Section
 const HeroSection = ({ city }: { city: string }) => {
     const stats = [
@@ -81,11 +82,11 @@ const SectionHeading = ({ heading, viewAllLink }: { heading: string, viewAllLink
 };
 
 // Specialists Grid
-const SpecialistsSection = ({ specialists, categories, state, city }: { 
-    specialists: TDoctorsPageData['specialists'], 
+const SpecialistsSection = ({ specialists, categories, state, city }: {
+    specialists: TDoctorsPageData['specialists'],
     categories: TCategories,
-    state: string, 
-    city: string 
+    state: string,
+    city: string
 }) => {
     const colors = [
         'bg-blue-50 text-blue-600 hover:bg-blue-100',
@@ -97,24 +98,24 @@ const SpecialistsSection = ({ specialists, categories, state, city }: {
         'bg-amber-50 text-amber-600 hover:bg-amber-100',
         'bg-teal-50 text-teal-600 hover:bg-teal-100',
     ];
-    
+
     return (
         <div id="specialists" className="bg-white rounded-xl border border-gray-200 p-6 mb-8">
             <SectionHeading heading="Find Doctors By Specialist" viewAllLink={`/doctors/categories?state=${state}&city=${city}`} />
             <div className="grid grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-4">
                 {specialists.map((specialist, index) => (
-                    <Link 
-                        key={specialist.id} 
-                        href={specialist.seo_url} 
+                    <Link
+                        key={specialist.id}
+                        href={specialist.seo_url}
                         className="group flex flex-col items-center p-4 rounded-xl transition-all border border-transparent hover:border-gray-200 hover:shadow-md"
                     >
                         <div className={`w-16 h-16 rounded-2xl ${colors[index % colors.length]} flex items-center justify-center mb-3 transition-all group-hover:scale-110`}>
-                            <Image 
-                                alt={specialist.name} 
-                                src={doctorSpecialityIcon(specialist.icon)} 
-                                width={32} 
-                                height={32} 
-                                className="w-8 h-8" 
+                            <Image
+                                alt={specialist.name}
+                                src={doctorSpecialityIcon(specialist.icon)}
+                                width={32}
+                                height={32}
+                                className="w-8 h-8"
                             />
                         </div>
                         <span className="text-sm font-medium text-gray-700 text-center leading-tight group-hover:text-blue-600 transition-colors">
@@ -129,13 +130,14 @@ const SpecialistsSection = ({ specialists, categories, state, city }: {
 
 // Doctor Card
 const DoctorCard = ({ doctor }: { doctor: TDoctor }) => {
+    let docDtlPgUrl = doctorDetailPageUrl({ doctor_id: doctor.doctor_id, clinic_id: doctor.clinic_id, service_loc_id: doctor.service_location_id, seo_url: doctor.doctor_seo_url, city: doctor.city, state: doctor.state, market_name: doctor.market_name, type: doctor.business_type });
     return (
-        <Link href={doctor.doctor_seo_url} className="group bg-white rounded-xl border border-gray-200 p-5 hover:border-blue-500 hover:shadow-lg transition-all">
+        <Link href={docDtlPgUrl} className="group bg-white rounded-xl border border-gray-200 p-5 hover:border-blue-500 hover:shadow-lg transition-all">
             <div className="flex items-start gap-4">
                 <div className="relative flex-shrink-0">
                     <div className="w-20 h-20 rounded-xl overflow-hidden bg-gradient-to-br from-blue-100 to-indigo-100">
                         {doctor.doctor_profile_pic ? (
-                            <img src={doctor.doctor_profile_pic} alt={doctor.doctor_name} className="w-full h-full object-cover" />
+                            <img src={doctorProfilePic(doctor.doctor_profile_pic)} alt={doctor.doctor_name} className="w-full h-full object-cover" />
                         ) : (
                             <div className="w-full h-full flex items-center justify-center">
                                 <FaUserMd className="text-blue-500 text-3xl" />
@@ -167,7 +169,7 @@ const DoctorCard = ({ doctor }: { doctor: TDoctor }) => {
                     </div>
                 </div>
             </div>
-            
+
             <div className="mt-4 pt-4 border-t border-gray-100">
                 <div className="flex items-center gap-2 text-sm text-gray-600 mb-2">
                     <BiSolidMap className="text-red-500 flex-shrink-0" />
@@ -194,10 +196,10 @@ const DoctorCard = ({ doctor }: { doctor: TDoctor }) => {
 };
 
 // Doctors Grid Section (n:1 view)
-const DoctorsGridSection = ({ heading, doctors, viewAllUrl }: { 
-    heading: string, 
-    doctors: TDoctor[], 
-    viewAllUrl?: string 
+const DoctorsGridSection = ({ heading, doctors, viewAllUrl }: {
+    heading: string,
+    doctors: TDoctor[],
+    viewAllUrl?: string
 }) => {
     return (
         <div className="bg-white rounded-xl border border-gray-200 p-6 mb-8">
@@ -219,19 +221,19 @@ const DoctorsGridSection = ({ heading, doctors, viewAllUrl }: {
 };
 
 // Doctors Horizontal Section (1:n view)
-const DoctorsHorizontalSection = ({ heading, doctors, viewAllUrl }: { 
-    heading: string, 
-    doctors: TDoctor[], 
-    viewAllUrl?: string 
+const DoctorsHorizontalSection = ({ heading, doctors, viewAllUrl }: {
+    heading: string,
+    doctors: TDoctor[],
+    viewAllUrl?: string
 }) => {
     return (
         <div className="bg-white rounded-xl border border-gray-200 p-6 mb-8">
             <SectionHeading heading={heading} viewAllLink={viewAllUrl} />
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                 {doctors.slice(0, 8).map((doctor) => (
-                    <Link 
-                        key={`${doctor.doctor_id}-${doctor.service_location_id}`} 
-                        href={doctor.doctor_seo_url} 
+                    <Link
+                        key={`${doctor.doctor_id}-${doctor.service_location_id}`}
+                        href={doctor.doctor_seo_url}
                         className="group bg-gray-50 rounded-xl p-4 hover:bg-blue-50 hover:shadow-md transition-all border border-transparent hover:border-blue-200"
                     >
                         <div className="flex items-center gap-3">
@@ -288,40 +290,40 @@ const SectionBannersDesktop = ({ banners, heading }: { banners: TSectionBanner[]
 };
 
 // Main Component
-const DesktopDoctors = ({ city, state, pageData, categories, diseases }: { 
-    city: string, 
-    state: string, 
-    pageData: TDoctorsPageData, 
-    categories: TCategories, 
-    diseases: TCategories 
+const DesktopDoctors = ({ city, state, pageData, categories, diseases }: {
+    city: string,
+    state: string,
+    pageData: TDoctorsPageData,
+    categories: TCategories,
+    diseases: TCategories
 }) => {
     return (
         <div className="min-h-screen bg-gray-100">
-            <PageHeader state={state} city={city} vertical="doctors"  />
+            <PageHeader state={state} city={city} vertical="doctors" />
             <main className="max-w-7xl mx-auto px-4 py-6">
                 <HeroSection city={city} />
-                
-                <SpecialistsSection 
-                    specialists={pageData.specialists} 
+
+                <SpecialistsSection
+                    specialists={pageData.specialists}
                     categories={categories}
-                    state={state} 
-                    city={city} 
+                    state={state}
+                    city={city}
                 />
 
                 {pageData.sections.map((section, i) => (
                     <div key={`section-${i}`} id={`section-${i}`}>
                         {section.section_type === "doctor" && section.doctors && section.doctors.length > 0 ? (
                             section.viewType === "1:n" ? (
-                                <DoctorsHorizontalSection 
-                                    heading={section.heading} 
-                                    doctors={section.doctors} 
-                                    viewAllUrl={section.view_all_url} 
+                                <DoctorsHorizontalSection
+                                    heading={section.heading}
+                                    doctors={section.doctors}
+                                    viewAllUrl={section.view_all_url}
                                 />
                             ) : (
-                                <DoctorsGridSection 
-                                    heading={section.heading} 
-                                    doctors={section.doctors} 
-                                    viewAllUrl={section.view_all_url} 
+                                <DoctorsGridSection
+                                    heading={section.heading}
+                                    doctors={section.doctors}
+                                    viewAllUrl={section.view_all_url}
                                 />
                             )
                         ) : section.section_type === "banners" && section.banners ? (
@@ -333,21 +335,21 @@ const DesktopDoctors = ({ city, state, pageData, categories, diseases }: {
 
             <DesktopFooter state={state} city={city} vertical="doctors">
                 <Suspense fallback={<></>}>
-                    <CategoriesFooter 
-                        state={state} 
-                        city={city} 
-                        group_category='DOCTOR' 
-                        heading='Best Doctors By Speciality' 
-                        categories={categories} 
+                    <CategoriesFooter
+                        state={state}
+                        city={city}
+                        group_category='DOCTOR'
+                        heading='Best Doctors By Speciality'
+                        categories={categories}
                     />
                 </Suspense>
                 <Suspense fallback={<></>}>
-                    <CategoriesFooter 
-                        state={state} 
-                        city={city} 
-                        group_category='DISEASE' 
-                        heading='Disease Specialist Doctors' 
-                        categories={diseases} 
+                    <CategoriesFooter
+                        state={state}
+                        city={city}
+                        group_category='DISEASE'
+                        heading='Disease Specialist Doctors'
+                        categories={diseases}
                     />
                 </Suspense>
                 <Suspense fallback={<></>}>

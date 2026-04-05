@@ -132,13 +132,15 @@ export type TDoctorDetail = TWeeklyConsultingTiming & {
     other_doc_cnt?: number,
     rating?: number,
     rating_count?: number,
+    review_count?: number,
     specialty:string|null,
     topReviews?: Array<{
         id:number,
         rating: number,
         review_date: string,
         experience: string,
-        user_name: string
+        user_name: string,
+        review_tags: Array<{ tag: string }>,
     }>,
     offers?: Array<any>,
     doctor_availability?: {
