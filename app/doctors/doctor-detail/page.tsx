@@ -6,21 +6,32 @@ import { fetchDoctorDetail, fetchDoctorAvailableTime } from '@/lib/hooks/useDoct
 import { TsearchParams } from './types';
 import PageVisitLogger from '@/app/components/client-components/page-visit-logger';
 import { doctorProfilePic } from '@/lib/image';
+import { doctorDiseaseExpertiseTabSeoData, doctorReviewsTabSeoData } from '@/lib/seo/doctor-detail';
+
 const DoctorDetailMobile = dynamic(() => import('./mobile'));
 export async function generateMetadata({ searchParams }: { searchParams: any }): Promise<Metadata> {
     const data = await fetchDoctorDetail({ doctor_id: searchParams.doctor_id, clinic_id: searchParams.clinic_id, service_loc_id: searchParams.service_loc_id, seo_url: searchParams.seo_url, market_name: searchParams.market_name, state: searchParams.state, city: searchParams.city })
     //let url = `https://careipro.com/${searchParams.state.toLowerCase().replace(" ", "-")}/${searchParams.city.toLowerCase().replace(" ", "-")}/${searchParams.seo_url}-In-${searchParams.market_name.replace(" ", "-")}/DR${searchParams.doctor_id}-SL${searchParams.service_loc_id}-C${searchParams.clinic_id}`;
-    let url = 'https://careipro.com'+data.data.seo_dt.seo_url;
+    let url = 'https://careipro.com' + data.data.seo_dt.seo_url;
+    let seoDt = {
+        title: data.data.seo_dt.title,
+        description: data.data.seo_dt.description
+    }
 
-    if (searchParams.sub_page && false) {
-        url += `/${searchParams.sub_page}`;
+    if (searchParams.sub_page) {
+        url += `/${searchParams.sub_page.toLowerCase()}`;
+        if (searchParams.sub_page.toLowerCase() === "patient-reviews") {
+            seoDt = doctorReviewsTabSeoData({ doctor_name: data.data.doctor_name, city: data.data.clinic_city })
+        } else if (searchParams.sub_page.toLowerCase() === "expert-in-disease-treatment") {
+            seoDt = doctorDiseaseExpertiseTabSeoData({ doctor_name: data.data.doctor_name, city: data.data.clinic_city })
+        }
     }
     return {
-        title: data.data.seo_dt.title,
-        description: data.data.seo_dt.description,
+        title: seoDt.title,
+        description: seoDt.description,
         openGraph: {
-            title: data.data.seo_dt.title,
-            description: data.data.seo_dt.description,
+            title: seoDt.title,
+            description: seoDt.description,
             url: `${url}`,
             siteName: 'Careipro',
             images: [
@@ -50,7 +61,7 @@ const DoctorDetail = async ({ searchParams }: {
         fetchDoctorDetail({ doctor_id: searchParams.doctor_id, clinic_id: searchParams.clinic_id, service_loc_id: searchParams.service_loc_id, seo_url: searchParams.seo_url, market_name: searchParams.market_name, state: searchParams.state, city: searchParams.city }),
         fetchDoctorAvailableTime(searchParams.service_loc_id)
     ])
-   
+
     if (device.type === "mobile" || 1 == 1) {
         return (<>
             <Script

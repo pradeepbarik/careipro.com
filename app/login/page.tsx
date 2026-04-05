@@ -5,8 +5,8 @@ const LoginMobile=dynamic(()=>import("./mobile-login"));
 const LoginDesktop=dynamic(()=>import("./desktop-login"))
 export async function generateMetadata(): Promise<Metadata> {
     return {
-        title: `Login | Careipro`,
-        description: `Login/signup now and check your appointment history,offers for you`,
+        title: `Login or Sign Up | Book Doctor Appointments Online | Careipro`,
+        description: `Login or create your free Careipro account to book doctor appointments instantly, view appointment history, get timely reminders, and access exclusive health offers near you.`,
         robots: {
             index: true,
             follow: true,

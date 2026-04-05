@@ -1,7 +1,7 @@
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import { BsTelephone } from "react-icons/bs";
-import { BiGridAlt, BiMessageRoundedDots, BiTimeFive, BiLocationPlus, BiPhone, BiChevronRight, BiTagAlt, BiLogoWhatsapp, BiMoney } from "react-icons/bi";
+import { BiGridAlt, BiMessageRoundedDots, BiTimeFive, BiLocationPlus, BiPhone, BiChevronRight, BiTagAlt, BiLogoWhatsapp, BiMoney, BiUser } from "react-icons/bi";
 import Header from '@/app/components/mobile/header';
 import BookAppointment from "@/app/components/mobile/doctors/doctor-detail/book-appointment";
 //import DoctorFeedback from "@/app/components/mobile/doctors/doctor-detail/doctor-feedback";
@@ -9,14 +9,14 @@ import BookAppointment from "@/app/components/mobile/doctors/doctor-detail/book-
 import AppointmentReminder from '@/app/components/mobile/appointment-reminder';
 import { TDoctorDetail, TDoctorvailableData } from '@/lib/types/doctor';
 import { doctorProfilePic, clinicProfilePic } from '@/lib/image';
-import { formatCurrency, showMaskedMobile } from '@/lib/helper/format-text';
+import { capitalizeFirstLetter, formatCurrency, showMaskedMobile } from '@/lib/helper/format-text';
 import { TsearchParams } from '../types';
 import { doctorDetailPageUrl } from '@/lib/helper/link';
 import SendEnquiry from "@/app/hospitals-and-clinics/clinic-detail/mobile/send-enquiry";
 import EmergencyBookingCloseAlert from '@/app/components/mobile/doctors/doctor-detail/emergency-booking-close-alert';
 //import NeedHelpBtn from "@/app/components/mobile/need-help-btn";
 import LikeShare from "@/app/components/mobile/doctors/doctor-detail/like-share";
-import { userSecreateKey } from '@/constants/storage_keys';
+import { userinfo, userSecreateKey } from '@/constants/storage_keys';
 import SectionHeading from "@/app/components/mobile/ui/section-heading";
 import { doctorSpecialityIcon } from "@/lib/image";
 import BreadCrumbs from "@/app/components/mobile/breadcrumb";
@@ -26,6 +26,7 @@ const OverView = dynamic(() => import('./overview'))
 const AppointmentBookingTiming = dynamic(() => import('./booking-timing'));
 const Photos = dynamic(() => import('./photos'))
 const SimilarBusieness = dynamic(() => import("./similar-doctors"));
+const Reviews = dynamic(() => import('./reviews'));
 export const getSendEnquiryWhatsappMessage = (doctor_name = "") => {
     return `Hi,\nI found your clinic on careipro.com. I want more information about *${doctor_name}*`;
 }
@@ -66,12 +67,9 @@ const DoctorDetailMobile = async ({ data, availableData, searchParams, cookies }
     cookies: Record<string, any>
 }) => {
     const pageUrl = doctorDetailPageUrl({ doctor_id: data.doctor_id, service_loc_id: data.id, clinic_id: data.clinic_id, seo_url: data.seo_url, state: data.clinic_state, city: data.clinic_city, market_name: data.clinic_market, type: data.business_type });
-    let ctaBtnCount = data.clinic_id !== 8 ? 2 : 2;
-    if (data.whatsapp_number) {
-        ctaBtnCount += 1;
-    }
+    const userdetail = cookies[userinfo] ? JSON.parse(cookies[userinfo]) : null;
     return (<>
-        <Header heading={data.doctor_name+`${data.specialty ? ` - ${data.specialty}` : ''}`} template="SUBPAGE" rightContainer={
+        <Header heading={data.doctor_name + `${data.specialty ? ` - ${data.specialty}` : ''}`} template="SUBPAGE" rightContainer={
             <LikeShare total_liked={data.total_liked || 0} url={pageUrl} doctor_name={data.doctor_name} position={data.position || data.qualification_disp} clinic_name={data.clinic_name} service_charge={data.service_charge} doctor_id={data.doctor_id} clinic_id={data.clinic_id} />
         } />
         <div className='flex px-2 py-2 mt-2 gap-3 bg-white shadow-sm'>
@@ -102,7 +100,7 @@ const DoctorDetailMobile = async ({ data, availableData, searchParams, cookies }
             </div>
             {data.clinic_id > 0 &&
                 <div className="bg-gray-100 rounded-md px-2 border flex gap-1 items-center py-2 mt-2">
-                    <img src={clinicProfilePic(data.clinic_logo || "")} className="h-6 w-6 rounded-md shrink-0" />
+                    <img src={clinicProfilePic(data.clinic_logo || "")} alt={`${data.clinic_name} Logo`} className="h-6 w-6 rounded-md shrink-0" />
                     <h2 className="ml-2 font-semibold fs-16">{data.clinic_name}</h2>
                     {data.other_doc_cnt && data.other_doc_cnt > 0 ? <>
                         <Link href={data.clinic_dtlpg_url || ''} className="ml-auto flex items-center gap-1 text-xs color-primary font-semibold text-nowrap">
@@ -145,10 +143,39 @@ const DoctorDetailMobile = async ({ data, availableData, searchParams, cookies }
                 <span className="ml-auto font-bold">{formatCurrency(parseInt(data.service_charge))}</span>
             </div>
         </div>
-        <div id="reminder-section"></div>
         {data.settings.enable_enquiry && false ? <>
             <SendEnquiry businessType={data.business_type} state={data.clinic_state || ""} city={data.clinic_city} clini_id={data.clinic_id} doctor_id={data.doctor_id} />
         </> : <></>}
+        {cookies[userSecreateKey] && userdetail ? <>
+            {userdetail.ut == "user" || userdetail.ut == "agency" &&
+                <div className="mx-2 mt-2 px-3 py-3 bg-cyan-50 border border-cyan-200 rounded-xl flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full bg-cyan-200 flex items-center justify-center shrink-0">
+                        <BiUser className="text-cyan-600" style={{ fontSize: '1.2rem' }} />
+                    </div>
+                    <div className="flex flex-col grow">
+                        <span className="font-semibold text-sm text-gray-800">Hi, {`${capitalizeFirstLetter(userdetail.fn)} ${capitalizeFirstLetter(userdetail.ln)}`}</span>
+                        <span className="text-xs text-gray-500">your appointment history</span>
+                    </div>
+                    <Link href={`/my-profile/appointment-history`} className="bg-cyan-600 color-white font-semibold text-sm px-3 py-2 rounded-lg shrink-0">
+                        My Bookings
+                    </Link>
+                </div>
+            }
+        </> :
+            <div className="mx-2 mt-2 px-3 py-3 bg-red-50 border border-orange-200 rounded-xl flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-orange-200 flex items-center justify-center shrink-0">
+                    <BiUser className="text-orange-600" style={{ fontSize: '1.2rem' }} />
+                </div>
+                <div className="flex flex-col grow">
+                    <span className="font-semibold text-sm text-gray-800">Verify your mobile number</span>
+                    <span className="text-xs text-gray-500">Login or verify to book appointment</span>
+                </div>
+                <Link href={`/login?redirect_url=${data.seo_dt.seo_url}`} className="bg-orange-400 color-white font-semibold text-sm px-3 py-2 rounded-lg shrink-0">
+                    Login
+                </Link>
+            </div>
+        }
+        <div id="reminder-section"></div>
         <div className="flex overflow-auto px-2 py-2 gap-2 hide-scroll-bar mt-2 sticky bg-page-background-50" style={{ top: "4rem" }}>
             <Link href={`${pageUrl}`} className={`text-nowrap border bg-white rounded-lg px-2 py-1 font-semibold flex items-center ${(searchParams.sub_page == undefined || searchParams.sub_page === "") ? 'bg-primary color-white' : ''}`}>
                 <BiGridAlt />
@@ -162,13 +189,13 @@ const DoctorDetailMobile = async ({ data, availableData, searchParams, cookies }
                     </Link>
                 </>} */}
             {(data.allSpecializations["DISEASE"] || []).length > 0 &&
-                <Link href={`${pageUrl}/Expert-In-Disease-Treatment`} className={`bg-white border rounded-lg font-semibold px-2 py-1 flex items-center shrink-0 gap-1 ${(searchParams.sub_page === "Expert-In-Disease-Treatment") ? 'bg-primary color-white' : ''}`}>
-                    <img src="/icon/disease-treatment2.png" className="h-6 w-6 rounded-full bg-white" />
+                <Link href={`${pageUrl}/expert-in-disease-treatment`} className={`bg-white border rounded-lg font-semibold px-2 py-1 flex items-center shrink-0 gap-1 ${(searchParams.sub_page?.toLowerCase() === "expert-in-disease-treatment") ? 'bg-primary color-white' : ''}`}>
+                    <img src="/icon/disease-treatment2.png" alt="Expert In Disease Treatment" className="h-6 w-6 rounded-full bg-white" />
                     <span className="text-nowrap fs-15">Expertise In</span>
                 </Link>
             }
-            {data.settings.show_patients_feedback && false ?
-                <Link href={`${pageUrl}/Patient-Reviews`} className={`bg-white border rounded-lg font-semibold px-2 py-1 flex items-center shrink-0 gap-1 ${(searchParams.sub_page === "feedback") ? 'bg-primary color-white' : ''}`}>
+            {data.settings.show_patients_feedback ?
+                <Link href={`${pageUrl}/patient-reviews`} className={`bg-white border rounded-lg font-semibold px-2 py-1 flex items-center shrink-0 gap-1 ${(searchParams.sub_page?.toLowerCase() === "patient-reviews") ? 'bg-primary color-white' : ''}`}>
                     <BiMessageRoundedDots />
                     <span className="text-nowrap fs-15">Reviews</span>
                 </Link> : <></>
@@ -177,7 +204,7 @@ const DoctorDetailMobile = async ({ data, availableData, searchParams, cookies }
         {!searchParams.sub_page ?
             <OverView data={data} availableData={availableData} />
             : searchParams.sub_page === "photos" ? <Photos />
-                : searchParams.sub_page === "appointment-booking-timings" ? <AppointmentBookingTiming data={data} /> : searchParams.sub_page === "Expert-In-Disease-Treatment" ? <>
+                : searchParams.sub_page === "appointment-booking-timings" ? <AppointmentBookingTiming data={data} /> : searchParams.sub_page.toLowerCase() === "expert-in-disease-treatment" ? <>
                     <div className="px-2 py-2 grid grid-cols-2 gap-2">
                         {(data.allSpecializations["DISEASE"] || []).map((cat) =>
                             <div key={cat.seo_id} className="flex items-center gap-2 px-2 py-1 border border-color-grey rounded-md bg-white">
@@ -207,17 +234,17 @@ const DoctorDetailMobile = async ({ data, availableData, searchParams, cookies }
                         </div>
                     </> : <></>}
 
-                </> : searchParams.sub_page === "Patient-Reviews" ? <>
-                    reviews
+                </> : searchParams.sub_page.toLowerCase() === "patient-reviews" ? <>
+                    <Reviews state={searchParams.state} city={searchParams.city} service_loc_id={data.id} rating={data.rating || 0} rating_count={data.rating_count || 0} review_count={data.review_count || 0} doctor_id={data.doctor_id} clinic_id={data.clinic_id} />
                 </> : <>
                     <OverView data={data} availableData={availableData} />
                 </>}
         {(data.similar_doctors || []).length > 0 ? <SimilarBusieness heading={`Similar Doctors in ${data.clinic_city}`} similar_doctors={data.similar_doctors || []} /> : null}
-         <BreadCrumbs  data={[
+        <BreadCrumbs data={[
             { label: "Careipro", href: "https://careipro.com" },
-            {label:data.clinic_city, href:`https://careipro.com/${searchParams.state}/${searchParams.city}`},
+            { label: data.clinic_city, href: `https://careipro.com/${searchParams.state}/${searchParams.city}` },
             { label: `Doctors in ${data.clinic_city}`, href: `https://careipro.com/${searchParams.state}/${searchParams.city}/best-doctors` },
-            {label: data.doctor_name }
+            { label: data.doctor_name }
         ]} />
         {(data.settings.book_by === "app") && <div className="mt-12">
             <div className="bg-white fixed bottom-0 w-full px-2 py-1" style={{ bottom: 0 }}>
