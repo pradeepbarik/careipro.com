@@ -100,6 +100,7 @@ const DoctorDetail = async ({ searchParams }: {
                 city: searchParams.city,
                 doctor_id: searchParams.doctor_id,
                 clinic_id: searchParams.clinic_id,
+                business_name:data.data.doctor_name,
                 vertical: "DOCTOR"
             }} />
         </>)
