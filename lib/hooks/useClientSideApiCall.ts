@@ -222,9 +222,14 @@ export type TclinicDetail = {
         enable_enquiry: number,
         show_patients_feedback: number,
         rating: number | null,
+        medicine_home_delivery: number,
+        medicine_min_order_tag: string | null,
+        medicine_delivery_time_tag: string | null,
+        open_time: string | null,
+        recommended_doctors: string | null
     },
     hasBanner: boolean,
-    banners: Array<{ image: string }>,
+    banners: Array<{ image: string, device_type: string, redirection_url: string, banner_description: string, upload_time: string }>,
     timing: {
         clinic_id: number;
         sunday: number;

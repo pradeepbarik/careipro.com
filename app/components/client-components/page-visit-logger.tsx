@@ -8,6 +8,7 @@ type TLogData = {
     section_name?: string,
     state: string,
     city: string,
+    market_name?: string,
     clinic_id?: number,
     doctor_id?: number,
     cat_id?: string,
@@ -17,6 +18,7 @@ type TLogData = {
     utm_campaign?: string,
     utm_medium?: string,
     utm_source?: string,
+    business_name?: string,
 }
 const PageVisitLogger = ({ data }: { data: TLogData }) => {
     const searchParams = useSearchParams()

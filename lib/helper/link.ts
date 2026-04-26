@@ -50,7 +50,10 @@ export const doctorDetailPageUrl = (params: { doctor_id: number, service_loc_id:
     }
     return url;
 }
-export const clinicDetailpageUrl = (params: { seo_url: string, state: string, city: string, market_name: string, bid: string }) => {
+export const clinicDetailpageUrl = (params: { seo_url: string, state: string, city: string, market_name: string, bid: string,business_type?:string, }) => {
+    if(params.business_type && params.business_type.toLowerCase() === "medicinestore"){
+        return `/${params.state.toLowerCase()}/${params.city.toLowerCase().replace(' ', '-')}/medical-store-in-${params.market_name.replace(/ /g, "-")}/${params.seo_url}-${params.bid}`;
+    }
     //return `/${params.seo_url}-At-${capitalizeEachWordFirstLetter(params.market_name).replace(" ", "-")}-In-${capitalizeEachWordFirstLetter(params.city).replace(" ", "-")}-of-${capitalizeEachWordFirstLetter(params.state).replace(" ", "-")}/${params.bid}`;
     return `/${params.state.toLowerCase()}/${params.city.toLowerCase().replace(' ', '-')}/${params.seo_url}-In-${params.market_name.toLowerCase().replace(" ", "-")}/${params.bid}`;
 }
@@ -73,4 +76,7 @@ export const categoryResultPageLink = (params: { state: string, city: string,tow
 }
 export const upiPaymentLink = (upiid: string, total_amount: number, message: string) => {
     return `upi://pay?pa=${upiid}&pn=&am=${total_amount}&cu=INR`;
+}
+export const medicineStoreDtlpgLink= (params: { seo_url: string, state: string, city: string, market_name: string, bid: string }) => {
+    return `/${params.state.toLowerCase().replace(" ", "-")}/${params.city.toLowerCase().replace(' ', '-')}/pharmacies/${params.seo_url}-${params.bid}`;
 }

@@ -76,12 +76,20 @@ const nextConfig = {
                 destination: '/physiotherapy'
             },
             {
-                source: '/Medicines-In-:city-of-:state',
+                source:'/:state/:city/pharmacies/:seo_url([a-zA-Z0-9-]+)-(MS|C):store_id([0-9]+)-:state_city',
+                destination: '/medicine/store-detail'
+            },
+            {
+                source: '/:state/:city/medicines-and-healthcare-products',
                 destination: '/medicine'
             },
             {
-                source: '/:state/:city/Medicines-Stores-Pharmacies',
-                destination: '/medicine'
+                source: '/:state/:city/pharmacies-in-:town',
+                destination: '/medicine/store-list'
+            },
+            {
+                source: '/:state/:city/pharmacies',
+                destination: '/medicine/store-list'
             },
             {
                 source: '/Caretakers-In-:city-of-:state',
