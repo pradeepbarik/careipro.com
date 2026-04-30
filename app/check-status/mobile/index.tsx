@@ -228,6 +228,7 @@ const CheckStatusMobile = () => {
                             service_loc_id: appointmentDetail?.servicelocation_id || 0,
                             consultation_date: appointmentDetail?.consult_date || "",
                             page_source: "appointment_status_page",
+                            patient_name: appointmentDetail?.patient_name || ""
                         }, () => {
                             getAppointmentDetail(appointmentDetail?.id)
                             setShowRatingModal(false);

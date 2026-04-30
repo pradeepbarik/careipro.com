@@ -119,7 +119,8 @@ const useSubmitRatingReview = ({ review_text = "" }: { review_text?: string }) =
         appointment_id: number,
         consultation_date: string,
         case?: "appointment_review" | "general_review",
-        page_source?:string
+        page_source?:string,
+        patient_name: string
     }, cb: () => void) => {
         submitReviewsPostCurl({
             rev_id: params.rev_id,
@@ -133,7 +134,8 @@ const useSubmitRatingReview = ({ review_text = "" }: { review_text?: string }) =
             experience: reviewText,
             review_tags: selectedReviewTags,
             case: params.case || "appointment_review",
-            page_source: params.page_source || ""
+            page_source: params.page_source || "",
+            patient_name: params.patient_name||""
         }).then((data) => {
             toast.success(data.message)
             setShowReviewModal(false)
@@ -148,7 +150,8 @@ const useSubmitRatingReview = ({ review_text = "" }: { review_text?: string }) =
         doctor_id: number,
         service_loc_id: number,
         appointment_id: number,
-        consultation_date: string
+        consultation_date: string,
+        patient_name: string
     }, cb: () => void) => {
         submitReviewsPostCurl({
             rev_id: params.rev_id,
@@ -158,6 +161,7 @@ const useSubmitRatingReview = ({ review_text = "" }: { review_text?: string }) =
             clinic_id: params.clinic_id,
             rating: SelectedRating,
             consultation_date: params.consultation_date,
+            patient_name: params.patient_name
         }).then((data) => {
             toast.success(data.message)
             setShowReviewModal(false)

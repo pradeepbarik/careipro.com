@@ -126,6 +126,7 @@ const RatingReminder = ({ catid, doctor_id }: { catid: number, doctor_id: number
                                     clinic_id: activeReminder.clinic_id,
                                     doctor_id: activeReminder.doctor_id,
                                     service_loc_id: activeReminder.servicelocation_id,
+                                    patient_name: activeReminder.patient_name,
                                 }, () => {
                                     onRatingSubmitted(activeReminder.id);
                                     reset();
