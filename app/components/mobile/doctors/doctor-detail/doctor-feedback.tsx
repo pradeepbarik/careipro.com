@@ -42,7 +42,8 @@ const DoctorFeedback = ({ doctor_id, clinic_id, service_loc_id }: { doctor_id: n
                                 clinic_id: clinic_id,
                                 doctor_id: doctor_id,
                                 service_loc_id: service_loc_id,
-                                case:"general_review"
+                                case:"general_review",
+                                patient_name:""
                             }, () => {
                             })
                         }}>Submit Review</button>

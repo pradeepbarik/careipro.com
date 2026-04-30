@@ -23,7 +23,7 @@ const DoctorListMobile = async ({ params, data }: { params: any, data: TfetchDoc
                 </> : <></>
             }
             <NIsToOneDoctorsSliders data={data.doctors.slice(0, 2)} showAvaileTime={true} />
-            {data.cityMarkets.length > 0 ?
+            {data.cityMarkets.length > 0 && false ?
                 <div className="px-2">
                     <div className='bg-gray-100'>
                         <h2 className='font-semibold px-2 py-2 fs-16 rounded-t-md border-l border-r border-t border-t-sky-400 border-l-sky-400 border-r-sky-400'>

@@ -10,7 +10,8 @@ export type TRatingReminder = {
     clinic_id: number,
     consult_date: string,
     status: string,
-    doctor_name: string
+    doctor_name: string,
+    patient_name:string
 }
 const useRatingReminder = ({ catid, doctor_id }: { catid: number, doctor_id: number }) => {
     const [reminders, setReminders] = useState<TRatingReminder[]>([]);

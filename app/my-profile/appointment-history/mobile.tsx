@@ -133,6 +133,7 @@ const MyAppointmentsMobile = ({ cookies }: { cookies: Record<string, any> }) => 
                                 doctor_id: appointment.doctor_id,
                                 service_loc_id: appointment.servicelocation_id,
                                 consultation_date: appointment.consult_date,
+                                patient_name: appointment.patient_name
                             }, () => {
 
                             })

@@ -91,7 +91,8 @@ const RatingCard = ({clinic_id, doctor_id, service_loc_id}:{clinic_id:number,doc
                                 doctor_id: doctor_id,
                                 service_loc_id: service_loc_id,
                                 case: "general_review",
-                                page_source: "doctor_help_center"
+                                page_source: "doctor_help_center",
+                                patient_name:""
                             }, () => {
                                 onSuccessSubmitReview();
                             })
