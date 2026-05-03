@@ -20,7 +20,7 @@ const BookAppointment = ({ open, service_charge, site_service_charge, service_lo
             user_info: state.authSlice.user_info
         }
     })
-    const { showModal, setShowModal, showSuggestions, setShowSuggestion, onSelectSuggestedPatient, patients, onOk, patientInfo, setPatientInfo, booingDetail, bookAppointment, consultDates, consultDate, setConsultDate, group_name, setGroupName, patientExtraInfo, setPatientExtraInfo } = useBooking({ service_loc_id, doctor_id, clinic_id: clinic_id, open: open, settings: settings, availability: availability });
+    const { showModal, setShowModal, showSuggestions, setShowSuggestion, onSelectSuggestedPatient, patients, onOk, patientInfo, setPatientInfo, booingDetail, bookAppointment, consultDates, consultDate, setConsultDate, group_name, setGroupName, patientExtraInfo, setPatientExtraInfo } = useBooking({ service_loc_id, doctor_id, clinic_id: clinic_id, open: open, settings: settings, availability: availability,pageUrl:pageUrl });
     const [showLoginModal, setShowLoginModal] = useState(false);
     const onBookbtnClick = () => {
         if (user_info === null) {
@@ -162,6 +162,7 @@ const BookAppointment = ({ open, service_charge, site_service_charge, service_lo
                             </div>
                         </div>
                         <div className='font-semibold py-2 px-2 fs-16 bg-slate-100'>
+                            
                             Consultation Fee (Payble at clinic by cash)
                         </div>
                         <div className='font-semibold'>

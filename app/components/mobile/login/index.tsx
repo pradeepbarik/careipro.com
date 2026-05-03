@@ -4,8 +4,8 @@ import classes from './style.module.scss';
 import { Slides, Input, Button, RadioButton, SlideUpModal } from "../ui";
 import useLogin from "@/lib/hooks/login/useLogin";
 import CitySelection from '../city-selection';
-const Login = ({ redirectUrl = "", onLoginSuccess, allowLoggedInUser }: { redirectUrl?: string, onLoginSuccess?: () => void, allowLoggedInUser?: boolean }) => {
-    const { step, loader, mobile, setMobile, mobileExit, otp, setOtp, userInfo, setUserInfo, editMobileClick, sendOtp, login, signUp } = useLogin({ redirectUrl, onLoginSuccess, allowLoggedInUser });
+const Login = ({ redirectUrl = "", onLoginSuccess, allowLoggedInUser, heading, tplogin }: { redirectUrl?: string, onLoginSuccess?: () => void, allowLoggedInUser?: boolean, heading?: string, tplogin?: boolean }) => {
+    const { step, loader, mobile, setMobile, mobileExit, otp, setOtp, userInfo, setUserInfo, editMobileClick, sendOtp, login, signUp } = useLogin({ redirectUrl, onLoginSuccess, allowLoggedInUser,tplogin });
     return (
         <>
             <div className="mx-10 mt-4 relative">
@@ -17,6 +17,7 @@ const Login = ({ redirectUrl = "", onLoginSuccess, allowLoggedInUser }: { redire
                 <span className={classes.connector}></span>
             </div>
             <div className="mt-4 py-2 px-2 bg-white">
+                {heading && <h2 className="text-xl font-bold mb-4">{heading}</h2>}
                 <Slides currentSlide={step}>
                     <div className="px-1">
                         <form autoComplete={"off"}>

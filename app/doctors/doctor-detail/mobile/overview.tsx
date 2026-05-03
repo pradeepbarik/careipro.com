@@ -170,7 +170,7 @@ const OverView = ({ data, availableData }: { data: TDoctorDetail, availableData:
                                     <BiUser className="text-gray-500" style={{ fontSize: '1.2rem' }} />
                                 </div>
                                 <div className="flex flex-col">
-                                    <span className="font-semibold fs-15">{review.user_name || 'Anonymous'}</span>
+                                    <span className="font-semibold fs-15">{review.patient_name || review.user_name || 'Anonymous'}</span>
                                     {review.review_date && <span className="text-gray-500 text-xs">{new Date(review.review_date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</span>}
                                 </div>
                                 <div className="ml-auto flex items-center gap-1 bg-green-50 border border-green-200 rounded-md px-2 py-0.5">
