@@ -72,7 +72,7 @@ const TploginMobile = ({ data }: { data: TclinicDetail }) => {
                 </div>
                 {/* Footer Note */}
                 <p className="text-xs text-center text-gray-500 mt-4">
-                    After login, you'll be redirected back to {clinicInfo.name}
+                    {`After login, you'll be redirected back to`} {clinicInfo.name}
                 </p>
             </div>
         </div>
