@@ -8,7 +8,6 @@ import { clinicProfilePic } from "@/lib/image";
 
 const TploginMobile = ({ data }: { data: TclinicDetail }) => {
     const clinicInfo = data.clinic_info;
-    
     return (
         <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
             {/* Close Button */}

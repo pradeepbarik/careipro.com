@@ -58,7 +58,7 @@ const useLogin = ({ redirectUrl = "", allowLoggedInUser = false, onLoginSuccess,
                 return;
             }
             if(urlToRedirect && tplogin){
-                window.location.href = urlToRedirect+"?user_key="+(<any>data).secreate_key;
+                window.location.href = urlToRedirect+"?user_key="+encodeURIComponent((<any>data).secreate_key);
                 return;
             }
              if (urlToRedirect) {
