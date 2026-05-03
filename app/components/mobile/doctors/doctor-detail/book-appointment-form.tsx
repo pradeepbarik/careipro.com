@@ -239,7 +239,7 @@ const BookAppointmentForm = ({ open, service_charge, site_service_charge, servic
                             </svg>
                         </div>
                         <h2 className="text-xl font-bold text-gray-800 mb-2">Booking Failed</h2>
-                        <p className="text-gray-600 text-sm">We couldn't complete your appointment booking</p>
+                        <p className="text-gray-600 text-sm">{`We couldn't complete your appointment booking`}</p>
                     </div>
 
                     {/* Transaction IDs */}
@@ -296,7 +296,7 @@ const BookAppointmentForm = ({ open, service_charge, site_service_charge, servic
                             <div className="flex-1">
                                 <h3 className="font-semibold text-blue-900 text-sm mb-1">Refund Information</h3>
                                 <p className="text-blue-800 text-xs leading-relaxed">
-                                    Don't worry! The amount deducted from your account will be automatically refunded within 1-2 business days.
+                                    {`Don't worry! The amount deducted from your account will be automatically refunded within 1-2 business days.`}
                                 </p>
                             </div>
                         </div>
