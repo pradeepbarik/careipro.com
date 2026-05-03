@@ -11,3 +11,20 @@ export const getServiceAvailableCities = async () => {
     }
     return result;
 }
+export interface TkeyInfo {
+    clinic_id: number;
+    city: string;
+    state: string;
+    business_id: string;
+}
+export const getKeyInfo = async (public_key: string) => {
+    try{
+       const res = await fetchJson<IResponse<TkeyInfo>>("/decode-business-public-key?business_public_key="+public_key);
+       if(!res){
+        throw new Error("Invalid business public key");
+       }
+       return res.data;
+    }catch(err){
+        throw new Error("Invalid business public key");
+    }
+}

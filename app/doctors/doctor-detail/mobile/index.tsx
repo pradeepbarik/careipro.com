@@ -1,9 +1,10 @@
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import { BsTelephone } from "react-icons/bs";
-import { BiGridAlt, BiMessageRoundedDots, BiTimeFive, BiLocationPlus, BiPhone, BiChevronRight, BiTagAlt, BiLogoWhatsapp, BiMoney, BiUser } from "react-icons/bi";
+import { BiGridAlt, BiMessageRoundedDots, BiTimeFive, BiLocationPlus, BiPhone, BiChevronRight, BiTagAlt, BiLogoWhatsapp, BiMoney, BiUser, BiCalendar, BiSupport } from "react-icons/bi";
 import Header from '@/app/components/mobile/header';
 import BookAppointment from "@/app/components/mobile/doctors/doctor-detail/book-appointment";
+import PaymentButton from "@/app/components/mobile/payment-button";
 //import DoctorFeedback from "@/app/components/mobile/doctors/doctor-detail/doctor-feedback";
 //import { SectionHeading } from '@/app/components/mobile/ui';
 import AppointmentReminder from '@/app/components/mobile/appointment-reminder';
@@ -110,7 +111,7 @@ const DoctorDetailMobile = async ({ data, availableData, searchParams, cookies }
                     </> : <></>}
                 </div>}
             <div className="bg-gray-100 rounded-md px-2 border flex gap-2 items-center py-2 mt-1">
-                <BiLocationPlus style={{ fontSize: '1rem' }} />
+                <BiLocationPlus className="text-orange-600" style={{ fontSize: '1.2rem' }} />
                 <h2 className="font-semibold">Location</h2>
                 <a target="_blank" href={`https://www.google.com/maps/dir/?api=1&destination=${data.location_lat},${data.location_lng}`} className="ml-auto text-right flex">
                     {data.clinic_locality} in {data.clinic_market}, {data.clinic_city}
@@ -119,7 +120,7 @@ const DoctorDetailMobile = async ({ data, availableData, searchParams, cookies }
             </div>
             {data.clinic_mobile ?
                 <div className="bg-gray-100 rounded-md px-2 border flex items-center gap-2 py-2 mt-1">
-                    <BiPhone style={{ fontSize: '1rem' }} />
+                    <BiPhone className="text-green-600" style={{ fontSize: '1.2rem' }} />
                     <h2 className="font-semibold">Contact</h2>
                     <a href={`tel:${data.clinic_mobile}`} className="ml-auto flex">
                         {showMaskedMobile(data.clinic_mobile)}
@@ -129,7 +130,7 @@ const DoctorDetailMobile = async ({ data, availableData, searchParams, cookies }
                 </div> : <></>}
             {data.whatsapp_number ? <>
                 <div className="bg-gray-100 rounded-md px-2 border flex items-center gap-2 py-2 mt-1">
-                    <BiLogoWhatsapp style={{ fontSize: '1rem' }} />
+                    <BiLogoWhatsapp className="text-green-600" style={{ fontSize: '1.2rem' }} />
                     <h2 className="font-semibold">Whatsapp</h2>
                     <a href={`https://wa.me/${data.whatsapp_number}?text=${encodeURI(getSendEnquiryWhatsappMessage(data.doctor_name))}`} className="ml-auto flex">
                         {showMaskedMobile(data.whatsapp_number)}
@@ -138,7 +139,7 @@ const DoctorDetailMobile = async ({ data, availableData, searchParams, cookies }
                 </div>
             </> : <></>}
             <div className="bg-gray-100 rounded-md px-2 border flex items-center py-2 mt-1">
-                <BiMoney style={{ fontSize: '1rem' }} />
+                <BiMoney className="text-green-600" style={{ fontSize: '1.2rem' }} />
                 <h2 className="ml-2 font-semibold">Consulting Fee</h2>
                 <span className="ml-auto font-bold">{formatCurrency(parseInt(data.service_charge))}</span>
             </div>
@@ -246,21 +247,40 @@ const DoctorDetailMobile = async ({ data, availableData, searchParams, cookies }
             { label: `Doctors in ${data.clinic_city}`, href: `https://careipro.com/${searchParams.state}/${searchParams.city}/best-doctors` },
             { label: data.doctor_name }
         ]} />
-        {(data.settings.book_by === "app") && <div className="mt-12">
-            <div className="bg-white fixed bottom-0 w-full px-2 py-1" style={{ bottom: 0 }}>
-                <BookAppointment emergencyBookingClose={data.settings.emergency_booking_close} bookingCloseMessage={data.settings.booking_close_message} open={searchParams.book_appointment === '1' ? true : false} clinic_id={data.clinic_id} service_loc_id={data.id} doctor_id={data.doctor_id} service_charge={parseInt(data.service_charge)} site_service_charge={parseInt(data.site_service_charge)} settings={data.settings} availability={availableData} slno_groups={data.slno_groups || []} pageUrl={pageUrl} />
+
+        {(data.settings.book_by === "app" || data.settings.book_by === "manually") && <>
+            <div className="mt-12">
+                <div className="bg-gradient-to-t from-white via-white to-transparent fixed bottom-0 w-full px-3 py-3 shadow-[0_-4px_20px_rgba(0,0,0,0.1)] border-t border-gray-200" style={{ bottom: 0 }}>
+                    <div className='flex gap-2'>
+                        {cookies[userSecreateKey] ?
+                            <Link href={pageUrl + "/book-appointment"} className="flex-1 bg-gradient-to-r from-cyan-500 to-cyan-600 hover:from-cyan-600 hover:to-cyan-700 text-white font-bold py-3 px-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-2">
+                                <BiCalendar className="text-xl" />
+                                <span>Book Appointment</span>
+                            </Link>
+                            :
+                            <Link href={`/login?redirect_url=${data.seo_dt.seo_url}/book-appointment`} className="flex-1 bg-gradient-to-r from-cyan-500 to-cyan-600 hover:from-cyan-600 hover:to-cyan-700 text-white font-bold py-3 px-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-2">
+                                <BiUser className="text-xl" />
+                                <span>Login & Book</span>
+                            </Link>
+                        }
+                        <Link href={pageUrl + "/help-center"} className="w-14 h-12 bg-white border-2 border-gray-300 hover:border-cyan-500 rounded-xl flex items-center justify-center transition-all duration-300 shadow-md hover:shadow-lg">
+                            <BiSupport className="text-2xl text-red-400" />
+                        </Link>
+                    </div>
+                    {/* <BookAppointment emergencyBookingClose={data.settings.emergency_booking_close} bookingCloseMessage={data.settings.booking_close_message} open={searchParams.book_appointment === '1' ? true : false} clinic_id={data.clinic_id} service_loc_id={data.id} doctor_id={data.doctor_id} service_charge={parseInt(data.service_charge)} site_service_charge={parseInt(data.site_service_charge)} settings={data.settings} availability={availableData} slno_groups={data.slno_groups || []} pageUrl={pageUrl} /> */}
+                </div>
             </div>
-        </div>}
+        </>}
         {data.settings.book_by === "call" &&
-            <div className="bg-white sticky bottom-0 w-full px-2 py-1" style={{ bottom: 0 }}
+            <div className="bg-gradient-to-t from-white via-white to-transparent sticky bottom-0 w-full px-3 py-3 shadow-[0_-4px_20px_rgba(0,0,0,0.1)] border-t border-gray-200 flex gap-2" style={{ bottom: 0 }}
             >
-                <a href={`tel:${data.clinic_mobile}`} className="button w-full h-14 fs-16 flex flex-col">
-                    <span className="flex items-center">
-                        <BsTelephone className="" style={{ fontSize: '1rem' }} />
-                        Call Now
-                    </span>
-                    <span className="text-sm">For Appointment</span>
+                <a href={`tel:${data.clinic_mobile}`} className="flex-1 bg-gradient-to-r from-cyan-500 to-cyan-600 hover:from-teal-600 hover:to-teal-700 text-white font-bold py-3 px-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-2">
+                    <BsTelephone className="text-xl" />
+                    <span>CALL NOW</span>
                 </a>
+                <Link href={pageUrl + "/help-center"} className="w-14 h-12 bg-white border-2 border-gray-300 hover:border-green-500 rounded-xl flex items-center justify-center transition-all duration-300 shadow-md hover:shadow-lg">
+                    <BiSupport className="text-2xl text-gray-700" />
+                </Link>
             </div>
         }
         <AppointmentReminder position="reminder-section" doctor_id={data.doctor_id} />

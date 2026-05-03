@@ -140,6 +140,7 @@ export type TDoctorDetail = TWeeklyConsultingTiming & {
         review_date: string,
         experience: string,
         user_name: string,
+        patient_name: string,
         review_tags: Array<{ tag: string }>,
     }>,
     offers?: Array<any>,
@@ -153,6 +154,7 @@ export type TDoctorDetail = TWeeklyConsultingTiming & {
     },
     settings: {
         payment_type: string,
+        token_amount: number,
         advance_booking_enable: number,
         emergency_booking_close: number,
         booking_close_message: string,

@@ -8,7 +8,7 @@ import { httpPost } from '../../services/http-client';
 import { userinfo, userSecreateKey } from '../../../constants/storage_keys';
 import useCookies from '../useCookies';
 import { initUserDetail } from '@/lib/slices/authSlice';
-const useLogin = ({ redirectUrl = "", allowLoggedInUser = false, onLoginSuccess }: { allowLoggedInUser?: boolean, redirectUrl?: string, onLoginSuccess?: () => void }) => {
+const useLogin = ({ redirectUrl = "", allowLoggedInUser = false, onLoginSuccess, tplogin }: { allowLoggedInUser?: boolean, redirectUrl?: string, onLoginSuccess?: () => void, tplogin?: boolean }) => {
     const router = useRouter()
     const { setCookie, deleteCookie } = useCookies();
     const dispatch = useDispatch();
@@ -18,6 +18,7 @@ const useLogin = ({ redirectUrl = "", allowLoggedInUser = false, onLoginSuccess 
     const [userInfo, setUserInfo] = useState<{ first_name: string, last_name: string, gender: string, age: number | "", state: string, city: string }>({ first_name: "", last_name: "", gender: "", age: "", state: "", city: "" });
     const [mobileExit, setMobileExist] = useState(false);
     const [loader, setLoader] = useState(false);
+    const [urlToRedirect,setUrlToRedirect] = useState("");
     const editMobileClick = () => {
         setStep(1);
     }
@@ -54,6 +55,14 @@ const useLogin = ({ redirectUrl = "", allowLoggedInUser = false, onLoginSuccess 
             if (onLoginSuccess) {
                 dispatch(initUserDetail({ is_loggedin: true, user_info: data }));
                 onLoginSuccess();
+                return;
+            }
+            if(urlToRedirect && tplogin){
+                window.location.href = urlToRedirect+"?user_key="+(<any>data).secreate_key;
+                return;
+            }
+             if (urlToRedirect) {
+                window.location.href = "https://careipro.com"+urlToRedirect;
                 return;
             }
             if (!onLoginSuccess && !redirectUrl) {
@@ -102,6 +111,14 @@ const useLogin = ({ redirectUrl = "", allowLoggedInUser = false, onLoginSuccess 
                 onLoginSuccess();
                 return;
             }
+            if(urlToRedirect && tplogin){
+                window.location.href = urlToRedirect+"?user_key="+(<any>data).secreate_key;
+                return;
+            }
+            if(urlToRedirect){
+                window.location.href = "https://careipro.com"+urlToRedirect;
+                return;
+            }
             if (redirectUrl) {
                 router.push(redirectUrl);
             } else {
@@ -120,6 +137,11 @@ const useLogin = ({ redirectUrl = "", allowLoggedInUser = false, onLoginSuccess 
         router.refresh();
     }
     useEffect(() => {
+        const urlsearch = new URLSearchParams(window.location.search);
+        const redirect_url = urlsearch.get("redirect_url");
+        if(redirect_url){
+            setUrlToRedirect(redirect_url);
+        }
         if (allowLoggedInUser === true) {
             return;
         }

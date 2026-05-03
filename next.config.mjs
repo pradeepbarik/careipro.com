@@ -6,7 +6,6 @@ const nextConfig = {
             {
                 protocol: 'http',
                 hostname: 'localhost',
-                port: "8080",
             },
             {
                 protocol: 'http',
@@ -178,6 +177,10 @@ const nextConfig = {
             {
                 source: '/:state/:city/:business_type(doctor|physiotherapy|petcare)/:seo_url([a-zA-Z0-9-]+)-:service_loc_id([a-zA-Z0-9]+)/help-center',
                 destination: '/doctor-help-center'
+            },
+            {
+                source: '/:state/:city/:business_type(doctor|physiotherapy|petcare)/:seo_url([a-zA-Z0-9-]+)-:service_loc_id([a-zA-Z0-9]+)/book-appointment',
+                destination: '/doctors/book-appointment'
             },
             {
                 source: '/:state/:city/:business_type(doctor|physiotherapy|petcare)/:seo_url([a-zA-Z0-9-]+)-:service_loc_id([a-zA-Z0-9]+)/:sub_page',
