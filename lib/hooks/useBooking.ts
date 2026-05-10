@@ -53,7 +53,7 @@ const useBooking = ({ service_loc_id, doctor_id, clinic_id, open, settings, avai
     }
     const createPaymentOrder = async (payload: any) => {
         const cashfreeInstance = load({
-            mode: 'production', // use 'sandbox' or 'production'
+            mode: process.env.NODE_ENV === "development" ? 'sandbox' : 'production', // use 'sandbox' or 'production'
         });
         setLoading(true);
         try {
@@ -77,10 +77,11 @@ const useBooking = ({ service_loc_id, doctor_id, clinic_id, open, settings, avai
                 })
             })
         } catch (err: any) {
+            toast.error(err.message);
             setLoading(false);
         }
     }
-    const bookAppointment = () => {
+    const bookAppointment = async () => {
         if (loading) {
             return; // Prevent multiple submissions
         }
@@ -140,7 +141,16 @@ const useBooking = ({ service_loc_id, doctor_id, clinic_id, open, settings, avai
             ...extraParams
         };
         if (settings.payment_type === "partial_payment_while_booking" && settings.token_amount && settings.token_amount > 0) {
-            createPaymentOrder(bookingPayload);
+            try{
+              const {data,code,message} = await httpPost("/book-appointment", {...bookingPayload,check_booking_eligible:true}, { passSecreateKey: true });
+              if(code ==200){
+                createPaymentOrder(bookingPayload);
+              }else{
+                throw new Error(message || "Booking not eligible for payment");
+              }
+            }catch(err){
+                toast.error((err as any).message || "Booking not eligible for payment");
+            }
             return;
         }
         setLoading(true);
