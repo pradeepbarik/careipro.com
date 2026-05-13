@@ -11,7 +11,7 @@ export const BackButton = () => {
         }} />
     )
 }
-const Header = ({ template = "HOMEPAGE", heading = "",headingElement="h1", state, city, rightContainer }: { template?: "HOMEPAGE" | "SUBPAGE", heading?: string,headingElement?: "h1" | "h2", state?: string, city?: string, rightContainer?: ReactNode }) => {
+const Header = ({ template = "HOMEPAGE", heading = "",headingElement="h1", state, city, rightContainer }: { template?: "HOMEPAGE" | "SUBPAGE", heading?: string,headingElement?: "h1" | "h2"|"div", state?: string, city?: string, rightContainer?: ReactNode }) => {
     if (template === "SUBPAGE") {
         return (
             <div style={{ height: "3.5rem" }}>
@@ -21,7 +21,9 @@ const Header = ({ template = "HOMEPAGE", heading = "",headingElement="h1", state
                     }} />
                     {headingElement==="h2" ? <h2 className='fs-17 font-semibold one-line'>
                         {heading}
-                    </h2> :
+                    </h2> :headingElement==="div"? <div className='fs-17 font-semibold one-line'>
+                        {heading}
+                    </div> :
                     <h1 className='fs-17 font-semibold one-line'>
                         {heading}
                     </h1>}
