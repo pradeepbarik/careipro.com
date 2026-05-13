@@ -12,7 +12,7 @@ import BreadCrumbs from '@/app/components/mobile/breadcrumb';
 const DoctorListMobile = async ({ params, data }: { params: any, data: TfetchDoctorsResponse }) => {
     return (
         <>
-            <Header template="SUBPAGE" headingElement='h2' heading={data.specialist_name} />
+            <Header template="SUBPAGE" headingElement='div' heading={data.specialist_name} />
             <PageHeading heading={data.seo_dt.h1} />
             {data.doctors.length === 0 ?
                 <>
