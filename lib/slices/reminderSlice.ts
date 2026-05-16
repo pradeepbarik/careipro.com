@@ -9,7 +9,9 @@ export type TAppointment={
     doctor_id:number,
     clinic_id:number,
     patient_name: string,
-    today_booking_id: string
+    today_booking_id: string,
+    status:string,
+    patient_support_contact_no:string
 }
 type TinitialState = {
     appointmentsFetched: boolean,

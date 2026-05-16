@@ -5,6 +5,7 @@ import moment, { get_current_datetime } from "@/lib/helper/date-time";
 import { doctorSpecialityIcon } from "@/lib/image";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import { support_no } from "@/constants/site-config";
 const WeeklyConsultingTiming = dynamic(() => import("@/app/components/mobile/doctors/doctor-detail/weekly-consulting-timing"));
 const NextConsultTime = dynamic(() => import('@/app/components/mobile/doctors/doctor-detail/next-consult-time'));
 
@@ -195,6 +196,9 @@ const OverView = ({ data, availableData }: { data: TDoctorDetail, availableData:
                     </div>
                 </div>
             </> : <></>}
+            <a className="flex items-center justify-center bg-white px-2" target="_blank" href={`https://wa.me/${support_no}?text=Hi, I need one assistant to help me for ${data.doctor_name}`}>
+                <img src="/patient-assistant.png" alt="Patient Assistant" className="h-40 w-full rounded-md" />
+            </a>
             {data.faqs && data.faqs.mainEntity && data.faqs.mainEntity.length > 0 ? <>
                 <div className="px-3 mt-6 mb-4">
                     <h2 className='font-bold text-lg text-gray-800 mb-4 flex items-center gap-2'>
