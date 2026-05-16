@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from 'next/navigation'
 import { Button, PriceFormat } from "../../ui"
 import { useSelector } from "react-redux";
@@ -34,6 +34,7 @@ const BookAppointmentForm = ({ open, service_charge, site_service_charge, servic
     const router = useRouter();
     const autoSuggestRef = useRef<HTMLInputElement>(null);
     const addressFieldRef = useRef<HTMLDivElement>(null);
+    const [remainingSeconds, setRemainingSeconds] = useState<number>(0);
 
     const copyToClipboard = (text: string) => {
         navigator.clipboard.writeText(text).then(() => {
@@ -55,63 +56,88 @@ const BookAppointmentForm = ({ open, service_charge, site_service_charge, servic
             user_info: state.authSlice.user_info
         }
     })
-    const { showSuggestions, setShowSuggestion, onSelectSuggestedPatient, patients, patientInfo, setPatientInfo, booingDetail, bookAppointment, consultDates, consultDate, setConsultDate, group_name, setGroupName, patientExtraInfo, setPatientExtraInfo, rebokeAppointment, loading, refundAlert, paymentFailed, retryPayment, txnDetail } = useBooking({ service_loc_id, doctor_id, clinic_id: clinic_id, open: open, settings: settings, availability: availability, pageUrl: pageUrl });
+    const { showSuggestions, setShowSuggestion, onSelectSuggestedPatient, patients, patientInfo, setPatientInfo, booingDetail, bookAppointment, createBookingRequest, consultDates, consultDate, setConsultDate, group_name, setGroupName, patientExtraInfo, setPatientExtraInfo, rebokeAppointment, loading, refundAlert, paymentFailed, retryPayment, txnDetail } = useBooking({ service_loc_id, doctor_id, clinic_id: clinic_id, open: open, settings: settings, availability: availability, pageUrl: pageUrl });
+    const expectedWaitingMinutes = useMemo(() => {
+        if(!booingDetail || booingDetail.booking_status !== 'waiting') {
+            return 0;
+        }
+        const waitingTime = booingDetail?.expeted_waiting_time;
+        if (!waitingTime) return 0;
+        const parsed = Number(waitingTime);
+        return Number.isFinite(parsed) && parsed > 0 ? Math.floor(parsed) : 0;
+    }, [booingDetail]);
 
-    if (emergencyBookingClose) {
+    useEffect(() => {
+        if (!booingDetail || booingDetail.booking_status !== 'waiting' || expectedWaitingMinutes <= 0) {
+            setRemainingSeconds(0);
+            return;
+        }
+
+        const parsedBookingTime = booingDetail.booking_date ? new Date(booingDetail.booking_date).getTime() : Date.now();
+        const bookingTime = Number.isFinite(parsedBookingTime) ? parsedBookingTime : Date.now();
+        const endTime = bookingTime + (expectedWaitingMinutes * 60 * 1000);
+
+        const updateRemaining = () => {
+            const rawDiff = Math.floor((endTime - Date.now()) / 1000);
+            const diff = Number.isFinite(rawDiff) ? Math.max(0, rawDiff) : 0;
+            setRemainingSeconds(diff);
+        };
+
+        updateRemaining();
+        const timer = setInterval(updateRemaining, 1000);
+        return () => clearInterval(timer);
+    }, [booingDetail, expectedWaitingMinutes]);
+
+    const waitingTimeLabel = useMemo(() => {
+        const safeRemainingSeconds = Number.isFinite(remainingSeconds) ? Math.max(0, remainingSeconds) : 0;
+        const minutes = Math.floor(safeRemainingSeconds / 60);
+        const seconds = safeRemainingSeconds % 60;
+        return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    }, [remainingSeconds]);
+
+    if (booingDetail && booingDetail.booking_status === 'waiting') {
         return (
             <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
                 <div className="bg-white rounded-2xl max-w-md w-full p-6 relative">
-                    {/* Close Icon */}
                     <button
-                        onClick={() => { router.back() }}
+                        onClick={() => { router.push(pageUrl.replace('/book-appointment', '')) }}
                         className="absolute top-4 right-4 w-8 h-8 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center transition-colors"
                     >
                         <BiX className="text-2xl text-gray-700" />
                     </button>
 
-                    {/* Alert Header */}
                     <div className="text-center mb-4">
-                        <div className="w-20 h-20 mx-auto mb-4 bg-red-100 rounded-full flex items-center justify-center">
-                            <svg className="w-12 h-12 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                        <div className="w-20 h-20 mx-auto mb-4 bg-amber-100 rounded-full flex items-center justify-center">
+                            <svg className="w-12 h-12 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
                         </div>
-                        <h2 className="text-xl font-bold text-gray-800 mb-2">Booking Temporarily Closed</h2>
+                        <h2 className="text-xl font-bold text-gray-800 mb-2">Booking Request Sent</h2>
+                        <p className="text-gray-600 text-sm">You will be notified once the clinic approves your booking.</p>
                     </div>
 
-                    {/* Message */}
-                    <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-4">
-                        <div className="flex items-center gap-3">
-                            <div className="w-6 h-6 bg-red-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                                <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg>
+                    <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-4">
+                        <p className="text-sm text-amber-800 mb-2">Status: <span className="font-semibold">Waiting for clinic approval</span></p>
+                        {booingDetail?.expeted_waiting_time && (
+                            <p className="text-xs text-amber-700 mb-3">Expected waiting time: <b>{expectedWaitingMinutes} Min.</b></p>
+                        )}
+                        {expectedWaitingMinutes > 0 && (
+                            <div className="flex items-center justify-between bg-white border border-amber-300 rounded-md px-3 py-2">
+                                <span className="text-xs text-gray-600">Estimated time left</span>
+                                <span className="text-lg font-bold text-amber-700">{waitingTimeLabel}</span>
                             </div>
-                            <div className="flex-1 items-center">
-                                <p className="text-red-800 text-sm leading-relaxed">
-                                    {bookingCloseMessage || "Online booking is temporarily closed due to emergency. Please contact the clinic directly for appointments."}
-                                </p>
-                            </div>
-                        </div>
+                        )}
                     </div>
 
-                    {/* Contact Information */}
-                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 mb-4">
-                        <p className="text-xs text-blue-800">
-                            <span className="font-semibold">Need immediate assistance?</span> Please call the clinic directly or visit the help center for support.
-                        </p>
-                    </div>
-
-                    {/* Action Buttons */}
                     <div className="space-y-2">
-                        <Link
-                            href={pageUrl.replace("/book-appointment", "/help-center")}
-                            className="w-full py-3 bg-primary text-white rounded-lg font-semibold hover:bg-primary/90 transition-colors flex items-center justify-center"
-                        >
-                            Contact Help Center
-                        </Link>
                         <button
-                            onClick={() => { router.back() }}
+                            onClick={() => { router.refresh() }}
+                            className="w-full py-3 bg-primary text-white rounded-lg font-semibold hover:bg-primary/90 transition-colors"
+                        >
+                            Refresh Status
+                        </button>
+                        <button
+                            onClick={() => { router.push(pageUrl.replace('/book-appointment', '')) }}
                             className="w-full py-3 bg-gray-100 text-gray-700 rounded-lg font-semibold hover:bg-gray-200 transition-colors"
                         >
                             Go Back
@@ -119,9 +145,8 @@ const BookAppointmentForm = ({ open, service_charge, site_service_charge, servic
                     </div>
                 </div>
             </div>
-        );
+        )
     }
-
     if (booingDetail) {
         // on booking success show booking details and option to share booking details
         return (
@@ -492,7 +517,7 @@ const BookAppointmentForm = ({ open, service_charge, site_service_charge, servic
                         Login with Different Account
                     </button>
                 </div>
-            ):(<></>)}
+            ) : (<></>)}
             <div className='p-2'>
                 {settings.advance_booking_enable ? <>
                     <div className="flex justify-around px-2 gap-2 rounded-md py-1 font-semibold mb-2" style={{ background: "#48c9af57" }}>
@@ -622,9 +647,75 @@ const BookAppointmentForm = ({ open, service_charge, site_service_charge, servic
                             </p>
                         </div>
                     )}
-                    <Button className='flex-1 bg-gradient-to-r from-cyan-500 to-cyan-600 hover:from-teal-600 hover:to-teal-700 text-white font-bold py-3 px-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center w-full my-2' onClick={bookAppointment}>Book Appointment</Button>
+                    {settings.book_by === "app" ?
+                        <Button className='flex-1 bg-gradient-to-r from-cyan-500 to-cyan-600 hover:from-teal-600 hover:to-teal-700 text-white font-bold py-3 px-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center w-full my-2' onClick={bookAppointment}>Book Appointment</Button>
+                        :
+                        <Button className='flex-1 bg-gradient-to-r from-cyan-500 to-cyan-600 hover:from-teal-600 hover:to-teal-700 text-white font-bold py-3 px-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center w-full my-2' onClick={createBookingRequest}>Request For Appointment</Button>
+                    }
                 </div>
             </div>
+            {emergencyBookingClose ?
+                <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+                    <div className="bg-white rounded-2xl max-w-md w-full p-6 relative">
+                        {/* Close Icon */}
+                        <button
+                            onClick={() => { router.back() }}
+                            className="absolute top-4 right-4 w-8 h-8 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center transition-colors"
+                        >
+                            <BiX className="text-2xl text-gray-700" />
+                        </button>
+
+                        {/* Alert Header */}
+                        <div className="text-center mb-4">
+                            <div className="w-20 h-20 mx-auto mb-4 bg-red-100 rounded-full flex items-center justify-center">
+                                <svg className="w-12 h-12 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                                </svg>
+                            </div>
+                            <h2 className="text-xl font-bold text-gray-800 mb-2">Booking Temporarily Closed</h2>
+                        </div>
+
+                        {/* Message */}
+                        <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-4">
+                            <div className="flex items-center gap-3">
+                                <div className="w-6 h-6 bg-red-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                                    <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                </div>
+                                <div className="flex-1 items-center">
+                                    <p className="text-red-800 text-sm leading-relaxed">
+                                        {bookingCloseMessage || "Online booking is temporarily closed due to emergency. Please contact the clinic directly for appointments."}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Contact Information */}
+                        <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 mb-4">
+                            <p className="text-xs text-blue-800">
+                                <span className="font-semibold">Need immediate assistance?</span> Please call the clinic directly or visit the help center for support.
+                            </p>
+                        </div>
+
+                        {/* Action Buttons */}
+                        <div className="space-y-2">
+                            <Link
+                                href={pageUrl.replace("/book-appointment", "/help-center")}
+                                className="w-full py-3 bg-primary text-white rounded-lg font-semibold hover:bg-primary/90 transition-colors flex items-center justify-center"
+                            >
+                                Contact Help Center
+                            </Link>
+                            <button
+                                onClick={() => { router.back() }}
+                                className="w-full py-3 bg-gray-100 text-gray-700 rounded-lg font-semibold hover:bg-gray-200 transition-colors"
+                            >
+                                Go Back
+                            </button>
+                        </div>
+                    </div>
+                </div> : null
+            }
             {loading && <Loader fullScreen={true} />}
         </>
     )

@@ -15,6 +15,8 @@ type TBookingSuccessResponse = {
     booking_id: number,
     consult_date: string,
     today_booking_id: string
+    booking_status?:string,
+    expeted_waiting_time?:string | number
 }
 type TdoctorConsultDate = {
     date: string,
@@ -125,6 +127,7 @@ const useBooking = ({ service_loc_id, doctor_id, clinic_id, open, settings, avai
         const bookingPayload = {
             book_by: settings.book_by || "",
             userid: user_info.id,
+            user_type: user_info.user_type,
             servicelocation_id: service_loc_id,
             doctor_id: doctor_id,
             clinic_id: clinic_id,
@@ -162,6 +165,48 @@ const useBooking = ({ service_loc_id, doctor_id, clinic_id, open, settings, avai
         }).catch((err: any) => {
             toast.error(err.message)
             setLoading(false);
+        });
+    }
+    const createBookingRequest=()=>{
+        if(!patientInfo.patient_name){
+            toast.error("Please enter patient name")
+            return;
+        }
+        if(!patientInfo.patient_mobile){
+            toast.error("Please enter patient contact number")
+            return;
+        }
+        if(patientInfo.patient_mobile && patientInfo.patient_mobile.length!=10){
+            toast.error("Please enter a valid 10-digit mobile number")
+            return;
+        }
+        if(!patientInfo.patient_address){
+            toast.error("Please enter patient address")
+            return;
+        }
+        const bookingPayload = {
+            book_by: settings.book_by || "",
+            userid: user_info?.id,
+            user_type: user_info?.user_type,
+            servicelocation_id: service_loc_id,
+            doctor_id: doctor_id,
+            clinic_id: clinic_id,
+            patient_name: patientInfo.patient_name,
+            patient_mobile: patientInfo.patient_mobile,
+            patient_email: "",
+            patient_address: patientInfo.patient_address,
+            patient_age: patientInfo.patient_age,
+            consult_date: consultDate?.date,
+            device:"mobile_web",
+            merchant:"careipro",
+        }
+        httpPost<TBookingSuccessResponse>("/book-appointment-request", bookingPayload, { passSecreateKey: true }).then((data) => {
+            toast.success(data.message);
+            setBookingDetail(data.data);
+            setPatientInfo(patientInfoInitState);
+            setShowModal(false);
+        }).catch((err: any) => {
+            toast.error(err.message)
         });
     }
     const rebokeAppointment = () => {
@@ -285,7 +330,8 @@ const useBooking = ({ service_loc_id, doctor_id, clinic_id, open, settings, avai
     return {
         showModal, setShowModal, showSuggestions, setShowSuggestion, onSelectSuggestedPatient, patients,
         patientInfo, setPatientInfo, booingDetail,
-        bookAppointment, onOk, rebokeAppointment, consultDates, consultDate, setConsultDate, group_name, setGroupName, patientExtraInfo, setPatientExtraInfo, loading, refundAlert, paymentFailed, retryPayment,txnDetail
+        bookAppointment, onOk, rebokeAppointment, consultDates, consultDate, setConsultDate, group_name, setGroupName, patientExtraInfo, setPatientExtraInfo, loading, refundAlert, paymentFailed, retryPayment,txnDetail,
+        createBookingRequest
     }
 }
 export default useBooking
