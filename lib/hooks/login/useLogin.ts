@@ -15,7 +15,7 @@ const useLogin = ({ redirectUrl = "", allowLoggedInUser = false, onLoginSuccess,
     const [step, setStep] = useState(1);
     const [mobile, setMobile] = useState('');
     const [otp, setOtp] = useState('');
-    const [userInfo, setUserInfo] = useState<{ first_name: string, last_name: string, gender: string, age: number | "", state: string, city: string }>({ first_name: "", last_name: "", gender: "", age: "", state: "", city: "" });
+    const [userInfo, setUserInfo] = useState<{ first_name: string, last_name: string, gender: string, age: string | "", state: string, city: string }>({ first_name: "", last_name: "", gender: "", age: "", state: "", city: "" });
     const [mobileExit, setMobileExist] = useState(false);
     const [loader, setLoader] = useState(false);
     const [urlToRedirect,setUrlToRedirect] = useState("");

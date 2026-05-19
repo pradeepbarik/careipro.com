@@ -2,7 +2,7 @@ import { SectionHeading, SectionSubHeading } from "@/app/components/mobile/ui"
 import { TDoctorDetail, TDoctorvailableData } from '@/lib/types/doctor';
 import { BiChevronRight, BiSolidStar, BiTimeFive, BiUser } from "react-icons/bi";
 import moment, { get_current_datetime } from "@/lib/helper/date-time";
-import { doctorSpecialityIcon } from "@/lib/image";
+import { doctorSpecialityIcon, getMarketingBanner } from "@/lib/image";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { support_no } from "@/constants/site-config";
@@ -151,6 +151,9 @@ const OverView = ({ data, availableData }: { data: TDoctorDetail, availableData:
                     <div dangerouslySetInnerHTML={{ __html: data.description }} className="px-2 py-2 bg-white shadow-sm mb-2" ></div>
                 </> : <></>
             }
+            <a target="_blank" href={`https://wa.me/${support_no}?text=Hi, i need some medicines to be home delivered from ${data.doctor_name}'s clinic`}>
+              <img src={getMarketingBanner("medicine-delivery.png")} alt="Medicine home deliver from local pharmacy" />
+            </a>
             {(data.settings.show_patients_feedback) && data.topReviews && data.topReviews?.length > 0 ? <>
                 <SectionHeading heading='Rating & Reviews' />
                 <div className="flex gap-3 border rounded-md mx-2">
@@ -197,7 +200,7 @@ const OverView = ({ data, availableData }: { data: TDoctorDetail, availableData:
                 </div>
             </> : <></>}
             <a className="flex items-center justify-center bg-white px-2" target="_blank" href={`https://wa.me/${support_no}?text=Hi, I need one assistant to help me for ${data.doctor_name}`}>
-                <img src="/patient-assistant.png" alt="Patient Assistant" className="h-40 w-full rounded-md" />
+                <img src={getMarketingBanner("patient-assistant.png")} alt="Patient Assistant" className="h-40 w-full rounded-md" />
             </a>
             {data.faqs && data.faqs.mainEntity && data.faqs.mainEntity.length > 0 ? <>
                 <div className="px-3 mt-6 mb-4">
