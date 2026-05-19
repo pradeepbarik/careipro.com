@@ -207,7 +207,7 @@ const BookAppointmentForm = ({ open, service_charge, site_service_charge, servic
                                 <div>
                                     <p className="text-xs text-gray-500">Appointment Consultation Date</p>
                                     <p className="font-semibold text-gray-800">
-                                        {moment(booingDetail.consult_date).format("ddd, DD MMM YYYY")}
+                                        {booingDetail.consult_date}
                                     </p>
                                 </div>
                             </div>
@@ -643,7 +643,7 @@ const BookAppointmentForm = ({ open, service_charge, site_service_charge, servic
                                 </span>
                             </div>
                             <p className='text-xs text-orange-700 mt-2'>
-                                Remaining amount can be paid at the clinic
+                                Remaining amount can be paid at the clinic by cash
                             </p>
                         </div>
                     )}

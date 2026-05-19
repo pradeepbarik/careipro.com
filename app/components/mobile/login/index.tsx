@@ -80,7 +80,7 @@ const Login = ({ redirectUrl = "", onLoginSuccess, allowLoggedInUser, heading, t
                                         <Input type="text" lable="Last Name" value={userInfo.last_name} onChange={(e) => { setUserInfo({ ...userInfo, last_name: e.target.value }) }} />
                                     </div>
                                     <div className="flex gap-2 items-center mt-2">
-                                        <Input type="text" lable="Age" value={userInfo.age} onChange={(e) => { setUserInfo({ ...userInfo, age: parseInt(e.target.value) }) }} />
+                                        <Input type="number" lable="Age" value={userInfo.age} onChange={(e) => { setUserInfo({ ...userInfo, age: e.target.value }) }} />
                                         <RadioButton value={userInfo.gender} label="" name="gnder" data={[{ label: "Male", value: "male" }, { label: "Female", value: "female" }]} onChange={(v) => { setUserInfo({ ...userInfo, gender: v.toString() }) }} className="mt-4" />
                                     </div>
                                     <CitySelection onSelect={(selectedCity) => { setUserInfo({ ...userInfo, state: selectedCity.state, city: selectedCity.name }) }}>

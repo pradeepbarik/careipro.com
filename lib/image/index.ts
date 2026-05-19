@@ -38,3 +38,6 @@ export const clinicBannerImage=(image:string)=>{
 export const popularClinicBanner=(image:string)=>{
     return `${ASSET_URL}/images/popular-clinic-banner/${image}`;
 }
+export const getMarketingBanner=(image:string)=>{
+    return `${ASSET_URL}/images/marketing_banner/${image}`;
+}
