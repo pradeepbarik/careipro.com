@@ -28,6 +28,7 @@ export async function generateMetadata({ searchParams }: { searchParams: { city:
     }
 }
 const CareTaker = async ({ searchParams }: TProps) => {
+    console.log("searchParams", searchParams);
     const { device } = useDeviceInfo();
     const [pageData, categories] = await Promise.all([
         fetCaretakersHomePageData(searchParams.state.toLocaleLowerCase(), searchParams.city.toLocaleLowerCase()),
@@ -36,7 +37,7 @@ const CareTaker = async ({ searchParams }: TProps) => {
     if (device.type === "mobile") {
         return (
             <>
-                <CaretakersMobile state={searchParams.state} city={searchParams.city} market_name={searchParams.market_name} pageData={pageData} categories={categories} />
+                <CaretakersMobile searchParams={searchParams} state={searchParams.state} city={searchParams.city} market_name={searchParams.market_name} pageData={pageData} categories={categories} />
                 <PageVisitLogger data={{
                     page_name: "caretaker_home",
                     state: searchParams.state,

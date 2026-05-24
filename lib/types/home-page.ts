@@ -34,6 +34,7 @@ export type TSpecility = {
     id: number, name: string, icon: string, short_description: string, seo_url: string
 }
 export type TSectionBanner = {
+    image?: string,
     img_url: string,
     alt_text: string,
     redirection_url: string,
