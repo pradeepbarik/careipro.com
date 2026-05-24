@@ -3,8 +3,9 @@ import { fetchJson, IResponse } from '@/lib/services/http-server';
 import { TDoctor, TDoctorDetail, TDoctorvailableData } from '../types/doctor';
 import { TSeodt } from '../types';
 import { get_current_datetime } from '@/lib/helper/date-time';
-import { TSectionBanner } from '../types/home-page';
+import { TSectionBanner, TSiteBanner } from '../types/home-page';
 export type TDoctorsPageData = {
+    site_banners?: TSiteBanner[],
     specialists: Array<{
         id: number,
         name: string,

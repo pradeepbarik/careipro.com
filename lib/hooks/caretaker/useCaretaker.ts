@@ -76,7 +76,7 @@ export type TCaretakersHomePageData = {
         heading: string,
         viewType: "n:1" | "1:n" | "send_enquiry",
         enable: boolean,
-        section_type: "doctors" | "clinics" | "popular_specialist" | "site_banner" | "patient_care",
+        section_type: "doctors" | "clinics" | "popular_specialist" | "site_banner"|"banners" | "patient_care"|"patient_caretaker_hourly_services"|"house_help"|"cooking_help"|"baby_caretakers"|"senior_citizen_caretakers"|"massage_services_senior_citizens",
         listing_count: number,
         cat_id: Array<number>,
         doctor_ids: Array<number>,
@@ -84,7 +84,8 @@ export type TCaretakersHomePageData = {
         doctors: Array<TCaretaker>,
         clinics: Array<TCareTakerClinic>,
         banners?: Array<TSiteBanner> | Array<TSectionBanner>,
-    }>
+    }>,
+    site_banners: Array<TSiteBanner>
 }
 export const fetCaretakersHomePageData = async (state: string, city: string) => {
     try {

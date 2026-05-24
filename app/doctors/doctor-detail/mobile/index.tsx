@@ -102,7 +102,7 @@ const DoctorDetailMobile = async ({ data, availableData, searchParams, cookies }
             {data.clinic_id > 0 &&
                 <div className="bg-gray-100 rounded-md px-2 border flex gap-1 items-center py-2 mt-2">
                     <img src={clinicProfilePic(data.clinic_logo || "")} alt={`${data.clinic_name} Logo`} className="h-6 w-6 rounded-md shrink-0" />
-                    <h2 className="ml-2 font-semibold fs-16">{data.clinic_name}</h2>
+                    <Link href={data.clinic_dtlpg_url || ''} className="ml-2 font-semibold fs-16">{data.clinic_name}</Link>
                     {data.other_doc_cnt && data.other_doc_cnt > 0 ? <>
                         <Link href={data.clinic_dtlpg_url || ''} className="ml-auto flex items-center gap-1 text-xs color-primary font-semibold text-nowrap">
                             <span>+{data.other_doc_cnt} {data.other_doc_cnt > 1 ? 'Doctors' : 'Doctor'}</span>
@@ -111,10 +111,10 @@ const DoctorDetailMobile = async ({ data, availableData, searchParams, cookies }
                     </> : <></>}
                 </div>}
             <div className="bg-gray-100 rounded-md px-2 border flex gap-2 items-center py-2 mt-1">
-                <BiLocationPlus className="text-orange-600" style={{ fontSize: '1.2rem' }} />
-                <h2 className="font-semibold">Location</h2>
-                <a target="_blank" href={`https://www.google.com/maps/dir/?api=1&destination=${data.location_lat},${data.location_lng}`} className="ml-auto text-right flex">
-                    {data.clinic_locality} in {data.clinic_market}, {data.clinic_city}
+                <BiLocationPlus className="text-orange-600 shrink-0" style={{ fontSize: '1.2rem' }} />
+                <h2 className="font-semibold shrink-0">Location</h2>
+                <a target="_blank" href={`https://www.google.com/maps/dir/?api=1&destination=${data.location_lat},${data.location_lng}`} className="ml-auto text-right flex items-center">
+                    {data.clinic_location},{data.clinic_locality}, {data.clinic_market}
                     <BiChevronRight className="text-xl" />
                 </a>
             </div>
