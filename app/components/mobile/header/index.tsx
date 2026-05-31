@@ -5,6 +5,7 @@ import { BiSupport, BiSolidChevronLeft, BiUser, BiSearch } from "react-icons/bi"
 import { HiLocationMarker } from "react-icons/hi";
 import classes from "./header.module.scss";
 import { ReactNode, useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { capitalizeEachWordFirstLetter } from '@/lib/helper/format-text';
 export const BackButton = () => {
     return (
@@ -13,8 +14,9 @@ export const BackButton = () => {
         }} />
     )
 }
-const Header = ({ template = "HOMEPAGE", heading = "",headingElement="h1", state, city, rightContainer }: { template?: "HOMEPAGE" | "SUBPAGE"|"VERTICAL_LANDING", heading?: string,headingElement?: "h1" | "h2"|"div", state?: string, city?: string, rightContainer?: ReactNode }) => {
+const Header = ({ template = "HOMEPAGE", heading = "",headingElement="h1", state, city, rightContainer, showSearch = false }: { template?: "HOMEPAGE" | "SUBPAGE"|"VERTICAL_LANDING", heading?: string,headingElement?: "h1" | "h2"|"div", state?: string, city?: string, rightContainer?: ReactNode, showSearch?: boolean }) => {
     const [isScrolled, setIsScrolled] = useState(false);
+    const router = useRouter();
 
     const handleBack = () => {
         if (window.history.length > 1) {
@@ -52,6 +54,18 @@ const Header = ({ template = "HOMEPAGE", heading = "",headingElement="h1", state
                     <h1 className='fs-17 font-semibold one-line'>
                         {heading}
                     </h1>}
+                    {showSearch && (
+                        <div
+                            onClick={() => {router.push(state && city ? `/${state}/${city}/search` : '/search')}}
+                            className="ml-auto flex items-center gap-1.5 bg-slate-100 border border-slate-300 rounded-full px-3 py-1.5 cursor-pointer shrink-0"
+                            aria-label="Search"
+                        >
+                            <BiSearch className="text-slate-500 text-base shrink-0" />
+                            <span className="text-xs font-medium text-slate-500 whitespace-nowrap">
+                                Search…
+                            </span>
+                        </div>
+                    )}
                     {rightContainer ? rightContainer : <></>}
                 </div>
             </div>
@@ -81,9 +95,18 @@ const Header = ({ template = "HOMEPAGE", heading = "",headingElement="h1", state
                             </span>
                         </div>
                     </div>
-                    <button className={`p-2 rounded-full ${isScrolled ? 'bg-gray-200' : 'bg-white/20'} transition-all duration-300`}>
-                        <BiSearch className={`text-xl ${isScrolled ? 'text-gray-800' : 'text-white'} transition-colors duration-300`} />
-                    </button>
+                    {showSearch && (
+                        <div
+                            onClick={() => router.push(state && city ? `/${state}/${city}/search` : '/search')}
+                            className={`flex items-center gap-1.5 rounded-full px-3 py-1.5 cursor-pointer shrink-0 transition-all duration-300 ${isScrolled ? 'bg-slate-100 border border-slate-300' : 'bg-white/20 border border-white/30'}`}
+                            aria-label="Search"
+                        >
+                            <BiSearch className={`text-base shrink-0 transition-colors duration-300 ${isScrolled ? 'text-slate-500' : 'text-white'}`} />
+                            <span className={`text-xs font-medium whitespace-nowrap transition-colors duration-300 ${isScrolled ? 'text-slate-500' : 'text-white'}`}>
+                                Search…
+                            </span>
+                        </div>
+                    )}
                 </div>
             </div>
         )

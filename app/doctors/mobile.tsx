@@ -18,7 +18,7 @@ import VerticalLandingBanner from '../components/mobile/slideing-banners/veritca
 import { TSiteBanner } from '@/lib/types/home-page';
 const MobileDoctors = async ({ city, state, pageData, categories, diseases }: { city: string, state: string, pageData: TDoctorsPageData, categories: TCategories, diseases: TCategories }) => {
     return <>
-        <Header template="VERTICAL_LANDING" heading={`Dotors In ${city}`} state={state} city={city} />
+        <Header template="VERTICAL_LANDING" heading={`Dotors In ${city}`} state={state} city={city} showSearch={true}/>
         <VerticalLandingBanner position='sticky' className='top-0' autoplay={true} loop={true} showNavigation={false} showPagination={true}
             banners={((pageData.site_banners ? pageData.site_banners : []) as TSiteBanner[]).filter((banner) => banner.device_type === "mobile" || banner.device_type === "all").map(banner => ({
                 image: clinicBannerImage(banner.image),

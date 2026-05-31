@@ -91,6 +91,10 @@ const nextConfig = {
                 destination: '/medicine/store-list'
             },
             {
+                source:'/:state/:city/search',
+                destination: '/search'
+            },
+            {
                 source: '/Caretakers-In-:city-of-:state',
                 destination: '/care-taker'
             },
