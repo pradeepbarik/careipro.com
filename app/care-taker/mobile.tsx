@@ -21,7 +21,7 @@ const CaretakersMobile = async ({ searchParams, state, city, pageData, categorie
     const selectedServiceType = searchParams?.service_type === 'monthly' ? 'monthly' : 'hourly_daily';
     return (
         <>
-            <Header heading="Caretakers" template="VERTICAL_LANDING" city={city} state={state} />
+            <Header heading="Caretakers" template="VERTICAL_LANDING" city={city} state={state} showSearch={true} />
             <VerticalLandingBanner position='sticky' className='top-0' autoplay={true} loop={true} showNavigation={false} showPagination={true}
                 banners={((pageData.site_banners ? pageData.site_banners : []) as TSiteBanner[]).filter((banner) => banner.device_type === "mobile" || banner.device_type === "all").map(banner => ({
                     image: clinicBannerImage(banner.image),
