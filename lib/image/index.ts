@@ -41,3 +41,10 @@ export const popularClinicBanner=(image:string)=>{
 export const getMarketingBanner=(image:string)=>{
     return `${ASSET_URL}/images/marketing_banner/${image}`;
 }
+export const adSrc=(image: string)=>{
+  // if image is a full URL, return as is
+  if (/^https?:\/\//i.test(image)) {
+    return image;
+  }
+  return `${ASSET_URL}/ads/${image}`;
+}
