@@ -9,10 +9,15 @@ import Link from 'next/link';
 import { BiCurrentLocation } from 'react-icons/bi';
 import { SectionHeading } from '@/app/components/mobile/ui';
 import BreadCrumbs from '@/app/components/mobile/breadcrumb';
+import { LandscapeAd, StandardAd, WideAd } from '@/app/components/mobile/ads-container';
 const DoctorListMobile = async ({ params, data }: { params: any, data: TfetchDoctorsResponse }) => {
     return (
         <>
             <Header template="SUBPAGE" headingElement='div' heading={data.specialist_name} showSearch={true} state={params.state} city={params.city} />
+            {/* show ads here */}
+            <div className='px-2'>
+                <WideAd page_type="doctor_list" category_ids={params.cat_id} city={params.city} limit={1} showPlaceholder={false} ad_selection="weighted" />
+            </div>
             <PageHeading heading={data.seo_dt.h1} />
             {data.doctors.length === 0 ?
                 <>
@@ -22,7 +27,7 @@ const DoctorListMobile = async ({ params, data }: { params: any, data: TfetchDoc
                     <p className='text-center mb-4'>No Doctors found</p>
                 </> : <></>
             }
-            <NIsToOneDoctorsSliders data={data.doctors.slice(0, 2)} showAvaileTime={true} />
+            <NIsToOneDoctorsSliders data={data.doctors.slice(0, 3)} showAvaileTime={true} />
             {data.cityMarkets.length > 0 && false ?
                 <div className="px-2">
                     <div className='bg-gray-100'>
@@ -44,7 +49,10 @@ const DoctorListMobile = async ({ params, data }: { params: any, data: TfetchDoc
                     </div>
                 </div> : <></>
             }
-            <NIsToOneDoctorsSliders data={data.doctors.slice(2, 4)} showAvaileTime={true} />
+            <div className='px-2'>
+                <LandscapeAd page_type="doctor_list" category_ids={params.cat_id} city={params.city} limit={1} />
+            </div>
+            <NIsToOneDoctorsSliders data={data.doctors.slice(3, 5)} showAvaileTime={true} />
             {data.neabyCities.length > 0 ? <>
                 <div className="px-2">
                     <div className='bg-gray-100 flex'>
@@ -66,8 +74,8 @@ const DoctorListMobile = async ({ params, data }: { params: any, data: TfetchDoc
                     </div>
                 </div>
             </> : <></>}
-            <NIsToOneDoctorsSliders data={data.doctors.slice(4, data.doctors.length)} showAvaileTime={true} />
-            <LookingFor specialist_id={params.cat_id} campaign={"doctor listing page:"+data.specialist_name} />
+            <NIsToOneDoctorsSliders data={data.doctors.slice(5, data.doctors.length)} showAvaileTime={true} />
+            <LookingFor specialist_id={params.cat_id} campaign={"doctor listing page:" + data.specialist_name} />
             {data.faqs && data.faqs.length > 0 ? <>
                 <div className="px-3 mt-6 mb-4">
                     <h2 className='font-bold text-lg text-gray-800 mb-4 flex items-center gap-2'>

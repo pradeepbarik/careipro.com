@@ -4,20 +4,12 @@ const nextConfig = {
     images: {
         remotePatterns: [
             {
-                protocol: 'http',
-                hostname: 'localhost',
-            },
-            {
-                protocol: 'http',
-                hostname: 'dev.careipro.com',
-            },
-            {
                 protocol: 'https',
-                hostname: 'careipro.com',
+                hostname: '**',
             },
             {
-                protocol: 'https',
-                hostname: 'assets.careipro.com',
+                protocol: 'http',
+                hostname: '**',
             }
         ]
     },
