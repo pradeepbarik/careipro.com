@@ -5,6 +5,7 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { doctorsBySpecialistPageUrl,doctorDetailPageUrl } from "@/lib/helper/link";
 import { TSearchPageData } from "@/lib/hooks/useSearch";
+import { WideAd } from "../components/mobile/ads-container";
 const LOCATION_SUGGESTIONS = [
     "Bhadrak, Odisha",
     "Bhubaneswar, Odisha",
@@ -270,7 +271,9 @@ const SearchBox = ({ state, city, q, data }: { state: string; city: string; q?: 
                     ))}
                 </div>
             </div>
-
+         <div className='px-2'>
+                <WideAd page_type="doctor_list" city={city} limit={1} showPlaceholder={false} ad_selection="random" />
+            </div>
             {/* ── Location Bottom Sheet ─────────────────────────────── */}
             {/* Backdrop */}
             <div
