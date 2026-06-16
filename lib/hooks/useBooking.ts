@@ -69,7 +69,7 @@ const useBooking = ({ service_loc_id, doctor_id, clinic_id, open, settings, avai
                 cf.checkout({
                     paymentSessionId: paymentrderData.payment_session_id,
                     redirectTarget: "_self",
-                    returnUrl: "https://careipro.com/" + pageUrl + "?txnid=" + paymentrderData.txnid,
+                    returnUrl: (process.env.NODE_ENV === "development"?"http://localhost:3000/": "https://careipro.com/") + pageUrl + "?txnid=" + paymentrderData.txnid,
                 }).then((res: any) => {
                     console.log("payment success response", res);
                     setLoading(false);
