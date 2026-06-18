@@ -22,7 +22,6 @@ const LandscapeAd = ({ page_type, category_ids, city, limit = 1, showPlaceholder
         asp_ratio: '16:9', // Landscape aspect ratio
         ad_selection,
     });
-
     // Always render the container div so ref gets attached
     return (
         <div ref={containerRef} className="w-full my-2">
@@ -41,13 +40,11 @@ const LandscapeAd = ({ page_type, category_ids, city, limit = 1, showPlaceholder
                         className="relative w-full max-h-32 bg-gray-100 rounded-lg overflow-hidden cursor-pointer hover:opacity-90 transition-opacity"
                     >
                         {ads[0].media_type === 'image' ? (
-                            <Image
+                            <img
                                 src={adSrc(ads[0].link)}
                                 alt={ads[0].alt || 'Advertisement'}
-                                fill
                                 className="object-cover w-full h-full"
                                 sizes="100vw"
-                                priority
                             />
                         ) : (
                             <video
