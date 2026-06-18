@@ -38,7 +38,7 @@ const LandscapeAd = ({ page_type, category_ids, city, limit = 1, showPlaceholder
                     <div
                         data-ad-id={ads[0]._id}
                         onClick={() => handleAdClick(ads[0])}
-                        className="relative w-full h-24 bg-gray-100 rounded-lg overflow-hidden cursor-pointer hover:opacity-90 transition-opacity"
+                        className="relative w-full max-h-32 bg-gray-100 rounded-lg overflow-hidden cursor-pointer hover:opacity-90 transition-opacity"
                     >
                         {ads[0].media_type === 'image' ? (
                             <Image
