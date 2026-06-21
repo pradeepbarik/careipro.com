@@ -1,7 +1,7 @@
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import { BsTelephone } from "react-icons/bs";
-import { BiGridAlt, BiMessageRoundedDots, BiTimeFive, BiLocationPlus, BiPhone, BiChevronRight, BiTagAlt, BiLogoWhatsapp, BiMoney, BiUser, BiCalendar, BiSupport } from "react-icons/bi";
+import { BiGridAlt, BiMessageRoundedDots, BiTimeFive, BiLocationPlus, BiPhone, BiChevronRight, BiTagAlt, BiLogoWhatsapp, BiMoney, BiUser, BiCalendar, BiSupport, BiInfoCircle } from "react-icons/bi";
 import Header from '@/app/components/mobile/header';
 import BookAppointment from "@/app/components/mobile/doctors/doctor-detail/book-appointment";
 import PaymentButton from "@/app/components/mobile/payment-button";
@@ -147,36 +147,55 @@ const DoctorDetailMobile = async ({ data, availableData, searchParams, cookies }
         {data.settings.enable_enquiry && false ? <>
             <SendEnquiry businessType={data.business_type} state={data.clinic_state || ""} city={data.clinic_city} clini_id={data.clinic_id} doctor_id={data.doctor_id} />
         </> : <></>}
-        {cookies[userSecreateKey] && userdetail ? <>
-            {userdetail.ut == "user" || userdetail.ut == "agency" &&
-                <div className="mx-2 mt-2 px-3 py-3 bg-cyan-50 border border-cyan-200 rounded-xl flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-cyan-200 flex items-center justify-center shrink-0">
-                        <BiUser className="text-cyan-600" style={{ fontSize: '1.2rem' }} />
+        {data.partner_type !== "public_listing" ?
+            <>
+                {cookies[userSecreateKey] && userdetail ? <>
+                    {userdetail.ut == "user" || userdetail.ut == "agency" &&
+                        <div className="mx-2 mt-2 px-3 py-3 bg-cyan-50 border border-cyan-200 rounded-xl flex items-center gap-3">
+                            <div className="w-10 h-10 rounded-full bg-cyan-200 flex items-center justify-center shrink-0">
+                                <BiUser className="text-cyan-600" style={{ fontSize: '1.2rem' }} />
+                            </div>
+                            <div className="flex flex-col grow">
+                                <span className="font-semibold text-sm text-gray-800">Hi, {`${capitalizeFirstLetter(userdetail.fn)} ${capitalizeFirstLetter(userdetail.ln)}`}</span>
+                                <span className="text-xs text-gray-500">your appointment history</span>
+                            </div>
+                            <Link href={`/my-profile/appointment-history`} className="bg-cyan-600 color-white font-semibold text-sm px-3 py-2 rounded-lg shrink-0">
+                                My Bookings
+                            </Link>
+                        </div>
+                    }
+                </> :
+                    <div className="mx-2 mt-2 px-3 py-3 bg-red-50 border border-orange-200 rounded-xl flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-full bg-orange-200 flex items-center justify-center shrink-0">
+                            <BiUser className="text-orange-600" style={{ fontSize: '1.2rem' }} />
+                        </div>
+                        <div className="flex flex-col grow">
+                            <span className="font-semibold text-sm text-gray-800">Verify your mobile number</span>
+                            <span className="text-xs text-gray-500">Login or verify to book appointment</span>
+                        </div>
+                        <Link href={`/login?redirect_url=${data.seo_dt.seo_url}`} className="bg-orange-400 color-white font-semibold text-sm px-3 py-2 rounded-lg shrink-0">
+                            Login
+                        </Link>
                     </div>
-                    <div className="flex flex-col grow">
-                        <span className="font-semibold text-sm text-gray-800">Hi, {`${capitalizeFirstLetter(userdetail.fn)} ${capitalizeFirstLetter(userdetail.ln)}`}</span>
-                        <span className="text-xs text-gray-500">your appointment history</span>
-                    </div>
-                    <Link href={`/my-profile/appointment-history`} className="bg-cyan-600 color-white font-semibold text-sm px-3 py-2 rounded-lg shrink-0">
-                        My Bookings
-                    </Link>
-                </div>
-            }
-        </> :
-            <div className="mx-2 mt-2 px-3 py-3 bg-red-50 border border-orange-200 rounded-xl flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-orange-200 flex items-center justify-center shrink-0">
-                    <BiUser className="text-orange-600" style={{ fontSize: '1.2rem' }} />
-                </div>
-                <div className="flex flex-col grow">
-                    <span className="font-semibold text-sm text-gray-800">Verify your mobile number</span>
-                    <span className="text-xs text-gray-500">Login or verify to book appointment</span>
-                </div>
-                <Link href={`/login?redirect_url=${data.seo_dt.seo_url}`} className="bg-orange-400 color-white font-semibold text-sm px-3 py-2 rounded-lg shrink-0">
-                    Login
-                </Link>
-            </div>
-        }
+                }
+            </> : <></>}
+
         <div id="reminder-section"></div>
+        {data.active == 0 ? <>
+            <div className="mx-2 mt-3 px-4 py-4 bg-orange-50 border border-orange-200 rounded-xl">
+                <div className="flex items-center gap-3 mb-3">
+                    <div className="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center shrink-0">
+                        <BiInfoCircle className="text-orange-500" style={{ fontSize: '1.4rem' }} />
+                    </div>
+                    <div className="flex flex-col">
+                        <span className="font-semibold text-sm text-gray-800">Doctor Not Available</span>
+                        <span className="text-xs text-gray-500">Currently not accepting appointments</span>
+                    </div>
+                </div>
+                <p className="text-sm text-gray-600">{`Don't worry! You can consult with other qualified doctors in ${data.clinic_city}.`}</p>
+            </div>
+            {(data.similar_doctors || []).length > 0  && data.active==0 &&  <SimilarBusieness heading={`Similar Doctors in ${data.clinic_city}`} similar_doctors={data.similar_doctors || []} />}
+        </> : <></>}
         <div className="flex overflow-auto px-2 py-2 gap-2 hide-scroll-bar mt-2 sticky bg-page-background-50" style={{ top: "4rem" }}>
             <Link href={`${pageUrl}`} className={`text-nowrap border bg-white rounded-lg px-2 py-1 font-semibold flex items-center ${(searchParams.sub_page == undefined || searchParams.sub_page === "") ? 'bg-primary color-white' : ''}`}>
                 <BiGridAlt />
@@ -240,7 +259,7 @@ const DoctorDetailMobile = async ({ data, availableData, searchParams, cookies }
                 </> : <>
                     <OverView data={data} availableData={availableData} />
                 </>}
-        {(data.similar_doctors || []).length > 0 ? <SimilarBusieness heading={`Similar Doctors in ${data.clinic_city}`} similar_doctors={data.similar_doctors || []} /> : null}
+        {(data.similar_doctors || []).length > 0 && data.active==1 ? <SimilarBusieness heading={`Similar Doctors in ${data.clinic_city}`} similar_doctors={data.similar_doctors || []} /> : null}
         <BreadCrumbs data={[
             { label: "Careipro", href: "https://careipro.com" },
             { label: data.clinic_city, href: `https://careipro.com/${searchParams.state}/${searchParams.city}` },

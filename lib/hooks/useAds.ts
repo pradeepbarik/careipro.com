@@ -108,7 +108,17 @@ export const useAds = ({ page_type, category_ids, city, limit = 5, enabled = tru
     const handleAdClick = useCallback((ad: TAd) => {
         trackClick(ad._id);
         if (ad.banner_link) {
-            window.open(`${ad.banner_link}?utm_source=careipro&utm_medium=ad&utm_campaign=${ad._id}`, '_blank', 'noopener,noreferrer');
+            const url = `${ad.banner_link}?utm_source=careipro&utm_medium=ad&utm_campaign=${ad._id}`;
+            try {
+                const isSameDomain = new URL(ad.banner_link).hostname === window.location.hostname;
+                if (isSameDomain) {
+                    window.location.href = url;
+                } else {
+                    window.open(url, '_blank', 'noopener,noreferrer');
+                }
+            } catch {
+                window.location.href = url;
+            }
         }
     }, [trackClick]);
 

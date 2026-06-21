@@ -1,8 +1,8 @@
 import Header from '@/app/components/mobile/header';
 import PageHeading from '@/app/components/mobile/ui/page-heading';
-import { TfetchDoctorsResponse } from '@/lib/hooks/useDoctors';
-import NIsToOneDoctorsSliders from "../../components/mobile/doctors/vertical-slider";
+import { TfetchDoctorsResponse, TConsultTimingsData } from '@/lib/hooks/useDoctors';
 import LookingFor from './mobile/looking-for';
+import FindBestDoctor from './mobile/find-best-doctor';
 import { capitalizeFirstLetter } from '@/lib/helper/format-text';
 import { doctorsBySpecialistPageUrl } from '@/lib/helper/link';
 import Link from 'next/link';
@@ -10,24 +10,62 @@ import { BiCurrentLocation } from 'react-icons/bi';
 import { SectionHeading } from '@/app/components/mobile/ui';
 import BreadCrumbs from '@/app/components/mobile/breadcrumb';
 import { LandscapeAd, StandardAd, WideAd } from '@/app/components/mobile/ads-container';
-const DoctorListMobile = async ({ params, data }: { params: any, data: TfetchDoctorsResponse }) => {
+import SearchableDoctors from './mobile/searchable-doctors';
+import NIsToOneDoctorsSliders from '@/app/components/mobile/doctors/vertical-slider';
+const DoctorListMobile = async ({ params, data, consultTimings }: { params: any, data: TfetchDoctorsResponse, consultTimings: TConsultTimingsData }) => {
+    const doctors = data.doctors.map(dr => ({
+        ...dr,
+        consult_dates: consultTimings[dr.service_location_id]?.consult_dates ?? []
+    }));
     return (
         <>
             <Header template="SUBPAGE" headingElement='div' heading={data.specialist_name} showSearch={true} state={params.state} city={params.city} />
-            {/* show ads here */}
-            <div className='px-2'>
-                <WideAd page_type="doctor_list" category_ids={params.cat_id} city={params.city} limit={1} showPlaceholder={false} ad_selection="weighted" />
-            </div>
-            <PageHeading heading={data.seo_dt.h1} />
-            {data.doctors.length === 0 ?
-                <>
-                    <div className="px-2 py-4 flex justify-center">
-                        <img src='/icon/no-data.png' className='h-32' />
+            <div className=''>
+                {/* show ads here */}
+                <div className='px-2'>
+                    <WideAd page_type="doctor_list" category_ids={params.cat_id} city={params.city} limit={1} showPlaceholder={false} ad_selection="weighted" />
+                </div>
+                {/* <FindBestDoctor /> */}
+                {doctors.length === 0 ?
+                    <>
+                        <div className="px-2 py-4 flex justify-center">
+                            <img src='/icon/no-data.png' className='h-32' />
+                        </div>
+                        <p className='text-center mb-4'>No Doctors found</p>
+                    </> : <></>
+                }
+                <PageHeading heading={data.seo_dt.h1} />
+                <NIsToOneDoctorsSliders data={doctors.slice(0, 4)} type="DOCTOR"/>
+                {/* <TopDoctors doctors={doctors.slice(0, 4)} /> */}
+                <div className='px-2'>
+                    <LandscapeAd page_type="doctor_list" category_ids={params.cat_id} city={params.city} limit={1} />
+                </div>
+                {data.neabyCities.length > 0 && false ? <>
+                    <div className="px-2">
+                        <div className='bg-gray-100 flex'>
+                            <h2 className='font-semibold px-2 py-2 fs-16 rounded-t-md border-l border-r border-t border-t-sky-400 border-l-sky-400 border-r-sky-400 w-full'>
+                                <BiCurrentLocation className='color-primary inline-block mr-2' />
+                                {capitalizeFirstLetter(data.specialist_name)} in Nearby cities of {capitalizeFirstLetter(params.city)}
+                            </h2>
+                        </div>
+                        <div className='border border-sky-300 rounded-b-md px-2 py-1 flex flex-wrap gap-2 mb-2'>
+                            {data.neabyCities.map((city) => (
+                                <Link
+                                    href={doctorsBySpecialistPageUrl(params.seo_url, `CATG${params.cat_id}-${params.group_cat}`, params.state, city.city)}
+                                    key={city.city}
+                                    className='px-2 py-2 border rounded-md bg-white text-center click font-medium'
+                                >
+                                    {capitalizeFirstLetter(city.city)}
+                                </Link>
+                            ))}
+                        </div>
                     </div>
-                    <p className='text-center mb-4'>No Doctors found</p>
-                </> : <></>
-            }
-            <NIsToOneDoctorsSliders data={data.doctors.slice(0, 3)} showAvaileTime={true} />
+                </> : <></>}
+            </div>
+            <PageHeading heading={`${doctors.length}+ Doctors available in ${capitalizeFirstLetter(params.city)}`} />
+            {doctors.length > 4 ? <div className='mt-2'>
+                <SearchableDoctors doctors={doctors} city={params.city} specialist_name={data.specialist_name} markets={data.cityMarkets} nearbyCities={data.neabyCities} />
+            </div> : <></>}
             {data.cityMarkets.length > 0 && false ?
                 <div className="px-2">
                     <div className='bg-gray-100'>
@@ -49,32 +87,6 @@ const DoctorListMobile = async ({ params, data }: { params: any, data: TfetchDoc
                     </div>
                 </div> : <></>
             }
-            <div className='px-2'>
-                <LandscapeAd page_type="doctor_list" category_ids={params.cat_id} city={params.city} limit={1} />
-            </div>
-            <NIsToOneDoctorsSliders data={data.doctors.slice(3, 5)} showAvaileTime={true} />
-            {data.neabyCities.length > 0 ? <>
-                <div className="px-2">
-                    <div className='bg-gray-100 flex'>
-                        <h2 className='font-semibold px-2 py-2 fs-16 rounded-t-md border-l border-r border-t border-t-sky-400 border-l-sky-400 border-r-sky-400 w-full'>
-                            <BiCurrentLocation className='color-primary inline-block mr-2' />
-                            {capitalizeFirstLetter(data.specialist_name)} in Nearby cities of {capitalizeFirstLetter(params.city)}
-                        </h2>
-                    </div>
-                    <div className='border border-sky-300 rounded-b-md px-2 py-1 flex flex-wrap gap-2 mb-2'>
-                        {data.neabyCities.map((city) => (
-                            <Link
-                                href={doctorsBySpecialistPageUrl(params.seo_url, `CATG${params.cat_id}-${params.group_cat}`, params.state, city.city)}
-                                key={city.city}
-                                className='px-2 py-2 border rounded-md bg-white text-center click font-medium'
-                            >
-                                {capitalizeFirstLetter(city.city)}
-                            </Link>
-                        ))}
-                    </div>
-                </div>
-            </> : <></>}
-            <NIsToOneDoctorsSliders data={data.doctors.slice(5, data.doctors.length)} showAvaileTime={true} />
             <LookingFor specialist_id={params.cat_id} campaign={"doctor listing page:" + data.specialist_name} />
             {data.faqs && data.faqs.length > 0 ? <>
                 <div className="px-3 mt-6 mb-4">

@@ -151,9 +151,10 @@ const OverView = ({ data, availableData }: { data: TDoctorDetail, availableData:
                     <div dangerouslySetInnerHTML={{ __html: data.description }} className="px-2 py-2 bg-white shadow-sm mb-2" ></div>
                 </> : <></>
             }
+            {data.active && data.active == 1 ? 
             <a target="_blank" href={`https://wa.me/${support_no}?text=Hi, i need some medicines to be home delivered from ${data.doctor_name}'s clinic`}>
               <img src={getMarketingBanner("medicine-delivery.png")} alt="Medicine home deliver from local pharmacy" />
-            </a>
+            </a>:<></>}
             {(data.settings.show_patients_feedback) && data.topReviews && data.topReviews?.length > 0 ? <>
                 <SectionHeading heading='Rating & Reviews' />
                 <div className="flex gap-3 border rounded-md mx-2">
@@ -199,10 +200,12 @@ const OverView = ({ data, availableData }: { data: TDoctorDetail, availableData:
                     </div>
                 </div>
             </> : <></>}
+            {data.active && data.active == 1 ? <>
             <a className="flex items-center justify-center bg-white px-2" target="_blank" href={`https://wa.me/${support_no}?text=Hi, I need one assistant to help me for ${data.doctor_name}`}>
                 <img src={getMarketingBanner("patient-assistant.png")} alt="Patient Assistant" className="h-40 w-full rounded-md" />
             </a>
-            {data.faqs && data.faqs.mainEntity && data.faqs.mainEntity.length > 0 ? <>
+            </> : <></>}
+            {data.active && data.active == 1 && data.faqs && data.faqs.mainEntity && data.faqs.mainEntity.length > 0 ? <>
                 <div className="px-3 mt-6 mb-4">
                     <h2 className='font-bold text-lg text-gray-800 mb-4 flex items-center gap-2'>
                         Frequently Asked Questions

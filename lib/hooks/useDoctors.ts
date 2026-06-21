@@ -81,6 +81,29 @@ export const fetchDoctorDetail = cache(async (params: {
         return { data: res.data };
     }
 });
+export type TConsultTimingsData = Record<string, {
+    availability: string,
+    doctor_id: number,
+    consult_dates: Array<{
+        date: string,
+        first_session_start_time: string,
+        first_session_end_time: string,
+        second_session_start_time: string,
+        second_session_end_time: string,
+        third_session_start_time?: string,
+        third_session_end_time?: string
+    }>
+}>
+export const fetchDoctorsConsultingTimings = cache(async (state: string, city: string): Promise<TConsultTimingsData> => {
+    try {
+        const res = await fetchJson<TConsultTimingsData>(`/cache/${state.toLowerCase()}/${city.toLowerCase()}/doctors-consulting-timings.json`);
+        return res;
+    } catch {
+        const res = await fetchJson<IResponse<TConsultTimingsData>>(`/init-doctors-consulting-timings?state=${state}&city=${city}`);
+        return res.data;
+    }
+})
+
 export const fetchDoctorAvailableTime = async (service_loc_id: number) => {
     try {
         const res = await fetchJson<IResponse<TDoctorvailableData>>(`/get-doctor-available-time?service_loc_id=${service_loc_id}`);
