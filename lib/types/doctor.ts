@@ -21,7 +21,29 @@ export type TDoctor = {
     state: string,
     specialists?: string,
     availability: string,
-    ldjson?: string
+    ldjson?: string,
+    display_consulting_timing?: Array<{
+        label: string,
+        value: string[]
+    }>,
+    consult_dates?: Array<{
+        date: string,
+        first_session_start_time: string | null,
+        first_session_end_time: string | null,
+        second_session_start_time: string | null,
+        second_session_end_time: string | null,
+        third_session_start_time?: string | null,
+        third_session_end_time?: string | null
+    }>,
+    matched_consult_date?: {
+        date: string,
+        first_session_start_time: string | null,
+        first_session_end_time: string | null,
+        second_session_start_time: string | null,
+        second_session_end_time: string | null,
+        third_session_start_time?: string | null,
+        third_session_end_time?: string | null
+    }
 }
 export type TWeeklyConsultingTiming = {
     sunday: number,
@@ -134,6 +156,7 @@ export type TDoctorDetail = TWeeklyConsultingTiming & {
     rating_count?: number,
     review_count?: number,
     specialty:string|null,
+    active?: number,
     topReviews?: Array<{
         id:number,
         rating: number,
