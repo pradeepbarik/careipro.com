@@ -150,7 +150,7 @@ const DoctorDetailMobile = async ({ data, availableData, searchParams, cookies }
         {data.partner_type !== "public_listing" ?
             <>
                 {cookies[userSecreateKey] && userdetail ? <>
-                    {userdetail.ut == "user" || userdetail.ut == "agency" &&
+                    {(userdetail.ut == "user" || userdetail.ut == "agency") &&
                         <div className="mx-2 mt-2 px-3 py-3 bg-cyan-50 border border-cyan-200 rounded-xl flex items-center gap-3">
                             <div className="w-10 h-10 rounded-full bg-cyan-200 flex items-center justify-center shrink-0">
                                 <BiUser className="text-cyan-600" style={{ fontSize: '1.2rem' }} />
@@ -302,12 +302,12 @@ const DoctorDetailMobile = async ({ data, availableData, searchParams, cookies }
                 </Link>
             </div>
         }
-        <AppointmentReminder position="reminder-section" doctor_id={data.doctor_id} />
         {!cookies[userSecreateKey] ?
             <>
                 <LoginToast message='Please <b>Login/Signup</b> To <b>Book appointment</b>' style={{ bottom: "3.5rem" }} />
                 {/* <NeedHelpBtn style={{ bottom: "30vh" }} /> */}
             </> : <>
+                <AppointmentReminder position="reminder-section" doctor_id={data.doctor_id} />
                 <RatingReminder catid={0} doctor_id={data.doctor_id} />
                 {/* <NeedHelpBtn style={{ bottom: "5rem" }} /> */}
             </>}
