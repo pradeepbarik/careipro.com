@@ -1,7 +1,7 @@
 'use client'
 import { createPortal } from 'react-dom';
 import { Swiper, SwiperSlide } from "swiper/react";
-import { BiBell } from "react-icons/bi";
+import { BiBell ,BiPhone} from "react-icons/bi";
 import 'swiper/css';
 import 'swiper/css/pagination';
 import useReminder from '@/lib/hooks/useReminder';
@@ -72,8 +72,9 @@ const PendingAppointment = ({ appointment }: { appointment: TAppointment }) => {
                     <div className='text-xs text-gray-500'>Request Time</div>
                     <div className='font-semibold text-gray-700 text-xs'>{moment(appointment.booking_time).format('LL hh:mm A')}</div>
                 </div>
-                <a href={`tel:${appointment.patient_support_contact_no}`} className='bg-orange-500 hover:bg-orange-600 text-white text-xs font-semibold px-3 py-1.5 rounded-lg shadow-sm transition-colors'>
-                    Need Help?
+                <a href={`tel:${appointment.patient_support_contact_no}`} className='bg-orange-500 hover:bg-orange-600 text-white text-xs font-semibold px-3 py-1.5 rounded-lg shadow-sm transition-colors flex items-center'>
+                    <BiPhone className='text-lg'/>
+                    Call
                 </a>
             </div>
             {appointment.consulting_timing_messages.trim() &&
@@ -85,7 +86,9 @@ const PendingAppointment = ({ appointment }: { appointment: TAppointment }) => {
                 </div>
             }
             
-            <div className='absolute bottom-0 right-0 w-16 h-16 bg-orange-200 rounded-tl-full opacity-20'></div>
+                <div className='absolute top-0 right-0 w-16 h-16 bg-orange-200 rounded-bl-full opacity-20'></div>
+                <div className='absolute bottom-0 left-0 w-16 h-16 bg-orange-200 rounded-tr-full opacity-20'></div>
+
         </div>
     );
 }
