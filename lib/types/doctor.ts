@@ -226,6 +226,7 @@ export type TDoctorDetail = TWeeklyConsultingTiming & {
         no_of_cases: number | ""
     }>,
     treatments_available?: string[],
+    attributes?: Record<string, { name: string, values: string[] }>,
     faqs?:{
         mainEntity: Array<{
             name: string,

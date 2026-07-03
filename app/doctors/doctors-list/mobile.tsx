@@ -23,7 +23,7 @@ const DoctorListMobile = async ({ params, data, consultTimings }: { params: any,
             <div className=''>
                 {/* show ads here */}
                 <div className='px-2'>
-                    <WideAd page_type="doctor_list" category_ids={params.cat_id} city={params.city} limit={1} showPlaceholder={false} ad_selection="weighted" />
+                    <WideAd page_type="doctor_list" category_ids={params.cat_id} city={params.city} limit={1} showPlaceholder={false} ad_selection="random" />
                 </div>
                 {/* <FindBestDoctor /> */}
                 {doctors.length === 0 ?
