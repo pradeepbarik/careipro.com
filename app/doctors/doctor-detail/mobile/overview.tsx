@@ -111,6 +111,34 @@ const OverView = ({ data, availableData }: { data: TDoctorDetail, availableData:
                     </div>
                 </>
             }
+
+            {data.attributes?.booking_process && data.attributes.booking_process.values.length > 0 ? <>
+                <SectionHeading heading={data.attributes.booking_process.name || 'Appointment Booking Process'} />
+                <div className="bg-white rounded-md border mx-2 mt-1 px-3 py-3">
+                    {data.attributes.booking_process.values.map((step, idx) =>
+                        <div key={idx} className="flex gap-3">
+                            {(data?.attributes?.booking_process || []).values.length > 1 ?
+                                <div className="flex flex-col items-center">
+                                    <span className="w-5 h-5 rounded-full border-2 border-primary flex items-center justify-center shrink-0">
+                                        <span className="w-2 h-2 rounded-full bg-primary"></span>
+                                    </span>
+                                    {idx !== data.attributes!.booking_process.values.length - 1 &&
+                                        <span className="w-px grow bg-gray-300 my-1"></span>
+                                    }
+                                </div>:<></>
+                            }
+                            <div className={idx !== data.attributes!.booking_process.values.length - 1 ? "pb-4" : ""}>
+                                <p className="text-sm text-gray-700 leading-relaxed">{step}</p>
+                            </div>
+                        </div>
+                    )}
+                </div>
+            </> : <></>}
+            {data.attributes?.patient_assistant ? <>
+            <a href={`https://wa.me/${support_no}?text=Hi, I need one assistant to help me for ${data.doctor_name}`} target="_blank">
+                <img src="/patient-assistant.png" />
+            </a>
+            </> : <></>}
             {data.treated_health_conditions?.length == 0 && data.allSpecializations && data.allSpecializations["DISEASE"] && <>
                 <SectionHeading heading='Expertise in treatment of' />
                 <div className="px-2 py-2 grid grid-cols-2 gap-2 bg-white">
@@ -151,10 +179,10 @@ const OverView = ({ data, availableData }: { data: TDoctorDetail, availableData:
                     <div dangerouslySetInnerHTML={{ __html: data.description }} className="px-2 py-2 bg-white shadow-sm mb-2" ></div>
                 </> : <></>
             }
-            {data.active && data.active == 1 ? 
-            <a target="_blank" href={`https://wa.me/${support_no}?text=Hi, i need some medicines to be home delivered from ${data.doctor_name}'s clinic`}>
-              <img src={getMarketingBanner("medicine-delivery.png")} alt="Medicine home deliver from local pharmacy" />
-            </a>:<></>}
+            {data.active && data.active == 1 ?
+                <a target="_blank" href={`https://wa.me/${support_no}?text=Hi, i need some medicines to be home delivered from ${data.doctor_name}'s clinic`}>
+                    <img src={getMarketingBanner("medicine-delivery.png")} alt="Medicine home deliver from local pharmacy" />
+                </a> : <></>}
             {(data.settings.show_patients_feedback) && data.topReviews && data.topReviews?.length > 0 ? <>
                 <SectionHeading heading='Rating & Reviews' />
                 <div className="flex gap-3 border rounded-md mx-2">
@@ -201,9 +229,9 @@ const OverView = ({ data, availableData }: { data: TDoctorDetail, availableData:
                 </div>
             </> : <></>}
             {data.active && data.active == 1 ? <>
-            <a className="flex items-center justify-center bg-white px-2" target="_blank" href={`https://wa.me/${support_no}?text=Hi, I need one assistant to help me for ${data.doctor_name}`}>
-                <img src={getMarketingBanner("patient-assistant.png")} alt="Patient Assistant" className="h-40 w-full rounded-md" />
-            </a>
+                <a className="flex items-center justify-center bg-white px-2" target="_blank" href={`https://wa.me/${support_no}?text=Hi, I need one assistant to help me for ${data.doctor_name}`}>
+                    <img src={getMarketingBanner("patient-assistant.png")} alt="Patient Assistant" className="h-40 w-full rounded-md" />
+                </a>
             </> : <></>}
             {data.active && data.active == 1 && data.faqs && data.faqs.mainEntity && data.faqs.mainEntity.length > 0 ? <>
                 <div className="px-3 mt-6 mb-4">

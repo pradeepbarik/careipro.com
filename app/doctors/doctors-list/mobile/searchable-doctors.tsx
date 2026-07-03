@@ -134,9 +134,10 @@ const SearchableDoctors = ({ doctors, city, specialist_name, markets, nearbyCiti
                 </svg>
                 <input
                     type="text"
+                    name="doctor filter search box"
                     value={query}
                     placeholder={`Filter By ${specialist_name} doctors name...`}
-                    className="w-full text-sm text-gray-800 bg-white border border-gray-200 rounded-xl pl-9 pr-9 py-2.5 outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-50 transition placeholder:text-gray-400"
+                    className="w-full text-sm text-gray-800 bg-white border border-gray-300 rounded-xl pl-9 pr-9 py-2.5 outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-50 transition placeholder:text-gray-400"
                     onChange={e => { setQuery(e.target.value); setShowSuggestions(true); setSelectedDoctor(null); }}
                     onFocus={() => { if (query.trim()) setShowSuggestions(true); }}
                 />

@@ -179,7 +179,6 @@ const DoctorDetailMobile = async ({ data, availableData, searchParams, cookies }
                     </div>
                 }
             </> : <></>}
-
         <div id="reminder-section"></div>
         {data.active == 0 ? <>
             <div className="mx-2 mt-3 px-4 py-4 bg-orange-50 border border-orange-200 rounded-xl">
@@ -194,7 +193,7 @@ const DoctorDetailMobile = async ({ data, availableData, searchParams, cookies }
                 </div>
                 <p className="text-sm text-gray-600">{`Don't worry! You can consult with other qualified doctors in ${data.clinic_city}.`}</p>
             </div>
-            {(data.similar_doctors || []).length > 0  && data.active==0 &&  <SimilarBusieness heading={`Similar Doctors in ${data.clinic_city}`} similar_doctors={data.similar_doctors || []} />}
+            {(data.similar_doctors || []).length > 0 && data.active == 0 && <SimilarBusieness heading={`Similar Doctors in ${data.clinic_city}`} similar_doctors={data.similar_doctors || []} />}
         </> : <></>}
         <div className="flex overflow-auto px-2 py-2 gap-2 hide-scroll-bar mt-2 sticky bg-page-background-50" style={{ top: "4rem" }}>
             <Link href={`${pageUrl}`} className={`text-nowrap border bg-white rounded-lg px-2 py-1 font-semibold flex items-center ${(searchParams.sub_page == undefined || searchParams.sub_page === "") ? 'bg-primary color-white' : ''}`}>
@@ -259,7 +258,7 @@ const DoctorDetailMobile = async ({ data, availableData, searchParams, cookies }
                 </> : <>
                     <OverView data={data} availableData={availableData} />
                 </>}
-        {(data.similar_doctors || []).length > 0 && data.active==1 ? <SimilarBusieness heading={`Similar Doctors in ${data.clinic_city}`} similar_doctors={data.similar_doctors || []} /> : null}
+        {(data.similar_doctors || []).length > 0 && data.active == 1 ? <SimilarBusieness heading={`Similar Doctors in ${data.clinic_city}`} similar_doctors={data.similar_doctors || []} /> : null}
         <BreadCrumbs data={[
             { label: "Careipro", href: "https://careipro.com" },
             { label: data.clinic_city, href: `https://careipro.com/${searchParams.state}/${searchParams.city}` },
@@ -307,8 +306,10 @@ const DoctorDetailMobile = async ({ data, availableData, searchParams, cookies }
                 <LoginToast message='Please <b>Login/Signup</b> To <b>Book appointment</b>' style={{ bottom: "3.5rem" }} />
                 {/* <NeedHelpBtn style={{ bottom: "30vh" }} /> */}
             </> : <>
-                <AppointmentReminder position="reminder-section" doctor_id={data.doctor_id} />
-                <RatingReminder catid={0} doctor_id={data.doctor_id} />
+                {data.settings.book_by === "app" || data.settings.book_by === "manually" ? <>
+                    <AppointmentReminder position="reminder-section" doctor_id={data.doctor_id} />
+                    <RatingReminder catid={0} doctor_id={data.doctor_id} />
+                </> : <></>}
                 {/* <NeedHelpBtn style={{ bottom: "5rem" }} /> */}
             </>}
 
