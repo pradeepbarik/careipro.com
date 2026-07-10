@@ -12,9 +12,8 @@ const PaymentforBookAppointmentPage = ({searchParams }: {
     const { device } = useDeviceInfo();
     return (
         <>
-            {device.type === "mobile" ?
-                <PaymentforBookAppointmentPageMobile {...searchParams} /> :
-                <div className="min-h-screen flex items-center justify-center"><h1 className="text-xl font-bold">Payment for Book Appointment - Desktop View Coming Soon</h1></div>}
+            
+                <PaymentforBookAppointmentPageMobile {...searchParams} /> 
         </>
     )
 }
