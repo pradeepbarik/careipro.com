@@ -19,3 +19,13 @@ export const doctorReviewsTabSeoData=(params:{
         keywords: `${formatDoctorName(params.doctor_name)} patient reviews, ${formatDoctorName(params.doctor_name)} ratings, healthcare feedback for ${formatDoctorName(params.doctor_name)}, patient experiences with ${formatDoctorName(params.doctor_name)} in ${params.city}, Careipro doctor reviews`
     }
 }
+export const doctorTreatmentPhotosTabSeoData=(params:{
+    doctor_name: string,
+    city: string,
+})=>{
+    return {
+        title: `Treatment Photos of ${formatDoctorName(params.doctor_name)} in ${params.city} - Careipro`,
+        description: `Explore treatment photos of ${formatDoctorName(params.doctor_name)} in ${params.city}. See visual evidence of medical procedures and treatments performed by ${formatDoctorName(params.doctor_name)} at Careipro.`,
+        keywords: `${formatDoctorName(params.doctor_name)} treatment photos, medical procedure images by ${formatDoctorName(params.doctor_name)}, healthcare visual documentation in ${params.city}, medical treatment gallery of ${formatDoctorName(params.doctor_name)}, Careipro doctor treatment photos`
+    }
+}

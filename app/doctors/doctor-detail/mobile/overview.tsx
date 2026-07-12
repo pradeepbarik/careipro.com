@@ -2,7 +2,7 @@ import { SectionHeading, SectionSubHeading } from "@/app/components/mobile/ui"
 import { TDoctorDetail, TDoctorvailableData } from '@/lib/types/doctor';
 import { BiChevronRight, BiSolidStar, BiTimeFive, BiUser } from "react-icons/bi";
 import moment, { get_current_datetime } from "@/lib/helper/date-time";
-import { doctorSpecialityIcon, getMarketingBanner } from "@/lib/image";
+import { doctorSpecialityIcon, getMarketingBanner, mediaUrl } from "@/lib/image";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { support_no } from "@/constants/site-config";
@@ -11,6 +11,7 @@ const NextConsultTime = dynamic(() => import('@/app/components/mobile/doctors/do
 
 const OverView = ({ data, availableData }: { data: TDoctorDetail, availableData: TDoctorvailableData }) => {
     let showNextConsultDate = (data.doctor_availability && data.doctor_availability.date && moment(get_current_datetime()).diff(moment(data.doctor_availability.date), 'days') < 0) ? true : false;
+    let pageUrl = data.seo_dt.seo_url;
     return (
         <>
             {data.settings.display_consulting_timing ? <>
@@ -150,6 +151,24 @@ const OverView = ({ data, availableData }: { data: TDoctorDetail, availableData:
                     )}
                 </div>
             </>}
+            {/* media section*/}
+        {data.media && data.media.length > 0 ? (
+            <>
+            <SectionHeading heading='Treatment photos'>
+                <Link href={`${pageUrl}/treatment-photos#doctor-detail-tabs`} className="ml-auto fs-14 color-primary font-semibold underline">View All</Link>
+            </SectionHeading>
+            <div className="flex gap-2 overflow-auto hide-scroll-bar px-2">
+                {data.media.slice(0, 10).map((media, index) =>
+                <Link href={`${pageUrl}/treatment-photos?pos=${index}#doctor-detail-tabs`} key={`media-${index}`} className="h-32 w-1/3 border rounded-md overflow-hidden shrink-0">
+                    {media.media_type === "video" ? (
+                        <video src={mediaUrl(media.media_url || '')} className="w-full h-full object-cover" />
+                    ) : (
+                        <img src={mediaUrl(media.media_url || '')} alt={media.media_description || 'Doctor treatment media'} className="w-full h-full object-cover" />
+                    )}
+                </Link>)}
+            </div>
+            </>
+        ):null}
             {/* {data.settings.raw_information &&
                 <div dangerouslySetInnerHTML={{ __html: data.settings.raw_information }} className="px-2 py-2 bg-white shadow-sm mb-2" ></div>
             } */}
