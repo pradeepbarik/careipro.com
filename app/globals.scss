@@ -389,3 +389,37 @@ details {
         transform: translateY(0px);
     }
 }
+
+.slideInRight {
+    animation: slideInRight .3s;
+    animation-fill-mode: forwards;
+}
+
+@keyframes slideInRight {
+    0% {
+        transform: translateX(40px);
+        opacity: 0;
+    }
+
+    100% {
+        transform: translateX(0px);
+        opacity: 1;
+    }
+}
+
+.slideInLeft {
+    animation: slideInLeft .3s;
+    animation-fill-mode: forwards;
+}
+
+@keyframes slideInLeft {
+    0% {
+        transform: translateX(-40px);
+        opacity: 0;
+    }
+
+    100% {
+        transform: translateX(0px);
+        opacity: 1;
+    }
+}
