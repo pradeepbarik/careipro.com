@@ -9,7 +9,7 @@ import PaymentButton from "@/app/components/mobile/payment-button";
 //import { SectionHeading } from '@/app/components/mobile/ui';
 import AppointmentReminder from '@/app/components/mobile/appointment-reminder';
 import { TDoctorDetail, TDoctorvailableData } from '@/lib/types/doctor';
-import { doctorProfilePic, clinicProfilePic } from '@/lib/image';
+import { doctorProfilePic, clinicProfilePic, mediaUrl } from '@/lib/image';
 import { capitalizeFirstLetter, formatCurrency, showMaskedMobile } from '@/lib/helper/format-text';
 import { TsearchParams } from '../types';
 import { doctorDetailPageUrl } from '@/lib/helper/link';
@@ -21,11 +21,12 @@ import { userinfo, userSecreateKey } from '@/constants/storage_keys';
 import SectionHeading from "@/app/components/mobile/ui/section-heading";
 import { doctorSpecialityIcon } from "@/lib/image";
 import BreadCrumbs from "@/app/components/mobile/breadcrumb";
+import ClickableImage from "@/app/components/mobile/image";
 const RatingReminder = dynamic(() => import('@/app/components/mobile/rating-reminder'));
 const LoginToast = dynamic(() => import("@/app/components/mobile/login-toast"));
 const OverView = dynamic(() => import('./overview'))
 const AppointmentBookingTiming = dynamic(() => import('./booking-timing'));
-const Photos = dynamic(() => import('./photos'))
+const MediaContent = dynamic(() => import('./media-content'))
 const SimilarBusieness = dynamic(() => import("./similar-doctors"));
 const Reviews = dynamic(() => import('./reviews'));
 export const getSendEnquiryWhatsappMessage = (doctor_name = "") => {
@@ -75,7 +76,7 @@ const DoctorDetailMobile = async ({ data, availableData, searchParams, cookies }
         } />
         <div className='flex px-2 py-2 mt-2 gap-3 bg-white shadow-sm'>
             <div className="w-20 shrink-0">
-                <img src={doctorProfilePic(data.profile_pic)} alt={`${data.doctor_name} ${data.specialty ? ` - ${data.specialty}` : ''} in ${data.clinic_city}`} className='h-20 w-full rounded-md shrink-0' />
+                <ClickableImage src={doctorProfilePic(data.profile_pic)} alt={`${data.doctor_name} ${data.specialty ? ` - ${data.specialty}` : ''} in ${data.clinic_city}`} className='h-20 w-full rounded-md shrink-0' />
             </div>
             <div className="grow">
                 <div className="flex">
@@ -195,7 +196,7 @@ const DoctorDetailMobile = async ({ data, availableData, searchParams, cookies }
             </div>
             {(data.similar_doctors || []).length > 0 && data.active == 0 && <SimilarBusieness heading={`Similar Doctors in ${data.clinic_city}`} similar_doctors={data.similar_doctors || []} />}
         </> : <></>}
-        <div className="flex overflow-auto px-2 py-2 gap-2 hide-scroll-bar mt-2 sticky bg-page-background-50" style={{ top: "4rem" }}>
+        <div id="doctor-detail-tabs" className="flex overflow-auto px-2 py-2 gap-2 hide-scroll-bar mt-2 sticky bg-page-background-50" style={{ top: "4rem", scrollMarginTop: "4rem" }}>
             <Link href={`${pageUrl}`} className={`text-nowrap border bg-white rounded-lg px-2 py-1 font-semibold flex items-center ${(searchParams.sub_page == undefined || searchParams.sub_page === "") ? 'bg-primary color-white' : ''}`}>
                 <BiGridAlt />
                 <span className="ml-1 fs-15">Overview</span>
@@ -213,6 +214,14 @@ const DoctorDetailMobile = async ({ data, availableData, searchParams, cookies }
                     <span className="text-nowrap fs-15">Expertise In</span>
                 </Link>
             }
+            {(data.media && data.media.length > 0) &&
+            <>
+            <Link href={`${pageUrl}/treatment-photos`} className={`bg-white border rounded-lg font-semibold px-2 py-1 flex items-center shrink-0 gap-1 ${(searchParams.sub_page?.toLowerCase() === "treatment-photos") ? 'bg-primary color-white' : ''}`}>
+                <img src="/icon/treatment-photo-and-videos.png" alt="Treatment Photo and Videos" className="h-6 w-6 rounded-full bg-white" />
+                <span className="text-nowrap fs-15">Treatment Photos</span>
+            </Link>
+            </>
+            }
             {data.settings.show_patients_feedback ?
                 <Link href={`${pageUrl}/patient-reviews`} className={`bg-white border rounded-lg font-semibold px-2 py-1 flex items-center shrink-0 gap-1 ${(searchParams.sub_page?.toLowerCase() === "patient-reviews") ? 'bg-primary color-white' : ''}`}>
                     <BiMessageRoundedDots />
@@ -222,7 +231,13 @@ const DoctorDetailMobile = async ({ data, availableData, searchParams, cookies }
         </div>
         {!searchParams.sub_page ?
             <OverView data={data} availableData={availableData} />
-            : searchParams.sub_page === "photos" ? <Photos />
+            : searchParams.sub_page === "treatment-photos" ? <MediaContent data={data.media} categories={data.media_category} bookingInfo={{
+                bookBy: data.settings.book_by,
+                pageUrl,
+                clinicMobile: data.clinic_mobile,
+                isLoggedIn: !!cookies[userSecreateKey],
+                loginRedirectUrl: data.seo_dt.seo_url,
+            }} />
                 : searchParams.sub_page === "appointment-booking-timings" ? <AppointmentBookingTiming data={data} /> : searchParams.sub_page.toLowerCase() === "expert-in-disease-treatment" ? <>
                     <div className="px-2 py-2 grid grid-cols-2 gap-2">
                         {(data.allSpecializations["DISEASE"] || []).map((cat) =>

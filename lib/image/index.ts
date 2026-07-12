@@ -48,3 +48,13 @@ export const adSrc=(image: string)=>{
   }
   return `${ASSET_URL}/ads/${image}`;
 }
+export const mediaUrl=(src: string)=>{
+  if(!src){
+    return '';
+  }
+  // if src is a full URL, return as is
+  if (/^https?:\/\//i.test(src)) {
+    return src;
+  }
+  return `${ASSET_URL}/media/${src}`;
+}

@@ -6,7 +6,7 @@ import { fetchDoctorDetail, fetchDoctorAvailableTime } from '@/lib/hooks/useDoct
 import { TsearchParams } from './types';
 import PageVisitLogger from '@/app/components/client-components/page-visit-logger';
 import { doctorProfilePic } from '@/lib/image';
-import { doctorDiseaseExpertiseTabSeoData, doctorReviewsTabSeoData } from '@/lib/seo/doctor-detail';
+import { doctorDiseaseExpertiseTabSeoData, doctorReviewsTabSeoData, doctorTreatmentPhotosTabSeoData } from '@/lib/seo/doctor-detail';
 
 const DoctorDetailMobile = dynamic(() => import('./mobile'));
 export async function generateMetadata({ searchParams }: { searchParams: any }): Promise<Metadata> {
@@ -24,6 +24,8 @@ export async function generateMetadata({ searchParams }: { searchParams: any }):
             seoDt = doctorReviewsTabSeoData({ doctor_name: data.data.doctor_name, city: data.data.clinic_city })
         } else if (searchParams.sub_page.toLowerCase() === "expert-in-disease-treatment") {
             seoDt = doctorDiseaseExpertiseTabSeoData({ doctor_name: data.data.doctor_name, city: data.data.clinic_city })
+        }else if(searchParams.sub_page.toLowerCase() === "treatment-photos"){
+            seoDt = doctorTreatmentPhotosTabSeoData({ doctor_name: data.data.doctor_name, city: data.data.clinic_city })
         }
     }
     return {

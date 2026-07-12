@@ -227,6 +227,18 @@ export type TDoctorDetail = TWeeklyConsultingTiming & {
     }>,
     treatments_available?: string[],
     attributes?: Record<string, { name: string, values: string[] }>,
+    media_category?: Array<{
+        category: string,
+        count: number
+    }>,
+    media?: Array<{
+        media_type?: string,
+        media_url?: string,
+        media_description?: string,
+        display_order?: number,
+        category?: string,
+        aspect_ratio?: string,
+    }>,
     faqs?:{
         mainEntity: Array<{
             name: string,
