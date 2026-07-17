@@ -247,6 +247,13 @@ export type TDoctorDetail = TWeeklyConsultingTiming & {
             }
         }>
     },
+    announcements?: Array<{
+        title: string,
+        message: string,
+        created_at: string,
+        expiry_date: string,
+        expiry_type: 'forever' | 'datetime',
+    }>,
     seo_dt: {
         seo_url: string,
         short_seo_url: string
