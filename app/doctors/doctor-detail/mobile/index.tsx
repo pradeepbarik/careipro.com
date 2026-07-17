@@ -15,6 +15,7 @@ import { TsearchParams } from '../types';
 import { doctorDetailPageUrl } from '@/lib/helper/link';
 import SendEnquiry from "@/app/hospitals-and-clinics/clinic-detail/mobile/send-enquiry";
 import EmergencyBookingCloseAlert from '@/app/components/mobile/doctors/doctor-detail/emergency-booking-close-alert';
+import Announcements from '@/app/components/mobile/doctors/doctor-detail/announcements';
 //import NeedHelpBtn from "@/app/components/mobile/need-help-btn";
 import LikeShare from "@/app/components/mobile/doctors/doctor-detail/like-share";
 import { userinfo, userSecreateKey } from '@/constants/storage_keys';
@@ -92,6 +93,7 @@ const DoctorDetailMobile = async ({ data, availableData, searchParams, cookies }
         <div className="relative">
             {data.settings.emergency_booking_close == 1 && <EmergencyBookingCloseAlert message={data.settings.booking_close_message} />}
         </div>
+        {data.announcements && data.announcements.length > 0 && <Announcements announcements={data.announcements} />}
         <div className="px-2 mt-1">
             <div className="bg-gray-100 rounded-md px-2 border flex gap-1 items-center py-2">
                 <BiTagAlt className="rotate-90 color-primary shrink-0" style={{ fontSize: '1rem' }} />
