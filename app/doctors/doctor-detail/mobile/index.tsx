@@ -3,18 +3,15 @@ import dynamic from "next/dynamic";
 import { BsTelephone } from "react-icons/bs";
 import { BiGridAlt, BiMessageRoundedDots, BiTimeFive, BiLocationPlus, BiPhone, BiChevronRight, BiTagAlt, BiLogoWhatsapp, BiMoney, BiUser, BiCalendar, BiSupport, BiInfoCircle } from "react-icons/bi";
 import Header from '@/app/components/mobile/header';
-import BookAppointment from "@/app/components/mobile/doctors/doctor-detail/book-appointment";
-import PaymentButton from "@/app/components/mobile/payment-button";
 //import DoctorFeedback from "@/app/components/mobile/doctors/doctor-detail/doctor-feedback";
 //import { SectionHeading } from '@/app/components/mobile/ui';
 import AppointmentReminder from '@/app/components/mobile/appointment-reminder';
 import { TDoctorDetail, TDoctorvailableData } from '@/lib/types/doctor';
-import { doctorProfilePic, clinicProfilePic, mediaUrl } from '@/lib/image';
+import { doctorProfilePic, clinicProfilePic } from '@/lib/image';
 import { capitalizeFirstLetter, formatCurrency, showMaskedMobile } from '@/lib/helper/format-text';
 import { TsearchParams } from '../types';
 import { doctorDetailPageUrl } from '@/lib/helper/link';
 import SendEnquiry from "@/app/hospitals-and-clinics/clinic-detail/mobile/send-enquiry";
-import EmergencyBookingCloseAlert from '@/app/components/mobile/doctors/doctor-detail/emergency-booking-close-alert';
 import Announcements from '@/app/components/mobile/doctors/doctor-detail/announcements';
 //import NeedHelpBtn from "@/app/components/mobile/need-help-btn";
 import LikeShare from "@/app/components/mobile/doctors/doctor-detail/like-share";
@@ -71,6 +68,16 @@ const DoctorDetailMobile = async ({ data, availableData, searchParams, cookies }
 }) => {
     const pageUrl = doctorDetailPageUrl({ doctor_id: data.doctor_id, service_loc_id: data.id, clinic_id: data.clinic_id, seo_url: data.seo_url, state: data.clinic_state, city: data.clinic_city, market_name: data.clinic_market, type: data.business_type });
     const userdetail = cookies[userinfo] ? JSON.parse(cookies[userinfo]) : null;
+    const combinedAnnouncements = [
+        ...(data.settings.emergency_booking_close == 1 && data.settings.booking_close_message ? [{
+            title: 'Temporarily Booking Closed',
+            message: data.settings.booking_close_message,
+            created_at: 'booking-close-alert',
+            expiry_date: '',
+            expiry_type: 'forever' as const,
+        }] : []),
+        ...(data.announcements || []),
+    ];
     return (<>
         <Header heading={data.doctor_name + `${data.specialty ? ` - ${data.specialty}` : ''}`} template="SUBPAGE" rightContainer={
             <LikeShare total_liked={data.total_liked || 0} url={pageUrl} doctor_name={data.doctor_name} position={data.position || data.qualification_disp} clinic_name={data.clinic_name} service_charge={data.service_charge} doctor_id={data.doctor_id} clinic_id={data.clinic_id} />
@@ -90,10 +97,10 @@ const DoctorDetailMobile = async ({ data, availableData, searchParams, cookies }
                 </div>
             </div>
         </div>
-        <div className="relative">
+        {/* <div className="relative">
             {data.settings.emergency_booking_close == 1 && <EmergencyBookingCloseAlert message={data.settings.booking_close_message} />}
-        </div>
-        {data.announcements && data.announcements.length > 0 && <Announcements announcements={data.announcements} />}
+        </div> */}
+        {combinedAnnouncements.length > 0 && <Announcements announcements={combinedAnnouncements} />}
         <div className="px-2 mt-1">
             <div className="bg-gray-100 rounded-md px-2 border flex gap-1 items-center py-2">
                 <BiTagAlt className="rotate-90 color-primary shrink-0" style={{ fontSize: '1rem' }} />
@@ -159,7 +166,7 @@ const DoctorDetailMobile = async ({ data, availableData, searchParams, cookies }
                                 <BiUser className="text-cyan-600" style={{ fontSize: '1.2rem' }} />
                             </div>
                             <div className="flex flex-col grow">
-                                <span className="font-semibold text-sm text-gray-800">Hi, {`${capitalizeFirstLetter(userdetail.fn)} ${capitalizeFirstLetter(userdetail.ln)}`}</span>
+                                <span className="font-semibold text-sm text-gray-800">Hi, {`${capitalizeFirstLetter(userdetail.fn)} ${userdetail.ln?capitalizeFirstLetter(userdetail.ln):""}`}</span>
                                 <span className="text-xs text-gray-500">your appointment history</span>
                             </div>
                             <Link href={`/my-profile/appointment-history`} className="bg-cyan-600 color-white font-semibold text-sm px-3 py-2 rounded-lg shrink-0">

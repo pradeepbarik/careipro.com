@@ -10,13 +10,22 @@ import { IResponse } from "../services/http-server";
 import { TDoctorDetail, TDoctorvailableData } from '@/lib/types/doctor';
 // @ts-ignore
 import { load, CFEnvironment } from '@cashfreepayments/cashfree-js';
+import { TSavedPatient } from "./usePatients";
+import { getAge } from "../helper/date-time";
 type TBookingSuccessResponse = {
     booking_date: string,
     booking_id: number,
     consult_date: string,
     today_booking_id: string
     booking_status?:string,
-    expeted_waiting_time?:string | number
+    expeted_waiting_time?:string | number,
+    patient_info?:{
+        patient_id:number,
+        patient_name:string,
+        patient_mobile:string,
+        patient_gender:string
+        patient_address?:string,
+    }
 }
 type TdoctorConsultDate = {
     date: string,
@@ -48,7 +57,7 @@ const useBooking = ({ service_loc_id, doctor_id, clinic_id, open, settings, avai
     const [loading, setLoading] = useState<boolean>(false);
     const [refundAlert, setRefundAlert] = useState(false);
     const [paymentFailed, setPaymentFailed] = useState(false);
-    const [txnDetail, setTxnDetail] = useState<{ txnid: string, payment_status: string, order_amount: number, refund_status?: string, refund_order_id?: string } | null>(null);
+    const [txnDetail, setTxnDetail] = useState<{ txnid: string, payment_status: string, order_amount: number, refund_status?: string, refund_order_id?: string, patient_info?: any } | null>(null);
     const onSelectSuggestedPatient = (patientinfo: TSuggestedPatientInfo) => {
         setShowSuggestion(false);
         setPatientInfo({ ...patientInfo, case_id: patientinfo.id, patient_name: patientinfo.patient_name, patient_mobile: patientinfo.patient_mobile, patient_gender: patientinfo.patient_gender, patient_age: patientinfo.patient_age, patient_address: patientinfo.patient_address, dataFillMode: "autosuggest" })
@@ -167,6 +176,87 @@ const useBooking = ({ service_loc_id, doctor_id, clinic_id, open, settings, avai
             setLoading(false);
         });
     }
+    const bookAppointmentByPatientId = async (savedPatient:TSavedPatient) => {
+        if (loading) {
+            return; // Prevent multiple submissions
+        }
+        if (user_info === null) {
+            toast.info("Please login to your account")
+            return;
+        }
+        if (settings.show_group_name_while_booking && group_name === "") {
+            toast.error("Please select session")
+            return;
+        }
+        if (settings.advance_booking_enable && !consultDate) {
+            toast.error("Please select consultation date");
+            return;
+        }
+        let extraParams = {};
+        if (settings.advance_booking_enable && consultDate) {
+            extraParams = { ...extraParams, consult_date: consultDate.date }
+        } else if (settings.advance_booking_enable && availability) {
+            extraParams = { ...extraParams, consult_date: availability.available_date }
+        }
+        if (settings.show_group_name_while_booking && group_name) {
+            extraParams = { ...extraParams, group_name }
+        }
+        if (settings.payment_type === "partial_payment_while_booking" && settings.token_amount && settings.token_amount > 0) {
+                let bookingPayload = {
+                book_by: settings.book_by || "",
+                userid: user_info.id,
+                user_type: user_info.user_type,
+                servicelocation_id: service_loc_id,
+                doctor_id: doctor_id,
+                clinic_id: clinic_id,
+                patient_name: savedPatient.patient_name,
+                patient_mobile: savedPatient.patient_mobile,
+                patient_email: "",
+                patient_address: savedPatient.patient_address,
+                patient_age: getAge(savedPatient.patient_dob),
+                patient_gender: savedPatient.patient_gender,
+                case_id: patientInfo.case_id || "",
+                patient_id: savedPatient.id,
+                patient_extra_info: patientExtraInfo,
+                merchant: "careipro",
+                device:"mobile_web",
+                ...extraParams
+            };
+            try{
+              const {data,code,message} = await httpPost("/book-appointment", {...bookingPayload,check_booking_eligible:true}, { passSecreateKey: true });
+              if(code ==200){
+                createPaymentOrder(bookingPayload);
+              }else{
+                throw new Error(message || "Booking not eligible for payment");
+              }
+            }catch(err){
+                toast.error((err as any).message || "Booking not eligible for payment");
+            }
+            return;
+        }
+        const bookingPayload = {
+            book_by: settings.book_by || "",
+            userid: user_info.id,
+            user_type: user_info.user_type,
+            servicelocation_id: service_loc_id,
+            doctor_id: doctor_id,
+            clinic_id: clinic_id,
+            patient_id: savedPatient.id,
+            patient_extra_info: patientExtraInfo,
+            merchant: "careipro",
+            device: "mobile_web",
+            ...extraParams
+        };
+        setLoading(true);
+        httpPost<TBookingSuccessResponse>("/book-appointment-by-patientid", bookingPayload, { passSecreateKey: true }).then((data) => {
+            toast.success(data.message);
+            setBookingDetail(data.data);
+            setLoading(false);
+        }).catch((err: any) => {
+            toast.error(err.message)
+            setLoading(false);
+        });
+    }
     const createBookingRequest=()=>{
         if(!patientInfo.patient_name){
             toast.error("Please enter patient name")
@@ -201,6 +291,29 @@ const useBooking = ({ service_loc_id, doctor_id, clinic_id, open, settings, avai
             merchant:"careipro",
         }
         httpPost<TBookingSuccessResponse>("/book-appointment-request", bookingPayload, { passSecreateKey: true }).then((data) => {
+            toast.success(data.message);
+            setBookingDetail(data.data);
+            setPatientInfo(patientInfoInitState);
+            setShowModal(false);
+        }).catch((err: any) => {
+            toast.error(err.message)
+        });
+    }
+   
+    const createBookingRequestByPatientId = (savedPatient: TSavedPatient) => {
+        const bookingPayload = {
+            book_by: settings.book_by || "",
+            userid: user_info?.id,
+            user_type: user_info?.user_type,
+            servicelocation_id: service_loc_id,
+            doctor_id: doctor_id,
+            clinic_id: clinic_id,
+            patient_id: savedPatient.id,
+            consult_date: consultDate?.date,
+            device: "mobile_web",
+            merchant: "careipro",
+        }
+        httpPost<TBookingSuccessResponse>("/book-appointment-request-by-patientid", bookingPayload, { passSecreateKey: true }).then((data) => {
             toast.success(data.message);
             setBookingDetail(data.data);
             setPatientInfo(patientInfoInitState);
@@ -331,7 +444,7 @@ const useBooking = ({ service_loc_id, doctor_id, clinic_id, open, settings, avai
         showModal, setShowModal, showSuggestions, setShowSuggestion, onSelectSuggestedPatient, patients,
         patientInfo, setPatientInfo, booingDetail,
         bookAppointment, onOk, rebokeAppointment, consultDates, consultDate, setConsultDate, group_name, setGroupName, patientExtraInfo, setPatientExtraInfo, loading, refundAlert, paymentFailed, retryPayment,txnDetail,
-        createBookingRequest
+        createBookingRequest, bookAppointmentByPatientId, createBookingRequestByPatientId
     }
 }
 export default useBooking

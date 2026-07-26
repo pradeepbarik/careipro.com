@@ -20,4 +20,22 @@ export const get_current_datetime = (onlydate = false): string => {
 export const formatDateTime = (dateTime: Moment,format:string=dateTimeFormat): string => {
   return dateTime.format(format);
 }
+export const getAge = (dob: string | null) => {
+    if (!dob) return null;
+    const birth = moment(dob);
+    if (!birth.isValid()) return null;
+    const now = moment();
+    const years = now.diff(birth, 'years');
+    birth.add(years, 'years');
+    const months = now.diff(birth, 'months');
+    birth.add(months, 'months');
+    const days = now.diff(birth, 'days');
+    if (years >= 1) {
+        return months > 0 ? `${years} Yrs ${months} Mons` : `${years} Yrs`;
+    }
+    if (months >= 1) {
+        return days > 0 ? `${months} Mons ${days} Days` : `${months} Mons`;
+    }
+    return `${days} Days`;
+}
 export default moment;
