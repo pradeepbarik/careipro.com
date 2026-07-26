@@ -4,6 +4,7 @@ interface InputFieldProps {
     id?:string,
     type?: string;
     lable?: string;
+    lableRightSide?: ReactNode;
     placeholder?: string;
     value?: string | number | any;
     required?: boolean;
@@ -20,13 +21,15 @@ interface InputFieldProps {
     onFocus?: (e: FocusEvent<HTMLInputElement>) => void;
     onBlur?: (e: FocusEvent<HTMLInputElement>) => void;
 }
-const Input = ({ lable = "",lableIcon,style={},id="", type = 'text', value = "",autoComplete='', onChange, onFocus, onBlur, error, disabled,placeholder="",className="",autofocus,required }: InputFieldProps,ref:Ref<HTMLInputElement>) => {
+const Input = ({ lable = "",lableIcon,style={},id="", type = 'text', value = "",autoComplete='',lableRightSide, onChange, onFocus, onBlur, error, disabled,placeholder="",className="",autofocus,required }: InputFieldProps,ref:Ref<HTMLInputElement>) => {
     return (
         <div>
-            {lable && <span className="flex font-semibold fs-15 items-center" style={{marginBottom:"0px 0px 10px"}}>
+            {lable && 
+            <span className="flex font-semibold fs-15 items-center" style={{marginBottom:"0px 0px 10px"}}>
                 {lableIcon && <span className='mr-1'>{lableIcon}</span>}
                 {lable}
                 {required && <span className='color-secondary'>&nbsp;*</span>}
+                {lableRightSide && <span className='ml-auto'>{lableRightSide}</span>}
             </span>}
             {type === "mobile" ?
                 <>

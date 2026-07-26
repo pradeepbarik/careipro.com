@@ -23,11 +23,6 @@ const Login = ({ redirectUrl = "", onLoginSuccess, allowLoggedInUser, heading, t
                         <form autoComplete={"off"}>
                             <div>
                                 <Input type="mobile" value={mobile} lable="Enter Your Mobile No" onChange={(e) => { setMobile(e.target.value) }} />
-                                <div>
-                                    <label className="block text-sm text-gray-500 mt-2 items-start"><BiInfoCircle className="inline-block color-secondary text-xl mr-1" />
-                                        To book an appointment for your family member or friends, <b className="underline">enter your mobile number</b> to create an account. You can provide a <b>different contact number</b> for the patient during booking.
-                                    </label>
-                                </div>
                             </div>
                             <div className="mt-4 py-2 flex">
                                 <Button className="ml-auto" onClick={sendOtp} >
@@ -63,7 +58,19 @@ const Login = ({ redirectUrl = "", onLoginSuccess, allowLoggedInUser, heading, t
                             </> :
                             <>
                                 <form autoComplete={"off"}>
-                                    <div className='flex gap-2'>
+                                    <div>
+                                        <Input type="text" lable="Your Name" value={userInfo.first_name} onChange={(e) => { setUserInfo({ ...userInfo, first_name: e.target.value }) }} className="w-full" />
+                                    </div>
+                                    {/* <div className="flex gap-2 items-center mt-2">
+                                        <Input type="number" lable="Age" value={userInfo.age} onChange={(e) => { setUserInfo({ ...userInfo, age: e.target.value }) }} />
+                                        <RadioButton value={userInfo.gender} label="" name="gnder" data={[{ label: "Male", value: "male" }, { label: "Female", value: "female" }]} onChange={(v) => { setUserInfo({ ...userInfo, gender: v.toString() }) }} className="mt-4" />
+                                    </div> */}
+                                    <CitySelection onSelect={(selectedCity) => { setUserInfo({ ...userInfo, state: selectedCity.state, city: selectedCity.name }) }}>
+                                        <div className='mt-3'>
+                                            <Input type="text" lable="City" value={userInfo.city} autoComplete='do-not-autofill' />
+                                        </div>
+                                    </CitySelection>
+                                    <div className='flex gap-2 mt-2'>
                                         <div className='relative'>
                                             <Input lable='Mobile No' value={mobile} disabled={true} />
                                             <span className="absolute right-2 bottom-2 flex gap-1 button px-1 py-1" onClick={editMobileClick}>
@@ -75,22 +82,9 @@ const Login = ({ redirectUrl = "", onLoginSuccess, allowLoggedInUser, heading, t
                                             <Input lable='Enter OTP' type="number" value={otp} className='text-center' onChange={(e) => { setOtp(e.target.value) }} />
                                         </div>
                                     </div>
-                                    <div className="flex gap-2 mt-2">
-                                        <Input type="text" lable="First Name" value={userInfo.first_name} onChange={(e) => { setUserInfo({ ...userInfo, first_name: e.target.value }) }} />
-                                        <Input type="text" lable="Last Name" value={userInfo.last_name} onChange={(e) => { setUserInfo({ ...userInfo, last_name: e.target.value }) }} />
-                                    </div>
-                                    <div className="flex gap-2 items-center mt-2">
-                                        <Input type="number" lable="Age" value={userInfo.age} onChange={(e) => { setUserInfo({ ...userInfo, age: e.target.value }) }} />
-                                        <RadioButton value={userInfo.gender} label="" name="gnder" data={[{ label: "Male", value: "male" }, { label: "Female", value: "female" }]} onChange={(v) => { setUserInfo({ ...userInfo, gender: v.toString() }) }} className="mt-4" />
-                                    </div>
-                                    <CitySelection onSelect={(selectedCity) => { setUserInfo({ ...userInfo, state: selectedCity.state, city: selectedCity.name }) }}>
-                                        <div className='mt-3'>
-                                            <Input type="text" lable="City" value={userInfo.city} autoComplete='do-not-autofill' />
-                                        </div>
-                                    </CitySelection>
                                     <div>
                                         <label className="block text-sm text-gray-500 mt-2 items-start"><BiInfoCircle className="inline-block color-secondary text-xl mr-1" />
-                                            To book an appointment for your family member or friends, <b className="underline">enter your name</b> to create an account. You can provide a <b>different contact number</b> for the patient during booking.
+                                            <b className="underline">enter your name</b> to create an account. You can provide a <b>different patient name</b> during appointment booking.
                                         </label>
                                     </div>
                                     <Button className="mt-4 w-full" onClick={signUp} >Sign up</Button>

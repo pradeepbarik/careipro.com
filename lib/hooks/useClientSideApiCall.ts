@@ -60,6 +60,20 @@ export const searchLoaction = async (searchText: string | number) => {
         return buildResponse<TPincodeData[]>([]);
     }
 }
+export type TAreaSearchResult = {
+    state: string,
+    district: string,
+    sub_district: string,
+    area_name: string
+}
+export const searchArea = async (searchText: string, district?: string) => {
+    try {
+        const res = await fetchJson<IResponse<TAreaSearchResult[]>>(`/search-area?searchtext=${encodeURIComponent(searchText)}${district ? `&district=${encodeURIComponent(district)}` : ''}`);
+        return res;
+    } catch (err: any) {
+        return buildResponse<TAreaSearchResult[]>([]);
+    }
+}
 export const saveAddressPostCurl = (data: {
     state: string,
     city: string,

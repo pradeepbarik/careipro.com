@@ -89,19 +89,11 @@ const useLogin = ({ redirectUrl = "", allowLoggedInUser = false, onLoginSuccess,
             toast.error("Please enter your First name");
             return;
         }
-        if (!userInfo.age) {
-            toast.error("Please enter your Age");
-            return;
-        }
-        if (!userInfo.gender) {
-            toast.error("Please enter your Gender");
-            return;
-        }
         if (!userInfo.city) {
             toast.error("Please enter your City");
             return;
         }
-        httpPost("/auth/login", { case: "signup", mobile: mobile, otp: otp, first_name: userInfo.first_name, last_name: userInfo.last_name, age: userInfo.age, gender: userInfo.gender, state: userInfo.state, city: userInfo.city }).then(async ({ data }) => {
+        httpPost("/auth/login", { case: "signup", mobile: mobile, otp: otp, first_name: userInfo.first_name, last_name: userInfo.last_name||"", state: userInfo.state, city: userInfo.city }).then(async ({ data }) => {
             setLoader(false);
             window.localStorage.setItem(userinfo, JSON.stringify(data));
             let expire = moment().add(2, 'years').format('YYYY-MM-DD');

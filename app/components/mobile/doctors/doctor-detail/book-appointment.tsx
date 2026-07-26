@@ -11,6 +11,7 @@ import useBooking from '@/lib/hooks/useBooking';
 import { TDoctorvailableData, TDoctorDetail } from '@/lib/types/doctor';
 import { RootState } from '@/lib/store';
 import Login from '@/app/components/mobile/login';
+import PatientSelection from '@/app/components/mobile/patient-selection';
 import Link from 'next/link';
 const BookAppointment = ({ open, service_charge, site_service_charge, service_loc_id, doctor_id, clinic_id, availability, settings, emergencyBookingClose, bookingCloseMessage, slno_groups, pageUrl }: { open: boolean, emergencyBookingClose?: number, bookingCloseMessage?: string, service_loc_id: number, clinic_id: number, doctor_id: number, service_charge: number, site_service_charge: number, settings: TDoctorDetail['settings'], availability?: TDoctorvailableData, slno_groups: TDoctorDetail['slno_groups'], pageUrl: string }) => {
     const router = useRouter();
@@ -97,6 +98,27 @@ const BookAppointment = ({ open, service_charge, site_service_charge, service_lo
                                     </select>
                                 </> : <></>}
                             </div>
+                            {user_info?.user_type === "user" &&
+                                <div className='mb-2'>
+                                    <PatientSelection onSelect={(patient) => {
+                                        setPatientInfo({
+                                            ...patientInfo,
+                                            case_id: 0,
+                                            patient_name: patient.patient_name,
+                                            patient_mobile: patient.patient_mobile,
+                                            patient_gender: patient.patient_gender,
+                                            patient_age: patient.patient_dob ? String(moment().diff(moment(patient.patient_dob), 'years')) : "",
+                                            patient_address: patient.patient_address,
+                                            dataFillMode: "autosuggest"
+                                        })
+                                    }}>
+                                        <button className='w-full border-2 border-dashed rounded-md py-2 flex items-center justify-center gap-2 font-semibold color-primary' style={{ borderColor: "var(--primary-color)" }}>
+                                            <BiUser className='fs-17' />
+                                            Select Patient
+                                        </button>
+                                    </PatientSelection>
+                                </div>
+                            }
                             <div className='relative'>
                                 {(user_info?.user_type === "clinic_staff" || user_info?.user_type === "NSCM" || user_info?.user_type === "agency") ?
                                     <Input type='mobile' ref={autoSuggestRef} lable='Mobile Number' lableIcon={<BiPhone className='fs-17' />} value={patientInfo.patient_mobile} onChange={(e) => { setPatientInfo({ ...patientInfo, patient_mobile: e.target.value }) }} onBlur={() => { setShowSuggestion(false) }} onFocus={() => { patients.length && setShowSuggestion(true) }} />
