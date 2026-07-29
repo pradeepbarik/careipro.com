@@ -23,7 +23,10 @@ export const formatDoctorName = (name: string, business_type: string = "DOCTOR")
     }
 }
 export const textTruncate = (text: string, maxLength: number) => {
-    if (text.length > maxLength) {
+    if(!text){
+        return '';
+    }
+    if (text && text.length > maxLength) {
         return text.substring(0, maxLength) + '...';
     } else {
         return text;

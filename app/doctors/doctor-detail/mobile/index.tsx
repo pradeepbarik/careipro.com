@@ -239,7 +239,9 @@ const DoctorDetailMobile = async ({ data, availableData, searchParams, cookies }
             }
         </div>
         {!searchParams.sub_page ?
-            <OverView data={data} availableData={availableData} />
+            <>
+               <OverView data={data} availableData={availableData} />
+            </>
             : searchParams.sub_page === "treatment-photos" ? <MediaContent data={data.media} categories={data.media_category} bookingInfo={{
                 bookBy: data.settings.book_by,
                 pageUrl,
@@ -282,7 +284,7 @@ const DoctorDetailMobile = async ({ data, availableData, searchParams, cookies }
                 </> : <>
                     <OverView data={data} availableData={availableData} />
                 </>}
-        {(data.similar_doctors || []).length > 0 && data.active == 1 ? <SimilarBusieness heading={`Similar Doctors in ${data.clinic_city}`} similar_doctors={data.similar_doctors || []} /> : null}
+        {(data.similar_doctors || []).length > 0 && data.active == 1 && searchParams.sub_page ? <SimilarBusieness heading={`Similar Doctors in ${data.clinic_city}`} similar_doctors={data.similar_doctors || []} /> : null}
         <BreadCrumbs data={[
             { label: "Careipro", href: "https://careipro.com" },
             { label: data.clinic_city, href: `https://careipro.com/${searchParams.state}/${searchParams.city}` },

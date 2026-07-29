@@ -8,6 +8,7 @@ import Link from "next/link";
 import { support_no } from "@/constants/site-config";
 const WeeklyConsultingTiming = dynamic(() => import("@/app/components/mobile/doctors/doctor-detail/weekly-consulting-timing"));
 const NextConsultTime = dynamic(() => import('@/app/components/mobile/doctors/doctor-detail/next-consult-time'));
+const SimilarBusieness = dynamic(() => import("./similar-doctors"));
 
 const OverView = ({ data, availableData }: { data: TDoctorDetail, availableData: TDoctorvailableData }) => {
     let showNextConsultDate = (data.doctor_availability && data.doctor_availability.date && moment(get_current_datetime()).diff(moment(data.doctor_availability.date), 'days') < 0) ? true : false;
@@ -252,6 +253,7 @@ const OverView = ({ data, availableData }: { data: TDoctorDetail, availableData:
                     <img src={getMarketingBanner("patient-assistant.png")} alt="Patient Assistant" className="h-40 w-full rounded-md" />
                 </a>
             </> : <></>}
+            {(data.similar_doctors || []).length > 0 && data.active == 1 ? <SimilarBusieness heading={`Similar Doctors in ${data.clinic_city}`} similar_doctors={data.similar_doctors || []} /> : null}
             {data.active && data.active == 1 && data.faqs && data.faqs.mainEntity && data.faqs.mainEntity.length > 0 ? <>
                 <div className="px-3 mt-6 mb-4">
                     <h2 className='font-bold text-lg text-gray-800 mb-4 flex items-center gap-2'>
