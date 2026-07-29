@@ -672,7 +672,7 @@ const BookAppointmentForm = ({ state, city, open, service_charge, site_service_c
                             className={`flex-1 py-2 text-center font-semibold fs-15 border-b-2 transition-colors ${activeTab === 'saved' ? 'color-primary' : 'color-text-light border-transparent'}`}
                             style={activeTab === 'saved' ? { borderColor: "var(--primary-color)" } : {}}
                         >
-                            Saved Patients
+                            {user_info.user_type === "user" ? "Family & Friends" : "Saved Patients"}
                         </button>
                     </div>
                 }
@@ -681,7 +681,7 @@ const BookAppointmentForm = ({ state, city, open, service_charge, site_service_c
                         {showAddSavedPatientForm ? (
                             <div className='border rounded-md p-2'>
                                 <div className='flex items-center gap-2 pb-2 font-semibold'>
-                                    <span className='color-primary'>Add New Patient</span>
+                                    <span className='color-primary'>{user_info.user_type === "user" ? "Add New Member" : "Add New Patient"}</span>
                                     <BiX className='ml-auto text-xl border border-orange-400 rounded-full text-orange-400' onClick={closeAddSavedPatientForm} />
                                 </div>
                                 <Input lable='Patient Name' lableIcon={<BiUser className='fs-17' />} value={newSavedPatient.patient_name} onChange={(e) => { setNewSavedPatient({ ...newSavedPatient, patient_name: e.target.value }) }} required />
@@ -737,7 +737,7 @@ const BookAppointmentForm = ({ state, city, open, service_charge, site_service_c
                         ) : <>
                             <div className='flex items-center gap-2 py-3 px-2 border rounded-md font-semibold color-primary mb-2' onClick={() => { setShowAddSavedPatientForm(true) }}>
                                 <BiPlus className='fs-18' />
-                                Add New Patient
+                                 {user_info.user_type==="user" ? "New Member" : "New Patient"}
                             </div>
                             <div className="max-h-[40vh] overflow-auto">
                                 <ul className='overflow-auto rounded-md border' style={{ maxHeight: "50vh" }}>
