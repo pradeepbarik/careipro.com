@@ -1,8 +1,8 @@
 "use client"
 import { useEffect, useState, useRef, cloneElement, ReactElement } from "react";
 import { SlideUpModal, Input } from "../ui";
-import { getAllCities, TAllcities } from '@/lib/hooks/useClientSideApiCall';
-
+import { getAllCities } from '@/lib/hooks/useClientSideApiCall';
+import { TAllcities } from "@/lib/types";
 type TCity = TAllcities['data'][''][0];
 
 const CitySelection = ({ children, onSelect }: { children: ReactElement, onSelect: (data: TCity) => void }) => {

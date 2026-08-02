@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/lib/store';
-import { TAllcities, getAllCities, getSubDistricts, TSubDistrict, TPincodeData, searchLoaction, getVillageList, TVillage, saveAddressPostCurl } from '@/lib/hooks/useClientSideApiCall';
+import { getAllCities, getSubDistricts, TSubDistrict, TPincodeData, searchLoaction, getVillageList, TVillage, saveAddressPostCurl } from '@/lib/hooks/useClientSideApiCall';
+import { TAllcities } from '@/lib/types';
 import { TSelectedAddress } from '@/lib/types';
 const usePatiendAddress = ({ page_source, onComplete,save_address=true }: { page_source: string,save_address?:boolean, onComplete: (address: TSelectedAddress) => void }) => {
     const { user_info } = useSelector((state: RootState) => {

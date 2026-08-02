@@ -2,8 +2,8 @@
 import { useEffect, useRef, useState } from "react";
 import { BiMap, BiChevronDown, BiX, BiPlusCircle } from "react-icons/bi";
 import DropDown from "@/app/components/mobile/ui/drop-down";
-import { getAllCities, searchArea, TAllcities, TAreaSearchResult } from "@/lib/hooks/useClientSideApiCall";
-
+import { getAllCities, searchArea, TAreaSearchResult } from "@/lib/hooks/useClientSideApiCall";
+import { TAllcities } from "@/lib/types";
 type TCity = TAllcities['data'][''][0];
 export type TAddressV2 = { sub_district: string, area_name: string, district: string, state: string };
 
