@@ -51,6 +51,10 @@ const nextConfig = {
     rewrites: async () => {
         return [
             {
+                source: '/:state/:city/hire-personal-assistant',
+                destination: '/hire-assistant'
+            },
+            {
                 source: '/(Doctors|Best-Doctors)-In-:city-(of|in)-:state',
                 destination: '/doctors'
             },

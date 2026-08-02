@@ -31,3 +31,7 @@ export type TSelectedAddress={
     pincode?:number,
     landmark:string
 }
+export type TAllcities = {
+    states: Array<{ id: number, name: string, icon: null | string, is_serviceable: 0 | 1 }>,
+    data: Record<string, Array<{ id: number, name: string, city_icon: string | null, is_serviceable: 0 | 1, name_ln: string, state: string }>>
+}

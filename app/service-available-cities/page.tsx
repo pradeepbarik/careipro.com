@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import dynamic from 'next/dynamic'
 import useDeviceInfo from "@/lib/hooks/useDeviceInfo";
-import { getServiceAvailableCities } from "@/lib/hooks/index";
+import { getAllCities } from "@/lib/hooks/index";
 const ServiceAvailbeCitiesMobile = dynamic(() => import('./mobile'));
 export async function generateMetadata({ searchParams }: { searchParams: { city: string, state: string } }): Promise<Metadata> {
     return {
@@ -22,8 +22,8 @@ export async function generateMetadata({ searchParams }: { searchParams: { city:
 }
 const ServiceAvailbeCities = async () => {
     const { device } = useDeviceInfo();
-    const {states,data}=await getServiceAvailableCities()
     if (device.type === "mobile") {
+        const {states,data}=await getAllCities()
         return (
             <ServiceAvailbeCitiesMobile states={states} data={data} />
         )

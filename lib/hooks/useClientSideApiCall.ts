@@ -1,16 +1,13 @@
 import { fetchJson, authenicatedFetchJson, httpPost } from '@/lib/services/http-client';
 import { IResponse, buildResponse } from '@/lib/services/http-client';
 import { cache } from 'react';
-export type TAllcities = {
-    states: Array<{ id: number, name: string, icon: null | string, is_serviceable: 0 | 1 }>,
-    data: Record<string, Array<{ id: number, name: string, city_icon: string | null, is_serviceable: 0 | 1, name_ln: string, state: string }>>
-}
+import {TAllcities} from '@/lib/types';
 export const getAllCities = async () => {
     try {
-        const res = await fetchJson<TAllcities>("/cache/india/all-cities.json");
+        const res = await fetchJson<TAllcities>("/cache/india/all-cities.json",true);
         return res;
     } catch (err: any) {
-        const { data } = await fetchJson<IResponse<TAllcities>>("/init-cache/all-cities");
+        const { data } = await fetchJson<IResponse<TAllcities>>("/init-cache/all-cities",true);
         return data
     }
 }
@@ -74,6 +71,24 @@ export const searchArea = async (searchText: string, district?: string) => {
         return buildResponse<TAreaSearchResult[]>([]);
     }
 }
+export type TMembershipPlan = {
+    id: number,
+    plan_name: string,
+    service_includs: string,
+    service_excludes: string,
+    amount: number,
+    duration: number,
+    plan_for: string,
+    city: string | null
+}
+export const fetchMembershipPlans = async (plan_for: string, city: string) => {
+    try {
+        const res = await fetchJson<IResponse<TMembershipPlan[]>>(`/membership-plans?plan_for=${encodeURIComponent(plan_for)}&city=${encodeURIComponent(city)}`);
+        return res;
+    } catch (err: any) {
+        return buildResponse<TMembershipPlan[]>([]);
+    }
+}
 export const saveAddressPostCurl = (data: {
     state: string,
     city: string,
@@ -87,6 +102,45 @@ export const saveAddressPostCurl = (data: {
     address_selection_mode: string
 }) => {
     return httpPost("/user/bookmark-address", data, { passSecreateKey: true })
+}
+export const submitPatientEnquiry = (data: {
+    doctor_id: number,
+    clinic_id: number,
+    servicelocation_id: number,
+    doctor_name: string,
+    clinic_name: string,
+    city: string,
+    query: string
+}) => {
+    return httpPost<{ id: string }>("/user/patient-enquiry", data, { passSecreateKey: true })
+}
+export type TPatientEnquiry = {
+    id: string,
+    doctor_id: number,
+    clinic_id: number,
+    servicelocation_id: number,
+    doctor_name: string,
+    clinic_name: string,
+    query: string,
+    status: "open" | "resolved" | "cancelled",
+    resolution_note: string,
+    resolved_at: string | null,
+    rating: number,
+    create_time: string
+}
+export const fetchPatientEnquiries = async (doctor_id?: number) => {
+    try {
+        const res = await authenicatedFetchJson<IResponse<TPatientEnquiry[]>>(`/user/patient-enquiries${doctor_id ? `?doctor_id=${doctor_id}` : ''}`);
+        return res;
+    } catch (err: any) {
+        return buildResponse<TPatientEnquiry[]>([]);
+    }
+}
+export const closePatientEnquiry = (data: { id: string, rating: number, rating_feedback: string }) => {
+    return httpPost<{ id: string }>("/user/close-patient-enquiry", data, { passSecreateKey: true })
+}
+export const cancelPatientEnquiry = (data: { id: string }) => {
+    return httpPost<{ id: string }>("/user/cancel-patient-enquiry", data, { passSecreateKey: true })
 }
 export type TBookmarkedAddress = {
     _id: string,
@@ -108,6 +162,19 @@ export const bookmarkedAddressList = async () => {
         return res;
     } catch (err: any) {
         return buildResponse<TBookmarkedAddress[]>([]);
+    }
+}
+export type TMembershipStatus = {
+    is_prime_member: boolean,
+    plan_name: string | null,
+    plan_expired_time: string | null
+}
+export const fetchMembershipStatus = async () => {
+    try {
+        const res = await authenicatedFetchJson<IResponse<TMembershipStatus>>('/user/membership-status');
+        return res;
+    } catch (err: any) {
+        return buildResponse<TMembershipStatus>({ is_prime_member: false, plan_name: null, plan_expired_time: null });
     }
 }
 export const submitReviewsPostCurl= (data:any)=>{

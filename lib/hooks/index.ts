@@ -1,6 +1,7 @@
 import { fetchJson } from '@/lib/services/http-server';
 import { Tcity, Tstate } from '../../lib/types';
 import { IResponse } from '../services/http-client';
+import {TAllcities} from '@/lib/types';
 export const getServiceAvailableCities = async () => {
     let result={ states: [] as Tstate[], data: {} as Record<string, Tcity[]> };
     try{
@@ -10,6 +11,15 @@ export const getServiceAvailableCities = async () => {
          result=response.data;
     }
     return result;
+}
+export const getAllCities = async () => {
+    try {
+        const res = await fetchJson<TAllcities>("/cache/india/all-cities.json",true);
+        return res;
+    } catch (err: any) {
+        const { data } = await fetchJson<IResponse<TAllcities>>("/init-cache/all-cities",true);
+        return data
+    }
 }
 export interface TkeyInfo {
     clinic_id: number;
