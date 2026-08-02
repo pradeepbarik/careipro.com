@@ -32,10 +32,10 @@ const MobileDoctors = async ({ city, state, pageData, categories, diseases }: { 
                 </SectionHeading>
                 <div className="flex w-full overflow-auto hide-scroll-bar py-2 shadow-md">
                     {pageData.specialists.map((specialist) =>
-                        <div key={specialist.id} className="w-26 px-2 shrink-0 flex flex-col items-center">
+                        <Link key={specialist.id} href={specialist.seo_url} title={specialist.name} className="w-26 px-2 shrink-0 flex flex-col items-center">
                             <Image alt={specialist.name} src={doctorSpecialityIcon(specialist.icon)} width={40} height={40} className="h-10 w-10 rounded-full" placeholder="empty" loading="lazy" />
-                            <Link href={specialist.seo_url} className="">{specialist.name}</Link>
-                        </div>
+                            <span className="">{specialist.name}</span>
+                        </Link>
                     )}
                 </div>
             </div>

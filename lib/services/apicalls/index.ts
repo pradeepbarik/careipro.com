@@ -36,9 +36,9 @@ export type Tappointment = {
    }> | null,
    review_tags_arr?: Array<string>
 }
-export const fetchAppointmentHistory = (start_from: number, count: number) => {
+export const fetchAppointmentHistory = (start_from: number, count: number, doctor_id?: number) => {
    try {
-      return authenicatedFetchJson<IResponse<Tappointment[]>>(`/user/appointment-history?start_from=${start_from}&count=${count}`)
+      return authenicatedFetchJson<IResponse<Tappointment[]>>(`/user/appointment-history?start_from=${start_from}&count=${count}${doctor_id ? `&doctor_id=${doctor_id}` : ''}`)
    } catch (err: any) {
       return buildResponse<Tappointment[]>([]);
    }

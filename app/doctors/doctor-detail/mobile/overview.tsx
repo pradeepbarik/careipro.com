@@ -6,10 +6,12 @@ import { doctorSpecialityIcon, getMarketingBanner, mediaUrl } from "@/lib/image"
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { support_no } from "@/constants/site-config";
+import { hirePersonalAssistantPageUrl } from "@/lib/helper/link";
 const WeeklyConsultingTiming = dynamic(() => import("@/app/components/mobile/doctors/doctor-detail/weekly-consulting-timing"));
 const NextConsultTime = dynamic(() => import('@/app/components/mobile/doctors/doctor-detail/next-consult-time'));
 const SimilarBusieness = dynamic(() => import("./similar-doctors"));
-
+const PrimeMembershipCard = dynamic(() => import('@/app/components/mobile/prime-membership'));
+const PatientAssistantBanner = dynamic(() => import('@/app/components/mobile/doctors/doctor-detail/patient-assistant-banner'));
 const OverView = ({ data, availableData }: { data: TDoctorDetail, availableData: TDoctorvailableData }) => {
     let showNextConsultDate = (data.doctor_availability && data.doctor_availability.date && moment(get_current_datetime()).diff(moment(data.doctor_availability.date), 'days') < 0) ? true : false;
     let pageUrl = data.seo_dt.seo_url;
@@ -113,7 +115,6 @@ const OverView = ({ data, availableData }: { data: TDoctorDetail, availableData:
                     </div>
                 </>
             }
-
             {data.attributes?.booking_process && data.attributes.booking_process.values.length > 0 ? <>
                 <SectionHeading heading={data.attributes.booking_process.name || 'Appointment Booking Process'} />
                 <div className="bg-white rounded-md border mx-2 mt-1 px-3 py-3">
@@ -137,10 +138,31 @@ const OverView = ({ data, availableData }: { data: TDoctorDetail, availableData:
                 </div>
             </> : <></>}
             {data.attributes?.patient_assistant ? <>
-            <a href={`https://wa.me/${support_no}?text=Hi, I need one assistant to help me for ${data.doctor_name}`} target="_blank">
-                <img src="/patient-assistant.png" />
-            </a>
-            </> : <></>}
+                <Link
+                    href={hirePersonalAssistantPageUrl(data.clinic_state || "", data.clinic_city || "")}
+                    className="mx-2 mt-2 mb-3 rounded-xl p-4 flex items-center gap-3 shadow-sm"
+                    style={{ background: 'linear-gradient(135deg, #0f766e 0%, #0891b2 100%)' }}
+                >
+                    <div className="w-11 h-11 rounded-full bg-white/20 flex items-center justify-center shrink-0">
+                        <BiUser className="text-white text-2xl" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                        <div className="text-white font-bold fs-15">Hire a Personal Assistant</div>
+                        <div className="text-white/85 fs-12 leading-tight mt-0.5">Book appointments, get information & order medicine for you</div>
+                    </div>
+                    <BiChevronRight className="text-white text-xl shrink-0" />
+                </Link>
+            </> : data.attributes?.patient_assistant_banner ? <>
+                <PatientAssistantBanner
+                    doctor_id={data.doctor_id}
+                    clinic_id={data.clinic_id}
+                    servicelocation_id={data.id}
+                    doctor_name={data.doctor_name}
+                    clinic_name={data.clinic_name}
+                    city={data.clinic_city || ""}
+                    state={data.clinic_state || ""}
+                />
+            </>:<></>}
             {data.treated_health_conditions?.length == 0 && data.allSpecializations && data.allSpecializations["DISEASE"] && <>
                 <SectionHeading heading='Expertise in treatment of' />
                 <div className="px-2 py-2 grid grid-cols-2 gap-2 bg-white">
@@ -248,11 +270,6 @@ const OverView = ({ data, availableData }: { data: TDoctorDetail, availableData:
                     </div>
                 </div>
             </> : <></>}
-            {data.active && data.active == 1 ? <>
-                <a className="flex items-center justify-center bg-white px-2" target="_blank" href={`https://wa.me/${support_no}?text=Hi, I need one assistant to help me for ${data.doctor_name}`}>
-                    <img src={getMarketingBanner("patient-assistant.png")} alt="Patient Assistant" className="h-40 w-full rounded-md" />
-                </a>
-            </> : <></>}
             {(data.similar_doctors || []).length > 0 && data.active == 1 ? <SimilarBusieness heading={`Similar Doctors in ${data.clinic_city}`} similar_doctors={data.similar_doctors || []} /> : null}
             {data.active && data.active == 1 && data.faqs && data.faqs.mainEntity && data.faqs.mainEntity.length > 0 ? <>
                 <div className="px-3 mt-6 mb-4">
@@ -286,6 +303,9 @@ const OverView = ({ data, availableData }: { data: TDoctorDetail, availableData:
                         ))}
                     </div>
                 </div>
+            </> : <></>}
+            {data.settings.book_by ==="manually" || data.settings.book_by ==="call" ? <>
+            <PrimeMembershipCard city={data.clinic_city} clinic_id={data.clinic_id} doctor_id={data.doctor_id}/>
             </> : <></>}
         </>
     )

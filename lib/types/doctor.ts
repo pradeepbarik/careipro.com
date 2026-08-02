@@ -183,6 +183,7 @@ export type TDoctorDetail = TWeeklyConsultingTiming & {
         booking_close_message: string,
         book_by: 'app' | 'call' | 'manually',
         show_group_name_while_booking: number,
+        prime_member_only_booking: number,
         raw_information: string,
         appointment_book_mode: string,
         allow_booking_request: number,

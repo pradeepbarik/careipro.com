@@ -6,7 +6,6 @@ import PageVisitLogger from "../components/client-components/page-visit-logger";
 //import NeedHelpBtn from '@/app/components/mobile/need-help-btn';
 import FooterMenu from '@/app/components/mobile/bottom-menu';
 const CityHomeMobile = dynamic(() => import('@/app/components/pages/home/city-home.mobile'));
-const LoginToast = dynamic(() => import("@/app/components/mobile/login-toast"));
 const CityHomeDesktop = dynamic(() => import('@/app/components/pages/home/city-home.desktop'));
 type TProps = {
   params: { [key: string]: string },
@@ -43,7 +42,6 @@ const CityHomePage = ({ searchParams }: TProps) => {
           city: searchParams.city,
         }} />
         <FooterMenu cookies={cookies} searchParams={searchParams} />
-        {/* <NeedHelpBtn style={{ bottom: '25vh' }} /> */}
       </>
     )
   } else {

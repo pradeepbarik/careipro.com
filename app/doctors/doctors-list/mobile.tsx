@@ -19,7 +19,7 @@ const DoctorListMobile = async ({ params, data, consultTimings }: { params: any,
     }));
     return (
         <>
-            <Header template="SUBPAGE" headingElement='div' heading={data.specialist_name} showSearch={true} state={params.state} city={params.city} />
+            <Header template="SUBPAGE" headingElement='div' heading={data.specialist_name} showSearch={true} showProfile={true} state={params.state} city={params.city} />
             <div className=''>
                 {/* show ads here */}
                 <div className='px-2'>

@@ -10,8 +10,8 @@ import { TDoctorDetail, TDoctorvailableData } from '@/lib/types/doctor';
 import { doctorProfilePic, clinicProfilePic } from '@/lib/image';
 import { capitalizeFirstLetter, formatCurrency, showMaskedMobile } from '@/lib/helper/format-text';
 import { TsearchParams } from '../types';
-import { doctorDetailPageUrl } from '@/lib/helper/link';
-import SendEnquiry from "@/app/hospitals-and-clinics/clinic-detail/mobile/send-enquiry";
+import { doctorDetailPageUrl, hirePersonalAssistantPageUrl } from '@/lib/helper/link';
+//import SendEnquiry from "@/app/hospitals-and-clinics/clinic-detail/mobile/send-enquiry";
 import Announcements from '@/app/components/mobile/doctors/doctor-detail/announcements';
 //import NeedHelpBtn from "@/app/components/mobile/need-help-btn";
 import LikeShare from "@/app/components/mobile/doctors/doctor-detail/like-share";
@@ -21,12 +21,12 @@ import { doctorSpecialityIcon } from "@/lib/image";
 import BreadCrumbs from "@/app/components/mobile/breadcrumb";
 import ClickableImage from "@/app/components/mobile/image";
 const RatingReminder = dynamic(() => import('@/app/components/mobile/rating-reminder'));
-const LoginToast = dynamic(() => import("@/app/components/mobile/login-toast"));
 const OverView = dynamic(() => import('./overview'))
 const AppointmentBookingTiming = dynamic(() => import('./booking-timing'));
 const MediaContent = dynamic(() => import('./media-content'))
 const SimilarBusieness = dynamic(() => import("./similar-doctors"));
 const Reviews = dynamic(() => import('./reviews'));
+const MyBookingsTrigger = dynamic(() => import('@/app/components/mobile/doctors/doctor-detail/my-bookings-trigger'));
 export const getSendEnquiryWhatsappMessage = (doctor_name = "") => {
     return `Hi,\nI found your clinic on careipro.com. I want more information about *${doctor_name}*`;
 }
@@ -154,41 +154,35 @@ const DoctorDetailMobile = async ({ data, availableData, searchParams, cookies }
                 <span className="ml-auto font-bold">{formatCurrency(parseInt(data.service_charge))}</span>
             </div>
         </div>
-        {data.settings.enable_enquiry && false ? <>
+        {/* {data.settings.enable_enquiry && false ? <>
             <SendEnquiry businessType={data.business_type} state={data.clinic_state || ""} city={data.clinic_city} clini_id={data.clinic_id} doctor_id={data.doctor_id} />
-        </> : <></>}
-        {data.partner_type !== "public_listing" ?
-            <>
-                {cookies[userSecreateKey] && userdetail ? <>
-                    {(userdetail.ut == "user" || userdetail.ut == "agency") &&
-                        <div className="mx-2 mt-2 px-3 py-3 bg-cyan-50 border border-cyan-200 rounded-xl flex items-center gap-3">
-                            <div className="w-10 h-10 rounded-full bg-cyan-200 flex items-center justify-center shrink-0">
-                                <BiUser className="text-cyan-600" style={{ fontSize: '1.2rem' }} />
-                            </div>
-                            <div className="flex flex-col grow">
-                                <span className="font-semibold text-sm text-gray-800">Hi, {`${capitalizeFirstLetter(userdetail.fn)} ${userdetail.ln?capitalizeFirstLetter(userdetail.ln):""}`}</span>
-                                <span className="text-xs text-gray-500">your appointment history</span>
-                            </div>
-                            <Link href={`/my-profile/appointment-history`} className="bg-cyan-600 color-white font-semibold text-sm px-3 py-2 rounded-lg shrink-0">
-                                My Bookings
-                            </Link>
-                        </div>
-                    }
-                </> :
-                    <div className="mx-2 mt-2 px-3 py-3 bg-red-50 border border-orange-200 rounded-xl flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-full bg-orange-200 flex items-center justify-center shrink-0">
-                            <BiUser className="text-orange-600" style={{ fontSize: '1.2rem' }} />
-                        </div>
-                        <div className="flex flex-col grow">
-                            <span className="font-semibold text-sm text-gray-800">Verify your mobile number</span>
-                            <span className="text-xs text-gray-500">Login or verify to book appointment</span>
-                        </div>
-                        <Link href={`/login?redirect_url=${data.seo_dt.seo_url}`} className="bg-orange-400 color-white font-semibold text-sm px-3 py-2 rounded-lg shrink-0">
-                            Login
-                        </Link>
-                    </div>
-                }
-            </> : <></>}
+        </> : <></>} */}
+        {cookies[userSecreateKey] && userdetail ? <>
+            {(userdetail.ut == "user" || userdetail.ut == "agency") &&
+                <>
+                    <MyBookingsTrigger
+                        user_first_name={capitalizeFirstLetter(userdetail.fn)}
+                        user_last_name={userdetail.ln ? capitalizeFirstLetter(userdetail.ln) : ""}
+                        doctor_id={data.doctor_id}
+                        doctor_name={data.doctor_name}
+                        book_by={data.settings.book_by || ""}
+                    />
+                </>
+            }
+        </> :
+            <div className="mx-2 mt-2 px-3 py-3 bg-red-50 border border-orange-200 rounded-xl flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-orange-200 flex items-center justify-center shrink-0">
+                    <BiUser className="text-orange-600" style={{ fontSize: '1.2rem' }} />
+                </div>
+                <div className="flex flex-col grow">
+                    <span className="font-semibold text-sm text-gray-800">Verify your mobile number</span>
+                    <span className="text-xs text-gray-500">Login or verify to book appointment</span>
+                </div>
+                <Link href={`/login?redirect_url=${data.seo_dt.seo_url}`} className="bg-orange-400 color-white font-semibold text-sm px-3 py-2 rounded-lg shrink-0">
+                    Login
+                </Link>
+            </div>
+        }
         <div id="reminder-section"></div>
         {data.active == 0 ? <>
             <div className="mx-2 mt-3 px-4 py-4 bg-orange-50 border border-orange-200 rounded-xl">
@@ -224,12 +218,12 @@ const DoctorDetailMobile = async ({ data, availableData, searchParams, cookies }
                 </Link>
             }
             {(data.media && data.media.length > 0) &&
-            <>
-            <Link href={`${pageUrl}/treatment-photos`} className={`bg-white border rounded-lg font-semibold px-2 py-1 flex items-center shrink-0 gap-1 ${(searchParams.sub_page?.toLowerCase() === "treatment-photos") ? 'bg-primary color-white' : ''}`}>
-                <img src="/icon/treatment-photo-and-videos.png" alt="Treatment Photo and Videos" className="h-6 w-6 rounded-full bg-white" />
-                <span className="text-nowrap fs-15">Treatment Photos</span>
-            </Link>
-            </>
+                <>
+                    <Link href={`${pageUrl}/treatment-photos`} className={`bg-white border rounded-lg font-semibold px-2 py-1 flex items-center shrink-0 gap-1 ${(searchParams.sub_page?.toLowerCase() === "treatment-photos") ? 'bg-primary color-white' : ''}`}>
+                        <img src="/icon/treatment-photo-and-videos.png" alt="Treatment Photo and Videos" className="h-6 w-6 rounded-full bg-white" />
+                        <span className="text-nowrap fs-15">Treatment Photos</span>
+                    </Link>
+                </>
             }
             {data.settings.show_patients_feedback ?
                 <Link href={`${pageUrl}/patient-reviews`} className={`bg-white border rounded-lg font-semibold px-2 py-1 flex items-center shrink-0 gap-1 ${(searchParams.sub_page?.toLowerCase() === "patient-reviews") ? 'bg-primary color-white' : ''}`}>
@@ -240,7 +234,7 @@ const DoctorDetailMobile = async ({ data, availableData, searchParams, cookies }
         </div>
         {!searchParams.sub_page ?
             <>
-               <OverView data={data} availableData={availableData} />
+                <OverView data={data} availableData={availableData} />
             </>
             : searchParams.sub_page === "treatment-photos" ? <MediaContent data={data.media} categories={data.media_category} bookingInfo={{
                 bookBy: data.settings.book_by,
@@ -291,53 +285,52 @@ const DoctorDetailMobile = async ({ data, availableData, searchParams, cookies }
             { label: `Doctors in ${data.clinic_city}`, href: `https://careipro.com/${searchParams.state}/${searchParams.city}/best-doctors` },
             { label: data.doctor_name }
         ]} />
-
-        {(data.settings.book_by === "app" || data.settings.book_by === "manually") && <>
-            <div className="mt-12">
-                <div className="bg-gradient-to-t from-white via-white to-transparent fixed bottom-0 w-full px-3 py-3 shadow-[0_-4px_20px_rgba(0,0,0,0.1)] border-t border-gray-200" style={{ bottom: 0 }}>
-                    <div className='flex gap-2'>
-                        {cookies[userSecreateKey] ?
-                            <Link href={pageUrl + "/book-appointment"} className="flex-1 bg-gradient-to-r from-cyan-500 to-cyan-600 hover:from-cyan-600 hover:to-cyan-700 text-white font-bold py-3 px-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-2">
-                                <BiCalendar className="text-xl" />
-                                <span>Book Appointment</span>
-                            </Link>
-                            :
-                            <Link href={`/login?redirect_url=${data.seo_dt.seo_url}/book-appointment`} className="flex-1 bg-gradient-to-r from-cyan-500 to-cyan-600 hover:from-cyan-600 hover:to-cyan-700 text-white font-bold py-3 px-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-2">
-                                <BiUser className="text-xl" />
-                                <span>Login & Book</span>
-                            </Link>
-                        }
-                        <Link href={pageUrl + "/help-center"} className="w-14 h-12 bg-white border-2 border-gray-300 hover:border-cyan-500 rounded-xl flex items-center justify-center transition-all duration-300 shadow-md hover:shadow-lg">
-                            <BiSupport className="text-2xl text-red-400" />
-                        </Link>
-                    </div>
-                    {/* <BookAppointment emergencyBookingClose={data.settings.emergency_booking_close} bookingCloseMessage={data.settings.booking_close_message} open={searchParams.book_appointment === '1' ? true : false} clinic_id={data.clinic_id} service_loc_id={data.id} doctor_id={data.doctor_id} service_charge={parseInt(data.service_charge)} site_service_charge={parseInt(data.site_service_charge)} settings={data.settings} availability={availableData} slno_groups={data.slno_groups || []} pageUrl={pageUrl} /> */}
-                </div>
-            </div>
-        </>}
-        {data.settings.book_by === "call" &&
-            <div className="bg-gradient-to-t from-white via-white to-transparent sticky bottom-0 w-full px-3 py-3 shadow-[0_-4px_20px_rgba(0,0,0,0.1)] border-t border-gray-200 flex gap-2" style={{ bottom: 0 }}
-            >
-                <a href={`tel:${data.clinic_mobile}`} className="flex-1 bg-gradient-to-r from-cyan-500 to-cyan-600 hover:from-teal-600 hover:to-teal-700 text-white font-bold py-3 px-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-2">
-                    <BsTelephone className="text-xl" />
-                    <span>CALL NOW</span>
-                </a>
-                <Link href={pageUrl + "/help-center"} className="w-14 h-12 bg-white border-2 border-gray-300 hover:border-green-500 rounded-xl flex items-center justify-center transition-all duration-300 shadow-md hover:shadow-lg">
-                    <BiSupport className="text-2xl text-gray-700" />
+        <div className="mt-12">
+            <div className="bg-gradient-to-t from-white via-white to-transparent fixed bottom-0 w-full px-3 py-3 shadow-[0_-4px_20px_rgba(0,0,0,0.1)] border-t border-gray-200 flex gap-2" style={{ bottom: 0 }}>
+                {cookies[userSecreateKey] ? <>
+                    {data.settings.book_by === "app" ?
+                        <Link href={pageUrl + "/book-appointment"} className="flex-1 bg-gradient-to-r from-cyan-500 to-cyan-600 hover:from-cyan-600 hover:to-cyan-700 text-white font-bold py-3 px-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-2">
+                            <BiCalendar className="text-xl" />
+                            <span>Book Appointment</span>
+                        </Link> : (data.settings.book_by === "manually" && data.settings.prime_member_only_booking) ?
+                            <>
+                                <Link href={hirePersonalAssistantPageUrl(data.clinic_state, data.clinic_city)} className="flex-1 bg-gradient-to-r from-cyan-500 to-cyan-600 hover:from-cyan-600 hover:to-cyan-700 text-white font-bold py-3 px-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-2">
+                                    <BiCalendar className="text-xl" />
+                                    <span>Hire Assistant & Book Appointment</span>
+                                </Link>
+                            </> : data.settings.book_by === "manually" ?
+                                <>
+                                    <Link href={pageUrl + "/book-appointment"} className="flex-1 bg-gradient-to-r from-cyan-500 to-cyan-600 hover:from-cyan-600 hover:to-cyan-700 text-white font-bold py-3 px-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-2">
+                                        <BiCalendar className="text-xl" />
+                                        <span>Appointment Booking Request</span>
+                                    </Link>
+                                </> : data.settings.book_by === "call" ? <>
+                                    <a href={`tel:${data.clinic_mobile}`} className="flex-1 bg-gradient-to-r from-cyan-500 to-cyan-600 hover:from-teal-600 hover:to-teal-700 text-white font-bold py-3 px-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-2">
+                                        <BsTelephone className="text-xl" />
+                                        <span>CALL NOW</span>
+                                    </a>
+                                </> : null
+                    }
+                </> : <>
+                    <Link href={`/login?redirect_url=${data.seo_dt.seo_url}/book-appointment`} className="flex-1 bg-gradient-to-r from-cyan-500 to-cyan-600 hover:from-cyan-600 hover:to-cyan-700 text-white font-bold py-3 px-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-2">
+                        <BiUser className="text-xl" />
+                        <span>Login & Book</span>
+                    </Link>
+                </>}
+                <Link href={pageUrl + "/help-center"} className="w-14 h-12 bg-white border-2 border-gray-300 hover:border-cyan-500 rounded-xl flex items-center justify-center transition-all duration-300 shadow-md hover:shadow-lg">
+                    <BiSupport className="text-2xl text-red-400" />
                 </Link>
             </div>
-        }
-        {!cookies[userSecreateKey] ?
+        </div>
+        {cookies[userSecreateKey] ?
             <>
-                <LoginToast message='Please <b>Login/Signup</b> To <b>Book appointment</b>' style={{ bottom: "3.5rem" }} />
-                {/* <NeedHelpBtn style={{ bottom: "30vh" }} /> */}
-            </> : <>
                 {data.settings.book_by === "app" || data.settings.book_by === "manually" ? <>
                     <AppointmentReminder position="reminder-section" doctor_id={data.doctor_id} />
                     <RatingReminder catid={0} doctor_id={data.doctor_id} />
                 </> : <></>}
                 {/* <NeedHelpBtn style={{ bottom: "5rem" }} /> */}
-            </>}
+            </> : <></>
+        }
 
     </>)
 }

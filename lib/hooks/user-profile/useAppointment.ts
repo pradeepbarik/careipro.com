@@ -1,6 +1,6 @@
 import { ChangeEvent, useEffect, useState } from 'react';
 import { fetchAppointmentHistory, Tappointment, fetchAppointmentDetail, TappointmentDetail, fetchCaseDetails, uploadPrescriptionPostCurl, deletePrescriptionCurl, TcaseInfo } from '@/lib/services/apicalls';
-const useAppointment = ({ init, case_id, appointmentId, page }: { init: boolean, case_id?: number, appointmentId?: number, page: "history" | "detail" }) => {
+const useAppointment = ({ init, case_id, appointmentId, page, doctor_id }: { init: boolean, case_id?: number, appointmentId?: number, page: "history" | "detail", doctor_id?: number }) => {
     const [appointments, setAppointments] = useState<Tappointment[]>([]);
     const [appointment, setAppointment] = useState<Tappointment | null>(null);
     const [appointmentDetail, setAppointmentDetail] = useState<TappointmentDetail | null>(null);
@@ -10,7 +10,7 @@ const useAppointment = ({ init, case_id, appointmentId, page }: { init: boolean,
     const [appointmentInfo, setAppointmentInfo] = useState<Record<number, TcaseInfo>>({})
     const [caseAppointmentDetails, setCaseAppointmentDetails] = useState<{ [id: number]: TappointmentDetail }>({});
     const appointmentsHistory = () => {
-        fetchAppointmentHistory(0, 100).then(({ data }) => {
+        fetchAppointmentHistory(0, 100, doctor_id).then(({ data }) => {
             setAppointments(data)
         })
     }
