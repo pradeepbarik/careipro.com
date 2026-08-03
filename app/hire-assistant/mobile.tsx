@@ -172,12 +172,14 @@ const HirePersonalAssistantPageMobile = ({ city, state }: { city: string, state:
             {/* Hero section */}
             <SwiperBanner banners={[
                 <HeroSlide
+                key="hero-slide-1"
                     bannerImage="/careipro-personal-assistant-banner.png"
                     heading={`Looking for a Personal Assistant?`}
                     subtext="Book appointments, get information & order medicine — without stepping out."
                     onCtaClick={scrollToJobForm}
                 />,
                 <HeroSlide
+                key={"hero-slide-2"}
                     bannerImage="/careipro-personal-assitant-banner2.png"
                     heading={`Don't Want to Travel for small work?`}
                     subtext={`Get any type of work done by our personal assistant in ${city}`}
