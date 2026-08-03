@@ -9,6 +9,7 @@ import { Button, SlideUpModal, TextArea } from '@/app/components/mobile/ui';
 import Ratingstars from '@/app/components/mobile/ui/rating-stars';
 import Loader from '@/app/components/common/loader';
 import Login from '@/app/components/mobile/login';
+import SwiperBanner from '@/app/components/mobile/ui/swiper-banner';
 import useMembershipUpgrade from '@/lib/hooks/useMembershipUpgrade';
 import { fetchPatientEnquiries, closePatientEnquiry, cancelPatientEnquiry, submitPatientEnquiry, TPatientEnquiry } from '@/lib/hooks/useClientSideApiCall';
 
@@ -47,6 +48,24 @@ const durationLabel = (duration: number) => {
     return `/${duration} day${duration > 1 ? 's' : ''}`;
 }
 
+const HeroSlide = ({ bannerImage, heading, subtext, onCtaClick }: {bannerImage: string, heading: string, subtext: string, onCtaClick: () => void }) => (
+    <div className='relative'>
+        <img src={bannerImage} alt="Personal Assistant" className="w-full h-auto" />
+        <div className='absolute inset-0' style={{ background: 'linear-gradient(90deg, rgb(181 194 193 / 72%) 0%, rgba(0, 0, 0, 0.35) 55%, rgba(0, 0, 0, 0) 85%)' }} />
+        <div className='absolute top-0 left-0 h-full flex flex-col gap-1 px-5' style={{ maxWidth: '72%' }}>
+            <h1 className='font-bold fs-20 mt-4' style={{ lineHeight: 1.25,color:"rgb(18 56 52)" }}>{heading}</h1>
+            <p className='fs-13 color-white mt-2' style={{ lineHeight: 1.4, opacity: 0.9 }}>{subtext}</p>
+            <button
+                type='button'
+                onClick={onCtaClick}
+                className='flex items-center gap-1 bg-white color-primary font-semibold fs-14 px-4 py-2 rounded-full w-fit shadow-md mt-10'
+            >
+                Get It Done Now <BiChevronRight />
+            </button>
+        </div>
+    </div>
+);
+
 const HirePersonalAssistantPageMobile = ({ city, state }: { city: string, state: string }) => {
     const { plans, selectedPlanId, setSelectedPlanId, selectedPlan, paying, upgradeNow, membershipStatus, showLoginModal, setShowLoginModal } = useMembershipUpgrade({ city, plan_for: 'user_pa' });
     const isLoggedIn = useSelector((state: RootState) => state.authSlice.is_loggedin);
@@ -62,6 +81,11 @@ const HirePersonalAssistantPageMobile = ({ city, state }: { city: string, state:
     const [jobQuery, setJobQuery] = useState('');
     const [submittingJob, setSubmittingJob] = useState(false);
     const [selectedJobType, setSelectedJobType] = useState(jobTypes[0]);
+
+    const scrollToJobForm = () => {
+        setActiveTab('assign');
+        document.getElementById('assign-job-form')?.scrollIntoView({ behavior: 'smooth' });
+    };
     const [showUpgradeModal, setShowUpgradeModal] = useState(false);
 
     useEffect(() => {
@@ -142,15 +166,25 @@ const HirePersonalAssistantPageMobile = ({ city, state }: { city: string, state:
     return (
         <>
             <Header heading="Hire Personal Assistant" template="SUBPAGE" state={state} city={city} showSearch={true} showProfile={true} />
-            <img src="/personal-assistant-mobile.png" alt="Personal Assistant" className="w-full h-auto" />
-            {/* <PatientEnquiryBanner
-                heading="Request Assistance"
-                promptText="Tell us what you need help with — booking an appointment, getting information, ordering medicine, or anything else. Our dedicated assistant will get back to you."
-                placeholder="E.g., Book an appointment with a cardiologist tomorrow evening"
-                doctor_name="Personal Assistant"
-                bannerImage='/personal-assistant-mobile.png'
-            /> */}
-            <div className='flex border-b mx-2 mt-2'>
+            <div>
+               
+            </div>
+            {/* Hero section */}
+            <SwiperBanner banners={[
+                <HeroSlide
+                    bannerImage="/careipro-personal-assistant-banner.png"
+                    heading={`Looking for a Personal Assistant?`}
+                    subtext="Book appointments, get information & order medicine — without stepping out."
+                    onCtaClick={scrollToJobForm}
+                />,
+                <HeroSlide
+                    bannerImage="/careipro-personal-assitant-banner2.png"
+                    heading={`Don't Want to Travel for small work?`}
+                    subtext={`Get any type of work done by our personal assistant in ${city}`}
+                    onCtaClick={scrollToJobForm}
+                />,
+            ]} />
+            <div className='flex border-b mx-2 mt-2 shadow-md'>
                 <button
                     type='button'
                     onClick={() => { setActiveTab('history') }}
@@ -170,7 +204,7 @@ const HirePersonalAssistantPageMobile = ({ city, state }: { city: string, state:
                 
             </div>
             {activeTab === 'assign' ? (
-                <div className="">
+                <div className="" id='assign-job-form'>
                     <div className="px-2 mt-3 pb-24">
                         {!isLoggedIn ? (
                             <div
@@ -190,19 +224,25 @@ const HirePersonalAssistantPageMobile = ({ city, state }: { city: string, state:
                         ) : !membershipStatus?.is_prime_member &&
                             <div
                                 onClick={() => { setShowUpgradeModal(true) }}
-                                className="rounded-xl p-3 mb-3 flex items-center gap-3 shadow-sm"
-                                style={{ background: 'linear-gradient(135deg, #0f766e 0%, #0891b2 100%)' }}
+                                className="rounded-xl p-3 mb-3 flex items-center gap-3 shadow-sm bg-orange-100 border border-orange-400"
                             >
                                 <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center shrink-0">
-                                    <BiCrown className="text-white text-xl" />
+                                    <BiCrown className="bg-orange-600 text-white rounded-full p-1.5 text-3xl" />
                                 </div>
                                 <div className="flex-1 min-w-0">
-                                    <div className="text-white font-bold fs-14">Upgrade to Prime Membership</div>
-                                    <div className="text-white/85 fs-12 leading-tight mt-0.5">Required to assign jobs to our personal assistant</div>
+                                    <div className="font-bold fs-14">Upgrade to Prime Membership</div>
+                                    <div className="fs-12 leading-tight mt-0.5">We will assign a dedicated personal assistant to you</div>
                                 </div>
-                                <BiChevronRight className="text-white text-xl shrink-0" />
+                                <BiChevronRight className="text-xl shrink-0" />
                             </div>
                         }
+                        <TextArea
+                            lable="Write your requirements"
+                            value={jobQuery}
+                            onChange={(e) => { setJobQuery(e.target.value) }}
+                            placeholder="E.g., Book an appointment with a cardiologist tomorrow evening"
+                            className='h-24'
+                        />
                         <div className='flex gap-2 overflow-x-auto hide-scroll-bar mb-2'>
                             {jobTypes.map((t) => (
                                 <span
@@ -214,12 +254,7 @@ const HirePersonalAssistantPageMobile = ({ city, state }: { city: string, state:
                                 </span>
                             ))}
                         </div>
-                        <TextArea
-                            lable="Write your requirements"
-                            value={jobQuery}
-                            onChange={(e) => { setJobQuery(e.target.value) }}
-                            placeholder="E.g., Book an appointment with a cardiologist tomorrow evening"
-                        />
+                        <span>Examples :</span>
                         <div className='flex flex-col gap-2 mt-2'>
                             {(jobTypeSuggestions[selectedJobType] || []).map((suggestion, i) => (
                                 <button
