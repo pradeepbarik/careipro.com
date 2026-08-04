@@ -33,7 +33,7 @@ type TDoctorInfo = {
     verified?: boolean,
     image?: string
 }
-const BookAppointmentForm = ({ state, city, open, service_charge, site_service_charge, service_loc_id, doctor_id, clinic_id, availability, settings, emergencyBookingClose, bookingCloseMessage, slno_groups, pageUrl, doctorInfo, userdetail }: {state:string, city:string, open: boolean, emergencyBookingClose?: number, bookingCloseMessage?: string, service_loc_id: number, clinic_id: number, doctor_id: number, service_charge: number, site_service_charge: number, settings: TDoctorDetail['settings'], availability?: TDoctorvailableData, slno_groups: TDoctorDetail['slno_groups'], pageUrl: string, doctorInfo?: TDoctorInfo, userdetail: any }) => {
+const BookAppointmentForm = ({ state, city, open, service_charge, site_service_charge, service_loc_id, doctor_id, clinic_id, availability, settings, emergencyBookingClose, bookingCloseMessage, slno_groups, pageUrl, doctorInfo, userdetail }: { state: string, city: string, open: boolean, emergencyBookingClose?: number, bookingCloseMessage?: string, service_loc_id: number, clinic_id: number, doctor_id: number, service_charge: number, site_service_charge: number, settings: TDoctorDetail['settings'], availability?: TDoctorvailableData, slno_groups: TDoctorDetail['slno_groups'], pageUrl: string, doctorInfo?: TDoctorInfo, userdetail: any }) => {
     const router = useRouter();
     const autoSuggestRef = useRef<HTMLInputElement>(null);
     const addressFieldRef = useRef<HTMLDivElement>(null);
@@ -118,8 +118,8 @@ const BookAppointmentForm = ({ state, city, open, service_charge, site_service_c
         setUseDifferentContact(false);
     };
 
-    const onSelectNewPatientAddress = (address: {sub_district: string, area_name: string, district: string, state: string }) => {
-        const formattedAddress = `${[address.area_name, address.sub_district,city.toLowerCase()!==address.district.toLowerCase() ? address.district : null, state.toLowerCase()!==address.state.toLowerCase() ? address.state : null].filter(Boolean).join(', ')}`;
+    const onSelectNewPatientAddress = (address: { sub_district: string, area_name: string, district: string, state: string }) => {
+        const formattedAddress = `${[address.area_name, address.sub_district, city.toLowerCase() !== address.district.toLowerCase() ? address.district : null, state.toLowerCase() !== address.state.toLowerCase() ? address.state : null].filter(Boolean).join(', ')}`;
         setNewSavedPatient({ ...newSavedPatient, patient_address: formattedAddress, city: address.district });
         setShowNewPatientAddressModal(false);
     };
@@ -551,6 +551,7 @@ const BookAppointmentForm = ({ state, city, open, service_charge, site_service_c
             </div>
         )
     }
+
     return (
         <>
             {!userdetail &&
@@ -737,7 +738,7 @@ const BookAppointmentForm = ({ state, city, open, service_charge, site_service_c
                         ) : <>
                             <div className='flex items-center gap-2 py-3 px-2 border rounded-md font-semibold color-primary mb-2' onClick={() => { setShowAddSavedPatientForm(true) }}>
                                 <BiPlus className='fs-18' />
-                                 {user_info.user_type==="user" ? "New Member" : "New Patient"}
+                                {user_info.user_type === "user" ? "New Member" : "New Patient"}
                             </div>
                             <div className="max-h-[40vh] overflow-auto">
                                 <ul className='overflow-auto rounded-md border' style={{ maxHeight: "50vh" }}>
