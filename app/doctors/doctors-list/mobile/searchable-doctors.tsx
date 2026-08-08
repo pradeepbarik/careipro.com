@@ -1,6 +1,7 @@
 'use client'
 import NIsToOneDoctorsSliders from "@/app/components/mobile/doctors/vertical-slider"
 import { capitalizeFirstLetter } from "@/lib/helper/format-text";
+import useEventLogger from "@/lib/hooks/useEventLogger";
 import { TDoctor } from "@/lib/types/doctor"
 import { useState, useRef, useEffect } from "react";
 import DoctorFilters, { TActiveFilters } from "./doctor-filters";
@@ -84,6 +85,7 @@ type TProps = {
 };
 
 const SearchableDoctors = ({ doctors, city, specialist_name, markets, nearbyCities }: TProps) => {
+    const { trackClick } = useEventLogger();
     const [query, setQuery] = useState("");
     const [showSuggestions, setShowSuggestions] = useState(false);
     const [selectedDoctor, setSelectedDoctor] = useState<TDoctor | null>(null);
@@ -212,7 +214,11 @@ const SearchableDoctors = ({ doctors, city, specialist_name, markets, nearbyCiti
                         {/* Pulsing attention ring */}
                         <span className="absolute inset-0 rounded-full bg-orange-300 animate-ping opacity-25 pointer-events-none" />
                         <button
-                            onClick={() => setShowAll(true)}
+                            onClick={() => {
+                                // category comes from the visit document server side
+                                trackClick('more_doctors_click', 'doctor_list');
+                                setShowAll(true);
+                            }}
                             className="relative flex items-center gap-2 text-xs font-semibold text-orange-600 border border-orange-300 bg-orange-50 px-5 py-2 rounded-full active:scale-95 transition-all hover:bg-cyan-100 hover:shadow-md hover:border-cyan-400"
                         >
                             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { BiX, BiChevronLeft, BiChevronRight, BiPlayCircle, BiImages, BiCalendar, BiUser } from "react-icons/bi";
 import { BsTelephone } from "react-icons/bs";
 import { SectionHeading } from "@/app/components/mobile/ui";
+import TrackedLink from "@/app/components/client-components/tracked-link";
 import { mediaUrl } from "@/lib/image";
 import { TDoctorDetail } from "@/lib/types/doctor";
 
@@ -22,10 +23,10 @@ const BookingCta = ({ bookingInfo }: { bookingInfo: TBookingInfo }) => {
     const ctaClass = "flex-1 bg-gradient-to-r from-cyan-500 to-cyan-600 text-white font-bold py-3 px-4 rounded-xl shadow-lg flex items-center justify-center gap-2";
     if (bookingInfo.bookBy === "call") {
         return (
-            <a href={`tel:${bookingInfo.clinicMobile}`} className={ctaClass}>
+            <TrackedLink href={`tel:${bookingInfo.clinicMobile}`} ev_nm="call_click" section_name="media_cta" className={ctaClass}>
                 <BsTelephone className="text-xl" />
                 <span>Call Now</span>
-            </a>
+            </TrackedLink>
         )
     }
     if (bookingInfo.bookBy === "app" || bookingInfo.bookBy === "manually") {

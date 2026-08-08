@@ -15,6 +15,8 @@ import { doctorDetailPageUrl, hirePersonalAssistantPageUrl } from '@/lib/helper/
 import Announcements from '@/app/components/mobile/doctors/doctor-detail/announcements';
 //import NeedHelpBtn from "@/app/components/mobile/need-help-btn";
 import LikeShare from "@/app/components/mobile/doctors/doctor-detail/like-share";
+import TrackedLink from "@/app/components/client-components/tracked-link";
+import TrackedNavLink from "@/app/components/client-components/tracked-nav-link";
 import { userinfo, userSecreateKey } from '@/constants/storage_keys';
 import SectionHeading from "@/app/components/mobile/ui/section-heading";
 import { doctorSpecialityIcon } from "@/lib/image";
@@ -132,20 +134,20 @@ const DoctorDetailMobile = async ({ data, availableData, searchParams, cookies }
                 <div className="bg-gray-100 rounded-md px-2 border flex items-center gap-2 py-2 mt-1">
                     <BiPhone className="text-green-600" style={{ fontSize: '1.2rem' }} />
                     <h2 className="font-semibold">Contact</h2>
-                    <a href={`tel:${data.clinic_mobile}`} className="ml-auto flex">
+                    <TrackedLink href={`tel:${data.clinic_mobile}`} ev_nm="call_click" section_name="contact" className="ml-auto flex">
                         {showMaskedMobile(data.clinic_mobile)}
                         <span className="mx-1 border-color-primary border rounded-md px-2 color-primary font-semibold">Call Now</span>
                         {/* <BiChevronRight className="text-xl" /> */}
-                    </a>
+                    </TrackedLink>
                 </div> : <></>}
             {data.whatsapp_number ? <>
                 <div className="bg-gray-100 rounded-md px-2 border flex items-center gap-2 py-2 mt-1">
                     <BiLogoWhatsapp className="text-green-600" style={{ fontSize: '1.2rem' }} />
                     <h2 className="font-semibold">Whatsapp</h2>
-                    <a href={`https://wa.me/${data.whatsapp_number}?text=${encodeURI(getSendEnquiryWhatsappMessage(data.doctor_name))}`} className="ml-auto flex">
+                    <TrackedLink href={`https://wa.me/${data.whatsapp_number}?text=${encodeURI(getSendEnquiryWhatsappMessage(data.doctor_name))}`} ev_nm="whatsapp_click" section_name="contact" className="ml-auto flex">
                         {showMaskedMobile(data.whatsapp_number)}
                         <span className="mx-1 border-color-primary border rounded-md px-2 color-primary font-semibold">Message</span>
-                    </a>
+                    </TrackedLink>
                 </div>
             </> : <></>}
             <div className="bg-gray-100 rounded-md px-2 border flex items-center py-2 mt-1">
@@ -212,24 +214,24 @@ const DoctorDetailMobile = async ({ data, availableData, searchParams, cookies }
                     </Link>
                 </>} */}
             {(data.allSpecializations["DISEASE"] || []).length > 0 &&
-                <Link href={`${pageUrl}/expert-in-disease-treatment`} className={`bg-white border rounded-lg font-semibold px-2 py-1 flex items-center shrink-0 gap-1 ${(searchParams.sub_page?.toLowerCase() === "expert-in-disease-treatment") ? 'bg-primary color-white' : ''}`}>
+                <TrackedNavLink href={`${pageUrl}/expert-in-disease-treatment`} ev_nm="tab_click" section_name="expertise_in" className={`bg-white border rounded-lg font-semibold px-2 py-1 flex items-center shrink-0 gap-1 ${(searchParams.sub_page?.toLowerCase() === "expert-in-disease-treatment") ? 'bg-primary color-white' : ''}`}>
                     <img src="/icon/disease-treatment2.png" alt="Expert In Disease Treatment" className="h-6 w-6 rounded-full bg-white" />
                     <span className="text-nowrap fs-15">Expertise In</span>
-                </Link>
+                </TrackedNavLink>
             }
             {(data.media && data.media.length > 0) &&
                 <>
-                    <Link href={`${pageUrl}/treatment-photos`} className={`bg-white border rounded-lg font-semibold px-2 py-1 flex items-center shrink-0 gap-1 ${(searchParams.sub_page?.toLowerCase() === "treatment-photos") ? 'bg-primary color-white' : ''}`}>
+                    <TrackedNavLink href={`${pageUrl}/treatment-photos`} ev_nm="tab_click" section_name="treatment_photos" className={`bg-white border rounded-lg font-semibold px-2 py-1 flex items-center shrink-0 gap-1 ${(searchParams.sub_page?.toLowerCase() === "treatment-photos") ? 'bg-primary color-white' : ''}`}>
                         <img src="/icon/treatment-photo-and-videos.png" alt="Treatment Photo and Videos" className="h-6 w-6 rounded-full bg-white" />
                         <span className="text-nowrap fs-15">Treatment Photos</span>
-                    </Link>
+                    </TrackedNavLink>
                 </>
             }
             {data.settings.show_patients_feedback ?
-                <Link href={`${pageUrl}/patient-reviews`} className={`bg-white border rounded-lg font-semibold px-2 py-1 flex items-center shrink-0 gap-1 ${(searchParams.sub_page?.toLowerCase() === "patient-reviews") ? 'bg-primary color-white' : ''}`}>
+                <TrackedNavLink href={`${pageUrl}/patient-reviews`} ev_nm="tab_click" section_name="reviews" className={`bg-white border rounded-lg font-semibold px-2 py-1 flex items-center shrink-0 gap-1 ${(searchParams.sub_page?.toLowerCase() === "patient-reviews") ? 'bg-primary color-white' : ''}`}>
                     <BiMessageRoundedDots />
                     <span className="text-nowrap fs-15">Reviews</span>
-                </Link> : <></>
+                </TrackedNavLink> : <></>
             }
         </div>
         {!searchParams.sub_page ?
@@ -305,10 +307,10 @@ const DoctorDetailMobile = async ({ data, availableData, searchParams, cookies }
                                         <span>Appointment Booking Request</span>
                                     </Link>
                                 </> : data.settings.book_by === "call" ? <>
-                                    <a href={`tel:${data.clinic_mobile}`} className="flex-1 bg-gradient-to-r from-cyan-500 to-cyan-600 hover:from-teal-600 hover:to-teal-700 text-white font-bold py-3 px-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-2">
+                                    <TrackedLink href={`tel:${data.clinic_mobile}`} ev_nm="call_click" section_name="booking_cta" className="flex-1 bg-gradient-to-r from-cyan-500 to-cyan-600 hover:from-teal-600 hover:to-teal-700 text-white font-bold py-3 px-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-2">
                                         <BsTelephone className="text-xl" />
                                         <span>CALL NOW</span>
-                                    </a>
+                                    </TrackedLink>
                                 </> : null
                     }
                 </> : <>

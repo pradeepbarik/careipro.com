@@ -3,6 +3,7 @@ import Header from "@/app/components/mobile/header";
 import ClinicBanner from "@/app/components/mobile/clinics/clinic-banners";
 import ClinicDoctors from "@/app/components/mobile/clinics/clinic-doctors";
 import AppointmentReminder from '@/app/components/mobile/appointment-reminder';
+import TrackedLink from "@/app/components/client-components/tracked-link";
 import Rating from "@/app/components/mobile/ui/rating";
 import { TclinicDetail } from '@/lib/hooks/useClinics';
 import { clinicProfilePic } from '@/lib/image';
@@ -152,15 +153,15 @@ const ClinicDetailMobile = ({ data, searchParams }: { data: TclinicDetail, searc
             <div className="mt-16">
                 <div className="fixed bottom-0 left-0 w-full bg-white flex gap-2 px-2 py-2">
                     {data.clinic_info.whatsapp_number &&
-                        <a href={`https://wa.me/${data.clinic_info.whatsapp_number}?text=${encodeURI("Hi,I found your clinic on careipro")}`} target="_blank" className="button flex-1" data-variant="outlined" style={{ color: "#6EB23B", borderColor: "#6EB23B" }}>
+                        <TrackedLink href={`https://wa.me/${data.clinic_info.whatsapp_number}?text=${encodeURI("Hi,I found your clinic on careipro")}`} ev_nm="whatsapp_click" section_name="bottom_bar" target="_blank" className="button flex-1" data-variant="outlined" style={{ color: "#6EB23B", borderColor: "#6EB23B" }}>
                             <BsWhatsapp className="mr-2" style={{ color: "#6EB23B" }} />
                             Whatsapp
-                        </a>
+                        </TrackedLink>
                     }
-                    <a href={`tel:${data.clinic_info.mobile}`} className="button ripple flex-1">
+                    <TrackedLink href={`tel:${data.clinic_info.mobile}`} ev_nm="call_click" section_name="bottom_bar" className="button ripple flex-1">
                         <BsTelephone className="mr-2" />
                         Contact With Clinic
-                    </a>
+                    </TrackedLink>
 
                     {data.clinic_info.whatsapp_number && false &&
                         <div className="flex items-center">

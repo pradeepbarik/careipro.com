@@ -2,6 +2,7 @@ import dynamic from "next/dynamic";
 import { Metadata } from "next";
 import useDeviceInfo from "@/lib/hooks/useDeviceInfo";
 const ContactusMobile = dynamic(() => import("./mobile"));
+const ContactUsDesktop = dynamic(() => import("./desktop"));
 export async function generateMetadata({ searchParams }: { searchParams: any }): Promise<Metadata> {
     return {
         title: `Contact Us - careipro.com`,
@@ -28,6 +29,7 @@ const ContactUs = () => {
     }
     return (
         <>
+        <ContactUsDesktop />
         </>
     )
 }
