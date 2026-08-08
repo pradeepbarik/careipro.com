@@ -15,7 +15,7 @@ const HomepageTopBanner = ({ state, city }: { state: string, city: string }) => 
     return (
         <div className="px-2 relative">
             <SwiperBanner banners={[
-                <div className="relative rounded-md overflow-hidden">
+                <div key={`home-banner-1`} className="relative rounded-md overflow-hidden">
                     <img src="/banners/top-banner2.png" alt="Your Health, Our Care" className="w-full h-auto block rounded-md" />
                     <div className="absolute bottom-4 flex flex-col justify-center gap-2 pl-2 py-3" style={{ maxWidth: '68%' }}>
                         <Link
@@ -28,12 +28,12 @@ const HomepageTopBanner = ({ state, city }: { state: string, city: string }) => 
                         </Link>
                     </div>
                 </div>,
-                <div className="relative rounded-md overflow-hidden">
+                <div key={`home-banner-2`} className="relative rounded-md overflow-hidden">
                     <Link href={`/business-listing/hospital-clinic?utm_source=careipro&utm_medium=home-top-banner&utm_campaign=register-clinic-banner`}>
                     <img src="/banners/register-clinic-banner.png" alt="Your Health, Our Care" className="w-full h-auto block rounded-md" />
                     </Link>
                 </div>,
-                <div className="relative rounded-md overflow-hidden">
+                <div key={`home-banner-3`} className="relative rounded-md overflow-hidden">
                     <Link href={`/business-listing/hospital-clinic?utm_source=careipro&utm_medium=home-top-banner&utm_campaign=personalised-website-banner`}>
                     <img src="/banners/personalised-website.png" alt="Your Health, Our Care" className="w-full h-auto block rounded-md" />
                     </Link>
