@@ -3,10 +3,24 @@ import Link from "next/link";
 import { BiCheck, BiPhone, BiEnvelope, BiChevronDown, BiChevronUp } from "react-icons/bi";
 import { FaUserMd, FaHospital, FaHandHoldingMedical, FaPaw, FaUsers, FaChartLine, FaCalendarCheck, FaStar, FaQuoteLeft } from "react-icons/fa";
 import { MdSpa, MdVerified, MdVisibility, MdSupport } from "react-icons/md";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import DesktopFooter from "../../components/desktop/footer";
 import PageHeader from "../../components/desktop/header";
 import BusinessTypesSection from "../components/business-type-section";
+import { toast } from "react-toastify";
+import { useSelector } from "react-redux";
+import { createSelector } from "@reduxjs/toolkit";
+import { RootState } from "@/lib/store";
+import { selectAuthSlice } from "@/lib/slices/authSlice";
+import useEnquiry from "@/lib/hooks/useEnquiry";
+
+const selectUserInfo = createSelector([selectAuthSlice], (state) => {
+    return {
+        user_mobile: state.user_info?.mobile || "",
+        user_name: state.user_info?.firstname || "",
+        cookies: state.cookies
+    }
+})
 
 // Benefits
 const benefits = [
@@ -538,6 +552,7 @@ const ComparisonSection = () => {
         { text: 'Patient sees clinic photos & facilities', positive: true },
         { text: 'Patients always connect to your clinic, not staff', positive: true },
         { text: 'No risk of losing patients when staff changes', positive: true },
+        { text: 'Post announcements & advertisements to reach patients instantly', positive: true },
     ];
 
     return (
@@ -936,12 +951,25 @@ const DigitalMarketingSection = () => {
 
 // Request Demo Section
 const RequestDemoSection = () => {
+    const { user_mobile, user_name, cookies } = useSelector((state: RootState) => selectUserInfo(state));
+    const { sendEnquiry } = useEnquiry({
+        state: cookies["state"] || "odisha",
+        city: cookies["city"] || "bhadrak",
+        market_name: "",
+        vaertical: "register_clinic"
+    });
     const [formData, setFormData] = useState({
         name: '',
         contactNumber: '',
         clinicName: '',
         location: ''
     });
+
+    useEffect(() => {
+        if (user_mobile) {
+            setFormData((prev) => ({ ...prev, name: prev.name || user_name, contactNumber: prev.contactNumber || user_mobile }))
+        }
+    }, [user_mobile, user_name]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData({
@@ -952,9 +980,32 @@ const RequestDemoSection = () => {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        // Handle form submission
-        console.log('Demo Request:', formData);
-        alert('Thank you! We will contact you soon for the demo.');
+        const contactNumber = formData.contactNumber.trim();
+        if (contactNumber.length !== 10) {
+            toast.error("Please enter 10 digit contact no");
+            return;
+        }
+        if (!formData.clinicName.trim()) {
+            toast.error("Please enter your clinic / doctor name");
+            return;
+        }
+        if (!formData.location.trim()) {
+            toast.error("Please enter your clinic location");
+            return;
+        }
+        sendEnquiry({
+            name: formData.name.trim(),
+            mobile: contactNumber,
+            message: `Requested a free demo. Clinic/Doctor name is <b>${formData.clinicName.trim()}</b>, location is <b>${formData.location.trim()}</b>`,
+            clinic_id: 0,
+            doctor_id: 0,
+            specialist_id: 0,
+            page: "business_listing_hospital_clinic",
+            section: "request_demo"
+        }, () => {
+            toast.success("Thank you! Our team will contact you soon for the demo.");
+            setFormData({ name: '', contactNumber: '', clinicName: '', location: '' });
+        }, { showSuccessAlert: false });
     };
 
     return (

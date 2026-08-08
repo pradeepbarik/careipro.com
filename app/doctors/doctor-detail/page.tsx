@@ -100,8 +100,8 @@ const DoctorDetail = async ({ searchParams }: {
                 section_name: "initial_load",
                 state: searchParams.state,
                 city: searchParams.city,
-                doctor_id: searchParams.doctor_id,
-                clinic_id: searchParams.clinic_id,
+                doctor_id: data.data.doctor_id,
+                clinic_id: data.data.clinic_id,
                 business_name:data.data.doctor_name,
                 vertical: "DOCTOR"
             }} />

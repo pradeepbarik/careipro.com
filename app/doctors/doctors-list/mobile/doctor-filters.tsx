@@ -1,5 +1,6 @@
 'use client'
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import useEventLogger from '@/lib/hooks/useEventLogger';
 
 type TFilterOption = { label: string; value: string };
 
@@ -114,12 +115,28 @@ const FilterPill = ({ label, active, onClick }: { label: string; active: boolean
 );
 
 const DoctorFilters = ({ city, markets, nearbyCities, onFilterChange }: TDoctorFiltersProps) => {
+    const { trackClick } = useEventLogger();
     const [open, setOpen] = useState<TOpenPanel>(null);
     const [showDatePicker, setShowDatePicker] = useState(false);
     const [showModal, setShowModal] = useState(false);
     const [filters, setFilters] = useState<TActiveFilters>({ ...EMPTY_FILTERS });
     const [draftFilters, setDraftFilters] = useState<TActiveFilters>({ ...EMPTY_FILTERS });
-    useEffect(() => { onFilterChange?.(filters); }, [filters]);
+    const previousFilters = useRef<TActiveFilters>({ ...EMPTY_FILTERS });
+    useEffect(() => {
+        onFilterChange?.(filters);
+        // fire once per newly applied filter rather than on every panel toggle,
+        // so the dashboard shows which filters people actually use
+        (['availability', 'session', 'rating', 'area', 'nearbyCity'] as const).forEach((key) => {
+            const value = filters[key];
+            if (value && value !== previousFilters.current[key]) {
+                trackClick('filter_apply', key, value);
+            }
+        });
+        filters.symptoms
+            .filter((symptom) => !previousFilters.current.symptoms.includes(symptom))
+            .forEach((symptom) => trackClick('filter_apply', 'symptoms', symptom));
+        previousFilters.current = filters;
+    }, [filters]);
 
     const toggle = (key: Exclude<keyof TActiveFilters, 'symptoms'>, value: string) =>
         setFilters(f => ({ ...f, [key]: f[key] === value ? null : value }));

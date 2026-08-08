@@ -28,6 +28,9 @@ export const useAuth = () => {
     registerGuestUser(logdata).then(({data,code})=>{
       if(code===200){
         window.localStorage.setItem(g_user_secreate_key,data.secreate_key)
+        // publish to the store as well - page visit logging waits on this,
+        // otherwise a new visitor's first page is never logged
+        dispatch(setGuestUserSecreateKey({ secreate_key: data.secreate_key }));
       }
     });
   }

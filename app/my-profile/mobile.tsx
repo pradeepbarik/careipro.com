@@ -125,7 +125,7 @@ const MyProfileMobile = ({ cookies }: { cookies: Record<string, string> }) => {
                         </li>
                         {user_info.ut === "user" &&
                             <li>
-                                <Link href={"Register-clinic-hospital"} className='flex items-center h-12'>
+                                <Link href={"/business-listing/hospital-clinic?utm_source=careipro&utm_medium=my-profile&utm_campaign=nav-item"} className='flex items-center h-12'>
                                     <AiOutlineTag className='fs-16' />
                                     <span className='ml-2 fs-16'>
                                         Register your Hospital / Clinic
@@ -217,7 +217,7 @@ const MyProfileMobile = ({ cookies }: { cookies: Record<string, string> }) => {
                             </Link>
                         </li>
                         <li>
-                            <Link href={"/Register-clinic-hospital"} className='flex items-center h-12'>
+                            <Link href={"/business-listing/hospital-clinic?utm_source=careipro&utm_medium=my-profile&utm_campaign=nav-item"} className='flex items-center h-12'>
                                 <AiOutlineTag className='fs-16' />
                                 <span className='ml-2 fs-16'>
                                     Register your Hospital / Clinic

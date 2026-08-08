@@ -1,4 +1,5 @@
 import { SectionHeading, SectionSubHeading } from "@/app/components/mobile/ui"
+import TrackedLink from "@/app/components/client-components/tracked-link";
 import { TDoctorDetail, TDoctorvailableData } from '@/lib/types/doctor';
 import { BiChevronRight, BiSolidStar, BiTimeFive, BiUser } from "react-icons/bi";
 import moment, { get_current_datetime } from "@/lib/helper/date-time";
@@ -222,9 +223,9 @@ const OverView = ({ data, availableData }: { data: TDoctorDetail, availableData:
                 </> : <></>
             }
             {data.active && data.active == 1 ?
-                <a target="_blank" href={`https://wa.me/${support_no}?text=Hi, i need some medicines to be home delivered from ${data.doctor_name}'s clinic`}>
+                <TrackedLink target="_blank" ev_nm="whatsapp_click" section_name="medicine_delivery" href={`https://wa.me/${support_no}?text=Hi, i need some medicines to be home delivered from ${data.doctor_name}'s clinic`}>
                     <img src={getMarketingBanner("medicine-delivery.png")} alt="Medicine home deliver from local pharmacy" />
-                </a> : <></>}
+                </TrackedLink> : <></>}
             {(data.settings.show_patients_feedback) && data.topReviews && data.topReviews?.length > 0 ? <>
                 <SectionHeading heading='Rating & Reviews' />
                 <div className="flex gap-3 border rounded-md mx-2">
