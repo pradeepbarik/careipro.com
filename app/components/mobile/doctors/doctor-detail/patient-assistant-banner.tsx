@@ -37,17 +37,8 @@ const PatientAssistantBanner = ({
     return (
         <Link
             href={hirePersonalAssistantPageUrl(state, city)}
-            className="mx-2 mt-2 mb-3 rounded-xl p-4 flex items-center gap-3 shadow-sm"
-            style={{ background: 'linear-gradient(135deg, #0f766e 0%, #0891b2 100%)' }}
         >
-            <div className="w-11 h-11 rounded-full bg-white/20 flex items-center justify-center shrink-0">
-                <BiUser className="text-white text-2xl" />
-            </div>
-            <div className="flex-1 min-w-0">
-                <div className="text-white font-bold fs-15">Hire a Personal Assistant</div>
-                <div className="text-white/85 fs-12 leading-tight mt-0.5">Book appointments, get information & order medicine for you</div>
-            </div>
-            <BiChevronRight className="text-white text-xl shrink-0" />
+            <img src="/patient-assistant.png" alt="Patient Assistant" className="w-full rounded-xl" />
         </Link>
     );
 };
