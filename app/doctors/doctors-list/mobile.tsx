@@ -12,6 +12,7 @@ import BreadCrumbs from '@/app/components/mobile/breadcrumb';
 import { LandscapeAd, StandardAd, WideAd } from '@/app/components/mobile/ads-container';
 import SearchableDoctors from './mobile/searchable-doctors';
 import NIsToOneDoctorsSliders from '@/app/components/mobile/doctors/vertical-slider';
+import HelpMeChoose from '@/app/components/mobile/help-me-choose';
 const DoctorListMobile = async ({ params, data, consultTimings }: { params: any, data: TfetchDoctorsResponse, consultTimings: TConsultTimingsData }) => {
     const doctors = data.doctors.map(dr => ({
         ...dr,
@@ -64,7 +65,7 @@ const DoctorListMobile = async ({ params, data, consultTimings }: { params: any,
             </div>
             <PageHeading heading={`${doctors.length}+ Doctors available in ${capitalizeFirstLetter(params.city)}`} />
             {doctors.length > 4 ? <div className='mt-2'>
-                <SearchableDoctors doctors={doctors} city={params.city} specialist_name={data.specialist_name} markets={data.cityMarkets} nearbyCities={data.neabyCities} />
+                <SearchableDoctors doctors={doctors} city={params.city} specialist_name={data.specialist_name} markets={data.cityMarkets} nearbyCities={data.neabyCities} brandedHospitals={data.branded_hospitals || []} />
             </div> : <></>}
             {data.cityMarkets.length > 0 && false ?
                 <div className="px-2">
@@ -121,6 +122,15 @@ const DoctorListMobile = async ({ params, data, consultTimings }: { params: any,
                     </div>
                 </div>
             </> : <></>}
+            <HelpMeChoose
+                state={params.state}
+                city={params.city}
+                vertical="DOCTOR"
+                page="doctors_list"
+                specialist_id={params.cat_id ? parseInt(params.cat_id) : 0}
+                heading={`Do you need help finding the right doctor?`}
+                modalHeading="Help me find the right doctor"
+            />
             <BreadCrumbs data={[
                 { label: "Careipro", href: "https://careipro.com" },
                 { label: capitalizeFirstLetter(params.city), href: `https://careipro.com/${params.state}/${params.city}` },

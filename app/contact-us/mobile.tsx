@@ -20,6 +20,7 @@ const topics = [
     "Report a problem",
     "List my business",
     "Something else",
+    "Call Not Received",
 ];
 
 const selectUserInfo = createSelector([selectAuthSlice], (state) => {
@@ -132,10 +133,9 @@ const ContactUsMobile = () => {
                     ) : (
                         <>
                             <h2 className="font-semibold fs-16 mb-1">Send us a message</h2>
-                            <p className="fs-13 color-text-light mb-3">Tell us what you need help with and we&apos;ll take it from there.</p>
+                            <p className="fs-13 color-text-light mb-3"><b className="text-red-500">*</b> Incase your call was not received or you have any other queries, please let us know.</p>
 
                             {/* Topic chips */}
-                            <span className="flex font-semibold fs-15 items-center mb-2">What is this about?</span>
                             <div className="flex flex-wrap gap-2 mb-3">
                                 {topics.map((item) => (
                                     <button

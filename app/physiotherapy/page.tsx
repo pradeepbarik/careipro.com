@@ -20,7 +20,7 @@ export async function generateMetadata({ searchParams }: { searchParams: { city:
                 follow: true,
             }
         },
-        alternates:{
+        alternates: {
             canonical: `https://careipro.com/${searchParams.state}/${searchParams.city}/Physiotherapy-Centers` // Relative path will be combined with metadataBase
         }
     }
@@ -42,6 +42,11 @@ const Physiotherapy = ({ searchParams }: TProps) => {
     return (
         <>
             <PhysiotherapyDesktop state={searchParams.state} city={searchParams.city} />
+            <PageVisitLogger data={{
+                page_name: "physiotherapy_home",
+                state: searchParams.state,
+                city: searchParams.city,
+            }} />
         </>
     )
 }

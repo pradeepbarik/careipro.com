@@ -4,12 +4,14 @@ import useEventLogger from '@/lib/hooks/useEventLogger';
 
 type TFilterOption = { label: string; value: string };
 
-export type TActiveFilters = { availability: string | null; session: string | null; rating: string | null; area: string | null; nearbyCity: string | null; symptoms: string[] };
+export type TActiveFilters = { availability: string | null; session: string | null; rating: string | null; area: string | null; nearbyCity: string | null; brandedHospital: string | null; symptoms: string[] };
 
 type TDoctorFiltersProps = {
     city: string;
     markets: Array<{ market_name: string }>;
     nearbyCities: Array<{ city: string; market_name: string }>;
+    //built from the doctors in the result set, empty when none of them is attached to a branded hospital
+    brandedHospitals?: TFilterOption[];
     onFilterChange?: (filters: TActiveFilters) => void;
 };
 
@@ -39,7 +41,7 @@ const ratingOptions: TFilterOption[] = [
 //     { label: 'Infertility issues', value: 'infertility-issues' },
 // ];
 
-const EMPTY_FILTERS = { availability: null, session: null, rating: null, area: null, nearbyCity: null, symptoms: [] as string[] };
+const EMPTY_FILTERS = { availability: null, session: null, rating: null, area: null, nearbyCity: null, brandedHospital: null, symptoms: [] as string[] };
 
 function getNext15Dates(): Array<{ label: string; value: string }> {
     const dates: Array<{ label: string; value: string }> = [];
@@ -63,7 +65,7 @@ function formatAvailabilityLabel(value: string | null): string {
     return new Date(y, m - 1, d).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' });
 }
 
-type TOpenPanel = 'availability' | 'session' | 'rating' | 'area' | 'nearbyCity' | 'symptoms' | null;
+type TOpenPanel = 'availability' | 'session' | 'rating' | 'area' | 'nearbyCity' | 'brandedHospital' | 'symptoms' | null;
 
 const ChevronDown = () => (
     <svg className="w-3 h-3 ml-1 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
@@ -114,7 +116,7 @@ const FilterPill = ({ label, active, onClick }: { label: string; active: boolean
     </button>
 );
 
-const DoctorFilters = ({ city, markets, nearbyCities, onFilterChange }: TDoctorFiltersProps) => {
+const DoctorFilters = ({ city, markets, nearbyCities, brandedHospitals = [], onFilterChange }: TDoctorFiltersProps) => {
     const { trackClick } = useEventLogger();
     const [open, setOpen] = useState<TOpenPanel>(null);
     const [showDatePicker, setShowDatePicker] = useState(false);
@@ -126,7 +128,7 @@ const DoctorFilters = ({ city, markets, nearbyCities, onFilterChange }: TDoctorF
         onFilterChange?.(filters);
         // fire once per newly applied filter rather than on every panel toggle,
         // so the dashboard shows which filters people actually use
-        (['availability', 'session', 'rating', 'area', 'nearbyCity'] as const).forEach((key) => {
+        (['availability', 'session', 'rating', 'area', 'nearbyCity', 'brandedHospital'] as const).forEach((key) => {
             const value = filters[key];
             if (value && value !== previousFilters.current[key]) {
                 trackClick('filter_apply', key, value);
@@ -164,7 +166,7 @@ const DoctorFilters = ({ city, markets, nearbyCities, onFilterChange }: TDoctorF
 
     const areaOptions: TFilterOption[] = markets.map(m => ({ label: m.market_name, value: m.market_name }));
     const cityOptions: TFilterOption[] = nearbyCities.map(c => ({ label: c.market_name || c.city, value: c.city }));
-    const activeCount = [filters.availability, filters.session, filters.rating, filters.area, filters.nearbyCity].filter(Boolean).length + filters.symptoms.length;
+    const activeCount = [filters.availability, filters.session, filters.rating, filters.area, filters.nearbyCity, filters.brandedHospital].filter(Boolean).length + filters.symptoms.length;
 
     return (
         <>
@@ -206,6 +208,14 @@ const DoctorFilters = ({ city, markets, nearbyCities, onFilterChange }: TDoctorF
                         open={open === 'symptoms'}
                         onClick={() => togglePanel('symptoms')}
                     /> */}
+                    {brandedHospitals.length > 0 && (
+                        <GroupChip
+                            label={filters.brandedHospital ? brandedHospitals.find(o => o.value === filters.brandedHospital)?.label ?? 'Hospital' : 'Hospital'}
+                            active={!!filters.brandedHospital}
+                            open={open === 'brandedHospital'}
+                            onClick={() => togglePanel('brandedHospital')}
+                        />
+                    )}
                     <GroupChip label={formatAvailabilityLabel(filters.availability)} active={!!filters.availability} open={open === 'availability'} onClick={() => togglePanel('availability')} />
                     <GroupChip
                         label={filters.session ? sessionOptions.find(o => o.value === filters.session)?.label ?? 'Session' : 'Session'}
@@ -271,6 +281,10 @@ const DoctorFilters = ({ city, markets, nearbyCities, onFilterChange }: TDoctorF
                                 <OptionItem key={o.value} label={o.label} active={filters.session === o.value}
                                     onClick={() => { toggle('session', o.value); setOpen(null); }} />
                             ))}
+                            {open === 'brandedHospital' && brandedHospitals.map(o => (
+                                <OptionItem key={o.value} label={o.label} active={filters.brandedHospital === o.value}
+                                    onClick={() => { toggle('brandedHospital', o.value); setOpen(null); }} />
+                            ))}
                             {/* {open === 'area' && areaOptions.map(o => (
                                 <OptionItem key={o.value} label={o.label} active={filters.area === o.value}
                                     onClick={() => { toggle('area', o.value); setOpen(null); }} />
@@ -323,6 +337,18 @@ const DoctorFilters = ({ city, markets, nearbyCities, onFilterChange }: TDoctorF
                                     ))}
                                 </div>
                             </div>
+                            {/* Branded hospital */}
+                            {brandedHospitals.length > 0 && (
+                                <div>
+                                    <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-2">Hospital</p>
+                                    <div className="flex flex-wrap gap-2">
+                                        {brandedHospitals.map(o => (
+                                            <FilterPill key={o.value} label={o.label} active={draftFilters.brandedHospital === o.value}
+                                                onClick={() => draftToggle('brandedHospital', o.value)} />
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
                             {/* Session */}
                             <div>
                                 <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-2">Session</p>

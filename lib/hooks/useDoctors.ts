@@ -37,6 +37,7 @@ export type TfetchDoctorsResponse = {
     specialist_name: string,
     seo_dt: TSeodt,
     doctors: TDoctor[],
+    branded_hospitals?: Array<{ label: string, value: string }>,
     neabyCities: Array<{
         city: string,
         state: string,

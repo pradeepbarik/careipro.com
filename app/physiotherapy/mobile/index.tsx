@@ -3,16 +3,20 @@ import { SectionHeading } from '@/app/components/mobile/ui';
 import SwiperBanner from '../../components/mobile/ui/swiper-banner';
 import { fetchPhysiotherapyHomePageData } from '@/lib/hooks/physiotherapy/usePhysiotherapy';
 import { clinicBannerImage } from '@/lib/image';
-import Specializations from './specializations';
-import Clinics from "./clinics";
 import Link from "next/link";
-import SectionBanners from "@/app/components/mobile/section-banners";
 import { TSectionBanner, TSiteBanner } from "@/lib/types/home-page";
+import dynamic from "next/dynamic";
+const SectionBanners = dynamic(() => import('@/app/components/mobile/section-banners'));
+const Specializations = dynamic(() => import("./specializations"));
+const Clinics = dynamic(() => import("./clinics"));
+const PhysioTherapists=dynamic(()=>import("./physiotherapists"))
+const WhenToConsult=dynamic(()=>import("./when-to-consult"))
+const HelpMeChoose=dynamic(()=>import("@/app/components/mobile/help-me-choose"))
 const PhysiotherapyMobile = async ({ state, city }: { state: string, city: string }) => {
     const pageData = await fetchPhysiotherapyHomePageData(state, city)
     return (
         <>
-            <Header heading="Physiotherapist" template="SUBPAGE" />
+            <Header heading="Physiotherapist" template="SUBPAGE" showProfile={true} showSearch={true} />
             {pageData.sections.map((section, i) =>
                 <div className='mt-2' key={`section-${i}`}>
                     {section.heading && <SectionHeading className='px-2' heading={section.heading} />}
@@ -33,6 +37,8 @@ const PhysiotherapyMobile = async ({ state, city }: { state: string, city: strin
                                 <img src={section.banner?.banner} className='h-full rounded-md' />
                             </Link>
                         </div>
+                    </>:section.section_type==="doctors"?<>
+                        <PhysioTherapists data={pageData.doctors || {}} doctor_ids={section.doctor_ids || []} />
                     </> : section.section_type === "clinics" ? <div className="px-2">
                         <Clinics data={section.clinics || []} state={state} city={city} />
                     </div> : section.section_type === "banners" ? <>
@@ -43,6 +49,16 @@ const PhysiotherapyMobile = async ({ state, city }: { state: string, city: strin
                     }
                 </div>
             )}
+            <WhenToConsult city={city} />
+            <HelpMeChoose
+                state={state}
+                city={city}
+                vertical="physiotherapy"
+                page="physiotherapy_home"
+                modalHeading="Help me find the right physiotherapist"
+                modalSubText="Share your problem and contact details, our team will call you and suggest the right physiotherapist as per your requirement."
+                successMessage="Our team will call you shortly to suggest the right physiotherapist."
+            />
         </>
     )
 }

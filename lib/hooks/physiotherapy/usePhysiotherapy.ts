@@ -47,6 +47,32 @@ export type TClinic = {
     }>,
     doctors_cnt: number,
 }
+export type TPhysioTherapistInfo = {
+    id: number,
+    doctor_id: number,
+    service_location_id: number,
+    name: string,
+    mobile: string | null,
+    gender: string,
+    experience: number,
+    image: string,
+    position: string,
+    rating: string,
+    seo_url: string,
+    category: string | null,
+    qualification_disp: string,
+    specialization: string | null,
+    business_type: string,
+    specialists: string[],
+    clinic_id: number,
+    clinic: string,
+    city: string,
+    place: string,
+    location:string,
+    contact_no: string,
+    service_charge: number,
+    home_visit: number,
+}
 export type TPhysiotherapyHomepageData = {
     sections: Array<{
         heading: string,
@@ -64,14 +90,15 @@ export type TPhysiotherapyHomepageData = {
             banner_redirection_url: string
         },
         clinics?: Array<TClinic>
-    }>
+    }>,
+    doctors?: Record<string, TPhysioTherapistInfo>
 }
 export const fetchPhysiotherapyHomePageData = async (state: string, city: string) => {
     try {
         const res = await fetchJson<TPhysiotherapyHomepageData>(`/cache/${state.replace(" ", "-").toLowerCase()}/${city.replace(" ", "-").toLowerCase()}/physiotherapy-home-page.json`);
         return res;
     } catch (err: any) {
-        const { data } = await fetchJson<IResponse<TPhysiotherapyHomepageData>>(`/init-cache/physiotherapy-home-page-data?state=${state.toLowerCase().replace(" ", "-")}&city=${city.toLowerCase().replace(' ', '-')}`);
+        const { data } = await fetchJson<IResponse<TPhysiotherapyHomepageData>>(`/init-cache/physiotherapy-home-page-data?state=${state.toLowerCase().replace(" ", "-")}&city=${city.toLowerCase().replace(' ', '-')}`,true);
         return data;
     }
 }

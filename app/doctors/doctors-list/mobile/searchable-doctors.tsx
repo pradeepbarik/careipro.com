@@ -6,7 +6,12 @@ import { TDoctor } from "@/lib/types/doctor"
 import { useState, useRef, useEffect } from "react";
 import DoctorFilters, { TActiveFilters } from "./doctor-filters";
 
-const EMPTY_FILTERS: TActiveFilters = { availability: null, session: null, rating: null, area: null, nearbyCity: null, symptoms: [] };
+const EMPTY_FILTERS: TActiveFilters = { availability: null, session: null, rating: null, area: null, nearbyCity: null, brandedHospital: null, symptoms: [] };
+
+//filter options are built in the cache, doctor rows still carry the raw spelling so match on the normalized value
+function normalizeHospital(name: string | undefined | null): string {
+    return (name || '').trim().toLowerCase();
+}
 
 function parseLocalDate(dateStr: string): Date {
     const [y, m, d] = dateStr.split('-').map(Number);
@@ -39,6 +44,7 @@ function applyFilters(doctors: TDoctor[], filters: TActiveFilters): TDoctor[] {
 
     for (const dr of doctors) {
         if (filters.area && dr.market_name !== filters.area) continue;
+        if (filters.brandedHospital && normalizeHospital(dr.branded_hospital) !== filters.brandedHospital) continue;
 
         let matched_consult_date: TDoctor['matched_consult_date'] = undefined;
 
@@ -82,9 +88,10 @@ type TProps = {
     specialist_name: string;
     markets: Array<{ market_name: string }>;
     nearbyCities: Array<{ city: string; market_name: string }>;
+    brandedHospitals: Array<{ label: string; value: string }>;
 };
 
-const SearchableDoctors = ({ doctors, city, specialist_name, markets, nearbyCities }: TProps) => {
+const SearchableDoctors = ({ doctors, city, specialist_name, markets, nearbyCities, brandedHospitals }: TProps) => {
     const { trackClick } = useEventLogger();
     const [query, setQuery] = useState("");
     const [showSuggestions, setShowSuggestions] = useState(false);
@@ -120,14 +127,14 @@ const SearchableDoctors = ({ doctors, city, specialist_name, markets, nearbyCiti
         return () => document.removeEventListener('mousedown', handler);
     }, []);
 
-    const hasActiveFilters = !!(filters.availability || filters.session || filters.area || filters.nearbyCity || filters.symptoms.length > 0);
+    const hasActiveFilters = !!(filters.availability || filters.session || filters.area || filters.nearbyCity || filters.brandedHospital || filters.symptoms.length > 0);
     const previewDoctors = hasActiveFilters ? filteredDoctors : filteredDoctors.slice(4, 6);
     const remainingDoctors = hasActiveFilters ? [] : filteredDoctors.slice(6);
 
     return (
         <>
             <div className="sticky top-14 z-20 bg-white shadow-sm">
-                <DoctorFilters city={city} nearbyCities={nearbyCities} markets={markets} onFilterChange={setFilters} />
+                <DoctorFilters city={city} nearbyCities={nearbyCities} markets={markets} brandedHospitals={brandedHospitals} onFilterChange={setFilters} />
             </div>
             {/* Search box with suggestions */}
             <div ref={wrapperRef} className="mx-3 mb-3 relative">
