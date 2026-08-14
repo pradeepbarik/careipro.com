@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Script from "next/script";
-import { BiSolidMap, BiClinic, BiTimeFive,BiRightArrowAlt } from "react-icons/bi";
+import { BiSolidMap, BiClinic, BiTimeFive, BiRightArrowAlt, BiBuildings } from "react-icons/bi";
 import { TDoctor } from "@/lib/types/doctor";
 import { doctorProfilePic } from '@/lib/image';
 import { doctorDetailPageUrl } from '@/lib/helper/link';
@@ -33,7 +33,7 @@ const NIsToOneDoctorsSliders = ({ data, type = 'DOCTOR', showAvaileTime }: { dat
     return (
         <div className="">
             {data.map((doctor, i) => {
-                const doctorDtlpgUrl = doctorDetailPageUrl({ doctor_id: doctor.doctor_id, clinic_id: doctor.clinic_id, service_loc_id: doctor.service_location_id, seo_url: doctor.doctor_seo_url, city: doctor.city, state: doctor.state, market_name: doctor.market_name,type: doctor.business_type })
+                const doctorDtlpgUrl = doctorDetailPageUrl({ doctor_id: doctor.doctor_id, clinic_id: doctor.clinic_id, service_loc_id: doctor.service_location_id, seo_url: doctor.doctor_seo_url, city: doctor.city, state: doctor.state, market_name: doctor.market_name, type: doctor.business_type })
                 return (
                     <Link key={doctor.service_location_id} className="bg-white border-b shadow-md mb-1 block" href={doctorDtlpgUrl} title={`${doctor.doctor_name} in ${doctor.clinic},${doctor.city}`}>
                         <div className="flex py-2 px-2 gap-3">
@@ -41,7 +41,7 @@ const NIsToOneDoctorsSliders = ({ data, type = 'DOCTOR', showAvaileTime }: { dat
                                 <img alt={"Profile picture of " + doctor.doctor_name} src={doctorProfilePic(doctor.doctor_profile_pic)} className="w-20 h-20 rounded-md" />
                                 {doctor.experience > 0 && (
                                     <span className="text-[10px] font-bold text-red-700 border border-red-200 rounded-full px-2 py-0.5 w-full text-center leading-tight">
-                                       Exp: {doctor.experience}+ Yrs
+                                        Exp: {doctor.experience}+ Yrs
                                     </span>
                                 )}
                             </div>
@@ -52,6 +52,11 @@ const NIsToOneDoctorsSliders = ({ data, type = 'DOCTOR', showAvaileTime }: { dat
                                         {doctor.qualification_disp && <span>{doctor.qualification_disp}</span>}
                                         {doctor.position && <span>{doctor.position}</span>}
                                         {doctor.specialists && <span>{doctor.specialists}</span>}
+                                        {doctor.branded_hospital &&
+                                            <span className="flex items-center gap-1 w-fit text-[10px] font-bold text-amber-800 bg-amber-50 border border-amber-200 rounded-md px-1.5 py-0.5 leading-snug">
+                                                <BiBuildings className="shrink-0" />{doctor.branded_hospital}
+                                            </span>
+                                        }
                                         {type === 'DOCTOR' && <>
                                             {doctor.matched_consult_date
                                                 ? <div className="mt-0.5 flex">
@@ -66,7 +71,7 @@ const NIsToOneDoctorsSliders = ({ data, type = 'DOCTOR', showAvaileTime }: { dat
                                                             <div key={idx} className="text-xs text-gray-600 leading-snug">{slot}</div>
                                                         ))}
                                                     </div>
-                                                  </div>
+                                                </div>
                                                 : doctor.display_consulting_timing && doctor.display_consulting_timing.length > 0
                                                     ? <div className="mt-0.5">
                                                         {doctor.display_consulting_timing.map((dt, idx) => (
@@ -84,14 +89,14 @@ const NIsToOneDoctorsSliders = ({ data, type = 'DOCTOR', showAvaileTime }: { dat
                                                                 </span>
                                                             </div>
                                                         ))}
-                                                      </div>
+                                                    </div>
                                                     : doctor.consult_dates && doctor.consult_dates.length > 0
                                                         ? <ConsultTimingBadge consult_dates={doctor.consult_dates} doctorName={doctor.doctor_name} />
                                                         : doctor.availability
                                                             ? <span className="flex items-center">
-                                                                <BiTimeFive/>&nbsp;
+                                                                <BiTimeFive />&nbsp;
                                                                 <span className="color-secondary font-semibold">{doctor.availability}</span>
-                                                              </span>
+                                                            </span>
                                                             : <></>
                                             }
                                         </>}
@@ -100,11 +105,11 @@ const NIsToOneDoctorsSliders = ({ data, type = 'DOCTOR', showAvaileTime }: { dat
                                 </div>
                             </div>
                         </div>
-                        <hr/>
+                        <hr />
                         <div className="flex items-center px-2 py-2">
                             <div className="flex flex-col leading-5">
                                 {type === "CLINIC_DOCTOR" && <>
-                                            
+
                                     {doctor.availability ?
                                         <span>
                                             <BiTimeFive className="color-primary" />&nbsp;
@@ -133,7 +138,7 @@ const NIsToOneDoctorsSliders = ({ data, type = 'DOCTOR', showAvaileTime }: { dat
                                 {type === "DOCTOR" ?
                                     // <Link href={doctorDetailPageUrl({ doctor_id: doctor.doctor_id, clinic_id: doctor.clinic_id, service_loc_id: doctor.service_location_id, seo_url: doctor.doctor_seo_url, city: doctor.city, state: doctor.state, market_name: doctor.market_name })} className="button py-2 text one-line text-xs rounded-2xl text-center" data-variant='contained' >Doctor detail</Link>
                                     <span title={`${doctor.doctor_name} in ${doctor.clinic},${doctor.city}`} className="border rounded-full border-color-primary" >
-                                        <BiRightArrowAlt className="text-2xl color-primary"/>
+                                        <BiRightArrowAlt className="text-2xl color-primary" />
                                     </span>
                                     : <>
                                         <Link className="button one-line" href={doctorDetailPageUrl({ doctor_id: doctor.doctor_id, clinic_id: doctor.clinic_id, service_loc_id: doctor.service_location_id, seo_url: doctor.doctor_seo_url, city: doctor.city, state: doctor.state, market_name: doctor.market_name, type: doctor.business_type })}>Book Appointment</Link>

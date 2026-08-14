@@ -20,6 +20,7 @@ export type TDoctor = {
     locality: string,
     state: string,
     specialists?: string,
+    branded_hospital?: string,
     availability: string,
     ldjson?: string,
     display_consulting_timing?: Array<{
@@ -156,6 +157,7 @@ export type TDoctorDetail = TWeeklyConsultingTiming & {
     rating_count?: number,
     review_count?: number,
     specialty:string|null,
+    branded_hospital?: string|null,
     active?: number,
     topReviews?: Array<{
         id:number,

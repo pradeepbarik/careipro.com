@@ -5,6 +5,7 @@ import { TDoctorDetail, TDoctorvailableData } from '@/lib/types/doctor';
 import { TsearchParams } from "../doctor-detail/types";
 import { doctorDetailPageUrl, hirePersonalAssistantPageUrl } from '@/lib/helper/link';
 import { userinfo } from '@/constants/storage_keys';
+import { support_no } from '@/constants/site-config';
 import LikeShare from '@/app/components/mobile/doctors/doctor-detail/like-share';
 import Header from '@/app/components/mobile/header';
 import BookAppointment from '@/app/components/mobile/doctors/doctor-detail/book-appointment-form';
@@ -58,9 +59,10 @@ const BookAppointmentMobile = ({ data, availableData, searchParams, cookies }: {
                         <a href={`${hirePersonalAssistantPageUrl(data.clinic_state,data.clinic_city)}`} className="w-full py-3 bg-gradient-to-r from-cyan-500 to-cyan-600 text-white rounded-lg font-semibold hover:from-teal-600 hover:to-teal-700 transition-all flex items-center justify-center gap-2">
                             Hire Personal Assistant & Book Appointment
                         </a>
-                        <Link href={pageUrl.replace("/book-appointment", "")} className="w-full py-3 bg-gray-100 text-gray-700 rounded-lg font-semibold hover:bg-gray-200 transition-colors flex items-center justify-center">
-                            Go Back
-                        </Link>
+                        <a href={`tel:${support_no}`} className="w-full py-3 bg-gray-100 text-gray-700 rounded-lg font-semibold hover:bg-gray-200 transition-colors flex items-center justify-center gap-2">
+                            <BsTelephone className="text-lg" />
+                            Need Help?
+                        </a>
                     </div>
                 </div>
             </div>

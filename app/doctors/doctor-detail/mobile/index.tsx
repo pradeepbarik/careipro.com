@@ -1,7 +1,7 @@
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import { BsTelephone } from "react-icons/bs";
-import { BiGridAlt, BiMessageRoundedDots, BiTimeFive, BiLocationPlus, BiPhone, BiChevronRight, BiTagAlt, BiLogoWhatsapp, BiMoney, BiUser, BiCalendar, BiSupport, BiInfoCircle } from "react-icons/bi";
+import { BiGridAlt, BiMessageRoundedDots, BiTimeFive, BiLocationPlus, BiPhone, BiChevronRight, BiTagAlt, BiLogoWhatsapp, BiMoney, BiUser, BiCalendar, BiSupport, BiInfoCircle, BiBuildings } from "react-icons/bi";
 import Header from '@/app/components/mobile/header';
 //import DoctorFeedback from "@/app/components/mobile/doctors/doctor-detail/doctor-feedback";
 //import { SectionHeading } from '@/app/components/mobile/ui';
@@ -90,11 +90,18 @@ const DoctorDetailMobile = async ({ data, availableData, searchParams, cookies }
             </div>
             <div className="grow">
                 <div className="flex">
-                    <div className="flex flex-col">
+                    <div className="flex flex-col grow min-w-0">
                         <div className='font-semibold fs-17'>{data.doctor_name}{data.specialty ? ` - ${data.specialty}` : ''}</div>
                         <span>{data.position}</span>
                         {data.qualification_disp && <span>{data.qualification_disp}</span>}
-                        <span>{data.experience} Years of Exp</span>
+                        <div className="flex items-center gap-2">
+                            <span>{data.experience} Years of Exp</span>
+                            {data.branded_hospital &&
+                                <span className="flex items-center gap-1 ml-auto shrink-0 text-[10px] font-bold text-amber-800 bg-amber-50 border border-amber-200 rounded-md px-1.5 py-0.5 leading-snug">
+                                    <BiBuildings className="shrink-0" />{data.branded_hospital}
+                                </span>
+                            }
+                        </div>
                     </div>
                 </div>
             </div>
@@ -104,7 +111,7 @@ const DoctorDetailMobile = async ({ data, availableData, searchParams, cookies }
         </div> */}
         {combinedAnnouncements.length > 0 && <Announcements announcements={combinedAnnouncements} />}
         <div className="px-2 mt-1">
-            <div className="bg-gray-100 rounded-md px-2 border flex gap-1 items-center py-2">
+            <div className="bg-gray-50 rounded-md px-2 border flex gap-1 items-center py-2">
                 <BiTagAlt className="rotate-90 color-primary shrink-0" style={{ fontSize: '1rem' }} />
                 <h2 className="font-semibold fs-15">Specialization</h2>
                 <div className="ml-auto text-right">
@@ -112,7 +119,7 @@ const DoctorDetailMobile = async ({ data, availableData, searchParams, cookies }
                 </div>
             </div>
             {data.clinic_id > 0 &&
-                <div className="bg-gray-100 rounded-md px-2 border flex gap-1 items-center py-2 mt-2">
+                <div className="bg-gray-50 rounded-md px-2 border flex gap-1 items-center py-2 mt-2">
                     <img src={clinicProfilePic(data.clinic_logo || "")} alt={`${data.clinic_name} Logo`} className="h-6 w-6 rounded-md shrink-0" />
                     <Link href={data.clinic_dtlpg_url || ''} className="ml-2 font-semibold fs-16">{data.clinic_name}</Link>
                     {data.other_doc_cnt && data.other_doc_cnt > 0 ? <>
@@ -122,7 +129,7 @@ const DoctorDetailMobile = async ({ data, availableData, searchParams, cookies }
                         </Link>
                     </> : <></>}
                 </div>}
-            <div className="bg-gray-100 rounded-md px-2 border flex gap-2 items-center py-2 mt-1">
+            <div className="bg-gray-50 rounded-md px-2 border flex gap-2 items-center py-2 mt-1">
                 <BiLocationPlus className="text-orange-600 shrink-0" style={{ fontSize: '1.2rem' }} />
                 <h2 className="font-semibold shrink-0">Location</h2>
                 <a target="_blank" href={`https://www.google.com/maps/dir/?api=1&destination=${data.location_lat},${data.location_lng}`} className="ml-auto text-right flex items-center">
@@ -131,7 +138,7 @@ const DoctorDetailMobile = async ({ data, availableData, searchParams, cookies }
                 </a>
             </div>
             {data.clinic_mobile ?
-                <div className="bg-gray-100 rounded-md px-2 border flex items-center gap-2 py-2 mt-1">
+                <div className="bg-gray-50 rounded-md px-2 border flex items-center gap-2 py-2 mt-1">
                     <BiPhone className="text-green-600" style={{ fontSize: '1.2rem' }} />
                     <h2 className="font-semibold">Contact</h2>
                     <TrackedLink href={`tel:${data.clinic_mobile}`} ev_nm="call_click" section_name="contact" className="ml-auto flex">
@@ -141,7 +148,7 @@ const DoctorDetailMobile = async ({ data, availableData, searchParams, cookies }
                     </TrackedLink>
                 </div> : <></>}
             {data.whatsapp_number ? <>
-                <div className="bg-gray-100 rounded-md px-2 border flex items-center gap-2 py-2 mt-1">
+                <div className="bg-gray-50 rounded-md px-2 border flex items-center gap-2 py-2 mt-1">
                     <BiLogoWhatsapp className="text-green-600" style={{ fontSize: '1.2rem' }} />
                     <h2 className="font-semibold">Whatsapp</h2>
                     <TrackedLink href={`https://wa.me/${data.whatsapp_number}?text=${encodeURI(getSendEnquiryWhatsappMessage(data.doctor_name))}`} ev_nm="whatsapp_click" section_name="contact" className="ml-auto flex">
@@ -150,7 +157,7 @@ const DoctorDetailMobile = async ({ data, availableData, searchParams, cookies }
                     </TrackedLink>
                 </div>
             </> : <></>}
-            <div className="bg-gray-100 rounded-md px-2 border flex items-center py-2 mt-1">
+            <div className="bg-gray-50 rounded-md px-2 border flex items-center py-2 mt-1">
                 <BiMoney className="text-green-600" style={{ fontSize: '1.2rem' }} />
                 <h2 className="ml-2 font-semibold">Consulting Fee</h2>
                 <span className="ml-auto font-bold">{formatCurrency(parseInt(data.service_charge))}</span>
