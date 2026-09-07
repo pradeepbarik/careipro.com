@@ -1,7 +1,7 @@
 'use client'
 import Link from 'next/link';
 import { AiFillCaretDown } from "react-icons/ai";
-import { BiSolidChevronLeft, BiUser, BiSearch } from "react-icons/bi";
+import { BiSolidChevronLeft, BiUser, BiSearch, BiBell } from "react-icons/bi";
 import { HiLocationMarker } from "react-icons/hi";
 import classes from "./header.module.scss";
 import { ReactNode, useState, useEffect } from 'react';
@@ -122,15 +122,27 @@ const Header = ({ template = "HOMEPAGE", heading = "", headingElement = "h1", st
     }
     return <>
         <div style={{ height: "3.7rem" }}>
-            <div className={`flex items-center px-2 py-2 fixed bg-white ${classes.container}`}>
-                <img src="/careipro-primary-logo.png" alt='Careipro logo' className={`${classes.logo}`} />
-                <div className='ml-auto flex items-center gap-2'>
-                    <Link href={"/service-available-cities"} className={`px-3 py-1.5 ml-2 flex items-center gap-1 fs-13 font-semibold capitalize ${classes.citySelection}`}>
-                        <HiLocationMarker className='color-primary text-base shrink-0' />
-                        {city ? city : 'Your Location'}
-                        <AiFillCaretDown className='fs-11' />
+            <div className={`flex items-center justify-between px-2 py-2 fixed bg-white ${classes.container}`}>
+                <div className='flex flex-col shrink-0'>
+                    <img src="/careipro-primary-logo.png" alt='Careipro logo' className={`${classes.logo}`} />
+                    <span className='color-text-light leading-none' style={{ fontSize: '0.55rem' }}>Your Health, Our Care</span>
+                </div>
+                {/* position: fixed on this row (via classes.container) already makes it
+                    a positioning context, so this centers on the row itself regardless
+                    of how wide the logo vs. the icons on the right end up being. */}
+                <Link href={"/service-available-cities"} className={`absolute left-1/2 -translate-x-1/2 px-3 py-1.5 flex items-center gap-1 fs-13 font-semibold capitalize ${classes.citySelection}`}>
+                    <HiLocationMarker className='color-primary text-base shrink-0' />
+                    {city ? city : 'Your Location'}
+                    <AiFillCaretDown className='fs-11' />
+                </Link>
+                <div className='flex items-center gap-2'>
+                    {/* No notifications feature/page exists yet - this is a static
+                        placeholder icon (links to profile) until one is built. */}
+                    <Link href={"/my-profile"} title='Notifications' className='relative flex items-center justify-center rounded-full shrink-0 border border-color-grey' style={{ width: '2.2rem', height: '2.2rem' }}>
+                        <BiBell className='color-black text-lg' />
+                        <span className='absolute top-1 right-1.5 block h-2 w-2 rounded-full bg-red-500 border border-white' />
                     </Link>
-                    <Link href={"/my-profile"} title='My Profile' className='flex items-center justify-center rounded-full shrink-0 bg-cyan-600' style={{ width: '2.2rem', height: '2.2rem', background: 'var(--primary-color)' }}>
+                    <Link href={"/my-profile"} title='My Profile' className='flex items-center justify-center rounded-full shrink-0' style={{ width: '2.2rem', height: '2.2rem', background: '#1f2937' }}>
                         <BiUser className='text-white text-lg' />
                     </Link>
                 </div>

@@ -21,6 +21,8 @@ const AppointmentReminder = dynamic(() => import("../../mobile/appointment-remin
 const RatingReminder = dynamic(() => import("../../mobile/rating-reminder"), { ssr: false });
 const OwnBusinessCard = dynamic(() => import("../../mobile/own-business-card"), { ssr: false });
 const HomepageTopBanner = dynamic(() => import("../../mobile/home/top-banner/intex"));
+const QuickServices = dynamic(() => import("../../mobile/home/quick-services"));
+const HealthcareNeeds = dynamic(() => import("../../mobile/home/healthcare-needs"));
 const NearbyCities = dynamic(() => import("../../mobile/home/nearby-cities"));
 const PopularClinics = dynamic(() => import("../../mobile/home/popular-clinics"));
 const SectionBanners = dynamic(() => import("../../mobile/section-banners"));
@@ -45,6 +47,11 @@ const CityHome = async ({ state, city, town, cookies }: { state: string, city: s
                     {section.name === "top_banner" ?
                         <>
                           <HomepageTopBanner state={state} city={city} />
+                          {/* Hardcoded, always right after the hero - see the
+                              components' own comments for why these aren't
+                              driven by section/data like the rest of this map. */}
+                          <QuickServices state={state} city={city} />
+                          <HealthcareNeeds state={state} city={city} />
                         </> : section.name === "nearby_cities" ?
                             <>
                                 {section.heading && <SectionHeading heading={section.heading} />}
@@ -58,7 +65,7 @@ const CityHome = async ({ state, city, town, cookies }: { state: string, city: s
                                         <BiChevronRight className='text-lg' />
                                     </Link>
                                 </SectionSubHeading>
-                                <Specializations viewType={section.viewType} itemViewType={section.itemViewType === "oneline" ? 'oneline' : 'line_by_line'} itemWidth={section.itemWidth} state={state} city={city} town={town} data={data.specializations} specialist_ids={section.specialist_ids || []} />
+                                <Specializations viewType="pills" itemViewType={section.itemViewType === "oneline" ? 'oneline' : 'line_by_line'} itemWidth={section.itemWidth} state={state} city={city} town={town} data={data.specializations} specialist_ids={section.specialist_ids || []} />
                             </> : section.name === "verticals" ? <>
                                 {section.heading && <SectionHeading heading={section.heading} />}
                                 <Verticals data={data.verticals} />

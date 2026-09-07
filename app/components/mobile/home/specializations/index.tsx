@@ -1,12 +1,51 @@
 import { FC } from "react";
 import Link from "next/link";
 import { AiOutlineRight } from "react-icons/ai";
+import { BiSearch, BiChevronDown } from "react-icons/bi";
 import { TSpecility } from "@/lib/types/home-page";
 import { doctorSpecialityIcon } from '@/lib/image';
-import { alllCategoriesPageLink } from '@/lib/helper/link';
+import { alllCategoriesPageLink, searchPageUrl } from '@/lib/helper/link';
 import { array_chunk } from '@/lib/helper';
 
 const Specializations: FC<{ data: Record<number, TSpecility>, specialist_ids: number[], state?: string, city?: string, town?: string, viewType?: string, itemViewType?: 'line_by_line' | 'oneline',itemWidth?:string }> = ({ data, specialist_ids, state, city, town, viewType = "", itemViewType = "line_by_line",itemWidth='' }) => {
+    // "pills" is opt-in (passed explicitly from city-home.mobile.tsx) so the
+    // other consumer of this component (app/components/pages/home/index.tsx)
+    // keeps its current look untouched.
+    if (viewType === "pills") {
+        // No filter/tab-switch behavior yet (this stays a server component) -
+        // the first pill is just styled as "active" to match the design.
+        // Every pill still just links straight to that specialty's page.
+        const visibleIds = specialist_ids.slice(0, 6);
+        return (
+            <div className="px-2">
+                <Link
+                    href={searchPageUrl(state || "", city || "")}
+                    className="flex items-center justify-between border border-color-grey rounded-full px-3 py-2 mb-3 bg-white"
+                >
+                    <span className="text-gray-400 fs-13">Search by doctor name or speciality</span>
+                    <BiSearch className="text-gray-400 text-lg shrink-0" />
+                </Link>
+                <div className="flex overflow-auto gap-2 hide-scroll-bar">
+                    {visibleIds.map((specialist_id, i) => data[specialist_id] ? (
+                        <Link
+                            key={specialist_id}
+                            href={data[specialist_id].seo_url}
+                            title={`${data[specialist_id].name} doctors in ${town ? town + ", " : ""}${city}`}
+                            className={`shrink-0 px-4 py-2 rounded-full fs-13 font-semibold whitespace-nowrap ${i === 0 ? 'bg-primary text-white' : 'border border-color-grey bg-white'}`}
+                        >
+                            {data[specialist_id].name}
+                        </Link>
+                    ) : null)}
+                    <Link
+                        href={alllCategoriesPageLink(state || "", city || "", town || "")}
+                        className="shrink-0 flex items-center gap-1 px-4 py-2 rounded-full fs-13 font-semibold whitespace-nowrap border border-color-grey bg-white"
+                    >
+                        More <BiChevronDown className="text-base" />
+                    </Link>
+                </div>
+            </div>
+        )
+    }
     if (viewType === "2:n") {
         let chunks = array_chunk([...specialist_ids, 0], 2, [])
         return (
