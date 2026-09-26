@@ -1,5 +1,6 @@
 import dynamic from 'next/dynamic';
 import Script from 'next/script';
+import { permanentRedirect } from 'next/navigation';
 import type { Metadata } from "next";
 import useDeviceInfo from "@/lib/hooks/useDeviceInfo";
 import { fetchDoctorDetail, fetchDoctorAvailableTime } from '@/lib/hooks/useDoctors';
@@ -63,6 +64,17 @@ const DoctorDetail = async ({ searchParams }: {
         fetchDoctorDetail({ doctor_id: searchParams.doctor_id, clinic_id: searchParams.clinic_id, service_loc_id: searchParams.service_loc_id, seo_url: searchParams.seo_url, market_name: searchParams.market_name, state: searchParams.state, city: searchParams.city }),
         fetchDoctorAvailableTime(searchParams.service_loc_id)
     ])
+
+    /* Profile moved: send visitors and crawlers to the new location. Skip when rurl
+       points back at this same page, otherwise the redirect loops forever. */
+    const rurl = data.data.rurl?.trim();
+    if (rurl) {
+        const canonicalPath = data.data.seo_dt.seo_url;
+        const isSelfRedirect = rurl === canonicalPath || rurl === `https://careipro.com${canonicalPath}`;
+        if (!isSelfRedirect) {
+            permanentRedirect(rurl);
+        }
+    }
 
     if (device.type === "mobile" || 1 == 1) {
         return (<>

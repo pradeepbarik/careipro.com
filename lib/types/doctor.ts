@@ -264,7 +264,8 @@ export type TDoctorDetail = TWeeklyConsultingTiming & {
         description: string,
         h1: string,
         ldjson: string
-    }
+    },
+    rurl?: string,
 }
 export type TDoctorvailableData = {
     available_date: string,

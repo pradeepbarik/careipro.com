@@ -34,7 +34,10 @@ export const fetchClinicsPageData = async (state: string, city: string) => {
     }
 }
 export type TfetchClinicsListResponse = {
-    specialist_name: string, seo_dt: TSeodt, clinics: TClinic[]
+    specialist_name: string,
+    /* heading written for this category in the admin. null when none was set */
+    h1_tag: string | null,
+    seo_dt: TSeodt, clinics: TClinic[]
 }
 export const fetchClinicsList = cache(async (params: { state: string, city: string, market_name: string, cat_id: number, group_category: string }) => {
     try {
@@ -63,6 +66,23 @@ export const fetchClinicTopDoctors = cache(async (params: { state: string, city:
             }
         }>>(`/init-cache/clinics-top-doctors?state=${params.state}&city=${params.city}&market_name=${params.market_name}`);
         return { data: res.data }
+    }
+})
+export type TclinicReviews = {
+    clinic_info: { id: number, name: string, pageUrl: string },
+    reviews: NonNullable<TclinicDetail["reviews"]>,
+    rating_spread: Record<string, number>
+}
+/* Every public review, unlike clinic detail which carries only the newest six.
+   Served from the json the api writes beside the clinic's details.json, falling back to
+   the api itself when that file has not been generated yet. */
+export const fetchClinicReviews = cache(async (params: { state: string, city: string, clinic_bid: string, clinic_id: number }) => {
+    try {
+        const data = await fetchJson<TclinicReviews>(`/cache/${params.state.replace(" ", "-").toLowerCase()}/${params.city.replace(" ", "-").toLowerCase()}/clinic-details/${params.clinic_bid}/reviews.json`);
+        return data;
+    } catch (err: any) {
+        const res = await fetchJson<IResponse<TclinicReviews>>(`/get-clinic-reviews?clinic_id=${params.clinic_id}`);
+        return res.data;
     }
 })
 export type TclinicDetail = {
@@ -103,8 +123,55 @@ export type TclinicDetail = {
         medicine_min_order_tag: string | null,
         medicine_delivery_time_tag: string | null,
         open_time: string | null,
-        recommended_doctors: string | null
+        recommended_doctors: string | null,
+        rating_cnt: number | null,
+        review_cnt: number | null,
+        discount_msg: string | null,
+        sample_home_collection: number,
+        sample_home_collection_charge: number,
+        partner_with: string | null,
+        established_year: number | null,
+        crm_contact_number: string | null,
+        crm_name: string | null,
+        patient_support_contact_no: string | null
     },
+    /* added by the clinic from the branch admin. source is derived there from the url,
+       but rows saved before that was added will not have it */
+    socialMediaVideos?: Array<{
+        url: string,
+        title: string,
+        aspect_ratio: string,
+        source?: string
+    }>,
+    /* last 6 public reviews, newest first */
+    reviews?: Array<{
+        id: number,
+        rating: number,
+        review_date: string,
+        /* often empty, plenty of reviews are tags only */
+        experience: string | null,
+        visited_for: string | null,
+        replay: string | null,
+        user_name: string | null,
+        review_tags: Array<{ tag: string, score?: number, topic?: string, sub_topic?: string }>,
+        /* who was seen. null when the doctor record has since been removed */
+        doctor_id: number,
+        service_loc_id: number,
+        doctor_name: string | null,
+        doctor_seo_url: string | null
+    }>,
+    /* counts across every public review, not just the six listed */
+    rating_spread?: Record<string, number>,
+    /* distinct people who rated this clinic 4 or 5, across all ratings not just public ones */
+    total_liked?: number,
+    /* city wide support contacts, used when the clinic has none of its own */
+    city_settings?: {
+        patient_support_contact_no: string | null,
+        patient_support_staff_name: string | null,
+        support_time_message: string | null,
+        city_manager_name: string | null,
+        city_manager_contact_no: string | null
+    } | null,
     hasBanner: boolean,
     banners: Array<{ image: string, device_type: string, redirection_url: string, banner_description: string, upload_time: string }>,
     timing: {
@@ -157,6 +224,10 @@ export type TclinicDetail = {
         seo_id: string;
         score: number | null;
         doctor_ids: string;
+        service_price:string | null;
+        service_price_display:string | null;
+        facility:string | null;
+        available:number | null;
     }>>,
     doctors: Record<string, {
         id: number;
@@ -217,6 +288,8 @@ export type TclinicDetail = {
         business_type: string;
     }>,
     totalDoctors: number,
+    /* doctor ids in the order the clinic arranged them */
+    doctor_display_orders?: number[],
     pageUrl: string,
 }
 export const fetchClinicDetail = cache(async (params: { state: string, city: string, market_name: string, clinic_id: number, clinic_bid: string }) => {

@@ -6,9 +6,8 @@ const HomepageTopBanner = ({ state, city }: { state: string, city: string }) => 
     const hirePersonalAssistant = `/${state}/${city}/hire-personal-assistant?utm_source=careipro&utm_medium=home-top-banner&utm_campaign=hire-personal-assistant`;
     const doctorsListHref = `/${state}/${city}/best-doctors?utm_source=careipro&utm_medium=home-top-banner&utm_campaign=doctors-vertical-homepage`;
     const quickActions = [
-        
+        { title: 'Find Doctors', subtitle: 'Book your appointment', icon: BiUser, color: 'bg-cyan-600', href: doctorsListHref },
         { title: 'Hire Personal Assistant', subtitle: 'We will handle everything', icon: BiUser, color: 'bg-teal-500', href: hirePersonalAssistant },
-        { title: 'Book Appointment', subtitle: 'Find & Book Doctors', icon: BiUser, color: 'bg-cyan-600', href: doctorsListHref },
        // { title: 'Order Medicine', subtitle: 'From Local Medicines stores', icon: BiCapsule, color: 'bg-orange-400', href: '/medicine' },
         // { title: 'Video Consultation', subtitle: 'Consult online with doctors', icon: BiVideo, color: 'bg-blue-600', href: doctorsListHref },
     ];

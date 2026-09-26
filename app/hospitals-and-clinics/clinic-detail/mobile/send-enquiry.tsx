@@ -15,10 +15,22 @@ const selectUserInfo = createSelector([selectAuthSlice], (state) => {
         mobile: state.user_info?.mobile
     }
 })
-const SendEnquiry = ({ businessType, state, city, clini_id, doctor_id = 0 }: { businessType: string, state: string, city: string, clini_id: number, doctor_id?: number }) => {
+/* variant "inline" is the message box that sits in the page, "button" is a single cta
+   that opens the same box in a sheet, for use in a sticky action bar */
+const SendEnquiry = ({ businessType, state, city, clini_id, doctor_id = 0, variant = "inline", className = "", label = "Send Enquiry", children, modalZIndex = 0, section = "top_enquiry_form", placeholder = "Write your message here..." }: {
+    businessType: string, state: string, city: string, clini_id: number, doctor_id?: number,
+    variant?: "inline" | "button", className?: string, label?: string, children?: React.ReactNode,
+    /* SlideUpModal renders at 10 + 2 + zIndex, so raise this above any sticky bar the
+       trigger sits in, otherwise the sheet opens behind it */
+    modalZIndex?: number,
+    /* tags the row in the enquiry queue, so a complaint can be told apart from an enquiry */
+    section?: string,
+    placeholder?: string
+}) => {
     const { isloggedIn, name, mobile } = useSelector((state: RootState) => selectUserInfo(state))
     const { sendEnquiry } = useEnquiry({ state: state, city: city, market_name: "", vaertical: businessType })
     const [askMobile, setAskMobile] = useState(false)
+    const [showForm, setShowForm] = useState(false)
     const [showSuccessModal, setShowSuccessModal] = useState(false)
     const [message, setMessage] = useState("");
     const [userInfo, setUserInfo] = useState({ name: "", mobile: "" })
@@ -46,7 +58,7 @@ const SendEnquiry = ({ businessType, state, city, clini_id, doctor_id = 0 }: { b
             doctor_id: doctor_id,
             specialist_id: 0,
             page: "detail_page",
-            section: "top_enquiry_form"
+            section: section
         }, () => {
             setAskMobile(false);
             setShowSuccessModal(true);
@@ -67,7 +79,7 @@ const SendEnquiry = ({ businessType, state, city, clini_id, doctor_id = 0 }: { b
                 doctor_id: doctor_id,
                 specialist_id: 0,
                 page: "detail_page",
-                section: "top_enquiry_form"
+                section: section
             }, () => {
                 setShowSuccessModal(true);
                 setMessage("")
@@ -76,14 +88,38 @@ const SendEnquiry = ({ businessType, state, city, clini_id, doctor_id = 0 }: { b
             setAskMobile(true);
         }
     }
+    const messageBox = (
+        <textarea className="w-full outline-none border border-color-grey h-12 rounded-md px-2 py-2 fs-14 font-semibold" placeholder={placeholder} value={message} onChange={(e) => { setMessage(e.target.value) }} >
+        </textarea>
+    );
     return (
         <>
-            <div className="px-2 mt-2 flex gap-2">
-                <textarea className="w-full outline-none border border-color-grey h-12 rounded-md px-2 py-2 fs-14 font-semibold" placeholder="Write your message here..." value={message} onChange={(e) => { setMessage(e.target.value) }} >
-                </textarea>
-                <button className="button ripple w-40" onClick={handelClick}>Send Enquiry</button>
-            </div>
-            <SlideUpModal heading="Your contact information" open={askMobile} onClose={() => { setAskMobile(false) }}>
+            {variant === "button" ?
+                <>
+                    <button className={className} onClick={() => { setShowForm(true) }}>
+                        {children}{label}
+                    </button>
+                    <SlideUpModal heading={label} zIndex={modalZIndex} open={showForm} onClose={() => { setShowForm(false) }}>
+                        <div className="bg-white p-2 flex flex-col gap-2">
+                            {messageBox}
+                            <button className="button ripple py-2" type="button" onClick={() => {
+                                /* keep the sheet open when handelClick rejects an empty
+                                   message, otherwise let the contact or success sheet replace it */
+                                if (message) {
+                                    setShowForm(false);
+                                }
+                                handelClick();
+                            }}>{label}</button>
+                        </div>
+                    </SlideUpModal>
+                </>
+                :
+                <div className="px-2 mt-2 flex gap-2">
+                    {messageBox}
+                    <button className="button ripple w-40" onClick={handelClick}>Send Enquiry</button>
+                </div>
+            }
+            <SlideUpModal heading="Your contact information" zIndex={modalZIndex} open={askMobile} onClose={() => { setAskMobile(false) }}>
                 <div className='bg-white p-2'>
                     <div className='flex flex-col gap-2'>
                         <Input type="text" lable='Your name' className='border p-2 rounded-md' value={userInfo.name} onChange={(e) => { setUserInfo({ ...userInfo, name: e.target.value }) }} />
@@ -92,7 +128,7 @@ const SendEnquiry = ({ businessType, state, city, clini_id, doctor_id = 0 }: { b
                     </div>
                 </div>
             </SlideUpModal>
-            <SlideUpModal open={showSuccessModal} onClose={() => { setShowSuccessModal(false) }}>
+            <SlideUpModal open={showSuccessModal} zIndex={modalZIndex} onClose={() => { setShowSuccessModal(false) }}>
                 <div>
                     <div className='flex justify-center'>
                         <div className='h-40 w-40 relative flex justify-center items-center'>

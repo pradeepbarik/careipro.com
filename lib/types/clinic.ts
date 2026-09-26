@@ -1,3 +1,4 @@
+import { TClinicTiming } from "@/lib/helper/clinic-timing";
 export type TClinic = {
     id: number,
     bid: string,
@@ -19,6 +20,27 @@ export type TClinic = {
     doctors_count: number,
     total_specialist: number,
     doctor_specializations: string[],
+    services?: string[],
+    rating_cnt: number| null,
+    review_cnt: number| null,
+    open_time: string,
+    business_type?: string,
+    verified?: number,
+    tag_line?: string | null,
+    whatsapp_number?: string | null,
+    established_year?: number | null,
+    /* averaged over public reviews. clinics.rating is a flag, not a score, so it is not used */
+    avg_rating?: number | null,
+    /* the week's sessions, so the card can say open or closed in the visitor's own time */
+    timing?: TClinicTiming | null,
+
+    /* TESTSCAN centers only. Needs a sample_home_collection column on clinics before it is ever set. */
+    sample_home_collection: number,
+    sample_home_collection_charge: number,
+    discount_msg: string,
+    recommended_doctors:string,
+    /* Brand the lab collects samples for, eg Apollo or Dr Lal PathLabs. Empty when independent. */
+    partner_with: string,
 }
 export type TPopularClinic = TClinic & {
     banner: string
