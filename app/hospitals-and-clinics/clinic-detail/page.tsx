@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import dynamic from 'next/dynamic';
 import { permanentRedirect, RedirectType } from 'next/navigation'
-import useDeviceInfo from "@/lib/hooks/useDeviceInfo";
 import { fetchClinicDetail } from '@/lib/hooks/useClinics';
 import PageVisitLogger from "@/app/components/client-components/page-visit-logger";
 const ClinicDetailMobile = dynamic(() => import('./mobile'));
@@ -24,32 +23,23 @@ export async function generateMetadata({ searchParams }: { searchParams: any }):
     }
 }
 const ClinicDetail = async ({ searchParams }: { searchParams: { seo_url: string, state: string, city: string, clinic_id: number, state_city: string, market_name: string, sub_page: string } }) => {
-    const { device } = useDeviceInfo();
     let { data } = await fetchClinicDetail({ state: searchParams.state, city: searchParams.city, clinic_bid: `C${searchParams.clinic_id}-${searchParams.state_city}`, clinic_id: searchParams.clinic_id, market_name: searchParams.market_name });
     // if (searchParams.seo_url !== data.clinic_info.seo_url) {
     //     permanentRedirect(data.pageUrl, RedirectType.push);
     //     return <></>
     // }
-    if (device.type === "mobile" || 1 == 1) {
-        return (
-            <>
-                <ClinicDetailMobile data={data} searchParams={searchParams} />
-                <PageVisitLogger data={{
-                    page_type: "detail",
-                    page_name: "clinic_detail",
-                    section_name: "initial_load",
-                    state: searchParams.state,
-                    city: searchParams.city,
-                    clinic_id: searchParams.clinic_id,
-                    vertical: "CLINIC"
-
-                }} />
-            </>
-        )
-    }
     return (
         <>
-            clinic detail
+            <ClinicDetailMobile data={data} searchParams={searchParams} />
+            <PageVisitLogger data={{
+                page_type: "detail",
+                page_name: "clinic_detail",
+                section_name: "initial_load",
+                state: searchParams.state,
+                city: searchParams.city,
+                clinic_id: searchParams.clinic_id,
+                vertical: "CLINIC"
+            }} />
         </>
     )
 }

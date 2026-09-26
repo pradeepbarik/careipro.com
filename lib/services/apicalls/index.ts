@@ -116,9 +116,9 @@ export const addToFavourites = (params: { doctor_id: number, clinic_id: number,f
 }
 export const myFavourites = () => {
    try {
-      return authenicatedFetchJson<IResponse<{doctor_ids: number[]}>>("/user/favourite");
+      return authenicatedFetchJson<IResponse<{doctor_ids: number[], clinic_ids: number[]}>>("/user/favourite");
    } catch (err: any) {
-      return buildResponse<{doctor_ids: number[]}>({doctor_ids: []});
+      return buildResponse<{doctor_ids: number[], clinic_ids: number[]}>({doctor_ids: [], clinic_ids: []});
    }
 }
 export const shareFeedbackPostCurl = (params: { rating: number, name: string, mobile: string, comment: string, campaign: string, specialist_id?: number }) => {
