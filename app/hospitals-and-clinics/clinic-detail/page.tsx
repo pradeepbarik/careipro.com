@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import dynamic from 'next/dynamic';
-import { permanentRedirect, RedirectType } from 'next/navigation'
 import { fetchClinicDetail } from '@/lib/hooks/useClinics';
 import PageVisitLogger from "@/app/components/client-components/page-visit-logger";
 const ClinicDetailMobile = dynamic(() => import('./mobile'));
@@ -24,10 +23,6 @@ export async function generateMetadata({ searchParams }: { searchParams: any }):
 }
 const ClinicDetail = async ({ searchParams }: { searchParams: { seo_url: string, state: string, city: string, clinic_id: number, state_city: string, market_name: string, sub_page: string } }) => {
     let { data } = await fetchClinicDetail({ state: searchParams.state, city: searchParams.city, clinic_bid: `C${searchParams.clinic_id}-${searchParams.state_city}`, clinic_id: searchParams.clinic_id, market_name: searchParams.market_name });
-    // if (searchParams.seo_url !== data.clinic_info.seo_url) {
-    //     permanentRedirect(data.pageUrl, RedirectType.push);
-    //     return <></>
-    // }
     return (
         <>
             <ClinicDetailMobile data={data} searchParams={searchParams} />
