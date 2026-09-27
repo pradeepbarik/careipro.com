@@ -26,7 +26,7 @@ export type TClinicsPageData = {
 }
 export const fetchClinicsPageData = async (state: string, city: string) => {
     try {
-        const res = await fetchJson<TClinicsPageData>(`/cache/${state.replace(" ", "-").toLowerCase()}/${city.replace(" ", "-").toLowerCase()}/clinics-page.json`);
+        const res = await fetchJson<TClinicsPageData>(`/cache/${state.replace(" ", "-").toLowerCase()}/${city.replace(" ", "-").toLowerCase()}/clinics-page.json`,false,{revalidate:300});//caching for 5 minutes, as the admin can change the order of clinics and add/remove clinics from a section
         return res;
     } catch (err: any) {
         const res = await fetchJson<IResponse<TClinicsPageData>>(`/init-cache/clinics-page-data?state=${state}&city=${city}`);
@@ -294,10 +294,10 @@ export type TclinicDetail = {
 }
 export const fetchClinicDetail = cache(async (params: { state: string, city: string, market_name: string, clinic_id: number, clinic_bid: string }) => {
     try {
-        let data = await fetchJson<TclinicDetail>(`/cache/${params.state.replace(" ", "-").toLowerCase()}/${params.city.replace(" ", "-").toLowerCase()}/clinic-details/${params.clinic_bid}/details.json`);
+        let data = await fetchJson<TclinicDetail>(`/cache/${params.state.replace(" ", "-").toLowerCase()}/${params.city.replace(" ", "-").toLowerCase()}/clinic-details/${params.clinic_bid}/details.json`,false,{revalidate:300});//caching for 5 minutes, as the admin can change the order of doctors and add/remove doctors from a clinic
         return { data: data }
     } catch (err: any) {
-        const res = await fetchJson<IResponse<TclinicDetail>>(`/get-clinic-detail?state=${params.state}&city=${params.city}&clinic_id=${params.clinic_id}`);
+        const res = await fetchJson<IResponse<TclinicDetail>>(`/get-clinic-detail?state=${params.state}&city=${params.city}&clinic_id=${params.clinic_id}`,false,{revalidate:300});//caching for 5 minutes, as the admin can change the order of doctors and add/remove doctors from a clinic
         return { data: res.data }
     }
 })

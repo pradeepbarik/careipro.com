@@ -21,6 +21,7 @@ export default function RootLayout({
         <html lang="en">
           <head>
             <meta name="google-site-verification" content="GjLSsc0BtdO76sWYmp5iWVMoxZgmpCTgth0CorCfg4k" />
+            <meta name="google-adsense-account" content="ca-pub-8566205243724241"/>
           </head>
           <GoogleTagManager
             gtmId="GTM-555K6X5G"
