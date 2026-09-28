@@ -37,7 +37,22 @@ export const DEFAULT_REVALIDATE = 60;// 1 minute
 export const fetchJson = async <R>(url: string, log_api: boolean = false, options?: {method?:string,secreate_key?:string,revalidate?:number}): Promise<R> => {
   try {
     let configs:RequestInit = {headers:{}};
-    let revalidate = typeof options?.revalidate === "number" ? options.revalidate : DEFAULT_REVALIDATE;
+    /* a /cache/*.json url is itself the cache. the api deletes or rewrites those files the moment
+       the data behind them changes, so a second copy inside next can only ever be wrong.
+
+       worse, deleting one can never clear next's copy: next only writes a response into its data
+       cache when the status is 200, so the 404 from a deleted file is discarded and the old body
+       keeps being served, with the background revalidation failing the same way every time. the
+       fallback to the live api in the callers never runs either, because next hands back its
+       cached 200 and nothing throws.
+
+       so these reads always go to the origin. everything else keeps DEFAULT_REVALIDATE, which is
+       what shields the live endpoints, /init-cache most of all since those rebuild a file.
+       a revalidate passed by the caller still wins over both. */
+    const isCacheFileRead = url.startsWith("/cache/");
+    let revalidate = typeof options?.revalidate === "number"
+      ? options.revalidate
+      : (isCacheFileRead ? 0 : DEFAULT_REVALIDATE);
     if(revalidate > 0){
       (<any>configs).next = { revalidate: revalidate };
     }else{

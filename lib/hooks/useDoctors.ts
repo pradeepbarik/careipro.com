@@ -75,10 +75,12 @@ export const fetchDoctorDetail = cache(async (params: {
     seo_url: string
 }) => {
     try {
+        //the /cache/ read is never held, fetchJson does that for every cache file
         const res = await fetchJson<TDoctorDetail>(`/cache/${params.state.toLowerCase()}/${params.city.toLowerCase()}/doctor-details/SL${params.service_loc_id}/details.json`);
         return { data: res };
     } catch (ex) {
-        const res = await fetchJson<IResponse<TDoctorDetail>>(`/get-doctor-detail?state=${params.state}&city=${params.city}&service_loc_id=${params.service_loc_id}&seo_url=${params.seo_url}`);
+        //answers only while that file is missing, which is exactly when a setting has just changed
+        const res = await fetchJson<IResponse<TDoctorDetail>>(`/get-doctor-detail?state=${params.state}&city=${params.city}&service_loc_id=${params.service_loc_id}&seo_url=${params.seo_url}`, false, { revalidate: 0 });
         return { data: res.data };
     }
 });
