@@ -51,9 +51,9 @@ const DesktopFooter = ({ state, city, children }: {
                     <div>
                         <h4 className="font-bold text-lg mb-4">Contact Us</h4>
                         <ul className="space-y-3 text-gray-400 text-sm">
-                            <li className="flex items-center gap-3"><BiPhone className={`text-lg text-primary`} /><span>+91 98765 43210</span></li>
+                            <li className="flex items-center gap-3"><BiPhone className={`text-lg text-primary`} /><span>+91 81979 09283</span></li>
                             <li className="flex items-center gap-3"><BiEnvelope className={`text-lg text-primary`} /><span>support@careipro.com</span></li>
-                            <li className="flex items-start gap-3"><BiSolidMap className={`text-lg mt-0.5 text-primary`} /><span>123 Healthcare Street, India</span></li>
+                            <li className="flex items-start gap-3"><BiSolidMap className={`text-lg mt-0.5 text-primary`} /><span>Korkora Bhadrak odisha, India</span></li>
                         </ul>
                     </div>
                 </div>
