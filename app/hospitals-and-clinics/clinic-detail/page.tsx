@@ -2,7 +2,9 @@ import type { Metadata } from "next";
 import dynamic from 'next/dynamic';
 import { fetchClinicDetail } from '@/lib/hooks/useClinics';
 import PageVisitLogger from "@/app/components/client-components/page-visit-logger";
+import useDeviceInfo from "@/lib/hooks/useDeviceInfo";
 const ClinicDetailMobile = dynamic(() => import('./mobile'));
+const ClinicDetailDesktop = dynamic(() => import('./desktop'));
 export async function generateMetadata({ searchParams }: { searchParams: any }): Promise<Metadata> {
     const { data } = await fetchClinicDetail({ state: searchParams.state, city: searchParams.city, clinic_bid: `C${searchParams.clinic_id}-${searchParams.state_city}`, clinic_id: searchParams.clinic_id, market_name: searchParams.market_name });
     return {
@@ -22,10 +24,13 @@ export async function generateMetadata({ searchParams }: { searchParams: any }):
     }
 }
 const ClinicDetail = async ({ searchParams }: { searchParams: { seo_url: string, state: string, city: string, clinic_id: number, state_city: string, market_name: string, sub_page: string } }) => {
+    const { device } = useDeviceInfo();
     let { data } = await fetchClinicDetail({ state: searchParams.state, city: searchParams.city, clinic_bid: `C${searchParams.clinic_id}-${searchParams.state_city}`, clinic_id: searchParams.clinic_id, market_name: searchParams.market_name });
     return (
         <>
-            <ClinicDetailMobile data={data} searchParams={searchParams} />
+            {device.type === "mobile"
+                ? <ClinicDetailMobile data={data} searchParams={searchParams} />
+                : <ClinicDetailDesktop data={data} searchParams={searchParams} />}
             <PageVisitLogger data={{
                 page_type: "detail",
                 page_name: "clinic_detail",

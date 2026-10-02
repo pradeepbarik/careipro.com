@@ -5,6 +5,7 @@ import ClinicDistance from "./clinic-distance";
 import ClinicOpenStatus from "./clinic-open-status";
 import ClinicTimings from "./clinic-timings";
 import TrackedLink from "@/app/components/client-components/tracked-link";
+import ReportIssue from "@/app/components/client-components/report-issue";
 import { hasCoordinates } from "@/lib/helper/distance";
 import { getOpenStatus, TClinicTiming } from "@/lib/helper/clinic-timing";
 import { doctorDetailPageUrl, clinicDetailpageUrl } from "@/lib/helper/link";
@@ -59,7 +60,7 @@ const buildTabs = (data: TclinicDetail) => {
     return tabs;
 }
 
-const SectionCard = ({ id, title, action, headerRight, children }: {
+export const SectionCard = ({ id, title, action, headerRight, children }: {
     id?: string, title: string, action?: string,
     /* anything that belongs beside the heading but is not a view all link */
     headerRight?: React.ReactNode,
@@ -87,7 +88,9 @@ type TQuickAction = {
     tile: string,
     tint: string,
 }
-const QuickActions = ({ info }: { info: TclinicDetail["clinic_info"] }) => {
+/* showShare adds a share tile alongside the contact ones. off by default because the mobile page
+   already floats a share control over the hero, and two on one screen is one too many. */
+export const QuickActions = ({ info, showShare = false }: { info: TclinicDetail["clinic_info"], showShare?: boolean }) => {
     const actions: TQuickAction[] = [];
     if (info.mobile) {
         actions.push({
@@ -112,11 +115,12 @@ const QuickActions = ({ info }: { info: TclinicDetail["clinic_info"] }) => {
             tile: "bg-gray-50 border-gray-200", tint: "text-gray-700"
         });
     }
-    if (actions.length === 0) {
+    const tileCount = actions.length + (showShare ? 1 : 0);
+    if (tileCount === 0) {
         return <></>
     }
     return (
-        <div className="grid gap-2 mt-4" style={{ gridTemplateColumns: `repeat(${actions.length}, minmax(0,1fr))` }}>
+        <div className="grid gap-2 mt-4" style={{ gridTemplateColumns: `repeat(${tileCount}, minmax(0,1fr))` }}>
             {actions.map((action) =>
                 <TrackedLink key={action.key} href={action.href} ev_nm={action.ev_nm} section_name="quick_actions"
                     target={action.newTab ? "_blank" : undefined}
@@ -125,13 +129,21 @@ const QuickActions = ({ info }: { info: TclinicDetail["clinic_info"] }) => {
                     <span className={`fs-12 font-semibold ${action.tint}`}>{action.label}</span>
                 </TrackedLink>
             )}
+            {showShare &&
+                /* not a TrackedLink, sharing is a browser action rather than a link to follow */
+                <ShareButton name={info.name}
+                    className="flex flex-col items-center gap-1 py-2 rounded-lg border bg-gray-50 border-gray-200 w-full"
+                    iconClassName="fs-18 text-gray-700">
+                    <span className="fs-12 font-semibold text-gray-700">Share</span>
+                </ShareButton>
+            }
         </div>
     )
 }
 
 /* Sits beside the Tests & Scans heading, so it is kept short. The full wording would
    crowd the heading on a narrow phone. */
-const HomeCollectionTag = ({ info }: { info: TclinicDetail["clinic_info"] }) => {
+export const HomeCollectionTag = ({ info }: { info: TclinicDetail["clinic_info"] }) => {
     if (info.sample_home_collection !== 1) {
         return <></>
     }
@@ -147,7 +159,7 @@ const HomeCollectionTag = ({ info }: { info: TclinicDetail["clinic_info"] }) => 
     )
 }
 /* Who the lab collects samples for, shown above its test list */
-const LabServiceNotes = ({ info }: { info: TclinicDetail["clinic_info"] }) => {
+export const LabServiceNotes = ({ info }: { info: TclinicDetail["clinic_info"] }) => {
     const brand = (info.partner_with || "").trim();
     if (!brand) {
         return <></>
@@ -162,7 +174,7 @@ const LabServiceNotes = ({ info }: { info: TclinicDetail["clinic_info"] }) => {
 /* One tile per specialisation the clinic offers, used by both Tests & Scans and
    Treatments. The category icon is usually blank in the data, so it falls back to the
    same per vertical default the current clinic page uses. */
-const CategoryTile = ({ category, fallbackIcon }: {
+export const CategoryTile = ({ category, fallbackIcon }: {
     category: TclinicDetail["specializations"][string][number],
     fallbackIcon: string
 }) => {
@@ -194,7 +206,7 @@ const CategoryTile = ({ category, fallbackIcon }: {
    information. Anything without an explicit 'partnered' value is treated as a public
    listing, so a missing field can never imply a partnership that does not exist. */
 const isPartnered = (partnerType: string | null) => partnerType === "partnered";
-const ListingTypeBadge = ({ partnerType }: { partnerType: string | null }) => {
+export const ListingTypeBadge = ({ partnerType }: { partnerType: string | null }) => {
     if (isPartnered(partnerType)) {
         return (
             <span className="flex items-center gap-1 fs-12 font-semibold px-2 py-[2px] rounded-full bg-green-50 text-green-700 border border-green-200">
@@ -208,7 +220,7 @@ const ListingTypeBadge = ({ partnerType }: { partnerType: string | null }) => {
 }
 /* Only a partner gets a note in the page. It carries a promise, so it also carries the
    way to hold careipro to it. */
-const ListingTypeNote = ({ info }: { info: TclinicDetail["clinic_info"] }) => {
+export const ListingTypeNote = ({ info }: { info: TclinicDetail["clinic_info"] }) => {
     if (!isPartnered(info.partner_type)) {
         return <></>
     }
@@ -236,7 +248,7 @@ const ListingTypeNote = ({ info }: { info: TclinicDetail["clinic_info"] }) => {
     )
 }
 
-const CareiproSupport = ({ info, citySettings }: {
+export const CareiproSupport = ({ info, citySettings }: {
     info: TclinicDetail["clinic_info"],
     citySettings: TclinicDetail["city_settings"]
 }) => {
@@ -268,22 +280,16 @@ const CareiproSupport = ({ info, citySettings }: {
                     <h2 className="fs-16 font-bold text-gray-900 leading-5">Not able to connect with the clinic?</h2>
                     <span className="fs-13 text-gray-600 leading-5 mt-1">
                         {helperName ?
-                            <><span className="font-semibold text-gray-900">{helperName}</span> from careipro is ready to help you immediately.</>
+                            <><span className="font-semibold text-gray-900">{helperName}</span> from careipro team is ready to help you immediately.</>
                             : "Our careipro care team is ready to help you immediately."}
                     </span>
                 </div>
             </div>
             <div className="flex flex-col gap-2 mt-3">
-                {crm &&
-                    <TrackedLink href={`tel:${crm}`} ev_nm="crm_call_click" section_name="careipro_support"
-                        className="flex items-center justify-center gap-2 py-2 rounded-lg bg-cyan-600 text-white fs-13 font-bold">
-                        <BiPhone />{namedHelper ? `Talk with ${crmName}` : "Talk with our care team"}
-                    </TrackedLink>
-                }
                 {support &&
                     <TrackedLink href={`tel:${support}`} ev_nm="patient_support_call_click" section_name="careipro_support"
                         className="flex items-center justify-center gap-2 py-2 rounded-lg border border-cyan-600 text-cyan-700 fs-13 font-bold">
-                        <BiHeadphone />
+                        <BiPhone />
                         {supportStaff ? `Patient support · ${capitalizeEachWordFirstLetter(supportStaff)}` : "Patient support helpline"}
                     </TrackedLink>
                 }
@@ -291,11 +297,14 @@ const CareiproSupport = ({ info, citySettings }: {
                     <span className="fs-12 text-gray-500 text-center">{supportTiming}</span>
                 }
             </div>
+            {/* the way out when support has not sorted the query. the clinic and city go in the
+                campaign so a report can be traced to the page it came from without another lookup */}
+            <ReportIssue campaign={`clinic_detail_support_unresolved:${info.id}:${(info.city || '').toLowerCase()}`} />
         </section>
     )
 }
 
-const ClinicDoctorCard = ({ doctor, info }: { doctor: TclinicDetail["doctors"][number], info: TclinicDetail["clinic_info"] }) => {
+export const ClinicDoctorCard = ({ doctor, info }: { doctor: TclinicDetail["doctors"][number], info: TclinicDetail["clinic_info"] }) => {
     const fee = Number(doctor.service_charge);
     const experience = Number(doctor.experience);
     /* a doctor's weekly columns match the clinic_timings shape, so the same helper works */

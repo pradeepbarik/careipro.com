@@ -14,8 +14,6 @@ import { doctorSpecialityIcon } from '@/lib/image';
 import CategoriesFooter from '../components/mobile/footer/categories';
 import ServiceAvailbeCities from '../components/mobile/footer/service-available-cities';
 import ClientHandler from './client-handler';
-import PageHeader from '../components/desktop/header';
-import DesktopFooter from '../components/desktop/footer';
 type Tprops = {
     state: string,
     city: string,
@@ -280,7 +278,6 @@ const SectionBannersDesktop = ({ banners, heading }: { banners: TSectionBanner[]
 const HospitalsDesktop = ({ state, city, pageData, clinicCategories, doctorCategories }: Tprops) => {
     return (
         <div className="min-h-screen bg-gray-100">
-            <PageHeader state={state} city={city} vertical="clinics" />
             <main className="max-w-7xl mx-auto px-4 py-6">
                 <HeroSection city={city} />
                 
@@ -314,7 +311,9 @@ const HospitalsDesktop = ({ state, city, pageData, clinicCategories, doctorCateg
                 ))}
             </main>
 
-            <DesktopFooter state={state} city={city} vertical="clinics">
+            {/* the band the footer used to wrap, the footer itself is in the layout now */}
+            <div className="bg-gray-100 text-gray-800 py-8">
+                <div className="max-w-7xl mx-auto px-4">
                 <Suspense fallback={<></>}>
                     <CategoriesFooter 
                         state={state} 
@@ -338,7 +337,8 @@ const HospitalsDesktop = ({ state, city, pageData, clinicCategories, doctorCateg
                 <Suspense fallback={<></>}>
                     <ServiceAvailbeCities />
                 </Suspense>
-            </DesktopFooter>
+                </div>
+            </div>
 
             <ClientHandler />
         </div>

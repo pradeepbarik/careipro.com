@@ -13,51 +13,57 @@ const NextConsultTime = dynamic(() => import('@/app/components/mobile/doctors/do
 const SimilarBusieness = dynamic(() => import("./similar-doctors"));
 const PrimeMembershipCard = dynamic(() => import('@/app/components/mobile/prime-membership'));
 const PatientAssistantBanner = dynamic(() => import('@/app/components/mobile/doctors/doctor-detail/patient-assistant-banner'));
+type TTimings = TDoctorDetail['settings']['display_consulting_timing'];
+
+/**
+ * One block of timings, a day or a session on the left and the hours on the right. Both the
+ * consulting and the booking block are the same shape, so they share this rather than being written
+ * out twice. The api sends free text labels, "Mon to Sat" as much as "Morning", so nothing here
+ * tries to work out which row is today.
+ */
+const TimingCard = ({ title, timings, accent }: { title: string, timings: TTimings, accent: 'teal' | 'amber' }) => {
+    if (!timings) return null;
+    const accentClass = accent === 'teal' ? 'bg-primary/10 text-primary' : 'bg-amber-50 text-amber-600';
+    return (
+        <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+            <div className="flex items-center gap-2 px-3 py-2.5 border-b border-gray-100">
+                <span className={`h-7 w-7 rounded-full flex items-center justify-center shrink-0 bg-teal-50 ${accentClass}`}>
+                    <BiTimeFive />
+                </span>
+                <h2 className="font-semibold text-gray-800 fs-15">{title}</h2>
+            </div>
+            {Array.isArray(timings) ? (
+                <div className="divide-y divide-gray-100">
+                    {timings.map((dt, idx) => (
+                        <div key={idx} className="flex items-start gap-3 px-3 py-2">
+                            <span className="font-semibold text-gray-700 fs-14 shrink-0">{dt.label}</span>
+                            <span className="ml-auto flex flex-col items-end gap-1">
+                                {dt.value.map((time, ti) => (
+                                    <span key={ti} className="fs-14 text-gray-700 px-2 py-0.5 whitespace-nowrap">
+                                        {time}
+                                    </span>
+                                ))}
+                            </span>
+                        </div>
+                    ))}
+                </div>
+            ) : (
+                <p className="px-3 py-2 fs-14 text-gray-700">{timings}</p>
+            )}
+        </div>
+    );
+};
+
 const OverView = ({ data, availableData }: { data: TDoctorDetail, availableData: TDoctorvailableData }) => {
     let showNextConsultDate = (data.doctor_availability && data.doctor_availability.date && moment(get_current_datetime()).diff(moment(data.doctor_availability.date), 'days') < 0) ? true : false;
     let pageUrl = data.seo_dt.seo_url;
     return (
         <>
-            {data.settings.display_consulting_timing ? <>
-                <div className="px-2">
-                    {data.settings.display_consulting_timing ? <>
-                        <div className="bg-white rounded-md border mt-1">
-                            <div className="flex items-center px-2 mt-1">
-                                <BiTimeFive style={{ fontSize: '1rem' }} />
-                                <h2 className="ml-2 font-semibold">Consulting Timings :</h2>
-                                <BiChevronRight className="text-xl ml-auto rotate-90" />
-                            </div>
-                            <div>
-                                {Array.isArray(data.settings.display_consulting_timing) ? data.settings.display_consulting_timing.map((dt, idx) =>
-                                    <div key={idx} className="flex items-center border-dashed border-b px-2 py-1">
-                                        <span className="font-semibold">{dt.label}:</span>
-                                        <span className="flex flex-col ml-auto">
-                                            {dt.value.map((time, ti) => <span key={ti}>{time}</span>)}
-                                        </span>
-                                    </div>
-                                ) : <span>{data.settings.display_consulting_timing}</span>}
-                            </div>
-                        </div>
-                    </> : <></>}
-                    {data.settings.display_booking_timing ? <>
-                        <div className="bg-white rounded-md border mt-2">
-                            <div className="flex items-center px-2 mt-1">
-                                <BiTimeFive style={{ fontSize: '1rem' }} />
-                                <h2 className="ml-2 font-semibold">Booking Timings :</h2>
-                                <BiChevronRight className="text-xl ml-auto rotate-90" />
-                            </div>
-                            <div>
-                                {Array.isArray(data.settings.display_booking_timing) ? data.settings.display_booking_timing.map((dt, idx) =>
-                                    <div key={idx} className="flex items-center border-dashed border-b px-2 py-1">
-                                        <span className="font-semibold">{dt.label}:</span>
-                                        <span className="flex flex-col ml-auto">
-                                            {dt.value.map((time, ti) => <span key={ti}>{time}</span>)}
-                                        </span>
-                                    </div>
-                                ) : <span>{data.settings.display_booking_timing}</span>}
-                            </div>
-                        </div>
-                    </> : <></>}
+            {(data.settings.display_consulting_timing || data.settings.display_booking_timing) ? <>
+                {/* each card takes the full width of whatever column it is dropped into */}
+                <div className="px-2 mt-1 flex flex-col gap-2">
+                    <TimingCard title="Consulting Timings" accent="teal" timings={data.settings.display_consulting_timing} />
+                    <TimingCard title="Booking Timings" accent="amber" timings={data.settings.display_booking_timing} />
                 </div>
             </> :
                 <>

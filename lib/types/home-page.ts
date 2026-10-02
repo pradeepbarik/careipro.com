@@ -1,4 +1,5 @@
 import { TPopularClinic } from "./clinic"
+import { TShortVideo } from "@/lib/helper/short-video";
 
 export type TPopularDoctor = {
     id: number
@@ -71,10 +72,16 @@ export type THomePageData = {
         specialist_id?: number,
         banners?: Array<TSectionBanner>,
     }>,
+    /* the city's promo banners, uploaded against the home page in the admin. optional because a city
+       with none gets an empty list and older cache files predate the field */
+    site_banners?: TSiteBanner[],
+    /* the moving counterpart of the banners, configured per page in the admin */
+    short_videos?: TShortVideo[],
     nearbyCities?: TSuggestedCity[],
     cityMarkets?: TSuggestedCity[],
     specializations: Record<number, TSpecility>,
-    verticals: Array<{ label: string, icons: string, url: string }>,
+    //description is optional, the api does not send one today and the card falls back to its own line
+    verticals: Array<{ label: string, icons: string, url: string, description?: string }>,
     popularDoctors: TPopularDoctor[],
     popularClinics: TPopularClinic[],
     doctorCategory?: Array<{

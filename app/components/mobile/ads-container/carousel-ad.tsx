@@ -1,8 +1,7 @@
 'use client';
 
 import { useAds } from '@/lib/hooks/useAds';
-import { adSrc } from '@/lib/image';
-import Image from 'next/image';
+import AdMedia from './ad-media';
 import { useState } from 'react';
 
 type CarouselAddProps = {
@@ -46,7 +45,7 @@ const CarouselAd = ({ page_type, category_ids, city, limit = 3, showPlaceholder 
     };
 
     return (
-        <div ref={containerRef} className="w-full my-2 relative">
+        <div ref={containerRef} className="w-full my-2 relative" data-nosnippet>
             <div className="relative w-full h-48 bg-gray-100 rounded-lg overflow-hidden">
                 {ads.map((ad, index) => (
                     <div
@@ -57,24 +56,7 @@ const CarouselAd = ({ page_type, category_ids, city, limit = 3, showPlaceholder 
                             index === currentIndex ? 'opacity-100 z-10' : 'opacity-0 z-0'
                         }`}
                     >
-                        {ad.media_type === 'image' ? (
-                            <Image
-                                src={adSrc(ad.link)}
-                                alt={ad.alt || 'Advertisement'}
-                                fill
-                                className="object-cover"
-                                sizes="100vw"
-                            />
-                        ) : (
-                            <video
-                                src={adSrc(ad.link)}
-                                className="w-full h-full object-cover"
-                                autoPlay
-                                muted
-                                loop
-                                playsInline
-                            />
-                        )}
+                        <AdMedia ad={ad} />
                     </div>
                 ))}
                 

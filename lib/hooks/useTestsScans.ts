@@ -1,10 +1,13 @@
 import { fetchJson, IResponse } from '@/lib/services/http-server';
 import { TSectionBanner } from '../types/home-page';
 import { TClinic } from '../types/clinic';
-/* site_banners rows as init-cache selects them: image, alt_text and link only */
+/* site_banners rows as init-cache selects them. device_type is "mobile", "desktop" or "all"; the
+   doctors and caretakers pages filter their banners on it, this page does not yet. */
 export type TTestsScansBanner = {
+    id: number,
     image: string,
     alt_text: string,
+    device_type: string,
     link: string
 }
 export type TTestsScansSpecialist = {

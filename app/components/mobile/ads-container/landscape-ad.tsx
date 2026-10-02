@@ -1,8 +1,7 @@
 'use client';
 
 import { useAds } from '@/lib/hooks/useAds';
-import { adSrc } from '@/lib/image';
-import Image from 'next/image';
+import AdMedia from './ad-media';
 
 type LandscapeAddProps = {
     page_type: 'home' | 'doctor_list' | 'doctor_detail' | 'clinic_list' | 'clinic_detail';
@@ -24,7 +23,7 @@ const LandscapeAd = ({ page_type, category_ids, city, limit = 1, showPlaceholder
     });
     // Always render the container div so ref gets attached
     return (
-        <div ref={containerRef} className="w-full my-2">
+        <div ref={containerRef} className="w-full my-2" data-nosnippet>
             {loading && (
                 <div className="w-full h-24 bg-gray-100 animate-pulse rounded-lg" />
             )}
@@ -39,23 +38,7 @@ const LandscapeAd = ({ page_type, category_ids, city, limit = 1, showPlaceholder
                         onClick={() => handleAdClick(ads[0])}
                         className="relative w-full max-h-32 bg-gray-100 rounded-lg overflow-hidden cursor-pointer hover:opacity-90 transition-opacity"
                     >
-                        {ads[0].media_type === 'image' ? (
-                            <img
-                                src={adSrc(ads[0].link)}
-                                alt={ads[0].alt || 'Advertisement'}
-                                className="object-cover w-full h-full"
-                                sizes="100vw"
-                            />
-                        ) : (
-                            <video
-                                src={adSrc(ads[0].link)}
-                                className="w-full h-full object-cover"
-                                autoPlay
-                                muted
-                                loop
-                                playsInline
-                            />
-                        )}
+                        <AdMedia ad={ads[0]} />
                     </div>
                     
                     {/* CTA Button */}

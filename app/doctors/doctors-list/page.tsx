@@ -6,6 +6,7 @@ import PageVisitLogger from '@/app/components/client-components/page-visit-logge
 import { fetchDoctors, fetchDoctorsConsultingTimings } from '@/lib/hooks/useDoctors';
 import useDeviceInfo from "@/lib/hooks/useDeviceInfo";
 const DoctorListMobile = dynamic(() => import("@/app/doctors/doctors-list/mobile"));
+const DoctorListDesktop = dynamic(() => import("@/app/doctors/doctors-list/desktop"));
 export async function generateMetadata({ searchParams }: { searchParams: any }): Promise<Metadata> {
     const data = await fetchDoctors({ state: searchParams.state, city: searchParams.city, cat_id: searchParams.cat_id, group_category: searchParams.group_cat, seo_url: searchParams.seo_url, town: searchParams.town });
     return {
@@ -35,9 +36,11 @@ const DoctorsList = async ({ searchParams }: { searchParams: any }) => {
     //     permanentRedirect("/" + data.data.seo_dt.seo_url, RedirectType.push);
     //     return <></>
     // }
-    if (device.type === "mobile" || 1 == 1) {
-        return (<>
-            <DoctorListMobile params={searchParams} data={data.data} consultTimings={consultTimings} />
+    //the structured data and the visit log are the same either way, only the body differs
+    return (<>
+            {device.type === "mobile"
+                ? <DoctorListMobile params={searchParams} data={data.data} consultTimings={consultTimings} />
+                : <DoctorListDesktop params={searchParams} data={data.data} consultTimings={consultTimings} />}
             <PageVisitLogger data={{
                 page_type: "listing",
                 page_name: "doctors_list",
@@ -80,11 +83,5 @@ const DoctorsList = async ({ searchParams }: { searchParams: any }) => {
                 })}
             </Script>
         </>)
-    } else {
-        return (<>
-            doctors list desktop
-        </>)
-    }
-
 }
 export default DoctorsList;

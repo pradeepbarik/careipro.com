@@ -4,8 +4,6 @@ import { BiCheck, BiPhone, BiChevronDown, BiChevronUp } from "react-icons/bi";
 import { FaUsers, FaChartLine, FaCalendarCheck, FaStar, FaQuoteLeft, FaHandHoldingHeart, FaUserShield, FaMoneyBillWave, FaUserCheck } from "react-icons/fa";
 import { MdVerified, MdVisibility, MdSupport, MdAccessTime, MdLocationOn } from "react-icons/md";
 import { useState } from "react";
-import DesktopFooter from "../../components/desktop/footer";
-import PageHeader from "../../components/desktop/header";
 import BusinessTypesSection from "../components/business-type-section";
 
 // Benefits for Individual Caretakers
@@ -796,7 +794,6 @@ const CTASection = () => {
 const CaretakerListingPageDesktop = () => {
     return (
         <>
-            <PageHeader state="" city="" />
             <HeroSection />
             <WhyJoinSection />
             <IndividualCaretakerSection />
@@ -808,7 +805,6 @@ const CaretakerListingPageDesktop = () => {
             <FAQSection />
             <CTASection />
             <BusinessTypesSection referer="caretaker" />
-            <DesktopFooter state="Odisha" city="Bhadrak" />
         </>
     );
 };

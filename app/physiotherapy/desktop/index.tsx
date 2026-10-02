@@ -10,8 +10,6 @@ import { fetchPhysiotherapyHomePageData, TClinic, TSpecialization } from "@/lib/
 import { TSectionBanner, TSiteBanner } from "@/lib/types/home-page";
 import { doctorSpecialityIcon, clinicProfilePic, clinicBannerImage, doctorProfilePic } from '@/lib/image';
 import ServiceAvailbeCities from '../../components/mobile/footer/service-available-cities';
-import DesktopFooter from "@/app/components/desktop/footer";
-import PageHeader from "@/app/components/desktop/header";
 // Hero Section
 const HeroSection = ({ city }: { city: string }) => {
     const stats = [
@@ -305,7 +303,6 @@ const PhysiotherapyDesktop = async ({ state, city }: { state: string, city: stri
     
     return (
         <div className="min-h-screen bg-gray-100">
-            <PageHeader state={state} city={city} vertical="physiotherapy"  />
             <main className="max-w-7xl mx-auto px-4 py-6">
                 <HeroSection city={city} />
                 
@@ -328,11 +325,14 @@ const PhysiotherapyDesktop = async ({ state, city }: { state: string, city: stri
                 ))}
             </main>
 
-            <DesktopFooter state={state} city={city} vertical="physiotherapy">
+            {/* the band the footer used to wrap, the footer itself is in the layout now */}
+            <div className="bg-gray-100 text-gray-800 py-8">
+                <div className="max-w-7xl mx-auto px-4">
                 <Suspense fallback={<></>}>
                     <ServiceAvailbeCities />
                 </Suspense>
-            </DesktopFooter>
+                </div>
+            </div>
         </div>
     );
 };

@@ -28,7 +28,6 @@ export async function generateMetadata({ searchParams }: { searchParams: { city:
     }
 }
 const CareTaker = async ({ searchParams }: TProps) => {
-    console.log("searchParams", searchParams);
     const { device } = useDeviceInfo();
     const [pageData, categories] = await Promise.all([
         fetCaretakersHomePageData(searchParams.state.toLocaleLowerCase(), searchParams.city.toLocaleLowerCase()),
