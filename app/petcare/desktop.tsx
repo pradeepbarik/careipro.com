@@ -4,8 +4,6 @@ import { AiFillCaretDown, AiFillStar } from "react-icons/ai";
 import { FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn, FaMapMarkerAlt, FaPaw, FaDog, FaCat, FaBone, FaHeart } from "react-icons/fa";
 import { MdVerified, MdPets, MdVaccines, MdLocalHospital, MdSpa } from "react-icons/md";
 import { GiDogHouse, GiCat, GiSittingDog, GiDogBowl } from "react-icons/gi";
-import PageHeader from "../components/desktop/header";
-import DesktopFooter from "../components/desktop/footer";
 
 // Static Data
 const petServices = [
@@ -416,7 +414,6 @@ const PetCareTipsSection = () => {
 const PetcareDesktop = ({ state, city }: { state: string, city: string }) => {
     return (
         <div className="min-h-screen bg-gray-100">
-            <PageHeader state={state} city={city} vertical="petcare" />
             <main className="max-w-7xl mx-auto px-4 py-6">
                 <HeroSection />
                 <PetCategoriesSection />
@@ -426,7 +423,6 @@ const PetcareDesktop = ({ state, city }: { state: string, city: string }) => {
                 <WhyChooseUsSection />
                 <PetCareTipsSection />
             </main>
-            <DesktopFooter state={state} city={city} vertical="petcare" />
         </div>
     );
 };
