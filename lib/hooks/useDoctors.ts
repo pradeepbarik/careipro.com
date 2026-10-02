@@ -4,8 +4,10 @@ import { TDoctor, TDoctorDetail, TDoctorvailableData } from '../types/doctor';
 import { TSeodt } from '../types';
 import { get_current_datetime } from '@/lib/helper/date-time';
 import { TSectionBanner, TSiteBanner } from '../types/home-page';
+import { TShortVideo } from "@/lib/helper/short-video";
 export type TDoctorsPageData = {
     site_banners?: TSiteBanner[],
+    short_videos?: TShortVideo[],
     specialists: Array<{
         id: number,
         name: string,

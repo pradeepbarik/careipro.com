@@ -10,6 +10,7 @@ import { doctorProfilePic } from '@/lib/image';
 import { doctorDiseaseExpertiseTabSeoData, doctorReviewsTabSeoData, doctorTreatmentPhotosTabSeoData } from '@/lib/seo/doctor-detail';
 
 const DoctorDetailMobile = dynamic(() => import('./mobile'));
+const DoctorDetailDesktop = dynamic(() => import('./desktop'));
 export async function generateMetadata({ searchParams }: { searchParams: any }): Promise<Metadata> {
     const data = await fetchDoctorDetail({ doctor_id: searchParams.doctor_id, clinic_id: searchParams.clinic_id, service_loc_id: searchParams.service_loc_id, seo_url: searchParams.seo_url, market_name: searchParams.market_name, state: searchParams.state, city: searchParams.city })
     //let url = `https://careipro.com/${searchParams.state.toLowerCase().replace(" ", "-")}/${searchParams.city.toLowerCase().replace(" ", "-")}/${searchParams.seo_url}-In-${searchParams.market_name.replace(" ", "-")}/DR${searchParams.doctor_id}-SL${searchParams.service_loc_id}-C${searchParams.clinic_id}`;
@@ -76,8 +77,8 @@ const DoctorDetail = async ({ searchParams }: {
         }
     }
 
-    if (device.type === "mobile" || 1 == 1) {
-        return (<>
+    //the structured data and the visit log are the same either way, only the body differs
+    return (<>
             <Script
                 key="json-ld-site-detail"
                 id="json-ld-site-detail"
@@ -105,7 +106,9 @@ const DoctorDetail = async ({ searchParams }: {
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{ __html: data.data.seo_dt.ldjson }}
             />
-            <DoctorDetailMobile data={data.data} searchParams={searchParams} availableData={availableData} cookies={cookies} />
+            {device.type === "mobile"
+                ? <DoctorDetailMobile data={data.data} searchParams={searchParams} availableData={availableData} cookies={cookies} />
+                : <DoctorDetailDesktop data={data.data} searchParams={searchParams} availableData={availableData} cookies={cookies} />}
             <PageVisitLogger data={{
                 page_type: "detail",
                 page_name: "doctor_detail",
@@ -118,11 +121,5 @@ const DoctorDetail = async ({ searchParams }: {
                 vertical: "DOCTOR"
             }} />
         </>)
-    } else {
-        return (<>
-            doctor detail
-        </>)
-    }
-
 }
 export default DoctorDetail;

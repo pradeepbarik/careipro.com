@@ -4,8 +4,6 @@ import { BiCheck, BiPhone, BiEnvelope, BiChevronDown, BiChevronUp } from "react-
 import { FaUserMd, FaHospital, FaHandHoldingMedical, FaPaw, FaUsers, FaChartLine, FaCalendarCheck, FaStar, FaQuoteLeft } from "react-icons/fa";
 import { MdSpa, MdVerified, MdVisibility, MdSupport } from "react-icons/md";
 import { useEffect, useState } from "react";
-import DesktopFooter from "../../components/desktop/footer";
-import PageHeader from "../../components/desktop/header";
 import BusinessTypesSection from "../components/business-type-section";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
@@ -1173,7 +1171,6 @@ const CTASection = () => {
 const BusinessListingDesktop = () => {
     return (
         <>
-            <PageHeader state="" city="" />
             <HeroSection />
             <ComparisonSection />
             <PatientExperienceSection />
@@ -1186,7 +1183,6 @@ const BusinessListingDesktop = () => {
             <FAQSection />
             <CTASection />
             <BusinessTypesSection referer="hospital-clinic" />
-            <DesktopFooter state="Odisha" city="Bhadrak" />
         </>
     );
 };

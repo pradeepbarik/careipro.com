@@ -11,7 +11,7 @@ type TProps = {
   params: { [key: string]: string },
   searchParams: { [key: string]: string }
 }
-export async function generateMetadata({ searchParams }: { searchParams: { city: string, state: string,town?: string } }): Promise<Metadata> {
+export async function generateMetadata({ searchParams }: { searchParams: { city: string, state: string, town?: string } }): Promise<Metadata> {
   return {
     title: `Doctors, Clinics, Medicine,Caretakers & Home Care Services in ${searchParams.town ? searchParams.town + ", " : ""}${searchParams.city} | Careipro`,
     description: `Find doctors, book appointments, hire caretakers, body massage, pet care & medicine stores in ${searchParams.town ? searchParams.town + ", " : ""}${searchParams.city}. Trusted local healthcare services on Careipro`,
@@ -23,9 +23,9 @@ export async function generateMetadata({ searchParams }: { searchParams: { city:
         follow: true,
       }
     },
-     alternates: {
-          //canonical: `/${searchParams.city}-In-${searchParams.state}`, // Relative path will be combined with metadataBase
-          canonical: `${searchParams.state.toLowerCase()}/${searchParams.city.toLowerCase().replace(" ", "-")}` // Relative path will be combined with metadataBase
+    alternates: {
+      //canonical: `/${searchParams.city}-In-${searchParams.state}`, // Relative path will be combined with metadataBase
+      canonical: `${searchParams.state.toLowerCase()}/${searchParams.city.toLowerCase().replace(" ", "-")}` // Relative path will be combined with metadataBase
     },
   }
 }
@@ -46,7 +46,14 @@ const CityHomePage = ({ searchParams }: TProps) => {
     )
   } else {
     return (
-      <CityHomeDesktop state={searchParams.state} city={searchParams.city} town={searchParams.town} cookies={cookies} />
+      <>
+        <CityHomeDesktop state={searchParams.state} city={searchParams.city} town={searchParams.town} cookies={cookies} />
+        <PageVisitLogger data={{
+          page_name: "city_home_desktop",
+          state: searchParams.state,
+          city: searchParams.city,
+        }} />
+      </>
     );
   }
 }

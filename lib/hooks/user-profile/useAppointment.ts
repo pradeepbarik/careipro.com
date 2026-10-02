@@ -9,9 +9,20 @@ const useAppointment = ({ init, case_id, appointmentId, page, doctor_id }: { ini
     const [activeAppointmentId, setActiveAppointmentId] = useState<number>(appointmentId || 0);
     const [appointmentInfo, setAppointmentInfo] = useState<Record<number, TcaseInfo>>({})
     const [caseAppointmentDetails, setCaseAppointmentDetails] = useState<{ [id: number]: TappointmentDetail }>({});
+    /* so a list can tell "still fetching" from "nothing booked yet" and not flash an empty state
+       over the first paint. starts true only when this hook is going to fetch a history. */
+    const [loadingAppointments, setLoadingAppointments] = useState<boolean>(init === true && page === "history");
     const appointmentsHistory = () => {
+        setLoadingAppointments(true);
         fetchAppointmentHistory(0, 100, doctor_id).then(({ data }) => {
             setAppointments(data)
+        }).catch(() => {
+            /* the try/catch inside fetchAppointmentHistory cannot see a rejected promise, so without
+               this a failed call is an unhandled rejection. there is nothing to show either way, so
+               the list stays empty and the page falls through to its own empty state. */
+            setAppointments([])
+        }).finally(() => {
+            setLoadingAppointments(false)
         })
     }
     const getAppointmentDetail = (id: number) => {
@@ -78,6 +89,7 @@ const useAppointment = ({ init, case_id, appointmentId, page, doctor_id }: { ini
     }, [activeAppointmentId])
     return {
         appointments,
+        loadingAppointments,
         appointment,
         setAppointment,
         appointmentsHistory,

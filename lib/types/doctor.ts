@@ -266,6 +266,20 @@ export type TDoctorDetail = TWeeklyConsultingTiming & {
         ldjson: string
     },
     rurl?: string,
+    /* careipro's own contact for this doctor's clinic, the same fields the clinic detail response
+       carries on clinic_info. optional because a doctor with no clinic has none of them. */
+    crm_name?: string,
+    crm_contact_number?: string,
+    patient_support_contact_no?: string,
+    //the city wide fallback, used when the clinic has no support number of its own
+    city_settings?: {
+        patient_support_contact_no?: string | null,
+        patient_support_staff_name?: string | null,
+        support_time_message?: string | null,
+        //careipro's internal contact for the city, never shown to a patient
+        city_manager_name?: string | null,
+        city_manager_contact_no?: string | null,
+    } | null,
 }
 export type TDoctorvailableData = {
     available_date: string,

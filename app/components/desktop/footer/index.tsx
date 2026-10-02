@@ -1,16 +1,13 @@
 import { BiEnvelope, BiPhone, BiSolidMap } from "react-icons/bi";
 import { FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn } from "react-icons/fa";
 import Link from "next/link";
-import { getColorsClasses } from "../header/index";
 import PrimaryLogo from "../../common/primary-logo";
 // Footer
-const DesktopFooter = ({ state, city, children, vertical='city-home' }: { 
-    state: string, 
-    city: string, 
-    children?: React.ReactNode,
-    vertical?: 'city-home' | 'doctors'| 'clinics' | 'physiotherapy' | 'caretaker' | 'petcare'
+const DesktopFooter = ({ state, city, children }: {
+    state: string,
+    city: string,
+    children?: React.ReactNode
 }) => {
-    const colorsClasses = getColorsClasses(vertical || 'city-home');
     return (
         <footer className="bg-[#2d2d2d] text-white mt-8">
             {children && (
@@ -26,10 +23,10 @@ const DesktopFooter = ({ state, city, children, vertical='city-home' }: {
                             Your trusted healthcare partner. Find verified doctors, clinics, and healthcare services in your city. Book appointments online and take control of your health with Careipro.
                         </p>
                         <div className="flex gap-3">
-                            <a href="#" className={`w-9 h-9 bg-gray-700 ${colorsClasses.hoverBgColor} rounded-full flex items-center justify-center transition-colors`}><FaFacebookF className="text-sm" /></a>
-                            <a href="#" className={`w-9 h-9 bg-gray-700 ${colorsClasses.hoverBgColor} rounded-full flex items-center justify-center transition-colors`}><FaTwitter className="text-sm" /></a>
-                            <a href="#" className={`w-9 h-9 bg-gray-700 ${colorsClasses.hoverBgColor} rounded-full flex items-center justify-center transition-colors`}><FaInstagram className="text-sm" /></a>
-                            <a href="#" className={`w-9 h-9 bg-gray-700 ${colorsClasses.hoverBgColor} rounded-full flex items-center justify-center transition-colors`}><FaLinkedinIn className="text-sm" /></a>
+                            <a href="#" className={`w-9 h-9 bg-gray-700 hover:bg-primary rounded-full flex items-center justify-center transition-colors`}><FaFacebookF className="text-sm" /></a>
+                            <a href="#" className={`w-9 h-9 bg-gray-700 hover:bg-primary rounded-full flex items-center justify-center transition-colors`}><FaTwitter className="text-sm" /></a>
+                            <a href="#" className={`w-9 h-9 bg-gray-700 hover:bg-primary rounded-full flex items-center justify-center transition-colors`}><FaInstagram className="text-sm" /></a>
+                            <a href="#" className={`w-9 h-9 bg-gray-700 hover:bg-primary rounded-full flex items-center justify-center transition-colors`}><FaLinkedinIn className="text-sm" /></a>
                         </div>
                     </div>
                     <div>
@@ -54,9 +51,9 @@ const DesktopFooter = ({ state, city, children, vertical='city-home' }: {
                     <div>
                         <h4 className="font-bold text-lg mb-4">Contact Us</h4>
                         <ul className="space-y-3 text-gray-400 text-sm">
-                            <li className="flex items-center gap-3"><BiPhone className={`text-lg ${colorsClasses.textColor}`} /><span>+91 98765 43210</span></li>
-                            <li className="flex items-center gap-3"><BiEnvelope className={`text-lg ${colorsClasses.textColor}`} /><span>support@careipro.com</span></li>
-                            <li className="flex items-start gap-3"><BiSolidMap className={`text-lg mt-0.5 ${colorsClasses.textColor}`} /><span>123 Healthcare Street, India</span></li>
+                            <li className="flex items-center gap-3"><BiPhone className={`text-lg text-primary`} /><span>+91 81979 09283</span></li>
+                            <li className="flex items-center gap-3"><BiEnvelope className={`text-lg text-primary`} /><span>support@careipro.com</span></li>
+                            <li className="flex items-start gap-3"><BiSolidMap className={`text-lg mt-0.5 text-primary`} /><span>Korkora Bhadrak odisha, India</span></li>
                         </ul>
                     </div>
                 </div>

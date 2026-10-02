@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import useDeviceInfo from "@/lib/hooks/useDeviceInfo";
 const AllSpecialistMobile = dynamic(() => import("./mobile"));
+const AllSpecialistDesktop = dynamic(() => import("./desktop"));
 type TProps = {
     params: { [key: string]: string },
     searchParams: { [key: string]: string }
@@ -25,7 +26,7 @@ export async function generateMetadata({ searchParams }: { searchParams: { city:
 }
 const AllSpecialists = ({ searchParams }: TProps) => {
     const { device } = useDeviceInfo()
-    if (device.type === 'mobile' || 1==1) {
+    if (device.type === 'mobile') {
         return (
             <>
                 <AllSpecialistMobile state={searchParams.state} city={searchParams.city} town={searchParams.town || ""} />
@@ -34,8 +35,7 @@ const AllSpecialists = ({ searchParams }: TProps) => {
     }
     return (
         <>
-
-
+            <AllSpecialistDesktop state={searchParams.state} city={searchParams.city} town={searchParams.town || ""} />
         </>
     )
 }

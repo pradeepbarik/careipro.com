@@ -1,8 +1,7 @@
 'use client';
 
 import { useAds } from '@/lib/hooks/useAds';
-import { adSrc } from '@/lib/image';
-import Image from 'next/image';
+import AdMedia from './ad-media';
 
 type SquareAddProps = {
     page_type: 'home' | 'doctor_list' | 'doctor_detail' | 'clinic_list' | 'clinic_detail';
@@ -38,30 +37,13 @@ const SquareAd = ({ page_type, category_ids, city, limit = 1, showPlaceholder = 
     const ad = ads[0];
 
     return (
-        <div ref={containerRef} className="w-full my-2">
+        <div ref={containerRef} className="w-full my-2" data-nosnippet>
             <div
                 data-ad-id={ad._id}
                 onClick={() => handleAdClick(ad)}
                 className="relative w-full aspect-square bg-gray-100 rounded-lg overflow-hidden cursor-pointer hover:opacity-90 transition-opacity"
             >
-                {ad.media_type === 'image' ? (
-                    <Image
-                        src={adSrc(ad.link)}
-                        alt={ad.alt || 'Advertisement'}
-                        fill
-                        className="object-cover"
-                        sizes="100vw"
-                    />
-                ) : (
-                    <video
-                        src={adSrc(ad.link)}
-                        className="w-full h-full object-cover"
-                        autoPlay
-                        muted
-                        loop
-                        playsInline
-                    />
-                )}
+                <AdMedia ad={ad} />
                 <div className="absolute top-1 right-1 bg-black/50 text-white text-xs px-2 py-0.5 rounded">
                     Ad
                 </div>

@@ -29,22 +29,27 @@ const Clinics = async ({ searchParams }: { searchParams: any }) => {
         fetchClinicsList({ state: searchParams.state, city: searchParams.city, market_name: searchParams.market_name, cat_id: searchParams.cat_id, group_category: searchParams.group_cat }),
         fetchClinicTopDoctors({ state: searchParams.state, city: searchParams.city, market_name: searchParams.market_name })
     ])
-    if (device.type === "mobile" || 1==1) {
+    const visitLog = (
+        <PageVisitLogger data={{
+            page_type: "listing",
+            page_name: "clinics_list",
+            state: searchParams.state,
+            city: searchParams.city,
+            cat_id: searchParams.cat_id,
+            group_category: searchParams.group_cat,
+            vertical: "CLINIC"
+        }} />
+    );
+    if (device.type === "mobile") {
         return (<>
             <ClinicListMobile params={searchParams} data={clinicListData.data} topDoctorsData={clinicSTopDoctorsData.data} />
-            <PageVisitLogger data={{
-                page_type: "listing",
-                page_name: "clinics_list",
-                state: searchParams.state,
-                city: searchParams.city,
-                cat_id: searchParams.cat_id,
-                group_category: searchParams.group_cat,
-                vertical:"CLINIC"
-            }} />
+            {visitLog}
         </>)
     } else {
+        /* the visit is logged on both, a desktop listing view counts the same as a mobile one */
         return (<>
-            <ClinicListDesktop />
+            <ClinicListDesktop params={searchParams} data={clinicListData.data} topDoctorsData={clinicSTopDoctorsData.data} />
+            {visitLog}
         </>)
     }
 }

@@ -3,6 +3,7 @@ import dynamic from 'next/dynamic'
 import useDeviceInfo from "@/lib/hooks/useDeviceInfo";
 import { fetchTestsScansPageData } from "@/lib/hooks/useTestsScans";
 const LabsTestsScansMobile = dynamic(() => import('./mobile'));
+const LabsTestsScansDesktop = dynamic(() => import('./desktop'));
 
 export async function generateMetadata({ searchParams }: { searchParams: { city: string, state: string } }): Promise<Metadata> {
     return {
@@ -23,17 +24,10 @@ export async function generateMetadata({ searchParams }: { searchParams: { city:
 }
 const LabsTestsScans = async ({ searchParams }: { searchParams: { city: string, state: string } }) => {
     const { device } = useDeviceInfo();
-    if (device.type === "mobile") {
-        const pageData = await fetchTestsScansPageData(searchParams.state, searchParams.city);
-        return <LabsTestsScansMobile state={searchParams.state} city={searchParams.city} pageData={pageData} />
-    }
-    return (
-        <>
-            <h1>Labs Tests Scans Page</h1>
-            <p>State: {searchParams.state}</p>
-            <p>City: {searchParams.city}</p>
-        </>
-    )
+    const pageData = await fetchTestsScansPageData(searchParams.state, searchParams.city);
+    return device.type === "mobile"
+        ? <LabsTestsScansMobile state={searchParams.state} city={searchParams.city} pageData={pageData} />
+        : <LabsTestsScansDesktop state={searchParams.state} city={searchParams.city} pageData={pageData} />
 }
 
 export default LabsTestsScans;

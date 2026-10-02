@@ -2,8 +2,6 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { BiPhone, BiEnvelope, BiLogoWhatsapp, BiCheckCircle, BiSupport, BiChevronRight } from "react-icons/bi";
-import PageHeader from "../components/desktop/header";
-import DesktopFooter from "../components/desktop/footer";
 import { support_no } from '@/constants/site-config';
 import useEnquiry from "@/lib/hooks/useEnquiry";
 import { toast } from "react-toastify";
@@ -81,7 +79,6 @@ const ContactUsDesktop = () => {
 
     return (
         <>
-            <PageHeader state={state} city={city} />
 
             {/* Hero */}
             <div className="relative overflow-hidden text-white" style={{ background: "linear-gradient(135deg, #0e7490 0%, #0891b2 55%, #22d3ee 100%)" }}>
@@ -254,7 +251,6 @@ const ContactUsDesktop = () => {
                 </div>
             </div>
 
-            <DesktopFooter state={state} city={city} />
         </>
     )
 }

@@ -7,7 +7,7 @@ import { BiShareAlt } from "react-icons/bi";
 
    The query string is dropped on purpose: the page can be opened with ?design=v2, and
    nobody should receive that in a shared link. */
-const ShareButton = ({ name, className = "" }: { name: string, className?: string }) => {
+const ShareButton = ({ name, className = "", iconClassName = "fs-18 text-white", children }: { name: string, className?: string, iconClassName?: string, children?: React.ReactNode }) => {
     const onShare = async () => {
         const url = `${window.location.origin}${window.location.pathname}`;
         if (navigator.share) {
@@ -27,7 +27,8 @@ const ShareButton = ({ name, className = "" }: { name: string, className?: strin
     }
     return (
         <button onClick={onShare} aria-label={`Share ${name}`} className={className}>
-            <BiShareAlt className="fs-18 text-white" />
+            <BiShareAlt className={iconClassName} />
+            {children}
         </button>
     )
 }

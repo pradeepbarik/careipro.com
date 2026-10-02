@@ -3,66 +3,91 @@ import Link from "next/link";
 import Image from "next/image";
 import { BiSolidMap, BiUser, BiSearch, BiPhone, BiEnvelope, BiChevronRight, BiTime, BiCalendar } from "react-icons/bi";
 import { AiFillCaretDown, AiFillStar } from "react-icons/ai";
-import { FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn, FaUserMd, FaStethoscope, FaBriefcaseMedical } from "react-icons/fa";
+import {
+    FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn, FaUserMd, FaStethoscope, FaBriefcaseMedical,
+    FaHospital, FaUserNurse, FaHandsHelping, FaTint, FaAmbulance, FaHandHoldingHeart
+} from "react-icons/fa";
 import { MdVerified } from "react-icons/md";
 import { TCategories } from "@/lib/hooks/useCategories";
 import { TDoctorsPageData } from "@/lib/hooks/useDoctors";
 import { TDoctor } from "@/lib/types/doctor";
-import { TSectionBanner } from "@/lib/types/home-page";
+import { TSectionBanner, TSiteBanner } from "@/lib/types/home-page";
+import SiteBannerSlider from "../components/desktop/site-banner-slider";
+import ClinicStories from "../components/desktop/home/clinic-stories";
+import { shortVideosAsStories, TShortVideo } from "@/lib/helper/short-video";
 import { doctorProfilePic, doctorSpecialityIcon } from '@/lib/image';
 import CategoriesFooter from '../components/mobile/footer/categories';
 import ServiceAvailbeCities from '../components/mobile/footer/service-available-cities';
-import PageHeader from "../components/desktop/header";
-import DesktopFooter from "../components/desktop/footer";
-import { doctorDetailPageUrl } from "@/lib/helper/link";
-// Hero Section
-const HeroSection = ({ city }: { city: string }) => {
-    const stats = [
-        { label: 'Verified Doctors', value: '5000+', icon: <MdVerified className="text-2xl" /> },
-        { label: 'Specializations', value: '50+', icon: <FaStethoscope className="text-2xl" /> },
-        { label: 'Happy Patients', value: '1M+', icon: <AiFillStar className="text-2xl" /> },
-    ];
-    return (
-        <div className="mb-8">
-            <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
-                <div className="px-8 py-8" style={{ background: 'linear-gradient(135deg, #2563eb 0%, #3b82f6 50%, #60a5fa 100%)' }}>
-                    <div className="flex items-center justify-between">
-                        <div className="max-w-xl">
-                            <div className="flex items-center gap-2 mb-3">
-                                <span className="px-3 py-1 bg-white/20 backdrop-blur-sm rounded-full text-white text-sm font-medium">
-                                    👨‍⚕️ Trusted Healthcare Professionals
-                                </span>
-                            </div>
-                            <h1 className="text-4xl font-bold text-white mb-3">
-                                Find Best Doctors in {city}
-                            </h1>
-                            <p className="text-white/90 text-lg mb-6">
-                                Book appointments with top specialists. Get expert medical consultation from verified and experienced doctors.
-                            </p>
-                            <div className="flex gap-4">
-                                <Link href="#specialists" className="px-6 py-3 bg-white text-blue-600 font-semibold rounded-xl hover:bg-gray-100 transition-all flex items-center gap-2">
-                                    <FaStethoscope /> Find Specialists
-                                </Link>
-                                <Link href="/free-listing" className="px-6 py-3 bg-white/20 backdrop-blur-sm text-white font-semibold rounded-xl hover:bg-white/30 transition-all border border-white/30">
-                                    Join as Doctor
-                                </Link>
-                            </div>
-                        </div>
-                        <div className="hidden lg:flex gap-4">
-                            {stats.map((stat) => (
-                                <div key={stat.label} className="bg-white/15 backdrop-blur-sm rounded-2xl p-5 min-w-[140px] text-center border border-white/20">
-                                    <div className="text-white mb-2 flex justify-center">{stat.icon}</div>
-                                    <div className="text-3xl font-bold text-white">{stat.value}</div>
-                                    <div className="text-white/80 text-sm">{stat.label}</div>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </div>
-            </div>
+import { doctorDetailPageUrl, alllCategoriesPageLink } from "@/lib/helper/link";
+import { capitalizeFirstLetter } from "@/lib/helper/format-text";
+/* both halves of the hero stand the same height so neither side letterboxes the other */
+const HERO_HEIGHT = "20rem";
+
+/* every kind of provider careipro lists, which is wider than the clinics and doctors this page is
+   about: the card is here to recruit all of them */
+const PROVIDER_TYPES = [
+    { label: "Clinic & Hospital", icon: FaHospital },
+    { label: "Doctor", icon: FaUserMd },
+    { label: "Nurse", icon: FaUserNurse },
+    { label: "ASHA Worker", icon: FaHandsHelping },
+    { label: "Blood Donor", icon: FaTint },
+    { label: "Ambulance", icon: FaAmbulance },
+];
+
+const JOIN_HREF = "/business-listing/hospital-clinic?utm_source=careipro&utm_medium=doctors-hero&utm_campaign=join-with-us";
+
+/* The recruiting half of the hero. The page itself is for patients, so this says in one card who
+   careipro lists and gives them one way in, rather than a separate pitch per provider type. */
+const JoinCard = ({ city }: { city: string }) => (
+    <div className="bg-white rounded-2xl border border-gray-200 p-6 h-full flex flex-col min-w-0">
+        <h2 className="text-xl font-bold text-gray-900 leading-tight mt-3">
+            Thank you to every healthcare service provider who helps patients get better sooner.
+        </h2>
+        {/* the city moved down here when the heading became the thank you, so the card still says
+            where the listing would appear */}
+
+
+        <div className="grid grid-cols-2 gap-2 mt-4">
+            {PROVIDER_TYPES.map((provider) => (
+                <span
+                    key={provider.label}
+                    className="flex items-center gap-2 rounded-lg border border-gray-200 bg-gray-50 px-2.5 py-2 fs-13 font-semibold text-gray-700 min-w-0"
+                >
+                    <provider.icon className="text-primary shrink-0" />
+                    <span className="truncate">{provider.label}</span>
+                </span>
+            ))}
         </div>
-    );
-};
+
+        <Link
+            href={JOIN_HREF}
+            className="mt-auto pt-4 flex items-center justify-center gap-1.5 fs-14 font-semibold"
+        >
+            <span className="w-full text-center rounded-lg bg-primary text-white py-2.5 hover:opacity-90 transition-opacity flex items-center justify-center gap-1.5">
+                Join with us<BiChevronRight className="text-lg" />
+            </span>
+        </Link>
+    </div>
+);
+
+/* The rotation on the left with the join card riding it as the last slide, the short videos on the
+   right, half each. Same pairing the city home opens with, fed by this page's own banners and videos
+   rather than the home ones. The join card means the left half always has something to show, so the
+   row stays even in a city with no banners uploaded yet. */
+const HeroSection = ({ city, banners, shortVideos }: {
+    city: string, banners?: TSiteBanner[], shortVideos?: TShortVideo[]
+}) => (
+    <div className="grid grid-cols-2 gap-5 items-stretch mb-8">
+        <SiteBannerSlider
+            banners={banners || []}
+            height={HERO_HEIGHT}
+            trailingSlide={<JoinCard city={city} />}
+        />
+        <div style={{ height: HERO_HEIGHT }}>
+            <ClinicStories stories={shortVideosAsStories(shortVideos)} city={capitalizeFirstLetter(city || '')} />
+        </div>
+    </div>
+);
 
 // Section Heading
 const SectionHeading = ({ heading, viewAllLink }: { heading: string, viewAllLink?: string }) => {
@@ -299,9 +324,12 @@ const DesktopDoctors = ({ city, state, pageData, categories, diseases }: {
 }) => {
     return (
         <div className="min-h-screen bg-gray-100">
-            <PageHeader state={state} city={city} vertical="doctors" />
             <main className="max-w-7xl mx-auto px-4 py-6">
-                <HeroSection city={city} />
+                <HeroSection
+                    city={city}
+                    banners={pageData.site_banners}
+                    shortVideos={pageData.short_videos}
+                />
 
                 <SpecialistsSection
                     specialists={pageData.specialists}
@@ -333,7 +361,9 @@ const DesktopDoctors = ({ city, state, pageData, categories, diseases }: {
                 ))}
             </main>
 
-            <DesktopFooter state={state} city={city} vertical="doctors">
+            {/* the band the footer used to wrap, the footer itself is in the layout now */}
+            <div className="bg-gray-100 text-gray-800 py-8">
+                <div className="max-w-7xl mx-auto px-4">
                 <Suspense fallback={<></>}>
                     <CategoriesFooter
                         state={state}
@@ -355,7 +385,8 @@ const DesktopDoctors = ({ city, state, pageData, categories, diseases }: {
                 <Suspense fallback={<></>}>
                     <ServiceAvailbeCities />
                 </Suspense>
-            </DesktopFooter>
+                </div>
+            </div>
         </div>
     );
 };

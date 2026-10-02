@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import MyProfileMobile from "./mobile";
+import MyProfileDesktop from "./desktop";
 import useDeviceInfo from "@/lib/hooks/useDeviceInfo";
 import PageVisitLogger from '@/app/components/client-components/page-visit-logger';
 export async function generateMetadata({ searchParams }: { searchParams: { city: string, state: string } }): Promise<Metadata> {
@@ -20,22 +21,18 @@ export async function generateMetadata({ searchParams }: { searchParams: { city:
     }
 }
 const MyProfile = () => {
-    const { device,cookies } = useDeviceInfo();
-    if (device.type === "mobile") {
-        return (
-            <>
-                <MyProfileMobile cookies={cookies}/>
-                <PageVisitLogger data={{
-                    page_name: "my_profile",
-                    state: "",
-                    city: "",
-                }} />
-            </>
-        )
-    }
+    const { device, cookies } = useDeviceInfo();
+    //the visit log is the same either way, only the body differs
     return (
         <>
-            fsdfsdfsd
+            {device.type === "mobile"
+                ? <MyProfileMobile cookies={cookies} />
+                : <MyProfileDesktop cookies={cookies} />}
+            <PageVisitLogger data={{
+                page_name: "my_profile",
+                state: "",
+                city: "",
+            }} />
         </>
     )
 }
