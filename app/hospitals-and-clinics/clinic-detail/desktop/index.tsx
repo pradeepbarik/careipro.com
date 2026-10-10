@@ -2,7 +2,7 @@ import dynamic from "next/dynamic";
 import Link from "next/link";
 import { BiMap, BiTime, BiChevronRight, BiSolidHeart } from "react-icons/bi";
 import { BsStar, BsStarFill } from "react-icons/bs";
-import { FaHospital, FaUserMd } from "react-icons/fa";
+import { FaHospital, FaUserMd, FaAmbulance } from "react-icons/fa";
 import { TclinicDetail } from "@/lib/hooks/useClinics";
 import { capitalizeFirstLetter, doctorsTabDisplayname } from "@/lib/helper/format-text";
 import { cityPageLink, clinicDetailpageUrl } from "@/lib/helper/link";
@@ -12,12 +12,12 @@ import {
     ListingTypeBadge, ListingTypeNote, CareiproSupport, ClinicDoctorCard
 } from "../mobile";
 import HeroBanners from "./hero-banners";
-import ClinicOpenStatus from "../mobile/clinic-open-status";
 import ClinicDistance from "../mobile/clinic-distance";
 import ClinicTimings from "../mobile/clinic-timings";
 import FavouriteButton from "../mobile/favourite-button";
 import SendEnquiry from "../mobile/send-enquiry";
 import HeroVideos from "./hero-video";
+import AmbulanceCard from "../ambulance-card";
 
 const ClinicReviews = dynamic(() => import("../mobile/clinic-reviews"));
 const AppointmentReminder = dynamic(() => import("@/app/components/mobile/appointment-reminder"), { ssr: false });
@@ -25,6 +25,8 @@ const AppointmentReminder = dynamic(() => import("@/app/components/mobile/appoin
 //the in page nav, each entry must match a section that actually rendered or it scrolls to nothing
 const buildTabs = (data: TclinicDetail) => {
     const tabs: Array<{ label: string, href: string }> = [];
+    //an ambulance provider has a fleet where a clinic has doctors
+    if ((data.ambulances || []).length > 0) tabs.push({ label: "Ambulances", href: "#ambulances" });
     if (data.totalDoctors > 0) tabs.push({ label: doctorsTabDisplayname(data.clinic_info.business_type), href: "#doctors" });
     if ((data.specializations["TESTSCAN"] || []).length > 0) tabs.push({ label: "Tests & Scans", href: "#services" });
     if ((data.specializations["DISEASE"] || []).length > 0) tabs.push({ label: "Treatments", href: "#treatments" });
@@ -36,6 +38,7 @@ const buildTabs = (data: TclinicDetail) => {
 const ClinicDetailDesktop = ({ data, searchParams }: { data: TclinicDetail, searchParams: any }) => {
     const info = data.clinic_info;
     const tabs = buildTabs(data);
+    const isAmbulance = info.business_type === "AMBULANCE";
     //every video the clinic uploaded sits in the hero, so there is no separate videos section
     const videos = data.socialMediaVideos || [];
     /* a bare year makes the reader do the arithmetic, so the trust strip carries the age too.
@@ -55,7 +58,9 @@ const ClinicDetailDesktop = ({ data, searchParams }: { data: TclinicDetail, sear
                     <BiChevronRight className="shrink-0" />
                     <Link href={cityPageLink(info.state || '', info.city)} className="hover:text-primary">{capitalizeFirstLetter(info.city)}</Link>
                     <BiChevronRight className="shrink-0" />
-                    <Link href={`/${info.state}/${info.city}/hospitals-and-clinics`} className="hover:text-primary">Hospitals &amp; Clinics</Link>
+                    {isAmbulance
+                        ? <Link href={`/${info.state}/${info.city}/ambulance`} className="hover:text-primary">Ambulance Services</Link>
+                        : <Link href={`/${info.state}/${info.city}/hospitals-and-clinics`} className="hover:text-primary">Hospitals &amp; Clinics</Link>}
                     <BiChevronRight className="shrink-0" />
                     <span className="text-gray-700 font-medium truncate">{info.name}</span>
                 </nav>
@@ -66,7 +71,9 @@ const ClinicDetailDesktop = ({ data, searchParams }: { data: TclinicDetail, sear
                         <div className="bg-white rounded-xl border border-gray-200 p-5">
                             <div className="flex gap-4">
                                 <span className="h-20 w-20 rounded-xl bg-cyan-50 border border-cyan-100 flex items-center justify-center shrink-0">
-                                    <FaHospital className="text-cyan-600" style={{ fontSize: "2.25rem" }} />
+                                    {isAmbulance
+                                        ? <FaAmbulance className="text-cyan-600" style={{ fontSize: "2.25rem" }} />
+                                        : <FaHospital className="text-cyan-600" style={{ fontSize: "2.25rem" }} />}
                                 </span>
                                 <div className="flex flex-col grow min-w-0">
                                     <div className="flex">
@@ -118,7 +125,6 @@ const ClinicDetailDesktop = ({ data, searchParams }: { data: TclinicDetail, sear
                                         {info.review_cnt && info.review_cnt > 0 ? (
                                             <span className="fs-12 text-gray-500">{info.review_cnt} {info.review_cnt === 1 ? "review" : "reviews"}</span>
                                         ) : null}
-                                        <ClinicOpenStatus timing={data.timing} />
                                     </div>
                                 </div>
                             </div>
@@ -144,6 +150,16 @@ const ClinicDetailDesktop = ({ data, searchParams }: { data: TclinicDetail, sear
                                         {tab.label}
                                     </a>
                                 ))}
+                            </div>
+                        )}
+
+                        {(data.ambulances || []).length > 0 && (
+                            <div id="ambulances" title={``}>
+                                <div className="grid grid-cols-2 gap-3">
+                                    {(data.ambulances || []).map((vehicle) => (
+                                        <AmbulanceCard key={vehicle.id} vehicle={vehicle} info={info} surface="dialog" />
+                                    ))}
+                                </div>
                             </div>
                         )}
 
@@ -236,7 +252,7 @@ const ClinicDetailDesktop = ({ data, searchParams }: { data: TclinicDetail, sear
                             <div className="bg-white rounded-xl border border-gray-200 p-4">
                                 <h2 className="font-bold text-gray-800 fs-15">Send an enquiry</h2>
                                 <p className="fs-13 text-gray-500 mt-0.5 mb-2">Tell the clinic what you need and they will get back to you.</p>
-                                <SendEnquiry businessType={info.business_type} state={info.state || ""} city={info.city} clini_id={info.id} doctor_id={0} />
+                                <SendEnquiry businessType={info.business_type} state={info.state || ""} city={info.city} clini_id={info.id} doctor_id={0} surface="dialog" />
                             </div>
                         ) : null}
                          {videos.length > 0 && <HeroVideos videos={videos} />}

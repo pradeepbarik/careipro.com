@@ -37,6 +37,12 @@ const CityHome = async ({ state, city, town, cookies }: { state: string, city: s
         }
         return doctors;
     }
+    /* the section carries ids, the clinics themselves sit in one keyed bag at the top of the
+       payload, the same arrangement the doctor sections use */
+    const getSectionClinics = (clinicIds: number[]) => {
+        if (!data?.clinics) return [];
+        return clinicIds.map((id) => data.clinics?.[id.toString()]).filter(Boolean);
+    }
     return (
         <>
             <Header state={state} city={city} />
@@ -80,6 +86,9 @@ const CityHome = async ({ state, city, town, cookies }: { state: string, city: s
                             </> : (section.name === "doctors" && (section.specialist_id && data.specialistDoctors && data.specialistDoctors[section.specialist_id.toString()])) ? <>
                                 {section.heading && <SectionHeading heading={section.heading} />}
                                 <PopularDoctor data={data.specialistDoctors[section.specialist_id.toString()]} showFilter={true} />
+                            </> : (section.name === "clinics" && section.clinic_ids && section.clinic_ids.length > 0 && data.clinics) ? <>
+                                {section.heading && <SectionHeading heading={section.heading} />}
+                                <PopularClinics clinics={getSectionClinics(section.clinic_ids)} />
                             </> : (section.name === "banners" && section.banners) ? <>
                                 {section.heading && <SectionHeading heading={section.heading} />}
                                 <SectionBanners banners={section.banners} />

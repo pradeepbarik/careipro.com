@@ -135,6 +135,21 @@ const nextConfig = {
                 destination: '/petcare'
             },
             {
+                source: '/Ambulance-Services-In-:city-of-:state',
+                destination: '/ambulance'
+            },
+            /* An ambulance provider is a clinic row, so its detail page is the clinic detail page;
+               bid_prefix tells it to look for AMB<id>-<state_city> rather than C<id>-<state_city>.
+               Must stay above the listing rule below, which would otherwise swallow the slug. */
+            {
+                source: '/:state/:city/ambulance/:seo_url([a-zA-Z0-9-]+)-AMB:clinic_id([0-9]+)-:state_city',
+                destination: '/hospitals-and-clinics/clinic-detail?bid_prefix=AMB'
+            },
+            {
+                source: '/:state/:city/(ambulance|ambulance-service)',
+                destination: '/ambulance'
+            },
+            {
                 source: '/:seo_url([a-zA-Z0-9-_]+)-In-:city([a-zA-Z-]+)-of-:state/CATG:cat_id-:group_cat',
                 destination: '/doctors/doctors-list'
             },
