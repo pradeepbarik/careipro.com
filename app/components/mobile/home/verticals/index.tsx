@@ -7,7 +7,7 @@ const Verticals = ({ data }: { data: THomePageData['verticals'] }) => {
             {data.map((vertical) =>
                 <Link key={vertical.label} href={`/${vertical.url}`} title={`${vertical.label} - careipro`} className='flex flex-col flex-shrink-0 bg-white click shadow-sm rounded-sm' style={{ width: '28%' }}>
                     <div className='w-full h-24 flex items-center'>
-                        <img src={verticalIcon(vertical.icons)} alt={vertical.label} className='mx-3' />
+                        <img src={verticalIcon(vertical.icons)} alt={vertical.label} className='mx-3 w-full h-full object-contain' />
                     </div>
                     <span  className='font-semibold text-center mx-2 py-2 overflow-hidden'>{vertical.label}</span>
                 </Link>
