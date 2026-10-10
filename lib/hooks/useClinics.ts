@@ -290,6 +290,23 @@ export type TclinicDetail = {
     totalDoctors: number,
     /* doctor ids in the order the clinic arranged them */
     doctor_display_orders?: number[],
+    /* only present for a clinic with business_type 'AMBULANCE'; its fleet occupies the place a
+       clinic's doctors take on the detail page */
+    ambulances?: Array<{
+        id: number,
+        vehicle_no: string,
+        vehicle_type: string,
+        title: string,
+        photo: string,
+        driver_name: string,
+        driver_mobile: string,
+        base_fare: string,
+        per_km_charge: string,
+        facilities: string,
+        /** json array of {from,to,distance_km,fare,note} */
+        service_routes: string,
+        available_24x7: number,
+    }>,
     pageUrl: string,
 }
 export const fetchClinicDetail = cache(async (params: { state: string, city: string, market_name: string, clinic_id: number, clinic_bid: string }) => {

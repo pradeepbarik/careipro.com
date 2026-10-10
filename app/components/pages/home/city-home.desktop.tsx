@@ -180,10 +180,10 @@ const DesktopPopularDoctors = ({ data, heading }: { data: TPopularDoctor[], head
     );
 };
 
-const DesktopPopularClinics = ({ clinics }: { clinics: TPopularClinic[] }) => {
+const DesktopPopularClinics = ({ clinics, heading = "Popular Clinics & Hospitals" }: { clinics: TPopularClinic[], heading?: string }) => {
     return (
         <div className="bg-white rounded-xl border border-gray-200 p-6 mb-8">
-            <SectionHeading heading="Popular Clinics & Hospitals" />
+            <SectionHeading heading={heading} />
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {clinics.slice(0, 6).map((clinic) => (
                     <Link key={clinic.id} href={clinic.seo_url} className="group p-4 rounded-xl border border-gray-200 hover:border-primary hover:shadow-lg transition-all bg-white">
@@ -299,6 +299,12 @@ const CityHome = async ({ state, city, town, cookies }: { state: string, city: s
         }
         return doctors;
     };
+    /* the section carries ids, the clinics themselves sit in one keyed bag at the top of the
+       payload, the same arrangement the doctor sections use */
+    const getSectionClinics = (clinicIds: number[]) => {
+        if (!data?.clinics) return [];
+        return clinicIds.map((id) => data.clinics?.[id.toString()]).filter(Boolean);
+    };
     return (
         <div className="min-h-screen bg-gray-100">
             <main className="max-w-7xl mx-auto px-4 py-6">
@@ -323,6 +329,8 @@ const CityHome = async ({ state, city, town, cookies }: { state: string, city: s
                             <DesktopPopularDoctors data={getSectionDoctors(section.doctor_ids)} heading={section.heading} />
                         ) : section.name === "doctors" && section.specialist_id && data.specialistDoctors && data.specialistDoctors[section.specialist_id.toString()] ? (
                             <DesktopPopularDoctors data={data.specialistDoctors[section.specialist_id.toString()]} heading={section.heading} />
+                        ) : section.name === "clinics" && section.clinic_ids && section.clinic_ids.length > 0 && data.clinics ? (
+                            <DesktopPopularClinics clinics={getSectionClinics(section.clinic_ids)} heading={section.heading} />
                         ) : section.name === "banners" && section.banners ? (
                              <SectionBanners banners={section.banners} />
                             // <DesktopSectionBanners banners={section.banners} />

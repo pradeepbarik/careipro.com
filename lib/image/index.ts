@@ -57,4 +57,10 @@ export const mediaUrl=(src: string)=>{
     return src;
   }
   return `${ASSET_URL}/media/${src}`;
+}/** clinic_ambulances.photo holds a path relative to this folder, eg "C153/OD22AB1234-171.jpg" */
+export const ambulancePhoto=(image:string)=>{
+    if(/^https?:\/\//i.test(image)){
+        return image;
+    }
+    return `${ASSET_URL}/images/ambulance/${image}`;
 }

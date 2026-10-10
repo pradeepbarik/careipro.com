@@ -24,6 +24,8 @@ const SupportCard = ({ data, patientName = "" }: { data: TDoctorDetail, patientN
 
     //names are entered free form in the admin, normalise before a patient sees them
     const crmName = capitalizeEachWordFirstLetter(clean(data.crm_name));
+    //free form in the admin too, so it gets the same normalising before it goes into a sentence
+    const businessName = capitalizeEachWordFirstLetter(clean(data.clinic));
     const namedHelper = Boolean(crm && crmName);
     const helperName = namedHelper ? crmName : capitalizeEachWordFirstLetter(supportStaff);
 
@@ -34,7 +36,11 @@ const SupportCard = ({ data, patientName = "" }: { data: TDoctorDetail, patientN
                     <BiSupport className="text-indigo-600 text-xl" />
                 </span>
                 <div className="flex flex-col grow min-w-0">
-                    <h2 className="fs-15 font-bold text-gray-900 leading-5">Not able to connect with the clinic?</h2>
+                    {/* "the clinic" is wrong for a caretaker, physio or pet care listing, so the
+                        business speaks for itself here */}
+                    <h2 className="fs-15 font-bold text-gray-900 leading-5">
+                        Not able to connect with {businessName || "the clinic"}?
+                    </h2>
                     <span className="fs-13 text-gray-600 leading-5 mt-1">
                         {helperName
                             ? <><span className="font-semibold text-gray-900">{helperName}</span> from careipro is ready to help you immediately.</>

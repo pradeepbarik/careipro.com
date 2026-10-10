@@ -96,3 +96,8 @@ export const hirePersonalAssistantPageUrl = (state: string, city: string) => {
     }
     return `/${state.toLowerCase().replace(" ", "-")}/${city.toLowerCase().replace(" ", "-")}/hire-personal-assistant`;
 }
+/* /odisha/bhadrak/ambulance/unicare-ambulance-AMB153-ORBHC - the bid carries the provider id, so
+   the detail page can resolve the provider without the slug having to stay stable. */
+export const ambulanceProviderDetailUrl = (params: { seo_url: string, state: string, city: string, bid: string }) => {
+    return `/${params.state.toLowerCase().replace(/ /g, '-')}/${params.city.toLowerCase().replace(/ /g, '-')}/ambulance/${params.seo_url}-${params.bid}`;
+}

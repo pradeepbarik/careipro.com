@@ -2,7 +2,6 @@ import { TclinicDetail } from "@/lib/hooks/useClinics";
 import Link from "next/link";
 import HeroBanner from "./hero-banner";
 import ClinicDistance from "./clinic-distance";
-import ClinicOpenStatus from "./clinic-open-status";
 import ClinicTimings from "./clinic-timings";
 import TrackedLink from "@/app/components/client-components/tracked-link";
 import ReportIssue from "@/app/components/client-components/report-issue";
@@ -23,6 +22,7 @@ import BackButton from "./back-button";
 import ClinicVideos from "./clinic-videos";
 import ClinicReviews from "./clinic-reviews";
 import AppointmentReminder from "@/app/components/mobile/appointment-reminder";
+import AmbulanceCard from "../ambulance-card";
 import { BsWhatsapp, BsStarFill, BsStar } from "react-icons/bs";
 import { FaParking, FaWheelchair, FaAmbulance, FaPills, FaWifi, FaCreditCard, FaUserMd, FaFlask, FaXRay, FaHeartbeat, FaMicroscope, FaHospital, FaHandshake, FaHome } from "react-icons/fa";
 
@@ -40,6 +40,10 @@ import { FaParking, FaWheelchair, FaAmbulance, FaPills, FaWifi, FaCreditCard, Fa
    the link scrolls to an anchor that is not there. */
 const buildTabs = (data: TclinicDetail) => {
     const tabs: Array<{ label: string, href: string }> = [];
+    //an ambulance provider has a fleet where a clinic has doctors
+    if ((data.ambulances || []).length > 0) {
+        tabs.push({ label: "Ambulances", href: "#ambulances" });
+    }
     if (data.totalDoctors > 0) {
         tabs.push({ label: doctorsTabDisplayname(data.clinic_info.business_type), href: "#doctors" });
     }
@@ -267,6 +271,8 @@ export const CareiproSupport = ({ info, citySettings }: {
     /* names are entered free form in the admin, so normalise the casing before they are
        put in front of a patient */
     const crmName = capitalizeEachWordFirstLetter(clean(info.crm_name));
+    //free form in the admin too, so it gets the same normalising before it goes into a sentence
+    const businessName = capitalizeEachWordFirstLetter(clean(info.name));
     const namedHelper = Boolean(crm && crmName);
     /* nobody named on the clinic side, so the city's support staff fronts the message */
     const helperName = namedHelper ? crmName : capitalizeEachWordFirstLetter(supportStaff);
@@ -277,7 +283,11 @@ export const CareiproSupport = ({ info, citySettings }: {
                     <BiSupport className="text-indigo-600 fs-20" />
                 </span>
                 <div className="flex flex-col grow min-w-0">
-                    <h2 className="fs-16 font-bold text-gray-900 leading-5">Not able to connect with the clinic?</h2>
+                    {/* "the clinic" is wrong for an ambulance service, a pharmacy or a caretaker,
+                        so the business speaks for itself here */}
+                    <h2 className="fs-16 font-bold text-gray-900 leading-5">
+                        Not able to connect with {businessName || "the clinic"}?
+                    </h2>
                     <span className="fs-13 text-gray-600 leading-5 mt-1">
                         {helperName ?
                             <><span className="font-semibold text-gray-900">{helperName}</span> from careipro team is ready to help you immediately.</>
@@ -410,57 +420,57 @@ const ClinicDetailDesignV2 = ({ data, searchParams }: { data: TclinicDetail, sea
             <div className="mx-3 -mt-10 relative z-[5] bg-white rounded-xl p-4 shadow-sm border border-gray-100">
                 <div className="flex gap-3">
                     <div className="h-16 w-16 rounded-xl bg-cyan-50 border border-cyan-100 flex items-center justify-center shrink-0">
-                        <FaHospital className="text-cyan-600" style={{ fontSize: "1.75rem" }} />
+                        {data.clinic_info.business_type === "AMBULANCE"
+                            ? <FaAmbulance className="text-cyan-600" style={{ fontSize: "1.75rem" }} />
+                            : <FaHospital className="text-cyan-600" style={{ fontSize: "1.75rem" }} />}
                     </div>
                     <div className="flex flex-col grow min-w-0">
                         <h1 className="fs-17 font-bold text-gray-900 leading-5">{data.clinic_info.name}</h1>
-                        <span className="fs-13 text-gray-500 mt-[2px]">{data.clinic_info.tag_line}</span>
-                        <div className="flex flex-wrap gap-1 mt-2">
+                        {/* where the business is reads as part of its name, a visitor checks it
+                            before anything else on the card */}
+                        <div className="flex items-start gap-1.5 mt-1 fs-13 text-gray-600">
+                            <BiMap className="text-cyan-600 shrink-0" style={{ marginTop: "2px" }} />
+                            <span className="grow">
+                                {data.clinic_info.location}, {data.clinic_info.city}{" "}
+                                <ClinicDistance lat={data.clinic_info.location_lat} lng={data.clinic_info.location_lng} />
+                            </span>
+                        </div>
+                        {data.clinic_info.tag_line ? <span className="fs-13 text-gray-500 mt-[2px]">{data.clinic_info.tag_line}</span> : <></>}
+                        <div className="flex flex-wrap items-center gap-1.5 mt-2">
                             <ListingTypeBadge partnerType={data.clinic_info.partner_type} />
                             {data.clinic_info.is_prime ?
                                 <span className="fs-12 font-semibold px-2 py-[2px] rounded-full bg-amber-50 text-amber-700 border border-amber-200">
                                     ★ Prime
                                 </span> : <></>
                             }
+                            {/* the rating is averaged from public reviews, so a business with none
+                                has no rating at all. showing 0.0 on a green badge would read as a
+                                real score, hence the grey outlined stand-in */}
+                            {data.clinic_info.rating ?
+                                <>
+                                    <span className="flex items-center gap-1 px-2 py-[2px] rounded-md bg-green-600 text-white fs-13 font-bold">
+                                        {data.clinic_info.rating.toFixed(1)}<BsStarFill className="fs-12" />
+                                    </span>
+                                    {data.clinic_info.review_cnt && data.clinic_info.review_cnt > 0 ?
+                                        <span className="fs-12 text-gray-500">
+                                            {data.clinic_info.review_cnt} {data.clinic_info.review_cnt === 1 ? "review" : "reviews"}
+                                        </span>
+                                        : <></>}
+                                </>
+                                :
+                                <span className="flex items-center gap-1 px-2 py-[2px] rounded-md bg-gray-100 text-gray-500 fs-12 font-semibold border border-gray-200 text-nowrap">
+                                    <BsStar className="fs-12" />Not rated yet
+                                </span>
+                            }
                         </div>
                     </div>
                 </div>
 
-                {/* Rating + open status */}
-                <div className="flex items-center gap-3 mt-3 pt-3 border-t border-gray-100">
-                    {/* the rating is averaged from public reviews, so a clinic with none has no
-                        rating at all. showing 0.0 on a green badge would read as a real score */}
-                    {data.clinic_info.rating ?
-                        <div className="flex items-center gap-2">
-                            <span className="flex items-center gap-1 px-2 py-[2px] rounded-md bg-green-600 text-white fs-13 font-bold">
-                                {data.clinic_info.rating.toFixed(1)}<BsStarFill className="fs-12" />
-                            </span>
-                            {data.clinic_info.review_cnt && data.clinic_info.review_cnt > 0 ?
-                                <span className="fs-12 text-gray-500">
-                                    {data.clinic_info.review_cnt} {data.clinic_info.review_cnt === 1 ? "review" : "reviews"}
-                                </span>
-                                : <></>}
-                        </div>
-                        :
-                        /* deliberately grey and outlined, not the green score badge: this says
-                           there is no rating yet, which must not look like a low one */
-                        <span className="flex items-center gap-1 px-2 py-[2px] rounded-md bg-gray-100 text-gray-500 fs-12 font-semibold border border-gray-200 text-nowrap">
-                            <BsStar className="fs-12" />Not rated yet
-                        </span>
-                    }
-                    <ClinicOpenStatus timing={data.timing} />
-                </div>
-                <div className="flex items-center gap-2 mt-2 fs-13 text-gray-600">
-                    <BiMap className="text-cyan-600 shrink-0" style={{ marginTop: "2px" }} />
-                    <span className="grow">
-                        {data.clinic_info.location}, {data.clinic_info.city}{" "}
-                        <ClinicDistance lat={data.clinic_info.location_lat} lng={data.clinic_info.location_lng} />
-                    </span>
-                </div>
+                {data.clinic_info.open_time ?
                 <div className="flex items-center gap-2 mt-1 fs-13 text-gray-600">
                     <BiTime className="text-cyan-600 shrink-0" />
                     <span>{data.clinic_info.open_time}</span>
-                </div>
+                </div>:<></>}
 
                 {/* Quick actions. Built from whatever contact details the clinic actually has,
                     so a missing whatsapp number drops the tile instead of leaving a dead one. */}
@@ -481,9 +491,16 @@ const ClinicDetailDesignV2 = ({ data, searchParams }: { data: TclinicDetail, sea
                     {/* most clinics have no year saved yet, and "0 Yrs of Service" under a dash reads like a claim */}
                     <span className="fs-12 text-gray-500">{yearsInService > 0 ? `${yearsInService} Yrs of Service` : "Established"}</span>
                 </div>
+                {/* an ambulance provider has no doctors, so the same slot counts its fleet */}
                 <div className="flex flex-col items-center justify-center py-3">
-                    <span className="fs-16 font-bold text-gray-900">{Object.keys(data.doctors).length}</span>
-                    <span className="fs-12 text-gray-500">Doctors</span>
+                    <span className="fs-16 font-bold text-gray-900">
+                        {data.clinic_info.business_type === "AMBULANCE"
+                            ? (data.ambulances || []).length
+                            : Object.keys(data.doctors).length}
+                    </span>
+                    <span className="fs-12 text-gray-500">
+                        {data.clinic_info.business_type === "AMBULANCE" ? "Ambulances" : "Doctors"}
+                    </span>
                 </div>
                 {/* people who rated this clinic 4 or 5, counted per person not per review */}
                 <div className="flex flex-col items-center justify-center py-3">
@@ -511,6 +528,18 @@ const ClinicDetailDesignV2 = ({ data, searchParams }: { data: TclinicDetail, sea
                     )}
                 </div>
             </div>
+
+            {/* Ambulances - the fleet of a business_type AMBULANCE provider */}
+            {
+                (data.ambulances || []).length > 0 &&
+                <div id="ambulances" className="px-2" title={``}>
+                    <div className="flex flex-col gap-3">
+                        {(data.ambulances || []).map((vehicle) => (
+                            <AmbulanceCard key={vehicle.id} vehicle={vehicle} info={data.clinic_info} />
+                        ))}
+                    </div>
+                </div>
+            }
 
             {/* Doctors */}
             {

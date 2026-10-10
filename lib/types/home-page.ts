@@ -69,6 +69,7 @@ export type THomePageData = {
         itemWidth?: string,
         specialist_ids?: number[],
         doctor_ids?: number[],
+        clinic_ids?: number[],
         specialist_id?: number,
         banners?: Array<TSectionBanner>,
     }>,

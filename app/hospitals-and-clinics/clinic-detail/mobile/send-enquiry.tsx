@@ -8,6 +8,19 @@ import { selectAuthSlice } from '@/lib/slices/authSlice';
 import { RootState } from "@/lib/store";
 import useEnquiry from "@/lib/hooks/useEnquiry";
 import { SlideUpModal, Input } from '@/app/components/mobile/ui';
+import Modal from '@/app/components/desktop/ui/modal';
+
+/* The same enquiry runs on both layouts. A sheet rising from the bottom edge is right on a phone
+   and reads as a mistake on a wide screen, so the caller says which surface it is in and the
+   desktop one gets a centred dialog instead. */
+const Surface = ({ surface, open, heading, zIndex, onClose, children }: {
+    surface: "sheet" | "dialog", open: boolean, heading: string, zIndex: number,
+    onClose: () => void, children: React.ReactNode
+}) => (
+    surface === "dialog"
+        ? <Modal open={open} heading={heading} onClose={onClose}>{children}</Modal>
+        : <SlideUpModal open={open} heading={heading} zIndex={zIndex} onClose={onClose}>{children}</SlideUpModal>
+);
 const selectUserInfo = createSelector([selectAuthSlice], (state) => {
     return {
         isloggedIn: state.is_loggedin,
@@ -17,7 +30,7 @@ const selectUserInfo = createSelector([selectAuthSlice], (state) => {
 })
 /* variant "inline" is the message box that sits in the page, "button" is a single cta
    that opens the same box in a sheet, for use in a sticky action bar */
-const SendEnquiry = ({ businessType, state, city, clini_id, doctor_id = 0, variant = "inline", className = "", label = "Send Enquiry", children, modalZIndex = 0, section = "top_enquiry_form", placeholder = "Write your message here..." }: {
+const SendEnquiry = ({ businessType, state, city, clini_id, doctor_id = 0, variant = "inline", className = "", label = "Send Enquiry", children, modalZIndex = 0, section = "top_enquiry_form", placeholder = "Write your message here...", defaultMessage = "", surface = "sheet", heading }: {
     businessType: string, state: string, city: string, clini_id: number, doctor_id?: number,
     variant?: "inline" | "button", className?: string, label?: string, children?: React.ReactNode,
     /* SlideUpModal renders at 10 + 2 + zIndex, so raise this above any sticky bar the
@@ -25,14 +38,22 @@ const SendEnquiry = ({ businessType, state, city, clini_id, doctor_id = 0, varia
     modalZIndex?: number,
     /* tags the row in the enquiry queue, so a complaint can be told apart from an enquiry */
     section?: string,
-    placeholder?: string
+    placeholder?: string,
+    /* seeds the box when the sheet opens, for a cta that already says what is being asked, eg the
+       fare for one particular ambulance. the sender can still edit or replace it */
+    defaultMessage?: string,
+    /** "dialog" on a wide screen, where a bottom sheet looks out of place */
+    surface?: "sheet" | "dialog",
+    /* the overlay title. defaults to the button label, but a cta sitting among several of its own
+       kind needs to say which one was pressed, so it can name the subject instead */
+    heading?: string
 }) => {
     const { isloggedIn, name, mobile } = useSelector((state: RootState) => selectUserInfo(state))
     const { sendEnquiry } = useEnquiry({ state: state, city: city, market_name: "", vaertical: businessType })
     const [askMobile, setAskMobile] = useState(false)
     const [showForm, setShowForm] = useState(false)
     const [showSuccessModal, setShowSuccessModal] = useState(false)
-    const [message, setMessage] = useState("");
+    const [message, setMessage] = useState(defaultMessage);
     const [userInfo, setUserInfo] = useState({ name: "", mobile: "" })
     const onSubmit = () => {
         if (!userInfo.name) {
@@ -62,7 +83,7 @@ const SendEnquiry = ({ businessType, state, city, clini_id, doctor_id = 0, varia
         }, () => {
             setAskMobile(false);
             setShowSuccessModal(true);
-            setMessage("")
+            setMessage(defaultMessage)
         })
     }
     const handelClick = () => {
@@ -82,26 +103,28 @@ const SendEnquiry = ({ businessType, state, city, clini_id, doctor_id = 0, varia
                 section: section
             }, () => {
                 setShowSuccessModal(true);
-                setMessage("")
+                setMessage(defaultMessage)
             })
         } else {
             setAskMobile(true);
         }
     }
-    const messageBox = (
-        <textarea className="w-full outline-none border border-color-grey h-12 rounded-md px-2 py-2 fs-14 font-semibold" placeholder={placeholder} value={message} onChange={(e) => { setMessage(e.target.value) }} >
+    /* the inline form sits in a narrow rail beside its own button, so it stays one line tall;
+       the overlay has the room and the seeded message already fills two lines there */
+    const messageBox = (heightClass: string) => (
+        <textarea className={`w-full outline-none border border-color-grey ${heightClass} rounded-md px-2 py-2 fs-14 font-semibold resize-none`} placeholder={placeholder} value={message} onChange={(e) => { setMessage(e.target.value) }} >
         </textarea>
     );
     return (
         <>
             {variant === "button" ?
                 <>
-                    <button className={className} onClick={() => { setShowForm(true) }}>
+                    <button className={className} onClick={() => { setMessage(defaultMessage); setShowForm(true) }}>
                         {children}{label}
                     </button>
-                    <SlideUpModal heading={label} zIndex={modalZIndex} open={showForm} onClose={() => { setShowForm(false) }}>
+                    <Surface surface={surface} heading={heading || label} zIndex={modalZIndex} open={showForm} onClose={() => { setShowForm(false) }}>
                         <div className="bg-white p-2 flex flex-col gap-2">
-                            {messageBox}
+                            {messageBox("h-32")}
                             <button className="button ripple py-2" type="button" onClick={() => {
                                 /* keep the sheet open when handelClick rejects an empty
                                    message, otherwise let the contact or success sheet replace it */
@@ -111,15 +134,15 @@ const SendEnquiry = ({ businessType, state, city, clini_id, doctor_id = 0, varia
                                 handelClick();
                             }}>{label}</button>
                         </div>
-                    </SlideUpModal>
+                    </Surface>
                 </>
                 :
                 <div className="px-2 mt-2 flex gap-2">
-                    {messageBox}
+                    {messageBox("h-12")}
                     <button className="button ripple w-40" onClick={handelClick}>Send Enquiry</button>
                 </div>
             }
-            <SlideUpModal heading="Your contact information" zIndex={modalZIndex} open={askMobile} onClose={() => { setAskMobile(false) }}>
+            <Surface surface={surface} heading="Your contact information" zIndex={modalZIndex} open={askMobile} onClose={() => { setAskMobile(false) }}>
                 <div className='bg-white p-2'>
                     <div className='flex flex-col gap-2'>
                         <Input type="text" lable='Your name' className='border p-2 rounded-md' value={userInfo.name} onChange={(e) => { setUserInfo({ ...userInfo, name: e.target.value }) }} />
@@ -127,8 +150,8 @@ const SendEnquiry = ({ businessType, state, city, clini_id, doctor_id = 0, varia
                         <button className='button py-2 one-line ripple' onClick={onSubmit}>Submit</button>
                     </div>
                 </div>
-            </SlideUpModal>
-            <SlideUpModal open={showSuccessModal} zIndex={modalZIndex} onClose={() => { setShowSuccessModal(false) }}>
+            </Surface>
+            <Surface surface={surface} heading="" zIndex={modalZIndex} open={showSuccessModal} onClose={() => { setShowSuccessModal(false) }}>
                 <div>
                     <div className='flex justify-center'>
                         <div className='h-40 w-40 relative flex justify-center items-center'>
@@ -144,7 +167,7 @@ const SendEnquiry = ({ businessType, state, city, clini_id, doctor_id = 0, varia
                         }}>Ok</button>
                     </div>
                 </div>
-            </SlideUpModal>
+            </Surface>
         </>
     )
 }
