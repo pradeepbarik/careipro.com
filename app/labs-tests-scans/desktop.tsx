@@ -87,9 +87,12 @@ const CenterCard = ({ center }: { center: TClinic }) => {
                                 ) : null}
                             </span>
                         ) : null}
-                        <span className="flex items-center gap-1 text-gray-600">
-                            <FaClock className="text-primary" />08:00 AM - 08:00 PM
-                        </span>
+                        {/* see the note on the mobile card: hidden rather than invented */}
+                        {center.open_time ? (
+                            <span className="flex items-center gap-1 text-gray-600">
+                                <FaClock className="text-primary" />{center.open_time}
+                            </span>
+                        ) : null}
                     </div>
                 </div>
             </div>

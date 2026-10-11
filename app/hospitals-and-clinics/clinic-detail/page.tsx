@@ -3,10 +3,12 @@ import dynamic from 'next/dynamic';
 import { fetchClinicDetail } from '@/lib/hooks/useClinics';
 import PageVisitLogger from "@/app/components/client-components/page-visit-logger";
 import useDeviceInfo from "@/lib/hooks/useDeviceInfo";
-const ClinicDetailMobile = dynamic(() => import('./mobile'));
+/* ./mobile is still imported for the section components mobile-v2 builds on, but its own page
+   layout is no longer rendered: mobile-v2 is the mobile clinic detail page now. */
+const ClinicDetailMobile = dynamic(() => import('./mobile-v2'));
 const ClinicDetailDesktop = dynamic(() => import('./desktop'));
 export async function generateMetadata({ searchParams }: { searchParams: any }): Promise<Metadata> {
-    const { data } = await fetchClinicDetail({ state: searchParams.state, city: searchParams.city, clinic_bid: `${searchParams.bid_prefix || 'C'}${searchParams.clinic_id}-${searchParams.state_city}`, clinic_id: searchParams.clinic_id, market_name: searchParams.market_name });
+    const { data } = await fetchClinicDetail({ state: searchParams.state, city: searchParams.city, clinic_bid: `${searchParams.business_type || 'C'}${searchParams.clinic_id}-${searchParams.state_city}`, clinic_id: searchParams.clinic_id, market_name: searchParams.market_name });
     return {
         title: data.clinic_info.page_title,
         description: data.clinic_info.meta_description,
@@ -23,9 +25,9 @@ export async function generateMetadata({ searchParams }: { searchParams: any }):
         },
     }
 }
-const ClinicDetail = async ({ searchParams }: { searchParams: { seo_url: string, state: string, city: string, clinic_id: number, state_city: string, market_name: string, sub_page: string, bid_prefix?: string } }) => {
+const ClinicDetail = async ({ searchParams }: { searchParams: { seo_url: string, state: string, city: string, clinic_id: number, state_city: string, market_name: string, sub_page: string, business_type?: string } }) => {
     const { device } = useDeviceInfo();
-    let { data } = await fetchClinicDetail({ state: searchParams.state, city: searchParams.city, clinic_bid: `${searchParams.bid_prefix || 'C'}${searchParams.clinic_id}-${searchParams.state_city}`, clinic_id: searchParams.clinic_id, market_name: searchParams.market_name });
+    let { data } = await fetchClinicDetail({ state: searchParams.state, city: searchParams.city, clinic_bid: `${searchParams.business_type || 'C'}${searchParams.clinic_id}-${searchParams.state_city}`, clinic_id: searchParams.clinic_id, market_name: searchParams.market_name });
     return (
         <>
             {device.type === "mobile"

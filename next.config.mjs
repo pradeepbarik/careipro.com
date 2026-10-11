@@ -222,23 +222,23 @@ const nextConfig = {
                 destination: '/hospitals-and-clinics/clinics-list'
             },
             {
-                source: '/:seo_url-At-:market_name-In-:city-of-:state/:business_type(CT|C|PTY|TS):clinic_id-:state_city',
+                source: '/:seo_url-At-:market_name-In-:city-of-:state/:business_type(CT|C|PTY|TS|AMB):clinic_id-:state_city',
                 destination: '/hospitals-and-clinics/clinic-detail'
             },
             {
-                source: '/:state/:city/:seo_url-In-:market_name/:business_type(CT|C|PTY|TS):clinic_id-:state_city/patients-reviews',
+                source: '/:state/:city/:seo_url-In-:market_name/:business_type(CT|C|PTY|TS|AMB):clinic_id-:state_city/patients-reviews',
                 destination: '/hospitals-and-clinics/patient-reviews'
             },
             {
-                source: '/:state/:city/:seo_url-In-:market_name/:business_type(CT|C|PTY|TS):clinic_id-:state_city',
+                source: '/:state/:city/:seo_url-In-:market_name/:business_type(CT|C|PTY|TS|AMB):clinic_id-:state_city',
                 destination: '/hospitals-and-clinics/clinic-detail'
             },
             {
-                source: '/:seo_url-At-:market_name-In-:city-of-:state/:business_type(CT|C|PTY):clinic_id-:state_city/:sub_page',
+                source: '/:seo_url-At-:market_name-In-:city-of-:state/:business_type(CT|C|PTY|TS|AMB):clinic_id-:state_city/:sub_page',
                 destination: '/hospitals-and-clinics/clinic-detail'
             },
             {
-                source: '/:state/:city/:seo_url-In-:market_name/:business_type(CT|C|PTY):clinic_id-:state_city/:sub_page',
+                source: '/:state/:city/:seo_url-In-:market_name/:business_type(CT|C|PTY|TS|AMB):clinic_id-:state_city/:sub_page',
                 destination: '/hospitals-and-clinics/clinic-detail'
             },
             {
