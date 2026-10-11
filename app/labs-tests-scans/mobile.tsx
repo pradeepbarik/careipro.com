@@ -165,9 +165,15 @@ const LabsTestsScansCenters = (centers: TClinic[], viewType: string) => {
                                             : <></>}
                                     </span>
                                     : <></>}
-                                <span className="flex items-center gap-1 fs-13 mt-1">
-                                    <FaClock className="color-primary" />08:00 AM - 08:00 PM
-                                </span>
+                                {/* the centre's own hours. nothing shows when none are saved,
+                                    for the same reason the rating above is hidden: invented
+                                    opening hours are worse than none on a page someone uses to
+                                    decide when to walk in */}
+                                {center.open_time ?
+                                    <span className="flex items-center gap-1 fs-13 mt-1">
+                                        <FaClock className="color-primary" />{center.open_time}
+                                    </span>
+                                    : <></>}
                             </div>
                             <span className="h-16 w-16 rounded-md bg-primary-10 flex items-center justify-center shrink-0">
                                 <FaMicroscope className="color-primary fs-20" />

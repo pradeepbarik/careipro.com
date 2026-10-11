@@ -9,8 +9,9 @@ import { cityPageLink, clinicDetailpageUrl } from "@/lib/helper/link";
 import { facilityIcon } from "@/lib/constants/facilities";
 import {
     SectionCard, QuickActions, HomeCollectionTag, LabServiceNotes, CategoryTile,
-    ListingTypeBadge, ListingTypeNote, CareiproSupport, ClinicDoctorCard
+    ListingTypeBadge, ListingTypeNote, CareiproSupport
 } from "../mobile";
+import DoctorCard from "../doctor-card";
 import HeroBanners from "./hero-banners";
 import ClinicDistance from "../mobile/clinic-distance";
 import ClinicTimings from "../mobile/clinic-timings";
@@ -21,6 +22,7 @@ import AmbulanceCard from "../ambulance-card";
 
 const ClinicReviews = dynamic(() => import("../mobile/clinic-reviews"));
 const AppointmentReminder = dynamic(() => import("@/app/components/mobile/appointment-reminder"), { ssr: false });
+const Announcements = dynamic(() => import("@/app/components/mobile/doctors/doctor-detail/announcements"));
 
 //the in page nav, each entry must match a section that actually rendered or it scrolls to nothing
 const buildTabs = (data: TclinicDetail) => {
@@ -133,12 +135,16 @@ const ClinicDetailDesktop = ({ data, searchParams }: { data: TclinicDetail, sear
                                 that tile instead of leaving a dead one */}
                             <QuickActions info={info} showShare />
                         </div>
+                         {/* whatever the clinic is currently telling patients, above the sections
+                            so a closure or a camp is seen before anything else */}
+                        {(data.announcements || []).length > 0 &&
+                            <div className="mt-4"><Announcements announcements={data.announcements || []} /></div>}
+
+                        <div id="reminder-section"></div>
+                        <AppointmentReminder clinic_id={info.id} position="reminder-section" />
                         {data.hasBanner && data.banners.length > 0 && 
                         <HeroBanners banners={data.banners} name={info.name} />
                         }
-                        <div id="reminder-section"></div>
-                        <AppointmentReminder clinic_id={info.id} position="reminder-section" />
-
                         <div className="mt-4"><ListingTypeNote info={info} /></div>
 
                         {/* in page nav, the sections below are all on this one url */}
@@ -165,14 +171,18 @@ const ClinicDetailDesktop = ({ data, searchParams }: { data: TclinicDetail, sear
 
                         {data.totalDoctors > 0 && (
                             <SectionCard id="doctors" title={`${doctorsTabDisplayname(info.business_type)} (${data.totalDoctors})`}>
-                                <div className="grid grid-cols-2 gap-3">
+                                {/* items-stretch so every cell in a row is the same height and the
+                                    Book buttons line up, whatever each doctor happens to carry */}
+                                {/* auto-rows-fr so every row is as tall as the tallest card in the
+                                    whole grid, not just the tallest in its own row */}
+                                <div className="grid grid-cols-2 auto-rows-fr gap-3 items-stretch">
                                     {/* doctor_display_orders carries the order the clinic arranged its
                                         doctors in, so prefer it over the object's own key order */}
                                     {(data.doctor_display_orders && data.doctor_display_orders.length > 0
                                         ? data.doctor_display_orders.map((id) => data.doctors[id]).filter((doctor) => doctor)
                                         : Object.values(data.doctors)
                                     ).map((doctor) => (
-                                        <ClinicDoctorCard key={doctor.id} doctor={doctor} info={info} />
+                                        <DoctorCard key={doctor.id} doctor={doctor} info={info} layout="grid" />
                                     ))}
                                 </div>
                             </SectionCard>
