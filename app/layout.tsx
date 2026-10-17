@@ -1,6 +1,9 @@
 import dynamic from 'next/dynamic'
 import type { Metadata } from 'next';
+import { headers } from 'next/headers';
 import { GoogleTagManager } from '@next/third-parties/google';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import "./globals.scss";
 import StoreProvider from "./StoreProvider";
 import GlobalComponent from "./components/client-components/global";
@@ -31,6 +34,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   const { device, cookies } = useDeviceInfo();
+  /* a handoff page stands on its own: the visitor came from a clinic's own site to finish one thing
+     and go straight back, so the site header, its competing Login button and the footer are left
+     off, which is how these pages already behave on mobile. the path comes from the middleware. */
+  const standalone = (headers().get("x-pathname") || "").startsWith("/tp/");
   return (
     <>
       <StoreProvider cookies={cookies}>
@@ -56,13 +63,21 @@ export default function RootLayout({
                 which is the only thing a layout can read, searchParams never reach one. */}
             {device.type === "mobile" ?
               <MobileLayout>{children}</MobileLayout> :
-              <>
-                <PageHeader state={cookies.state || ""} city={cookies.city || ""} userName={signedInName(cookies)} />
-                {children}
-                {/* pages that used to wrap their own band in the footer now render that band at the
-                    end of their content, the footer chrome itself only mounts here */}
-                <DesktopFooter state={cookies.state || ""} city={cookies.city || ""} />
-              </>}
+              standalone ?
+                <>
+                  {children}
+                  <ToastContainer />
+                </> :
+                <>
+                  <PageHeader state={cookies.state || ""} city={cookies.city || ""} userName={signedInName(cookies)} />
+                  {children}
+                  {/* pages that used to wrap their own band in the footer now render that band at the
+                      end of their content, the footer chrome itself only mounts here */}
+                  <DesktopFooter state={cookies.state || ""} city={cookies.city || ""} />
+                  {/* the login and booking flows report every error through a toast, and desktop had
+                      no container to show them in, so those messages were going nowhere */}
+                  <ToastContainer />
+                </>}
           </body>
         </html>
         <GlobalComponent />

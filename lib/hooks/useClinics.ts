@@ -320,10 +320,10 @@ export type TclinicDetail = {
 }
 export const fetchClinicDetail = cache(async (params: { state: string, city: string, market_name: string, clinic_id: number, clinic_bid: string }) => {
     try {
-        let data = await fetchJson<TclinicDetail>(`/cache/${params.state.replace(" ", "-").toLowerCase()}/${params.city.replace(" ", "-").toLowerCase()}/clinic-details/${params.clinic_bid}/details.json`,false,{revalidate:5});//never held here, the admin can change the order of doctors and add/remove them from a clinic, and the api rewrites this file when they do
+        let data = await fetchJson<TclinicDetail>(`/cache/${params.state.replace(" ", "-").toLowerCase()}/${params.city.replace(" ", "-").toLowerCase()}/clinic-details/${params.clinic_bid}/details.json`,false,{revalidate:0});//never held here, the admin can change the order of doctors and add/remove them from a clinic, and the api rewrites this file when they do
         return { data: data }
     } catch (err: any) {
-        const res = await fetchJson<IResponse<TclinicDetail>>(`/get-clinic-detail?state=${params.state}&city=${params.city}&clinic_id=${params.clinic_id}`,true,{revalidate:5});//this answers only while the cache file above is missing, which is exactly when the data has just changed, so it is never held either
+        const res = await fetchJson<IResponse<TclinicDetail>>(`/get-clinic-detail?state=${params.state}&city=${params.city}&clinic_id=${params.clinic_id}`,true,{revalidate:0});//this answers only while the cache file above is missing, which is exactly when the data has just changed, so it is never held either
         return { data: res.data }
     }
 })

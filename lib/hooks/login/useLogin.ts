@@ -8,6 +8,7 @@ import { httpPost } from '../../services/http-client';
 import { userinfo, userSecreateKey } from '../../../constants/storage_keys';
 import useCookies from '../useCookies';
 import { initUserDetail } from '@/lib/slices/authSlice';
+import { tpReturnUrl, tpReturnUrlWithKey } from '@/lib/helper/tp-redirect';
 const useLogin = ({ redirectUrl = "", allowLoggedInUser = false, onLoginSuccess, tplogin }: { allowLoggedInUser?: boolean, redirectUrl?: string, onLoginSuccess?: () => void, tplogin?: boolean }) => {
     const router = useRouter()
     const { setCookie, deleteCookie } = useCookies();
@@ -58,7 +59,7 @@ const useLogin = ({ redirectUrl = "", allowLoggedInUser = false, onLoginSuccess,
                 return;
             }
             if(urlToRedirect && tplogin){
-                window.location.href = urlToRedirect+"?user_key="+encodeURIComponent((<any>data).secreate_key);
+                window.location.href = tpReturnUrlWithKey(urlToRedirect, (<any>data).secreate_key);
                 return;
             }
              if (urlToRedirect) {
@@ -104,7 +105,7 @@ const useLogin = ({ redirectUrl = "", allowLoggedInUser = false, onLoginSuccess,
                 return;
             }
             if(urlToRedirect && tplogin){
-                window.location.href = urlToRedirect+"?user_key="+encodeURIComponent((<any>data).secreate_key);
+                window.location.href = tpReturnUrlWithKey(urlToRedirect, (<any>data).secreate_key);
                 return;
             }
             if(urlToRedirect){
@@ -129,8 +130,7 @@ const useLogin = ({ redirectUrl = "", allowLoggedInUser = false, onLoginSuccess,
         router.refresh();
     }
     useEffect(() => {
-        const urlsearch = new URLSearchParams(window.location.search);
-        const redirect_url = urlsearch.get("redirect_url");
+        const redirect_url = tpReturnUrl();
         if(redirect_url){
             setUrlToRedirect(redirect_url);
         }
