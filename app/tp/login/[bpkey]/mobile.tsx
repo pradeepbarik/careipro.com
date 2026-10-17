@@ -5,6 +5,7 @@ import { BiShieldQuarter, BiX } from "react-icons/bi";
 import { MdVerified } from "react-icons/md";
 import Image from "next/image";
 import { clinicProfilePic } from "@/lib/image";
+import SignedInCard from "./signed-in-card";
 
 const TploginMobile = ({ data }: { data: TclinicDetail }) => {
     const clinicInfo = data.clinic_info;
@@ -67,6 +68,8 @@ const TploginMobile = ({ data }: { data: TclinicDetail }) => {
                 {/* Login Component */}
                 <div className="bg-white rounded-2xl shadow-lg p-4">
                     <h2 className="text-xl font-bold text-gray-800 mb-4 text-center">Login to Continue</h2>
+                    {/* a visitor who already has a careipro session can go straight back */}
+                    <SignedInCard clinicName={clinicInfo.name} />
                     <Login allowLoggedInUser={true} tplogin={true} />
                 </div>
                 {/* Footer Note */}

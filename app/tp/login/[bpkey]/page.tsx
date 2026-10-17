@@ -4,6 +4,7 @@ import { getKeyInfo } from "@/lib/hooks/index";
 import { redirect } from "next/navigation";
 import { fetchClinicDetail } from "@/lib/hooks/useClinics";
 const LoginMobile = dynamic(() => import("./mobile"));
+const LoginDesktop = dynamic(() => import("./desktop"));
 //bpkey = business public key
 const TPlogin = async ({ params, searchParams }: { params: { bpkey: string }, searchParams: { rurl: string } }) => {
     const { device } = useDeviceInfo();
@@ -16,10 +17,9 @@ const TPlogin = async ({ params, searchParams }: { params: { bpkey: string }, se
             clinic_bid: keyinfo.business_id,
             market_name: ""
         })
-        return device.type === "mobile" ? <>
-
-            <LoginMobile data={clinicDetail} />
-        </> : <></>
+        return device.type === "mobile"
+            ? <LoginMobile data={clinicDetail} />
+            : <LoginDesktop data={clinicDetail} />
     } catch (err) {
         redirect("/"); // Redirect to home or an error page if the key is invalid
     }
