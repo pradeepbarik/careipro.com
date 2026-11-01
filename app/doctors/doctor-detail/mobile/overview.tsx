@@ -1,13 +1,14 @@
 import { SectionHeading, SectionSubHeading } from "@/app/components/mobile/ui"
 import TrackedLink from "@/app/components/client-components/tracked-link";
 import { TDoctorDetail, TDoctorvailableData } from '@/lib/types/doctor';
-import { BiChevronRight, BiSolidStar, BiTimeFive, BiUser } from "react-icons/bi";
+import { BiChevronRight, BiSolidStar, BiTimeFive, BiUser, BiEdit, BiErrorCircle } from "react-icons/bi";
 import moment, { get_current_datetime } from "@/lib/helper/date-time";
 import { doctorSpecialityIcon, getMarketingBanner, mediaUrl } from "@/lib/image";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { support_no } from "@/constants/site-config";
 import { hirePersonalAssistantPageUrl } from "@/lib/helper/link";
+import SendEnquiry from "@/app/hospitals-and-clinics/clinic-detail/mobile/send-enquiry";
 const WeeklyConsultingTiming = dynamic(() => import("@/app/components/mobile/doctors/doctor-detail/weekly-consulting-timing"));
 const NextConsultTime = dynamic(() => import('@/app/components/mobile/doctors/doctor-detail/next-consult-time'));
 const SimilarBusieness = dynamic(() => import("./similar-doctors"));
@@ -54,7 +55,7 @@ const TimingCard = ({ title, timings, accent }: { title: string, timings: TTimin
     );
 };
 
-const OverView = ({ data, availableData }: { data: TDoctorDetail, availableData: TDoctorvailableData }) => {
+const OverView = ({ data, availableData, hideFeedbackActions = false }: { data: TDoctorDetail, availableData: TDoctorvailableData, hideFeedbackActions?: boolean }) => {
     let showNextConsultDate = (data.doctor_availability && data.doctor_availability.date && moment(get_current_datetime()).diff(moment(data.doctor_availability.date), 'days') < 0) ? true : false;
     let pageUrl = data.seo_dt.seo_url;
     return (
@@ -228,10 +229,42 @@ const OverView = ({ data, availableData }: { data: TDoctorDetail, availableData:
                     <div dangerouslySetInnerHTML={{ __html: data.description }} className="px-2 py-2 bg-white shadow-sm mb-2" ></div>
                 </> : <></>
             }
-            {data.active && data.active == 1 ?
+            {!hideFeedbackActions && <div className="flex gap-2 px-2 mb-2">
+                <SendEnquiry
+                    businessType={data.business_type}
+                    state={data.clinic_state || ""}
+                    city={data.clinic_city}
+                    clini_id={data.clinic_id}
+                    doctor_id={data.doctor_id}
+                    variant="button"
+                    section="suggest_edit"
+                    label="Suggest to update"
+                    heading="Suggest to update"
+                    placeholder={`Tell us what's incorrect or missing in ${data.doctor_name}'s profile...`}
+                    className="flex-1 flex items-center justify-center gap-1.5 fs-13 font-semibold text-cyan-600 border border-gray-200 rounded-lg py-2 bg-white"
+                >
+                    <BiEdit className="text-base color-primary" />
+                </SendEnquiry>
+                <SendEnquiry
+                    businessType={data.business_type}
+                    state={data.clinic_state || ""}
+                    city={data.clinic_city}
+                    clini_id={data.clinic_id}
+                    doctor_id={data.doctor_id}
+                    variant="button"
+                    section="report_issue"
+                    label="Report an issue"
+                    heading="Report an issue"
+                    placeholder="Tell us what went wrong on this page..."
+                    className="flex-1 flex items-center justify-center gap-1.5 fs-13 font-semibold text-red-600 border border-gray-200 rounded-lg py-2 bg-white"
+                >
+                    <BiErrorCircle className="text-base text-red-600" />
+                </SendEnquiry>
+            </div>}
+            {/* {data.active && data.active == 1 ?
                 <TrackedLink target="_blank" ev_nm="whatsapp_click" section_name="medicine_delivery" href={`https://wa.me/${support_no}?text=Hi, i need some medicines to be home delivered from ${data.doctor_name}'s clinic`}>
                     <img src={getMarketingBanner("medicine-delivery.png")} alt="Medicine home deliver from local pharmacy" />
-                </TrackedLink> : <></>}
+                </TrackedLink> : <></>} */}
             {(data.settings.show_patients_feedback) && data.topReviews && data.topReviews?.length > 0 ? <>
                 <SectionHeading heading='Rating & Reviews' />
                 <div className="flex gap-3 border rounded-md mx-2">

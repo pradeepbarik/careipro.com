@@ -3,11 +3,14 @@ import { fetchJson, IResponse } from '@/lib/services/http-server';
 import { TDoctor, TDoctorDetail, TDoctorvailableData } from '../types/doctor';
 import { TSeodt } from '../types';
 import { get_current_datetime } from '@/lib/helper/date-time';
-import { TSectionBanner, TSiteBanner } from '../types/home-page';
+import { TSectionBanner, TSiteBanner, TPopularDoctor } from '../types/home-page';
 import { TShortVideo } from "@/lib/helper/short-video";
 export type TDoctorsPageData = {
     site_banners?: TSiteBanner[],
     short_videos?: TShortVideo[],
+    /* the city's pinned doctors, present only where a popular_doctors section is enabled. the same
+       list and shape the city home page carries, so the same component renders it */
+    popularDoctors?: TPopularDoctor[],
     specialists: Array<{
         id: number,
         name: string,
@@ -22,6 +25,7 @@ export type TDoctorsPageData = {
         section_type: string,
         doctors_count: number,
         view_all_url: string,
+        // a popular_doctors section carries only its heading, the doctors sit at the top level
         doctors: Array<TDoctor>,
         banners?: Array<TSectionBanner>
     }>
@@ -31,7 +35,7 @@ export const fetchDoctorsPageData = async (state: string, city: string) => {
         const res = await fetchJson<TDoctorsPageData>(`/cache/${state}/${city}/doctors-page.json`);
         return res;
     } catch (err: any) {
-        const { data } = await fetchJson<IResponse<TDoctorsPageData>>(`/init-cache/doctors-page-data?state=${state.replace(' ', '-')}&city=${city.replace(' ', '-')}`);
+        const { data } = await fetchJson<IResponse<TDoctorsPageData>>(`/init-cache/doctors-page-data?state=${state.replace(' ', '-')}&city=${city.replace(' ', '-')}`,true);
         return data;
     }
 }

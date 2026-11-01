@@ -1,13 +1,12 @@
 import Link from "next/link";
 import { BsTelephone, BsPersonRaisedHand } from "react-icons/bs";
-import { BiUser } from "react-icons/bi";
-import { TDoctorDetail, TDoctorvailableData } from "@/lib/types/doctor";
-import { doctorProfilePic } from "@/lib/image";
+import { BiCalendar, BiEdit, BiErrorCircle } from "react-icons/bi";
+import { TDoctorDetail } from "@/lib/types/doctor";
 import { hirePersonalAssistantPageUrl } from "@/lib/helper/link";
 import { support_no } from "@/constants/site-config";
 import { userinfo, userSecreateKey } from "@/constants/storage_keys";
 import TrackedLink from "@/app/components/client-components/tracked-link";
-import BookAppointment from "@/app/components/mobile/doctors/doctor-detail/book-appointment-form";
+import SendEnquiry from "@/app/hospitals-and-clinics/clinic-detail/mobile/send-enquiry";
 import SupportCard from "./support-card";
 
 const PanelCard = ({ children, className = "" }: { children: React.ReactNode, className?: string }) => (
@@ -15,14 +14,55 @@ const PanelCard = ({ children, className = "" }: { children: React.ReactNode, cl
 );
 
 /**
- * The right hand rail of the desktop profile. Desktop has the room to book without sending the
- * visitor to another page, so the booking form is rendered here on the profile itself. Which of the
- * three routes a clinic uses is decided by settings.book_by, the same branching the mobile page does
- * from its bottom bar.
+ * The desktop counterpart of the two buttons the mobile overview carries at the foot of its
+ * profile info, surfaced here instead since the right rail has no equivalent scroll position.
+ * Same SendEnquiry sheet, just rendered as a centred dialog rather than a bottom sheet.
  */
-const BookingPanel = ({ data, availableData, cookies, pageUrl }: {
+const FeedbackActions = ({ data }: { data: TDoctorDetail }) => (
+    <div className="flex gap-2">
+        <SendEnquiry
+            businessType={data.business_type}
+            state={data.clinic_state || ""}
+            city={data.clinic_city}
+            clini_id={data.clinic_id}
+            doctor_id={data.doctor_id}
+            variant="button"
+            surface="dialog"
+            section="suggest_edit"
+            label="Suggest to update"
+            heading="Suggest to update"
+            placeholder={`Tell us what's incorrect or missing in ${data.doctor_name}'s profile...`}
+            className="flex-1 flex items-center justify-center gap-1.5 fs-13 font-semibold text-cyan-600 border border-gray-200 rounded-lg py-2 bg-white hover:bg-gray-50 transition-colors"
+        >
+            <BiEdit className="text-base color-primary" />
+        </SendEnquiry>
+        <SendEnquiry
+            businessType={data.business_type}
+            state={data.clinic_state || ""}
+            city={data.clinic_city}
+            clini_id={data.clinic_id}
+            doctor_id={data.doctor_id}
+            variant="button"
+            surface="dialog"
+            section="report_issue"
+            label="Report an issue"
+            heading="Report an issue"
+            placeholder="Tell us what went wrong on this page..."
+            className="flex-1 flex items-center justify-center gap-1.5 fs-13 font-semibold text-red-600 border border-gray-200 rounded-lg py-2 bg-white hover:bg-gray-50 transition-colors"
+        >
+            <BiErrorCircle className="text-base text-red-600" />
+        </SendEnquiry>
+    </div>
+);
+
+/**
+ * The right hand rail of the desktop profile. Booking itself happens on its own page (the desktop
+ * version of the same page mobile links out to), so this rail's only job is sending the visitor
+ * there with the right call to action. Which of the three it shows is decided by settings.book_by,
+ * the same branching the mobile bottom bar uses.
+ */
+const BookingPanel = ({ data, cookies, pageUrl }: {
     data: TDoctorDetail,
-    availableData: TDoctorvailableData,
     cookies: Record<string, any>,
     pageUrl: string
 }) => {
@@ -46,6 +86,7 @@ const BookingPanel = ({ data, availableData, cookies, pageUrl }: {
                     </TrackedLink>
                 </PanelCard>
                 <SupportCard data={data} patientName={patientName} />
+                <FeedbackActions data={data} />
             </div>
         );
     }
@@ -70,66 +111,34 @@ const BookingPanel = ({ data, availableData, cookies, pageUrl }: {
                     </a>
                 </PanelCard>
                 <SupportCard data={data} patientName={patientName} />
+                <FeedbackActions data={data} />
             </div>
         );
     }
 
-    /* the form carries its own full screen login overlay when there is no user, which would cover
-       the whole profile the moment it rendered. so a signed out visitor gets the prompt instead and
-       the form mounts only once they are back with a session. */
-    if (!isLoggedIn || !userdetail) {
-        return (
-            <div className="flex flex-col gap-4">
-                <PanelCard>
-                    <div className="flex items-center gap-3">
-                        <span className="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center shrink-0">
-                            <BiUser className="text-orange-600 text-xl" />
-                        </span>
-                        <div className="min-w-0">
-                            <p className="font-semibold text-gray-800 fs-14">Verify your mobile number</p>
-                            <p className="fs-12 text-gray-500">Login to book an appointment</p>
-                        </div>
-                    </div>
-                    <Link href={`/login?redirect_url=${data.seo_dt.seo_url}`} className="mt-3 block w-full bg-primary text-white font-semibold rounded-lg py-2.5 text-center hover:opacity-90 transition-opacity">
-                        Login &amp; Book
-                    </Link>
-                </PanelCard>
-                <SupportCard data={data} patientName={patientName} />
-            </div>
-        );
-    }
+    //booking lives on its own page now; a signed out visitor goes through login first, landing back
+    //on that page, the same redirect the mobile bottom bar uses
+    const bookHref = isLoggedIn ? `${pageUrl}/book-appointment` : `/login?redirect_url=${data.seo_dt.seo_url}/book-appointment`;
+    const isRequestOnly = data.settings.book_by === "manually";
 
     return (
         <div className="flex flex-col gap-4">
-            <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
-                <h2 className="font-bold text-gray-800 px-4 py-3 border-b border-gray-100">Book an appointment</h2>
-                <BookAppointment
-                    state={data.clinic_state}
-                    city={data.clinic_city}
-                    emergencyBookingClose={data.settings.emergency_booking_close}
-                    bookingCloseMessage={data.settings.booking_close_message}
-                    open={false}
-                    clinic_id={data.clinic_id}
-                    service_loc_id={data.id}
-                    doctor_id={data.doctor_id}
-                    service_charge={parseInt(data.service_charge)}
-                    site_service_charge={parseInt(data.site_service_charge)}
-                    settings={data.settings}
-                    availability={availableData}
-                    slno_groups={data.slno_groups || []}
-                    pageUrl={`${pageUrl}/book-appointment`}
-                    doctorInfo={{
-                        name: data.doctor_name,
-                        image: doctorProfilePic(data.profile_pic),
-                        specialization: data.specialization || "",
-                        verified: true,
-                        rating: data.rating,
-                        experience: data.experience.toString()
-                    }}
-                    userdetail={userdetail}
-                />
-            </div>
+            <PanelCard className="text-center">
+                <span className="w-14 h-14 mx-auto mb-3 bg-primary/10 rounded-full flex items-center justify-center">
+                    <BiCalendar className="text-2xl text-primary" />
+                </span>
+                <h2 className="font-bold text-gray-800">Book an appointment</h2>
+                <p className="fs-13 text-gray-600 mt-1">
+                    {isRequestOnly
+                        ? "Send a booking request and the clinic will confirm your slot."
+                        : "Pick a slot and confirm your details in a couple of steps."}
+                </p>
+                <Link href={bookHref} className="mt-4 flex items-center justify-center gap-2 w-full bg-primary text-white font-semibold rounded-lg py-2.5 hover:opacity-90 transition-opacity">
+                    <BiCalendar />{isRequestOnly ? "Request Appointment" : "Book Appointment"}
+                </Link>
+            </PanelCard>
             <SupportCard data={data} patientName={patientName} />
+            <FeedbackActions data={data} />
         </div>
     );
 };

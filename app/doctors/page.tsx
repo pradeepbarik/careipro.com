@@ -3,8 +3,6 @@ import dynamic from 'next/dynamic'
 import useDeviceInfo from "@/lib/hooks/useDeviceInfo";
 import { fetchDoctorsPageData } from "@/lib/hooks/useDoctors";
 import { fetchCategories } from '@/lib/hooks/useCategories';
-import LoginToast from "../components/mobile/login-toast";
-import { userSecreateKey } from '@/constants/storage_keys';
 
 const DoctorsMobile = dynamic(() => import('./mobile'));
 const DoctorsDesktop = dynamic(() => import('./desktop'));
@@ -37,7 +35,6 @@ const Doctors = async ({ searchParams }: { searchParams: { city: string, state: 
         return (
             <>
                 <DoctorsMobile city={searchParams.city} state={searchParams.state} pageData={pageData} categories={categories} diseases={diseases} />
-                {!cookies[userSecreateKey] && <LoginToast />}
             </>
         )
     } else {
