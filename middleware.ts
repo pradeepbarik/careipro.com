@@ -7,7 +7,7 @@ export function middleware(request: NextRequest) {
         let city = cookies().get("city")?.value;
         if (state && city) {
             //a city already chosen, so / shows that city's home page
-            return NextResponse.rewrite(new URL(`/${state.replace(" ", "-")}/${city.replace(" ", "-")}`, request.url));
+            return NextResponse.rewrite(new URL(`/${state.replace(/ /g, "-")}/${city.replace(/ /g, "-")}`, request.url));
         }
         /* nobody has chosen one yet, so / falls through to the city chooser rather than guessing.
            it used to land on Bhadrak, which was a whole page of one city's clinics shown to someone
