@@ -8,10 +8,8 @@ import TrackedLink from "@/app/components/client-components/tracked-link";
 /**
  * What the main button does, worked out on the server from settings.book_by so this bar and the
  * booking rail can never disagree about how a clinic takes appointments.
- * scroll-to-booking is the desktop case, the form is on this page so there is nowhere to send them.
  */
 export type TPrimaryAction =
-    | { kind: 'scroll-to-booking', label: string }
     | { kind: 'link', label: string, href: string }
     | { kind: 'call', label: string, href: string };
 
@@ -24,14 +22,12 @@ type TProps = {
     whatsappNumber?: string;
     whatsappMessage: string;
     primaryAction: TPrimaryAction;
-    //the id of the booking panel, used by the scroll-to-booking action
-    bookingPanelId: string;
 };
 
 //far enough that the bar only turns up once the profile header has gone past
 const SHOW_AFTER_PX = 220;
 
-const StickyActionBar = ({ doctorName, specialty, photo, fee, clinicMobile, whatsappNumber, whatsappMessage, primaryAction, bookingPanelId }: TProps) => {
+const StickyActionBar = ({ doctorName, specialty, photo, fee, clinicMobile, whatsappNumber, whatsappMessage, primaryAction }: TProps) => {
     const [visible, setVisible] = useState(false);
 
     useEffect(() => {
@@ -40,13 +36,6 @@ const StickyActionBar = ({ doctorName, specialty, photo, fee, clinicMobile, what
         window.addEventListener('scroll', onScroll, { passive: true });
         return () => window.removeEventListener('scroll', onScroll);
     }, []);
-
-    const scrollToBooking = () => {
-        const panel = document.getElementById(bookingPanelId);
-        if (panel) {
-            panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-    };
 
     const primaryClass = "flex items-center justify-center gap-2 bg-primary text-white font-semibold fs-14 rounded-lg px-6 py-2.5 hover:opacity-90 transition-opacity whitespace-nowrap";
 
@@ -86,11 +75,7 @@ const StickyActionBar = ({ doctorName, specialty, photo, fee, clinicMobile, what
                             <BiLogoWhatsapp className="text-lg" />WhatsApp
                         </TrackedLink>
                     )}
-                    {primaryAction.kind === 'scroll-to-booking' ? (
-                        <button onClick={scrollToBooking} className={primaryClass}>
-                            <BiCalendar className="text-lg" />{primaryAction.label}
-                        </button>
-                    ) : primaryAction.kind === 'call' ? (
+                    {primaryAction.kind === 'call' ? (
                         <TrackedLink href={primaryAction.href} ev_nm="call_click" section_name="sticky_action_bar_cta" className={primaryClass}>
                             <BsTelephone className="text-lg" />{primaryAction.label}
                         </TrackedLink>
@@ -98,7 +83,9 @@ const StickyActionBar = ({ doctorName, specialty, photo, fee, clinicMobile, what
                         <Link href={primaryAction.href} className={primaryClass}>
                             {primaryAction.label.toLowerCase().includes('login')
                                 ? <BiUser className="text-lg" />
-                                : <BsPersonRaisedHand className="text-lg" />}
+                                : primaryAction.label.toLowerCase().includes('assistant')
+                                    ? <BsPersonRaisedHand className="text-lg" />
+                                    : <BiCalendar className="text-lg" />}
                             {primaryAction.label}
                         </Link>
                     )}

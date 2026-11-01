@@ -18,8 +18,6 @@ import StickyActionBar, { TPrimaryAction } from "./sticky-action-bar";
 import { getSendEnquiryWhatsappMessage } from "../mobile";
 import { hirePersonalAssistantPageUrl } from "@/lib/helper/link";
 
-const BOOKING_PANEL_ID = "booking-panel";
-
 const OverView = dynamic(() => import("../mobile/overview"));
 const MediaContent = dynamic(() => import("../mobile/media-content"));
 const SimilarBusieness = dynamic(() => import("../mobile/similar-doctors"));
@@ -51,9 +49,9 @@ const DoctorDetailDesktop = ({ data, availableData, searchParams, cookies }: {
         : (data.settings.book_by === "manually" && data.settings.prime_member_only_booking == 1)
             ? { kind: 'link', label: 'Hire Assistant & Book', href: hirePersonalAssistantPageUrl(data.clinic_state, data.clinic_city) }
             : !cookies[userSecreateKey]
-                ? { kind: 'link', label: 'Login & Book', href: `/login?redirect_url=${data.seo_dt.seo_url}` }
-                //the form is on this page, so the button takes them to it rather than to another url
-                : { kind: 'scroll-to-booking', label: 'Book Appointment' };
+                ? { kind: 'link', label: 'Login & Book', href: `/login?redirect_url=${data.seo_dt.seo_url}/book-appointment` }
+                //booking lives on its own page, same as mobile
+                : { kind: 'link', label: data.settings.book_by === "manually" ? 'Request Appointment' : 'Book Appointment', href: `${pageUrl}/book-appointment` };
 
     const tabClass = (active: boolean) => `flex items-center gap-1.5 px-4 py-2 rounded-lg font-semibold fs-14 whitespace-nowrap transition-colors ${active ? 'bg-primary text-white' : 'bg-white border border-gray-200 text-gray-700 hover:border-primary hover:text-primary'}`;
 
@@ -287,7 +285,7 @@ const DoctorDetailDesktop = ({ data, availableData, searchParams, cookies }: {
                             ) : subPage === "patient-reviews" ? (
                                 <Reviews state={searchParams.state} city={searchParams.city} service_loc_id={data.id} rating={data.rating || 0} rating_count={data.rating_count || 0} review_count={data.review_count || 0} doctor_id={data.doctor_id} clinic_id={data.clinic_id} />
                             ) : (
-                                <OverView data={data} availableData={availableData} />
+                                <OverView data={data} availableData={availableData} hideFeedbackActions />
                             )}
                         </div>
 
@@ -299,8 +297,8 @@ const DoctorDetailDesktop = ({ data, availableData, searchParams, cookies }: {
                     </div>
 
                     {/* booking stays in view the whole way down the profile */}
-                    <aside id={BOOKING_PANEL_ID} className="min-w-0 sticky top-[104px]">
-                        <BookingPanel data={data} availableData={availableData} cookies={cookies} pageUrl={pageUrl} />
+                    <aside className="min-w-0 sticky top-[104px]">
+                        <BookingPanel data={data} cookies={cookies} pageUrl={pageUrl} />
                     </aside>
                 </div>
             </main>
@@ -314,7 +312,6 @@ const DoctorDetailDesktop = ({ data, availableData, searchParams, cookies }: {
                 whatsappNumber={data.whatsapp_number}
                 whatsappMessage={getSendEnquiryWhatsappMessage(data.doctor_name)}
                 primaryAction={primaryAction}
-                bookingPanelId={BOOKING_PANEL_ID}
             />
             {/* the bar floats over the page, this keeps it clear of the last of the footer */}
             <div className="h-20" aria-hidden="true"></div>

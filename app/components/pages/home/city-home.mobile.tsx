@@ -73,7 +73,7 @@ const CityHome = async ({ state, city, town, cookies }: { state: string, city: s
                                 <PopularClinics clinics={data.popularClinics} />
                             </> : (section.name === "popular_doctors" && data.popularDoctors) ? <>
                                 {section.heading && <SectionHeading heading={section.heading} />}
-                                <PopularDoctor data={data.popularDoctors} showFilter={true} />
+                                <PopularDoctor data={data.popularDoctors}/>
                             </> : (section.name === "doctor_category" && data.doctorCategory) ? <>
                                 {section.heading && <SectionHeading heading={section.heading} />}
                                 <DoctorCategory data={data.doctorCategory} />

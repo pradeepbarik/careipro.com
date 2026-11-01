@@ -20,6 +20,7 @@ import CategoriesFooter from '../components/mobile/footer/categories';
 import ServiceAvailbeCities from '../components/mobile/footer/service-available-cities';
 import { doctorDetailPageUrl, alllCategoriesPageLink } from "@/lib/helper/link";
 import { capitalizeFirstLetter } from "@/lib/helper/format-text";
+import DesktopPopularDoctors from "../components/desktop/popular-doctors";
 /* both halves of the hero stand the same height so neither side letterboxes the other */
 const HERO_HEIGHT = "20rem";
 
@@ -354,6 +355,10 @@ const DesktopDoctors = ({ city, state, pageData, categories, diseases }: {
                                     viewAllUrl={section.view_all_url}
                                 />
                             )
+                        ) : section.section_type === "popular_doctors" && pageData.popularDoctors ? (
+                            /* the same pinned list the city home shows, same component. the doctors
+                               sit at the top of the payload, not on the section. */
+                            <DesktopPopularDoctors data={pageData.popularDoctors} heading={section.heading} />
                         ) : section.section_type === "banners" && section.banners ? (
                             <SectionBannersDesktop banners={section.banners} heading={section.heading} />
                         ) : null}

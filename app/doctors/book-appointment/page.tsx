@@ -5,6 +5,7 @@ import { Metadata } from "next/dist/lib/metadata/types/metadata-interface";
 import dynamic from "next/dynamic";
 import { title } from "process";
 const BookAppointmentMobilePage = dynamic(() => import("./mobile"));
+const BookAppointmentDesktopPage = dynamic(() => import("./desktop"));
 export async function generateMetadata({ searchParams }: { searchParams: any }): Promise<Metadata> {
     const data = await fetchDoctorDetail({ doctor_id: searchParams.doctor_id, clinic_id: searchParams.clinic_id, service_loc_id: searchParams.service_loc_id, seo_url: searchParams.seo_url, market_name: searchParams.market_name, state: searchParams.state, city: searchParams.city })
     const seodt = {
@@ -48,10 +49,6 @@ const BookAppointmentPage = async ({ searchParams }: { searchParams: any }) => {
     if (device.type === "mobile") {
         return <BookAppointmentMobilePage data={data.data} availableData={availableData} searchParams={searchParams} cookies={cookies} />
     }
-    return (
-        <>
-
-        </>
-    )
+    return <BookAppointmentDesktopPage data={data.data} availableData={availableData} searchParams={searchParams} cookies={cookies} />
 }
 export default BookAppointmentPage;

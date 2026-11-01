@@ -1,6 +1,7 @@
 import { Suspense } from 'react';
 import Link from 'next/link';
 import { getCityHomePageData } from '@/lib/hooks/home/useHomePage';
+import DesktopPopularDoctors from '@/app/components/desktop/popular-doctors';
 import { BiSolidMap, BiClinic, BiUser, BiSearch, BiPhone, BiEnvelope, BiChevronRight, BiTime } from "react-icons/bi";
 import { FiArrowRight } from "react-icons/fi";
 import { AiFillCaretDown, AiFillStar } from "react-icons/ai";
@@ -138,43 +139,6 @@ const DesktopVerticals = ({ data }: { data: THomePageData['verticals'] }) => {
                         ))}
                     </div>
                 )}
-            </div>
-        </div>
-    );
-};
-
-const DesktopPopularDoctors = ({ data, heading }: { data: TPopularDoctor[], heading?: string }) => {
-    return (
-        <div className="bg-white rounded-xl border border-gray-200 p-6 mb-8">
-            {heading && <SectionHeading heading={heading||"Top Doctors Near You"} />}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {data.slice(0, 6).map((doctor) => (
-                    <Link key={doctor.id} href={doctor.seo_url} className="group flex gap-4 p-4 rounded-xl border border-gray-200 hover:border-primary hover:shadow-lg transition-all bg-white">
-                        <div className="relative flex-shrink-0">
-                            <img src={doctor.image} alt={doctor.name} className="w-20 h-20 rounded-lg object-cover" />
-                            {doctor.rating && parseFloat(doctor.rating) > 0 && (
-                                <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 flex items-center gap-0.5 bg-green-600 text-white text-xs px-2 py-0.5 rounded">
-                                    <span>{doctor.rating}</span>
-                                    <AiFillStar className="text-[10px]" />
-                                </div>
-                            )}
-                        </div>
-                        <div className="flex-1 min-w-0">
-                            <div className="flex items-center gap-1 mb-1">
-                                <h3 className="font-semibold text-gray-800 truncate group-hover:text-primary transition-colors">{doctor.name}</h3>
-                                <MdVerified className="text-blue-500 flex-shrink-0" />
-                            </div>
-                            <p className="text-sm text-gray-500 truncate">{doctor.position}</p>
-                            <p className="text-sm text-primary font-medium">{doctor.specialization}</p>
-                            <div className="flex items-center gap-2 mt-2 text-xs text-gray-600">
-                                <span className="flex items-center gap-1"><BiClinic className="text-gray-400" />{doctor.clinic}</span>
-                            </div>
-                            <div className="flex items-center gap-1 mt-1 text-xs text-green-600">
-                                <BiTime /><span>Available: {doctor.availability}</span>
-                            </div>
-                        </div>
-                    </Link>
-                ))}
             </div>
         </div>
     );
