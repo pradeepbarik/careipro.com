@@ -14,9 +14,11 @@ type TProps = {
     markets: Array<{ market_name: string }>;
     nearbyCities: Array<{ city: string; market_name: string }>;
     brandedHospitals: Array<{ label: string; value: string }>;
+    /** category of this result page, appended to detail links for the personalised feed */
+    searchCatId?: string | number;
 };
 
-const SearchableDoctors = ({ doctors, city, specialist_name, markets, nearbyCities, brandedHospitals }: TProps) => {
+const SearchableDoctors = ({ doctors, city, specialist_name, markets, nearbyCities, brandedHospitals, searchCatId }: TProps) => {
     const { trackClick } = useEventLogger();
     const [query, setQuery] = useState("");
     const [showSuggestions, setShowSuggestions] = useState(false);
@@ -133,11 +135,11 @@ const SearchableDoctors = ({ doctors, city, specialist_name, markets, nearbyCiti
 
             {/* Show selected doctor */}
             {selectedDoctor && (
-                <NIsToOneDoctorsSliders data={[selectedDoctor]} showAvaileTime={true} />
+                <NIsToOneDoctorsSliders data={[selectedDoctor]} showAvaileTime={true} searchCatId={searchCatId} />
             )}
 
             {/* Default 2 doctors preview */}
-            {!selectedDoctor && <NIsToOneDoctorsSliders data={previewDoctors} showAvaileTime={true} />}
+            {!selectedDoctor && <NIsToOneDoctorsSliders data={previewDoctors} showAvaileTime={true} searchCatId={searchCatId} />}
 
             {/* More Doctors button */}
             {!showAll && !hasActiveFilters && !selectedDoctor && remainingDoctors.length > 0 && (
@@ -167,7 +169,7 @@ const SearchableDoctors = ({ doctors, city, specialist_name, markets, nearbyCiti
 
             {/* Show remaining doctors after clicking More or when filters active */}
             {(showAll || hasActiveFilters) && !selectedDoctor && (
-                <NIsToOneDoctorsSliders data={remainingDoctors} showAvaileTime={true} />
+                <NIsToOneDoctorsSliders data={remainingDoctors} showAvaileTime={true} searchCatId={searchCatId} />
             )}
         </>
     );

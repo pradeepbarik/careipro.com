@@ -3,7 +3,7 @@ import Script from "next/script";
 import { BiSolidMap, BiClinic, BiTimeFive, BiRightArrowAlt, BiBuildings } from "react-icons/bi";
 import { TDoctor } from "@/lib/types/doctor";
 import { doctorProfilePic } from '@/lib/image';
-import { doctorDetailPageUrl } from '@/lib/helper/link';
+import { doctorDetailPageUrl, withSearchCategory } from '@/lib/helper/link';
 import CheckAvailabilityBtn from './check-availability-btn';
 import ConsultTimingBadge from './consult-timing-badge';
 
@@ -29,11 +29,12 @@ function getSessionSlots(cd: NonNullable<TDoctor['matched_consult_date']>): stri
     return slots;
 }
 
-const NIsToOneDoctorsSliders = ({ data, type = 'DOCTOR', showAvaileTime }: { data: TDoctor[], type?: 'DOCTOR' | 'CLINIC_DOCTOR', showAvaileTime?: boolean }) => {
+/** searchCatId: set only on a category result page, see withSearchCategory */
+const NIsToOneDoctorsSliders = ({ data, type = 'DOCTOR', showAvaileTime, searchCatId }: { data: TDoctor[], type?: 'DOCTOR' | 'CLINIC_DOCTOR', showAvaileTime?: boolean, searchCatId?: string | number }) => {
     return (
         <div className="">
             {data.map((doctor, i) => {
-                const doctorDtlpgUrl = doctorDetailPageUrl({ doctor_id: doctor.doctor_id, clinic_id: doctor.clinic_id, service_loc_id: doctor.service_location_id, seo_url: doctor.doctor_seo_url, city: doctor.city, state: doctor.state, market_name: doctor.market_name, type: doctor.business_type })
+                const doctorDtlpgUrl = withSearchCategory(doctorDetailPageUrl({ doctor_id: doctor.doctor_id, clinic_id: doctor.clinic_id, service_loc_id: doctor.service_location_id, seo_url: doctor.doctor_seo_url, city: doctor.city, state: doctor.state, market_name: doctor.market_name, type: doctor.business_type }), searchCatId)
                 return (
                     <Link key={doctor.service_location_id} className="bg-white border-b shadow-md mb-1 block" href={doctorDtlpgUrl} title={`${doctor.doctor_name} in ${doctor.clinic},${doctor.city}`}>
                         <div className="flex py-2 px-2 gap-3">
@@ -141,7 +142,7 @@ const NIsToOneDoctorsSliders = ({ data, type = 'DOCTOR', showAvaileTime }: { dat
                                         <BiRightArrowAlt className="text-2xl color-primary" />
                                     </span>
                                     : <>
-                                        <Link className="button one-line" href={doctorDetailPageUrl({ doctor_id: doctor.doctor_id, clinic_id: doctor.clinic_id, service_loc_id: doctor.service_location_id, seo_url: doctor.doctor_seo_url, city: doctor.city, state: doctor.state, market_name: doctor.market_name, type: doctor.business_type })}>Book Appointment</Link>
+                                        <Link className="button one-line" href={doctorDtlpgUrl}>Book Appointment</Link>
                                     </>}
                             </div>
                         </div>

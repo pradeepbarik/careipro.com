@@ -3,6 +3,7 @@ import Script from 'next/script';
 import { permanentRedirect, RedirectType } from 'next/navigation'
 import dynamic from 'next/dynamic';
 import PageVisitLogger from '@/app/components/client-components/page-visit-logger';
+import { CategoryFeedTracker } from '@/app/components/client-components/feed-tracker';
 import { fetchDoctors, fetchDoctorsConsultingTimings } from '@/lib/hooks/useDoctors';
 import useDeviceInfo from "@/lib/hooks/useDeviceInfo";
 const DoctorListMobile = dynamic(() => import("@/app/doctors/doctors-list/mobile"));
@@ -50,6 +51,7 @@ const DoctorsList = async ({ searchParams }: { searchParams: any }) => {
                 group_category: searchParams.group_cat,
                 vertical: "DOCTOR"
             }} />
+            <CategoryFeedTracker cat_id={searchParams.cat_id} />
             <Script type="application/ld+json" id="ldjson-doctor-list">
                 {data.data.seo_dt.ldjson}
             </Script>

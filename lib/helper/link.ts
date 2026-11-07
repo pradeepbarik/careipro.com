@@ -59,6 +59,16 @@ export const doctorDetailPageUrl = (params: { doctor_id: number, service_loc_id:
     }
     return url;
 }
+/**
+ * Tags a doctor detail link with the category result page it was opened from.
+ * The doctor has many specialties - this tells the personalised feed which one
+ * the visitor was after. The detail page sets a canonical url, so the query
+ * string never creates a duplicate page for search engines.
+ */
+export const withSearchCategory = (url: string, cat_id?: string | number) => {
+    if (!cat_id || !Number(cat_id)) return url;
+    return `${url}${url.includes("?") ? "&" : "?"}cat_id=${Number(cat_id)}`;
+}
 export const clinicDetailpageUrl = (params: { seo_url: string, state: string, city: string, market_name: string, bid: string,business_type?:string, }) => {
     if(params.business_type && params.business_type.toLowerCase() === "medicinestore"){
         return `/${params.state.toLowerCase()}/${params.city.toLowerCase().replace(' ', '-')}/medical-store-in-${params.market_name.replace(/ /g, "-")}/${params.seo_url}-${params.bid}`;

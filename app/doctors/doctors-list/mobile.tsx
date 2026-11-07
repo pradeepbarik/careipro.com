@@ -36,7 +36,7 @@ const DoctorListMobile = async ({ params, data, consultTimings }: { params: any,
                     </> : <></>
                 }
                 <PageHeading heading={data.seo_dt.h1} />
-                <NIsToOneDoctorsSliders data={doctors.slice(0, 4)} type="DOCTOR"/>
+                <NIsToOneDoctorsSliders data={doctors.slice(0, 4)} type="DOCTOR" searchCatId={params.cat_id}/>
                 {/* <TopDoctors doctors={doctors.slice(0, 4)} /> */}
                 <div className='px-2'>
                     <LandscapeAd page_type="doctor_list" category_ids={params.cat_id} city={params.city} limit={1} />
@@ -65,7 +65,7 @@ const DoctorListMobile = async ({ params, data, consultTimings }: { params: any,
             </div>
             <PageHeading heading={`${doctors.length}+ Doctors available in ${capitalizeFirstLetter(params.city)}`} />
             {doctors.length > 4 ? <div className='mt-2'>
-                <SearchableDoctors doctors={doctors} city={params.city} specialist_name={data.specialist_name} markets={data.cityMarkets} nearbyCities={data.neabyCities} brandedHospitals={data.branded_hospitals || []} />
+                <SearchableDoctors doctors={doctors} city={params.city} specialist_name={data.specialist_name} markets={data.cityMarkets} nearbyCities={data.neabyCities} brandedHospitals={data.branded_hospitals || []} searchCatId={params.cat_id} />
             </div> : <></>}
             {data.cityMarkets.length > 0 && false ?
                 <div className="px-2">

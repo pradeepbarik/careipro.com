@@ -63,6 +63,7 @@ const DoctorListDesktop = ({ params, data, consultTimings }: { params: any, data
                             markets={data.cityMarkets}
                             nearbyCities={data.neabyCities}
                             brandedHospitals={data.branded_hospitals || []}
+                            searchCatId={params.cat_id}
                         />
                     </div>
 
