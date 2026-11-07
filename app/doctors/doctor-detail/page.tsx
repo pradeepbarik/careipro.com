@@ -5,9 +5,23 @@ import type { Metadata } from "next";
 import useDeviceInfo from "@/lib/hooks/useDeviceInfo";
 import { fetchDoctorDetail, fetchDoctorAvailableTime } from '@/lib/hooks/useDoctors';
 import { TsearchParams } from './types';
+import { TDoctorDetail } from '@/lib/types/doctor';
 import PageVisitLogger from '@/app/components/client-components/page-visit-logger';
+import { DoctorFeedTracker } from '@/app/components/client-components/feed-tracker';
 import { doctorProfilePic } from '@/lib/image';
 import { doctorDiseaseExpertiseTabSeoData, doctorReviewsTabSeoData, doctorTreatmentPhotosTabSeoData } from '@/lib/seo/doctor-detail';
+
+/**
+ * The ?cat_id= a result page added, kept only if it is one of this doctor's own
+ * specialties - a stale or edited url gives no category credit. Validated here
+ * so the feed api needs no lookup of its own.
+ */
+const doctorSearchCategory = (allSpecializations: TDoctorDetail['allSpecializations'] | undefined, cat_id?: string): number | undefined => {
+    const id = Number(cat_id);
+    if (!id || !allSpecializations) return undefined;
+    const owns = Object.values(allSpecializations).some(rows => rows.some(r => Number(r.cat_id) === id));
+    return owns ? id : undefined;
+};
 
 const DoctorDetailMobile = dynamic(() => import('./mobile'));
 const DoctorDetailDesktop = dynamic(() => import('./desktop'));
@@ -117,9 +131,12 @@ const DoctorDetail = async ({ searchParams }: {
                 city: searchParams.city,
                 doctor_id: data.data.doctor_id,
                 clinic_id: data.data.clinic_id,
+                service_loc_id: data.data.id,
+                cat_id: searchParams.cat_id || "",
                 business_name:data.data.doctor_name,
                 vertical: "DOCTOR"
             }} />
+            <DoctorFeedTracker doctor_id={data.data.doctor_id} service_loc_id={data.data.id} clinic_id={data.data.clinic_id} cat_id={doctorSearchCategory(data.data.allSpecializations, searchParams.cat_id)} />
         </>)
 }
 export default DoctorDetail;

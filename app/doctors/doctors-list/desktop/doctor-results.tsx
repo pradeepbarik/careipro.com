@@ -14,6 +14,8 @@ type TProps = {
     markets: Array<{ market_name: string }>;
     nearbyCities: Array<{ city: string; market_name: string }>;
     brandedHospitals: Array<{ label: string; value: string }>;
+    /** category of this result page, appended to detail links for the personalised feed */
+    searchCatId?: string | number;
 };
 
 //how many rows to show before the visitor asks for the rest
@@ -24,7 +26,7 @@ const PAGE_SIZE = 10;
  * doctors the page was rendered with, the same way the mobile page does it, so changing a filter
  * never costs a round trip.
  */
-const DoctorResults = ({ doctors, city, specialist_name, markets, nearbyCities, brandedHospitals }: TProps) => {
+const DoctorResults = ({ doctors, city, specialist_name, markets, nearbyCities, brandedHospitals, searchCatId }: TProps) => {
     const [filters, setFilters] = useState<TActiveFilters>(EMPTY_FILTERS);
     const [query, setQuery] = useState("");
     const [visible, setVisible] = useState(PAGE_SIZE);
@@ -87,7 +89,7 @@ const DoctorResults = ({ doctors, city, specialist_name, markets, nearbyCities, 
             ) : (
                 <div className="flex flex-col gap-3">
                     {shown.map((doctor) => (
-                        <DoctorCard key={doctor.service_location_id} doctor={doctor} />
+                        <DoctorCard key={doctor.service_location_id} doctor={doctor} searchCatId={searchCatId} />
                     ))}
                 </div>
             )}

@@ -1,6 +1,10 @@
 'use client'
 import useSiteVisiterLogger from './useSiteVisiterLogger';
 import { getPageSession } from '../services/page-session';
+import { trackFeed, getFeedContext } from './useUserFeed';
+
+/** clicks that also count as strong intent in the personalised feed */
+const FEED_ACTIONS = ['call_click', 'whatsapp_click', 'direction_click', 'crm_call_click'];
 
 /**
  * Click/impression tracking bound to the page visit currently on screen.
@@ -26,6 +30,11 @@ const useEventLogger = () => {
             section_name,
             value,
         });
+        // the feed is told directly - it does not read the page-visit log
+        const feedCtx = getFeedContext();
+        if (ev_tp === 'click' && feedCtx && FEED_ACTIONS.includes(ev_nm)) {
+            trackFeed({ type: 'action', doctor_id: feedCtx.doctor_id, action: ev_nm, cat_id: feedCtx.cat_id });
+        }
     };
 
     return {

@@ -214,6 +214,7 @@ export type TDoctorDetail = TWeeklyConsultingTiming & {
     slno_groups?: Array<TSlnoGroup>,
     allSpecializations: {
         [group_category: string]: {
+            cat_id: number,
             name: string,
             icon: string,
             short_description: string, seo_url: string, group_category: string, seo_id: string

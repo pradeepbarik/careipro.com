@@ -4,7 +4,7 @@ import { BiSolidMap, BiClinic, BiTimeFive, BiBuildings, BiRupee } from "react-ic
 import { MdVerified } from "react-icons/md";
 import { TDoctor } from "@/lib/types/doctor";
 import { doctorProfilePic } from "@/lib/image";
-import { doctorDetailPageUrl } from "@/lib/helper/link";
+import { doctorDetailPageUrl, withSearchCategory } from "@/lib/helper/link";
 import { capitalizeFirstLetter } from "@/lib/helper/format-text";
 
 function formatDateLabel(dateStr: string): string {
@@ -34,8 +34,8 @@ function getSessionSlots(cd: NonNullable<TDoctor['matched_consult_date']>): stri
  * side by side, who the doctor is, where they sit and when they are next available, with the
  * booking action always in the same place on the right.
  */
-const DoctorCard = ({ doctor }: { doctor: TDoctor }) => {
-    const detailUrl = doctorDetailPageUrl({
+const DoctorCard = ({ doctor, searchCatId }: { doctor: TDoctor, searchCatId?: string | number }) => {
+    const detailUrl = withSearchCategory(doctorDetailPageUrl({
         doctor_id: doctor.doctor_id,
         clinic_id: doctor.clinic_id,
         service_loc_id: doctor.service_location_id,
@@ -44,7 +44,7 @@ const DoctorCard = ({ doctor }: { doctor: TDoctor }) => {
         state: doctor.state,
         market_name: doctor.market_name,
         type: doctor.business_type
-    });
+    }), searchCatId);
     const slots = doctor.matched_consult_date ? getSessionSlots(doctor.matched_consult_date) : [];
     return (
         <div className="bg-white rounded-xl border border-gray-200 p-4 hover:shadow-lg hover:border-primary/40 transition-all">
