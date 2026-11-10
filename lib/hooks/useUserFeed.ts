@@ -47,3 +47,31 @@ type TFeedContext = { doctor_id: number, cat_id?: number };
 let feedContext: TFeedContext | null = null;
 export const setFeedContext = (ctx: TFeedContext | null) => { feedContext = ctx; };
 export const getFeedContext = () => feedContext;
+
+/** fired on window after "Clear history" so every personalised section on the page empties itself */
+export const USER_FEED_CLEARED_EVENT = "careipro:user-feed-cleared";
+
+const authedPost = async (path: string, body?: object): Promise<boolean> => {
+    const x_api_key = loggedInKey();
+    if (!x_api_key) return false;
+    try {
+        const res = await fetch(`${API_BASE_URL}${path}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'x-api-key': x_api_key },
+            body: JSON.stringify(body || {}),
+        });
+        return res.ok;
+    } catch (err) {
+        return false;
+    }
+};
+
+/** the x on a doctor card - keeps that doctor out of the personalised sections until "Clear history" */
+export const hideFeedDoctor = (doctor_id: number) => authedPost('/user/feed-hide', { doctor_id });
+
+/** "Clear history" - deletes the user's whole feed; the page's sections empty right away */
+export const clearFeedHistory = async (): Promise<boolean> => {
+    const ok = await authedPost('/user/clear-feed');
+    if (ok && typeof window !== 'undefined') window.dispatchEvent(new Event(USER_FEED_CLEARED_EVENT));
+    return ok;
+};

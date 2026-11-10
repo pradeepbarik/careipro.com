@@ -7,6 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import "./globals.scss";
 import StoreProvider from "./StoreProvider";
 import GlobalComponent from "./components/client-components/global";
+import ErrorTracker from "./components/client-components/error-tracker";
 import useDeviceInfo from "@/lib/hooks/useDeviceInfo";
 import { userinfo, userSecreateKey } from "@/constants/storage_keys";
 
@@ -81,6 +82,7 @@ export default function RootLayout({
           </body>
         </html>
         <GlobalComponent />
+        <ErrorTracker />
       </StoreProvider>
     </>
   );

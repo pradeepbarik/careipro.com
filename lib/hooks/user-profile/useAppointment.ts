@@ -1,5 +1,6 @@
 import { ChangeEvent, useEffect, useState } from 'react';
-import { fetchAppointmentHistory, Tappointment, fetchAppointmentDetail, TappointmentDetail, fetchCaseDetails, uploadPrescriptionPostCurl, deletePrescriptionCurl, TcaseInfo } from '@/lib/services/apicalls';
+import { toast } from 'react-toastify';
+import { fetchAppointmentHistory, Tappointment, fetchAppointmentDetail, TappointmentDetail, fetchCaseDetails, uploadPrescriptionPostCurl, deletePrescriptionCurl, cancelAppointmentCurl, TcaseInfo } from '@/lib/services/apicalls';
 const useAppointment = ({ init, case_id, appointmentId, page, doctor_id }: { init: boolean, case_id?: number, appointmentId?: number, page: "history" | "detail", doctor_id?: number }) => {
     const [appointments, setAppointments] = useState<Tappointment[]>([]);
     const [appointment, setAppointment] = useState<Tappointment | null>(null);
@@ -70,6 +71,28 @@ const useAppointment = ({ init, case_id, appointmentId, page, doctor_id }: { ini
             }
         })
     }
+    const [cancellingAppointment, setCancellingAppointment] = useState<boolean>(false);
+    const cancelAppointment = (id: number, cancel_reason: string, onDone?: () => void) => {
+        if (cancellingAppointment) {
+            return;
+        }
+        if (!cancel_reason.trim()) {
+            toast.error("Please tell us why you want to cancel");
+            return;
+        }
+        setCancellingAppointment(true);
+        cancelAppointmentCurl({ appointment_id: id, cancel_reason: cancel_reason.trim() }).then(({ message }) => {
+            toast.success(message || "Appointment cancelled");
+            getAppointmentDetail(id);
+            onDone && onDone();
+        }).catch((err: any) => {
+            toast.error(err?.message || "Unable to cancel the appointment, please try again");
+            // refetch anyway, a "can not be cancelled" reply means what the page shows is stale
+            getAppointmentDetail(id);
+        }).finally(() => {
+            setCancellingAppointment(false);
+        })
+    }
     useEffect(() => {
         if (init === true && appointmentId && page === "detail") {
             caseDetails();
@@ -103,7 +126,9 @@ const useAppointment = ({ init, case_id, appointmentId, page, doctor_id }: { ini
         showReviewModal,
         setShowReviewModal,
         onSelectPrescriptionImage,
-        deletePrescription
+        deletePrescription,
+        cancelAppointment,
+        cancellingAppointment
     }
 }
 export default useAppointment;

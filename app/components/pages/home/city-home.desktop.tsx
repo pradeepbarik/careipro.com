@@ -23,6 +23,8 @@ import SectionBanners from '../../mobile/section-banners';
 const AppointmentReminder = dynamic(() => import("../../mobile/appointment-reminder"), { ssr: false });
 const RatingReminder = dynamic(() => import("../../mobile/rating-reminder"), { ssr: false });
 const OwnBusinessCard = dynamic(() => import("../../mobile/own-business-card"), { ssr: false });
+const RecommendedDoctors = dynamic(() => import("../../client-components/recommended-doctors"), { ssr: false });
+const YourDoctors = dynamic(() => import("../../client-components/your-doctors"), { ssr: false });
 
 const SectionHeading = ({ heading, showViewAll, viewAllLink }: { heading: string, showViewAll?: boolean, viewAllLink?: string }) => {
     return (
@@ -269,6 +271,8 @@ const CityHome = async ({ state, city, town, cookies }: { state: string, city: s
         if (!data?.clinics) return [];
         return clinicIds.map((id) => data.clinics?.[id.toString()]).filter(Boolean);
     };
+    // personalised sections for logged-in users (Your doctors, then Recommended), right after the specialties (or the first section)
+    const recommendedAfter = Math.max(data?.sections?.findIndex((s) => s.name === "specialization") ?? -1, 0);
     return (
         <div className="min-h-screen bg-gray-100">
             <main className="max-w-7xl mx-auto px-4 py-6">
@@ -299,8 +303,11 @@ const CityHome = async ({ state, city, town, cookies }: { state: string, city: s
                              <SectionBanners banners={section.banners} />
                             // <DesktopSectionBanners banners={section.banners} />
                         ) : null}
+                        {i === recommendedAfter && <YourDoctors state={state} city={city} variant="desktop" />}
                     </div>
                 ))}
+                {/* after every configured section, just above the footer band */}
+                {data && <RecommendedDoctors state={state} city={city} variant="desktop" />}
             </main>
             {/* the band the footer used to wrap, the footer itself is in the layout now */}
             <div className="bg-gray-100 text-gray-800 py-8">

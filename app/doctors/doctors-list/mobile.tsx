@@ -13,6 +13,9 @@ import { LandscapeAd, StandardAd, WideAd } from '@/app/components/mobile/ads-con
 import SearchableDoctors from './mobile/searchable-doctors';
 import NIsToOneDoctorsSliders from '@/app/components/mobile/doctors/vertical-slider';
 import HelpMeChoose from '@/app/components/mobile/help-me-choose';
+import dynamic from 'next/dynamic';
+// personalised, client only - the result page itself stays the same cached page for everyone
+const LookingForDoctors = dynamic(() => import('@/app/components/client-components/looking-for-doctors'), { ssr: false });
 const DoctorListMobile = async ({ params, data, consultTimings }: { params: any, data: TfetchDoctorsResponse, consultTimings: TConsultTimingsData }) => {
     const doctors = data.doctors.map(dr => ({
         ...dr,
@@ -35,8 +38,9 @@ const DoctorListMobile = async ({ params, data, consultTimings }: { params: any,
                         <p className='text-center mb-4'>No Doctors found</p>
                     </> : <></>
                 }
+                <LookingForDoctors state={params.state} city={params.city} cat_id={params.cat_id} variant="mobile" />
                 <PageHeading heading={data.seo_dt.h1} />
-                <NIsToOneDoctorsSliders data={doctors.slice(0, 4)} type="DOCTOR" searchCatId={params.cat_id}/>
+                <NIsToOneDoctorsSliders data={doctors.slice(0, 3)} type="DOCTOR" searchCatId={params.cat_id}/>
                 {/* <TopDoctors doctors={doctors.slice(0, 4)} /> */}
                 <div className='px-2'>
                     <LandscapeAd page_type="doctor_list" category_ids={params.cat_id} city={params.city} limit={1} />

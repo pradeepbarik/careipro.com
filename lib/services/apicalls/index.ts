@@ -71,6 +71,9 @@ export type TappointmentDetail = {
    service_charge: string
    servicelocation_id: number
    status: string
+   can_cancel: boolean
+   /* the doctor's page to book again, "" when the doctor is no longer listed */
+   rebook_url: string
    today_booking_id: string
    total_amount: string
    prescriptions: any[],
@@ -111,7 +114,10 @@ export const uploadPrescriptionPostCurl = (data: FormData) => {
 export const deletePrescriptionCurl = (params: { prescription: string, booking_id: number }) => {
    return httpPost<{}>(`/user/delete-prescription`, { prescription: params.prescription, booking_id: params.booking_id }, { passSecreateKey: true });
 }
-export const addToFavourites = (params: { doctor_id: number, clinic_id: number,favourite: 0|1 }) => {
+export const cancelAppointmentCurl = (params: { appointment_id: number, cancel_reason: string }) => {
+   return httpPost<{ status: string }>(`/user/cancel-appointment`, params, { passSecreateKey: true });
+}
+export const addToFavourites =(params: { doctor_id: number, clinic_id: number,favourite: 0|1 }) => {
    return httpPost<{}>(`/user/favourite`, params, { passSecreateKey: true });
 }
 export const myFavourites = () => {

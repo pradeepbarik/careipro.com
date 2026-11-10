@@ -24,6 +24,8 @@ const HomepageTopBanner = dynamic(() => import("../../mobile/home/top-banner/int
 const NearbyCities = dynamic(() => import("../../mobile/home/nearby-cities"));
 const PopularClinics = dynamic(() => import("../../mobile/home/popular-clinics"));
 const SectionBanners = dynamic(() => import("../../mobile/section-banners"));
+const RecommendedDoctors = dynamic(() => import("../../client-components/recommended-doctors"), { ssr: false });
+const YourDoctors = dynamic(() => import("../../client-components/your-doctors"), { ssr: false });
 const CityHome = async ({ state, city, town, cookies }: { state: string, city: string, town: string, cookies: any }) => {
     const data = await getCityHomePageData(state, city, town);
     const getSectionDoctors = (doctorIds: number[]) => {
@@ -43,6 +45,8 @@ const CityHome = async ({ state, city, town, cookies }: { state: string, city: s
         if (!data?.clinics) return [];
         return clinicIds.map((id) => data.clinics?.[id.toString()]).filter(Boolean);
     }
+    // personalised sections for logged-in users (Your doctors, then Recommended), right after the specialties (or the first section)
+    const recommendedAfter = Math.max(data?.sections?.findIndex((s) => s.name === "specialization") ?? -1, 0);
     return (
         <>
             <Header state={state} city={city} />
@@ -93,7 +97,10 @@ const CityHome = async ({ state, city, town, cookies }: { state: string, city: s
                                 {section.heading && <SectionHeading heading={section.heading} />}
                                 <SectionBanners banners={section.banners} />
                             </> : <></>}
+                    {i === recommendedAfter && <YourDoctors state={state} city={city} variant="mobile" />}
                 </div>)}
+            {/* after every configured section, just above the footer */}
+            {data && <RecommendedDoctors state={state} city={city} variant="mobile" />}
             <Footer>
                 <Suspense>
                     {/* <ServiceAvailbeCities /> */}

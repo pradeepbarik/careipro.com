@@ -12,6 +12,7 @@ import { capitalizeFirstLetter, formatCurrency, showMaskedMobile } from '@/lib/h
 import TrackedLink from '@/app/components/client-components/tracked-link';
 import BookAppointment from '@/app/components/mobile/doctors/doctor-detail/book-appointment-form';
 import SupportCard from '../doctor-detail/desktop/support-card';
+import { patientSupportContact } from '@/lib/helper/patient-support';
 
 /**
  * Desktop version of the mobile book-appointment page. Mobile links out to this same route from
@@ -183,6 +184,7 @@ const BookAppointmentDesktop = ({ data, availableData, searchParams, cookies }: 
                                 experience: data.experience.toString()
                             }}
                             userdetail={userdetail}
+                            supportContact={patientSupportContact(data)}
                         />
                     </div>
                     <div className="flex flex-col gap-4 sticky top-[104px]">
