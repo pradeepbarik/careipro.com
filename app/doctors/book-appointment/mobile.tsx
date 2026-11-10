@@ -10,6 +10,7 @@ import LikeShare from '@/app/components/mobile/doctors/doctor-detail/like-share'
 import Header from '@/app/components/mobile/header';
 import BookAppointment from '@/app/components/mobile/doctors/doctor-detail/book-appointment-form';
 import { doctorProfilePic } from '@/lib/image';
+import { patientSupportContact } from '@/lib/helper/patient-support';
 const BookAppointmentMobile = ({ data, availableData, searchParams, cookies }: {
     data: TDoctorDetail,
     availableData: TDoctorvailableData,
@@ -82,6 +83,7 @@ const BookAppointmentMobile = ({ data, availableData, searchParams, cookies }: {
             experience:data.experience.toString()
         }}
         userdetail={userdetail}
+        supportContact={patientSupportContact(data)}
         />
     </>
 }

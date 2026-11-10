@@ -9,6 +9,9 @@ import { LandscapeAd, PortraitAd, WideAd } from "@/app/components/mobile/ads-con
 import HelpMeChoose from "@/app/components/mobile/help-me-choose";
 import BannerWithStories from "@/app/components/desktop/banner-stories";
 import DoctorResults from "./doctor-results";
+import dynamic from 'next/dynamic';
+// personalised, client only - the result page itself stays the same cached page for everyone
+const LookingForDoctors = dynamic(() => import('@/app/components/client-components/looking-for-doctors'), { ssr: false });
 
 const SectionHeading = ({ heading }: { heading: string }) => (
     <div className="flex items-center gap-3 mb-4">
@@ -48,6 +51,8 @@ const DoctorListDesktop = ({ params, data, consultTimings }: { params: any, data
                 <p className="fs-14 text-gray-500 mt-0.5 mb-4">
                     {doctors.length} {doctors.length === 1 ? 'doctor' : 'doctors'} available in {city}
                 </p>
+
+                <LookingForDoctors state={params.state} city={params.city} cat_id={params.cat_id} variant="desktop" />
 
                 <div className="mb-4">
                     <WideAd page_type="doctor_list" category_ids={params.cat_id} city={params.city} limit={1} showPlaceholder={false} ad_selection="random" />

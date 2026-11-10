@@ -14,10 +14,13 @@ const config: Config = {
        * makes the tailwind variants work, `hover:border-primary` and `bg-primary/10` can not be
        * built out of the plain `.bg-primary` class that globals.scss defines.
        */
+      /* the variables hold comma separated channels ("8, 145, 178"), so the alpha has to be joined
+         with a comma too. The space/slash form, rgb(var(--x) / a), comes out as rgb(8, 145, 178 / 1)
+         which browsers reject: hover:bg-primary, bg-primary/10 and the gradients then drew nothing. */
       colors: {
-        primary: "rgb(var(--rgb-primary-color) / <alpha-value>)",
-        secondary: "rgb(var(--rgb-secondary-color) / <alpha-value>)",
-        pink: "rgb(var(--rgb-pink-color) / <alpha-value>)",
+        primary: "rgb(var(--rgb-primary-color), <alpha-value>)",
+        secondary: "rgb(var(--rgb-secondary-color), <alpha-value>)",
+        pink: "rgb(var(--rgb-pink-color), <alpha-value>)",
         //text shades, deep for a heading and muted for a supporting line
         deep: "var(--text-color-deep)",
         muted: "var(--text-color-light)",

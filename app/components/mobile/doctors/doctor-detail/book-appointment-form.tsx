@@ -21,6 +21,7 @@ import { formatDoctorName } from "@/lib/helper/format-text";
 import Login from '@/app/components/mobile/login';
 import usePatients, { TSavedPatient } from "@/lib/hooks/usePatients";
 import AddressSelectionV2 from "@/app/components/mobile/user-address-selection/address-selection-v2";
+import { TPatientSupportContact } from "@/lib/helper/patient-support";
 
 const newSavedPatientInitState = { patient_name: "", patient_mobile: "", patient_gender: "", patient_age: "", patient_dob: "", patient_address: "", city: "" };
 
@@ -32,7 +33,7 @@ type TDoctorInfo = {
     verified?: boolean,
     image?: string
 }
-const BookAppointmentForm = ({ state, city, open, service_charge, site_service_charge, service_loc_id, doctor_id, clinic_id, availability, settings, emergencyBookingClose, bookingCloseMessage, slno_groups, pageUrl, doctorInfo, userdetail }: { state: string, city: string, open: boolean, emergencyBookingClose?: number, bookingCloseMessage?: string, service_loc_id: number, clinic_id: number, doctor_id: number, service_charge: number, site_service_charge: number, settings: TDoctorDetail['settings'], availability?: TDoctorvailableData, slno_groups: TDoctorDetail['slno_groups'], pageUrl: string, doctorInfo?: TDoctorInfo, userdetail: any }) => {
+const BookAppointmentForm = ({ state, city, open, service_charge, site_service_charge, service_loc_id, doctor_id, clinic_id, availability, settings, emergencyBookingClose, bookingCloseMessage, slno_groups, pageUrl, doctorInfo, userdetail, supportContact }: { state: string, city: string, open: boolean, emergencyBookingClose?: number, bookingCloseMessage?: string, service_loc_id: number, clinic_id: number, doctor_id: number, service_charge: number, site_service_charge: number, settings: TDoctorDetail['settings'], availability?: TDoctorvailableData, slno_groups: TDoctorDetail['slno_groups'], pageUrl: string, doctorInfo?: TDoctorInfo, userdetail: any, supportContact?: TPatientSupportContact }) => {
     const router = useRouter();
     const autoSuggestRef = useRef<HTMLInputElement>(null);
     const addressFieldRef = useRef<HTMLDivElement>(null);
@@ -68,9 +69,17 @@ const BookAppointmentForm = ({ state, city, open, service_charge, site_service_c
             user_info: state.authSlice.user_info
         }
     })
-    const { showSuggestions, setShowSuggestion, onSelectSuggestedPatient, patients, patientInfo, setPatientInfo, booingDetail, bookAppointment, createBookingRequest, bookAppointmentByPatientId, createBookingRequestByPatientId, consultDates, consultDate, setConsultDate, group_name, setGroupName, patientExtraInfo, setPatientExtraInfo, rebokeAppointment, loading, refundAlert, paymentFailed, retryPayment, txnDetail } = useBooking({ service_loc_id, doctor_id, clinic_id: clinic_id, open: open, settings: settings, availability: availability, pageUrl: pageUrl });
+    const { showSuggestions, setShowSuggestion, onSelectSuggestedPatient, patients, patientInfo, setPatientInfo, booingDetail, bookAppointment, createBookingRequest, bookAppointmentByPatientId, createBookingRequestByPatientId, consultDates, consultDate, setConsultDate, group_name, setGroupName, patientExtraInfo, setPatientExtraInfo, rebokeAppointment, loading, refundAlert, paymentFailed, retryPayment, txnDetail, bookingLimitReached, bookingLimitMessage } = useBooking({ service_loc_id, doctor_id, clinic_id: clinic_id, open: open, settings: settings, availability: availability, pageUrl: pageUrl });
     const { patients: savedPatients, loading: savedPatientsLoading, fetchPatients: fetchSavedPatients, addPatient } = usePatients();
     const isRegularUser = user_info?.user_type === "user";
+    /* the card sits under the doctor info while the book button is at the bottom of the form, so
+       it is scrolled into view when it appears or the patient may only catch the toast */
+    const bookingLimitCardRef = useRef<HTMLDivElement>(null);
+    useEffect(() => {
+        if (bookingLimitReached && bookingLimitCardRef.current) {
+            bookingLimitCardRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+    }, [bookingLimitReached]);
 
     useEffect(() => {
         if (activeTab === 'saved' && !savedPatientsLoading && !savedPatientsAutoOpenCheckedRef.current) {
@@ -598,6 +607,28 @@ const BookAppointmentForm = ({ state, city, open, service_charge, site_service_c
                             )}
                         </div>
                     </div>
+                </div>
+            )}
+            {/* today's booking is full, the api flagged it with booking_limit_reached */}
+            {bookingLimitReached && (
+                <div ref={bookingLimitCardRef} className='mx-2 mt-2 mb-3 bg-white rounded-xl border border-orange-200 p-4 shadow-sm'>
+                    <div className='flex gap-3'>
+                        <div className='w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center flex-shrink-0'>
+                            <BiInfoCircle className='text-orange-500 text-2xl' />
+                        </div>
+                        <div className='flex-1 min-w-0'>
+                            <p className='font-semibold text-gray-800 text-sm'>{bookingLimitMessage || "Booking for today is already completed"}</p>
+                            <p className='text-xs text-gray-600 mt-0.5'>
+                                If you have an emergency and need to consult, talk with our patient support.
+                            </p>
+                            {supportContact?.timing && <p className='text-xs text-gray-500 mt-0.5'>{supportContact.timing}</p>}
+                        </div>
+                    </div>
+                    {supportContact?.number && (
+                        <a href={`tel:${supportContact.number}`} className='mt-3 w-full flex items-center justify-center gap-2 py-2.5 rounded-lg bg-primary text-white text-sm font-semibold'>
+                            <BiPhone className='text-lg' />Talk with Patient Support
+                        </a>
+                    )}
                 </div>
             )}
             {userdetail && false ? (

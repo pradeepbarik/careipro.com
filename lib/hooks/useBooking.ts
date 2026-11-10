@@ -57,6 +57,19 @@ const useBooking = ({ service_loc_id, doctor_id, clinic_id, open, settings, avai
     const [loading, setLoading] = useState<boolean>(false);
     const [refundAlert, setRefundAlert] = useState(false);
     const [paymentFailed, setPaymentFailed] = useState(false);
+    /* the api says today's booking is full (406 with data.booking_limit_reached). the toast still
+       shows as for any failure, the flag additionally puts a card under the doctor info pointing
+       the patient to patient support */
+    const [bookingLimitReached, setBookingLimitReached] = useState(false);
+    //the api's own wording, e.g. "For today Booking is closed", shown as the card heading
+    const [bookingLimitMessage, setBookingLimitMessage] = useState("");
+    const onBookingError = (err: any, fallbackMessage: string) => {
+        toast.error(err?.message || fallbackMessage);
+        if (err?.data?.booking_limit_reached === true) {
+            setBookingLimitMessage(err?.message || "");
+            setBookingLimitReached(true);
+        }
+    }
     const [txnDetail, setTxnDetail] = useState<{ txnid: string, payment_status: string, order_amount: number, refund_status?: string, refund_order_id?: string, patient_info?: any } | null>(null);
     const onSelectSuggestedPatient = (patientinfo: TSuggestedPatientInfo) => {
         setShowSuggestion(false);
@@ -161,7 +174,7 @@ const useBooking = ({ service_loc_id, doctor_id, clinic_id, open, settings, avai
                 throw new Error(message || "Booking not eligible for payment");
               }
             }catch(err){
-                toast.error((err as any).message || "Booking not eligible for payment");
+                onBookingError(err, "Booking not eligible for payment");
             }
             return;
         }
@@ -172,7 +185,7 @@ const useBooking = ({ service_loc_id, doctor_id, clinic_id, open, settings, avai
             setLoading(false);
             //router.refresh();
         }).catch((err: any) => {
-            toast.error(err.message)
+            onBookingError(err, "Booking failed, please try again");
             setLoading(false);
         });
     }
@@ -230,7 +243,7 @@ const useBooking = ({ service_loc_id, doctor_id, clinic_id, open, settings, avai
                 throw new Error(message || "Booking not eligible for payment");
               }
             }catch(err){
-                toast.error((err as any).message || "Booking not eligible for payment");
+                onBookingError(err, "Booking not eligible for payment");
             }
             return;
         }
@@ -253,7 +266,7 @@ const useBooking = ({ service_loc_id, doctor_id, clinic_id, open, settings, avai
             setBookingDetail(data.data);
             setLoading(false);
         }).catch((err: any) => {
-            toast.error(err.message)
+            onBookingError(err, "Booking failed, please try again");
             setLoading(false);
         });
     }
@@ -444,7 +457,8 @@ const useBooking = ({ service_loc_id, doctor_id, clinic_id, open, settings, avai
         showModal, setShowModal, showSuggestions, setShowSuggestion, onSelectSuggestedPatient, patients,
         patientInfo, setPatientInfo, booingDetail,
         bookAppointment, onOk, rebokeAppointment, consultDates, consultDate, setConsultDate, group_name, setGroupName, patientExtraInfo, setPatientExtraInfo, loading, refundAlert, paymentFailed, retryPayment,txnDetail,
-        createBookingRequest, bookAppointmentByPatientId, createBookingRequestByPatientId
+        createBookingRequest, bookAppointmentByPatientId, createBookingRequestByPatientId,
+        bookingLimitReached, bookingLimitMessage
     }
 }
 export default useBooking

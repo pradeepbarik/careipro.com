@@ -55,7 +55,7 @@ const SearchableDoctors = ({ doctors, city, specialist_name, markets, nearbyCiti
     }, []);
 
     const hasActiveFilters = hasAnyFilter(filters);
-    const previewDoctors = hasActiveFilters ? filteredDoctors : filteredDoctors.slice(4, 6);
+    const previewDoctors = hasActiveFilters ? filteredDoctors : filteredDoctors.slice(3, 5);
     const remainingDoctors = hasActiveFilters ? [] : filteredDoctors.slice(6);
 
     return (
