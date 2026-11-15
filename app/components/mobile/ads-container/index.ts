@@ -4,3 +4,4 @@ export { default as PortraitAd } from './portrait-ad';
 export { default as CarouselAd } from './carousel-ad';
 export { default as StandardAd } from './standard-ad';
 export { default as WideAd } from './wide-ad';
+export { default as UltraWideAd } from './ultra-wide-ad';

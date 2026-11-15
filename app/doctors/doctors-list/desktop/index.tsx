@@ -5,7 +5,7 @@ import { TfetchDoctorsResponse, TConsultTimingsData } from "@/lib/hooks/useDocto
 import { capitalizeFirstLetter } from "@/lib/helper/format-text";
 import { doctorsBySpecialistPageUrl, cityPageLink } from "@/lib/helper/link";
 import CategoriesFooter from "@/app/components/mobile/footer/categories";
-import { LandscapeAd, PortraitAd, WideAd } from "@/app/components/mobile/ads-container";
+import { LandscapeAd, PortraitAd, UltraWideAd } from "@/app/components/mobile/ads-container";
 import HelpMeChoose from "@/app/components/mobile/help-me-choose";
 import BannerWithStories from "@/app/components/desktop/banner-stories";
 import DoctorResults from "./doctor-results";
@@ -47,16 +47,15 @@ const DoctorListDesktop = ({ params, data, consultTimings }: { params: any, data
                     }
                 ]} /> */}
 
+                {/* thin 12:1 strip, the mobile 2:1 slot ran ~620px tall at this width */}
+                <UltraWideAd page_type="doctor_list" category_ids={params.cat_id} city={params.city} ad_selection="random" />
+
+                <LookingForDoctors state={params.state} city={params.city} cat_id={params.cat_id} variant="desktop" />
+
                 <h1 className="text-2xl font-bold text-gray-900 leading-tight">{data.seo_dt.h1}</h1>
                 <p className="fs-14 text-gray-500 mt-0.5 mb-4">
                     {doctors.length} {doctors.length === 1 ? 'doctor' : 'doctors'} available in {city}
                 </p>
-
-                <LookingForDoctors state={params.state} city={params.city} cat_id={params.cat_id} variant="desktop" />
-
-                <div className="mb-4">
-                    <WideAd page_type="doctor_list" category_ids={params.cat_id} city={params.city} limit={1} showPlaceholder={false} ad_selection="random" />
-                </div>
 
                 {/* results take the bulk of the width, the rail beside them carries the ads */}
                 <div className="grid grid-cols-[7fr_3fr] gap-5 items-start">
