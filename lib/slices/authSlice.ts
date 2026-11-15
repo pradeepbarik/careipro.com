@@ -80,6 +80,17 @@ const authSlice = createSlice({
         initCookies: (state, action: PayloadAction<Record<string, string>>) => {
             state.cookies = action.payload;
         },
+        /* login/logout change cookies after the store was created from the server's copy, and a
+           client navigation does not re-run the layout, so the store is patched directly.
+           a null value removes that cookie. */
+        mergeCookies: (state, action: PayloadAction<Record<string, string | null>>) => {
+            const next = { ...state.cookies };
+            Object.entries(action.payload).forEach(([name, value]) => {
+                if (value === null) delete next[name];
+                else next[name] = value;
+            });
+            state.cookies = next;
+        },
         initUserDetail: (state, action: PayloadAction<{ is_loggedin: boolean, user_info: any }>) => {
             if (action.payload.is_loggedin === true) {
                 state.is_loggedin = true;
@@ -99,5 +110,5 @@ const authSlice = createSlice({
     }
 })
 export const selectAuthSlice = (state: RootState) => state.authSlice;
-export const { initCookies, initUserDetail, setGuestUserSecreateKey, initProfileDetail } = authSlice.actions;
+export const { initCookies, mergeCookies, initUserDetail, setGuestUserSecreateKey, initProfileDetail } = authSlice.actions;
 export default authSlice.reducer;

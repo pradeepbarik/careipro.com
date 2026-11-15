@@ -9,20 +9,6 @@ import StoreProvider from "./StoreProvider";
 import GlobalComponent from "./components/client-components/global";
 import ErrorTracker from "./components/client-components/error-tracker";
 import useDeviceInfo from "@/lib/hooks/useDeviceInfo";
-import { userinfo, userSecreateKey } from "@/constants/storage_keys";
-
-/* The signed in visitor's name, for the header. Both cookies have to be there: the secret key is
-   what says there is a session, userinfo carries who it belongs to. It is written by the client so
-   a malformed value is possible, and a broken cookie must not take the whole layout down. */
-const signedInName = (cookies: Record<string, string>) => {
-    if (!cookies[userSecreateKey] || !cookies[userinfo]) return "";
-    try {
-        const user = JSON.parse(cookies[userinfo]);
-        return [user?.fn, user?.ln].filter(Boolean).join(" ").trim();
-    } catch {
-        return "";
-    }
-};
 const MobileLayout = dynamic(() => import('./components/mobile/layout'));
 const PageHeader = dynamic(() => import('./components/desktop/header'));
 const DesktopFooter = dynamic(() => import('./components/desktop/footer'));
@@ -70,7 +56,7 @@ export default function RootLayout({
                   <ToastContainer />
                 </> :
                 <>
-                  <PageHeader state={cookies.state || ""} city={cookies.city || ""} userName={signedInName(cookies)} />
+                  <PageHeader state={cookies.state || ""} city={cookies.city || ""} />
                   {children}
                   {/* pages that used to wrap their own band in the footer now render that band at the
                       end of their content, the footer chrome itself only mounts here */}

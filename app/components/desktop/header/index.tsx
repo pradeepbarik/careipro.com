@@ -1,16 +1,17 @@
 import Link from "next/link";
 import { AiFillCaretDown } from "react-icons/ai";
-import { BiBuildingHouse, BiCalendarEvent, BiPhoneCall, BiSearch, BiSolidMap, BiUser } from "react-icons/bi";
+import { BiBuildingHouse, BiCalendarEvent, BiPhoneCall, BiSearch, BiSolidMap } from "react-icons/bi";
 import { support_no } from "@/constants/site-config";
 import { searchPageUrl, hirePersonalAssistantPageUrl } from "@/lib/helper/link";
 import CityDropdown from "./city-dropdown";
 import HeaderSearch from "./header-search";
+import AccountLink from "./account-link";
 
 const navLinkClass = "px-2.5 lg:px-3 py-1.5 rounded-md fs-14 font-semibold whitespace-nowrap transition-colors text-deep hover:text-primary hover:bg-gray-50";
 
 //one header on every desktop page, the site carries a single theme rather than a colour per vertical
-//userName is set only for a signed in visitor, the layout reads it off the userinfo cookie
-const PageHeader = ({ state, city, userName = "" }: { state: string, city: string, userName?: string }) => {
+//the signed in name comes from AccountLink, which follows the store so it changes on login/logout
+const PageHeader = ({ state, city }: { state: string, city: string }) => {
     /* with no city yet these would build "///best-doctors", which a browser treats as a protocol
        relative url and sends somewhere off site. a vertical cannot be browsed without a city
        anyway, so the links ask for one first. */
@@ -45,26 +46,7 @@ const PageHeader = ({ state, city, userName = "" }: { state: string, city: strin
                             <BiCalendarEvent className="text-lg" />
                             My Bookings
                         </Link>
-                        {userName ? (
-                            <Link
-                                href="/my-profile"
-                                title={`${userName} - my profile`}
-                                className="flex items-center gap-2 rounded-full border border-line pl-1.5 pr-4 py-1.5 fs-14 font-semibold text-deep hover:border-primary hover:text-primary transition-colors"
-                            >
-                                <span className="h-7 w-7 rounded-full bg-primary text-white flex items-center justify-center fs-13 shrink-0">
-                                    {userName.charAt(0).toUpperCase()}
-                                </span>
-                                <span className="max-w-[9rem] truncate">{userName}</span>
-                            </Link>
-                        ) : (
-                            <Link
-                                href="/login"
-                                className="flex items-center gap-1.5 rounded-full bg-primary text-white px-5 py-2 fs-14 font-semibold hover:opacity-90 transition-opacity"
-                            >
-                                <BiUser className="text-lg" />
-                                Login
-                            </Link>
-                        )}
+                        <AccountLink />
                     </div>
                 </div>
                 <nav aria-label="Main" className="flex items-center gap-1 h-10 -mx-2">

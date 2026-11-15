@@ -17,6 +17,11 @@ import { TCategories } from "@/lib/hooks/useCategories";
 import SectionBanners from '../components/mobile/section-banners';
 import VerticalLandingBanner from '../components/mobile/slideing-banners/veritcal-banner';
 import { TSiteBanner } from '@/lib/types/home-page';
+import dynamic from 'next/dynamic';
+/* the logged in visitor's personalised sections, the same two the city home shows. client only:
+   they read the per-user feed, which a server render has no session for */
+const YourDoctors = dynamic(() => import("../components/client-components/your-doctors"), { ssr: false });
+const RecommendedDoctors = dynamic(() => import("../components/client-components/recommended-doctors"), { ssr: false });
 const MobileDoctors = async ({ city, state, pageData, categories, diseases }: { city: string, state: string, pageData: TDoctorsPageData, categories: TCategories, diseases: TCategories }) => {
     return <>
         <Header template="VERTICAL_LANDING" heading={`Dotors In ${city}`} state={state} city={city} showSearch={true}/>
@@ -44,6 +49,8 @@ const MobileDoctors = async ({ city, state, pageData, categories, diseases }: { 
                 </div>
             </div>
         </div>
+        {/* right after the specialists, where the city home has it */}
+        <YourDoctors state={state} city={city} variant="mobile" />
 
         {pageData.sections && pageData.sections.map((section, i) =>
             <div key={`section-${i}`} id={`section-${i}`}>
@@ -77,6 +84,8 @@ const MobileDoctors = async ({ city, state, pageData, categories, diseases }: { 
                 </> : <></>}
             </div>
         )}
+        {/* after every configured section, just above the footer - same as the city home */}
+        <RecommendedDoctors state={state} city={city} variant="mobile" />
         <Footer>
             <Suspense fallback={<></>}>
                 <CategoriesFooter state={state} city={city} group_category='DOCTOR' heading='Best Doctors By Speciality' categories={categories} />

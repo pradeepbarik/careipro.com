@@ -7,7 +7,19 @@ import moment from '@/lib/helper/date-time';
 import { httpPost } from '../../services/http-client';
 import { userinfo, userSecreateKey } from '../../../constants/storage_keys';
 import useCookies from '../useCookies';
-import { initUserDetail } from '@/lib/slices/authSlice';
+import { initUserDetail, mergeCookies } from '@/lib/slices/authSlice';
+
+/* the set_cookie route writes user_secreate_key and userinfo (neither httpOnly), so read them back
+   off document.cookie to get the exact values the server will see on the next request */
+const readBrowserCookie = (name: string): string | null => {
+    const match = document.cookie.split('; ').find((c) => c.startsWith(name + '='));
+    if (!match) return null;
+    try {
+        return decodeURIComponent(match.substring(name.length + 1));
+    } catch {
+        return match.substring(name.length + 1);
+    }
+};
 import { tpReturnUrl, tpReturnUrlWithKey } from '@/lib/helper/tp-redirect';
 const useLogin = ({ redirectUrl = "", allowLoggedInUser = false, onLoginSuccess, tplogin }: { allowLoggedInUser?: boolean, redirectUrl?: string, onLoginSuccess?: () => void, tplogin?: boolean }) => {
     const router = useRouter()
@@ -42,6 +54,15 @@ const useLogin = ({ redirectUrl = "", allowLoggedInUser = false, onLoginSuccess,
     const refreshRoute = () => {
         router.refresh();
     }
+    /* put the signed in state into the store straight away. the next page is reached by a client
+       navigation, which keeps the layout (and the header's "Login" button) as it was rendered */
+    const syncSignedIn = (data: any) => {
+        dispatch(initUserDetail({ is_loggedin: true, user_info: data }));
+        dispatch(mergeCookies({
+            [userSecreateKey]: readBrowserCookie(userSecreateKey) || data?.secreate_key || null,
+            [userinfo]: readBrowserCookie(userinfo),
+        }));
+    }
     const login = () => {
         if (otp.length === 0) {
             toast.info("Please enter OTP");
@@ -53,8 +74,8 @@ const useLogin = ({ redirectUrl = "", allowLoggedInUser = false, onLoginSuccess,
             let expire = moment().add(2, 'years').format('YYYY-MM-DD');
             await setCookie(userSecreateKey, (<any>data).secreate_key, { expire: expire });
             window.localStorage.setItem(userinfo, JSON.stringify(data));
+            syncSignedIn(data);
             if (onLoginSuccess) {
-                dispatch(initUserDetail({ is_loggedin: true, user_info: data }));
                 onLoginSuccess();
                 return;
             }
@@ -67,7 +88,6 @@ const useLogin = ({ redirectUrl = "", allowLoggedInUser = false, onLoginSuccess,
                 return;
             }
             if (!onLoginSuccess && !redirectUrl) {
-                dispatch(initUserDetail({ is_loggedin: true, user_info: data }));
                 router.back()
                 return;
             }
@@ -99,8 +119,8 @@ const useLogin = ({ redirectUrl = "", allowLoggedInUser = false, onLoginSuccess,
             window.localStorage.setItem(userinfo, JSON.stringify(data));
             let expire = moment().add(2, 'years').format('YYYY-MM-DD');
             await setCookie(userSecreateKey, (<any>data).secreate_key, { expire: expire });
+            syncSignedIn(data);
             if (onLoginSuccess) {
-                dispatch(initUserDetail({ is_loggedin: true, user_info: data }));
                 onLoginSuccess();
                 return;
             }
@@ -124,6 +144,7 @@ const useLogin = ({ redirectUrl = "", allowLoggedInUser = false, onLoginSuccess,
     }
     const logOut = async () => {
         dispatch(initUserDetail({ is_loggedin: false, user_info: null }));
+        dispatch(mergeCookies({ [userinfo]: null, [userSecreateKey]: null }));
         await deleteCookie(userinfo);
         await deleteCookie(userSecreateKey);
         window.localStorage.clear();

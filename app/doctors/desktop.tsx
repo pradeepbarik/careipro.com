@@ -21,6 +21,11 @@ import ServiceAvailbeCities from '../components/mobile/footer/service-available-
 import { doctorDetailPageUrl, alllCategoriesPageLink } from "@/lib/helper/link";
 import { capitalizeFirstLetter } from "@/lib/helper/format-text";
 import DesktopPopularDoctors from "../components/desktop/popular-doctors";
+import dynamic from "next/dynamic";
+/* the logged in visitor's personalised sections, the same two the city home shows. client only:
+   they read the per-user feed, which a server render has no session for */
+const YourDoctors = dynamic(() => import("../components/client-components/your-doctors"), { ssr: false });
+const RecommendedDoctors = dynamic(() => import("../components/client-components/recommended-doctors"), { ssr: false });
 /* both halves of the hero stand the same height so neither side letterboxes the other */
 const HERO_HEIGHT = "20rem";
 
@@ -338,6 +343,8 @@ const DesktopDoctors = ({ city, state, pageData, categories, diseases }: {
                     state={state}
                     city={city}
                 />
+                {/* right after the specialists, where the city home has it */}
+                <YourDoctors state={state} city={city} variant="desktop" />
 
                 {pageData.sections.map((section, i) => (
                     <div key={`section-${i}`} id={`section-${i}`}>
@@ -364,6 +371,8 @@ const DesktopDoctors = ({ city, state, pageData, categories, diseases }: {
                         ) : null}
                     </div>
                 ))}
+                {/* after every configured section, just above the footer band - same as the city home */}
+                <RecommendedDoctors state={state} city={city} variant="desktop" />
             </main>
 
             {/* the band the footer used to wrap, the footer itself is in the layout now */}
