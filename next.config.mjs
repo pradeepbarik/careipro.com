@@ -266,7 +266,9 @@ const nextConfig = {
                 destination: '/dynamic-page'
             },
             {
-                source: '/:state/:city/:seo_url/:page_type-:page_id',
+                // /tp/* is our own app routes (e.g. /tp/lab-report/[clinic_id]/[token]); afterFiles rewrites
+                // run before dynamic routes, so without this a hyphenated token was sent to /dynamic-page.
+                source: '/:state((?!tp/)[^/]+)/:city/:seo_url/:page_type-:page_id',
                 destination: '/dynamic-page'
             },
             // {
