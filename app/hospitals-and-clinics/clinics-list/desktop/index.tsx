@@ -48,19 +48,7 @@ const ClinicListDesktop = ({ params, data, topDoctorsData }: TProps) => {
             <main className="max-w-7xl mx-auto px-4 py-5">
                 {/* same pairing the city home and the doctor listing open with */}
                 <BannerWithStories city={city} className="mb-5" stories={[
-                    {
-                        id: 0,
-                        title: "Find trusted doctors, clinics, hospitals and home care services near you.",
-                        thumbnail: "/images/placeholder/clinic-stories-placeholder.png",
-                        href: "https://youtube.com/shorts/l2tLb4F038c?si=M4x4rKyrXk0Uexhu",
-                        media_type: "video"
-                    }, {
-                        id: 1,
-                        title: "Careipro is a healthcare platform that connects patients with trusted doctors, clinics, hospitals and home care services.",
-                        thumbnail: "/images/placeholder/clinic-stories-placeholder.png",
-                        href: "https://youtube.com/shorts/DbS0T1ey_sE?si=APHsjhl9U2M8QTlD",
-                        media_type: "video"
-                    }
+                   
                 ]} />
 
                 <h1 className="text-2xl font-bold text-gray-900 leading-tight">{heading}</h1>

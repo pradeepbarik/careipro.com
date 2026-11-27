@@ -15,9 +15,9 @@ const StoreImageBannerSection = ({ banners, store_name }: { banners: TclinicDeta
             <div className="bg-white py-4">
                 {/* Main Banner */}
                 <div className="px-4 mb-3">
-                    <div className="w-full h-48 rounded-xl overflow-hidden bg-gradient-to-br from-orange-100 to-amber-100 flex items-center justify-center relative">
+                    <div className="w-full h-48 rounded-xl overflow-hidden bg-gradient-to-br from-primary/10 to-primary/20 flex items-center justify-center relative">
                         <div className="flex flex-col items-center gap-2">
-                            <MdLocalPharmacy className="text-6xl text-orange-400 opacity-30" />
+                            <MdLocalPharmacy className="text-6xl text-primary/70 opacity-30" />
                             <span className="text-sm text-gray-500">No Banner Available</span>
                         </div>
                     </div>
@@ -28,9 +28,9 @@ const StoreImageBannerSection = ({ banners, store_name }: { banners: TclinicDeta
                     {[1,2,3].map((banner, index) => (
                         <div 
                             key={index} 
-                            className="flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden bg-gradient-to-br from-orange-50 to-amber-50 flex items-center justify-center cursor-pointer hover:ring-2 ring-orange-400 transition-all border border-orange-100"
+                            className="flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden bg-gradient-to-br from-primary/5 to-primary/10 flex items-center justify-center cursor-pointer hover:ring-2 ring-primary/70 transition-all border border-primary/10"
                         >
-                            <MdLocalPharmacy className="text-2xl text-orange-300" />
+                            <MdLocalPharmacy className="text-2xl text-primary/50" />
                         </div>
                     ))}
                  </div>
@@ -42,17 +42,17 @@ const StoreImageBannerSection = ({ banners, store_name }: { banners: TclinicDeta
         <div className="bg-white py-4">
             {/* Main Banner */}
             <div className="px-4 mb-3">
-                <div className="w-full h-48 rounded-xl overflow-hidden bg-gradient-to-br from-orange-100 to-amber-100 flex items-center justify-center relative">
+                <div className="w-full h-48 rounded-xl overflow-hidden bg-gradient-to-br from-primary/10 to-primary/20 flex items-center justify-center relative">
                     {activeBanner.image ? (
                         <img src={clinicBannerImage(activeBanner.image)} alt={store_name + " - " + (activeBanner.banner_description || "Store Banner")} className="w-full h-full object-cover" />
                     ) : (
                         <div className="flex flex-col items-center gap-2">
-                            <MdLocalPharmacy className="text-6xl text-orange-400 opacity-30" />
+                            <MdLocalPharmacy className="text-6xl text-primary/70 opacity-30" />
                             <span className="text-sm text-gray-500">No Banner Available</span>
                         </div>
                     )}
                     <button className="absolute top-3 right-3 bg-white rounded-full p-2.5 shadow-lg hover:shadow-xl transition-shadow">
-                        <BiShare className="text-lg text-orange-600" />
+                        <BiShare className="text-lg text-primary" />
                     </button>
                     <button className="absolute bottom-3 right-3 bg-white rounded-full p-2.5 shadow-lg hover:shadow-xl transition-shadow">
                         <AiFillHeart className="text-lg text-red-500" />
@@ -66,7 +66,7 @@ const StoreImageBannerSection = ({ banners, store_name }: { banners: TclinicDeta
                     {banners.map((banner, index) => (
                         <div 
                             key={index} 
-                            className="flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden bg-gradient-to-br from-orange-50 to-amber-50 flex items-center justify-center cursor-pointer hover:ring-2 ring-orange-400 transition-all border border-orange-100"
+                            className="flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden bg-gradient-to-br from-primary/5 to-primary/10 flex items-center justify-center cursor-pointer hover:ring-2 ring-primary/70 transition-all border border-primary/10"
                             onClick={() => setActiveBanner(banner)}
                             style={{background:`url(${clinicBannerImage(banner.image)}) center/cover no-repeat`}}
                         >

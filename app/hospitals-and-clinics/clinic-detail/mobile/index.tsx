@@ -13,7 +13,7 @@ import { IconType } from "react-icons";
 import {BiPhone, BiMap, BiCheckShield, BiChevronRight, BiSupport, BiErrorCircle} from "react-icons/bi";
 import SendEnquiry from "./send-enquiry";
 import PublicListingBadge from "./public-listing-badge";
-import ShareButton from "./share-button";
+import ShareButton from "@/app/components/client-components/share-button";
 import {BsWhatsapp} from "react-icons/bs";
 import {FaUserMd, FaHandshake, FaHome} from "react-icons/fa";
 

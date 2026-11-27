@@ -3,6 +3,7 @@ import { fetchJson, IResponse } from "../services/http-server";
 export type TStoreListResponse={
     store_available_markets: string[],
     store_available_areas: string[],
+    categories: Array<{ id: number, name: string, icon: string, seo_url: string, seo_id: string }>,
     stores: Array<{
         id: number,
         name: string,
@@ -45,9 +46,14 @@ export type TStoreListResponse={
         open_time: string,
         recommended_doctors: string,
         discount_msg:string|null,
+        //ids from categories this store is listed under, missing in cache files written before it was added
+        category_ids?: number[],
         dtlpg_url:string
     }>,
-
+    city: string,
+    state: string,
+    market_name: string,
+    cat_id: string
 }
 export const fetchStoreList = async (params: { state: string, city: string, town?: string, cat_id: string }) => {
     try {

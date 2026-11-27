@@ -6,11 +6,13 @@ import { BiCheckCircle, BiDownload, BiRefresh, BiTime, BiErrorCircle, BiTestTube
 
 type TStage = 'registered' | 'collected' | 'processing' | 'ready' | 'recollect';
 
+type TReportNote = { title: string, columns: string[], rows: string[][], text: string };
 type TResultValue = { code: string, name: string, unit: string, value: string, flag: string, ref_display: string, display_order: number };
 type TResult = {
     _id: string, test_name: string, department: string, report_type: 'tabular' | 'narrative' | 'culture',
     method: string, values: TResultValue[], interpretation: string, has_critical: number, version: number,
     narrative?: Record<string, string>,
+    report_note?: TReportNote,
     culture?: { growth: string, organisms: Array<{ organism: string, colony_count: string, sensitivity: Array<{ antibiotic: string, interpretation: string }> }> },
     authorised_signatory?: { name: string, qualification: string, designation: string, registration_no: string, signature_image: string }
 };
@@ -21,6 +23,12 @@ export type TLabPublicStatus = {
     patient: { name: string, patient_no: string, age: number, age_unit: string, gender: string } | null,
     order: { order_no: string, created_at: string, expected_at: string, referring_doctor: string },
     tests: Array<{ test_id: string, name: string, department: string, stage: TStage }>,
+    /* missing until the lab api is updated */
+    bill?: {
+        tests: Array<{ name: string, code: string, price: number, discount: number }>,
+        total: number, test_discount: number, extra_discount: number, discount: number,
+        payable: number, paid: number, balance: number, payment_status: string
+    } | null,
     report: {
         accession_nos: string[], collected_at: string | null, received_at: string | null, reported_at: string | null,
         results: TResult[]
@@ -47,6 +55,36 @@ const PRINT_CSS = `
   #lab-report-sheet, #lab-report-sheet * { visibility: visible !important; }
   #lab-report-sheet { position: absolute; left: 0; top: 0; width: 100%; box-shadow: none !important; border: 0 !important; }
 }`;
+
+/* the test's standing guidance (reference tables, notes), printed smaller and lighter under the
+   results — same as the report printed from the clinic */
+const ReportNoteBlock = ({ note }: { note?: TReportNote }) => {
+    if (!note) return null;
+    const columns = note.columns || [];
+    const rows = note.rows || [];
+    const hasTable = columns.length > 0 && rows.length > 0;
+    if (!note.title && !hasTable && !note.text) return null;
+    return (
+        <div className="mt-2 pt-1.5 border-t border-dashed border-slate-300 text-[10.5px] text-slate-700" style={{ breakInside: 'avoid' }}>
+            <div className="font-bold text-[11px] text-slate-900 mb-1">{note.title || 'Note'}</div>
+            {hasTable && (
+                <div className="overflow-x-auto">
+                    <table className={`border-collapse min-w-[55%] ${note.text ? 'mb-1' : ''}`}>
+                        <thead>
+                            <tr>{columns.map((c, i) => <th key={i} className="border border-slate-300 bg-slate-50 px-2 py-0.5 text-left font-bold">{c}</th>)}</tr>
+                        </thead>
+                        <tbody>
+                            {rows.map((row, r) => (
+                                <tr key={r}>{columns.map((_, i) => <td key={i} className="border border-slate-300 px-2 py-0.5 text-left">{row[i] || ''}</td>)}</tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            )}
+            {note.text && <div className="whitespace-pre-wrap leading-snug">{note.text}</div>}
+        </div>
+    );
+};
 
 const ReportSheet = ({ data }: { data: TLabPublicStatus }) => {
     const report = data.report!;
@@ -161,6 +199,7 @@ const ReportSheet = ({ data }: { data: TLabPublicStatus }) => {
 
                     {result.method && <div className="mt-0.5 text-[11px]"><b>Method:</b> {result.method}</div>}
                     {result.interpretation && <div className="mt-1 whitespace-pre-wrap"><b>Comment:</b> {result.interpretation}</div>}
+                    <ReportNoteBlock note={result.report_note} />
                 </div>
             ))}
 
@@ -185,6 +224,60 @@ const ReportSheet = ({ data }: { data: TLabPublicStatus }) => {
             {lab?.report_footer && (
                 <div className="text-center mt-5 text-[11px] border-t border-slate-400 pt-1">{lab.report_footer}</div>
             )}
+        </div>
+    );
+};
+
+const money = (value: number) => `₹${(Number(value) || 0).toFixed(2)}`;
+
+/* the patient's bill: what each test cost, what was taken off, and what is still owed */
+const BillCard = ({ bill }: { bill: NonNullable<TLabPublicStatus['bill']> }) => {
+    const anyTestDiscount = bill.test_discount > 0;
+    const totals: Array<[string, string, boolean]> = [
+        ['Total', money(bill.total), false],
+        ...(anyTestDiscount ? [['Test discounts', `- ${money(bill.test_discount)}`, false] as [string, string, boolean]] : []),
+        ...(bill.extra_discount > 0 ? [[anyTestDiscount ? 'Extra discount' : 'Discount', `- ${money(bill.extra_discount)}`, false] as [string, string, boolean]] : []),
+        ['Net payable', money(bill.payable), true],
+        ['Paid', money(bill.paid), false],
+        ['Balance due', money(bill.balance), true]
+    ];
+    return (
+        <div className="bg-white rounded-2xl border border-slate-200 p-5">
+            <div className="flex items-center justify-between gap-3 mb-3">
+                <div className="font-semibold">Bill</div>
+                <span className={`text-xs font-medium px-2.5 py-1 rounded-full ${bill.balance > 0 ? 'bg-amber-100 text-amber-800' : 'bg-emerald-100 text-emerald-800'}`}>
+                    {bill.balance > 0 ? `Due ${money(bill.balance)}` : 'Paid in full'}
+                </span>
+            </div>
+            <div className="overflow-x-auto">
+                <table className="w-full text-sm border-collapse">
+                    <thead>
+                        <tr className="text-xs text-slate-500 border-b border-slate-200">
+                            <th className="text-left font-medium py-1.5">Test</th>
+                            <th className="text-right font-medium py-1.5 pl-3">Price</th>
+                            {anyTestDiscount && <th className="text-right font-medium py-1.5 pl-3">Discount</th>}
+                            {anyTestDiscount && <th className="text-right font-medium py-1.5 pl-3">Net</th>}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {bill.tests.map((t, i) => (
+                            <tr key={i} className="border-b border-slate-100">
+                                <td className="py-1.5">{t.name}</td>
+                                <td className="py-1.5 pl-3 text-right whitespace-nowrap">{money(t.price)}</td>
+                                {anyTestDiscount && <td className="py-1.5 pl-3 text-right whitespace-nowrap text-emerald-700">{t.discount ? `- ${money(t.discount)}` : '—'}</td>}
+                                {anyTestDiscount && <td className="py-1.5 pl-3 text-right whitespace-nowrap">{money(t.price - t.discount)}</td>}
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+            <div className="mt-3 ml-auto w-full sm:w-64 text-sm">
+                {totals.map(([label, value, strong]) => (
+                    <div key={label} className={`flex justify-between py-1 ${strong ? 'font-semibold border-t border-slate-200' : 'text-slate-700'}`}>
+                        <span>{label}</span><span>{value}</span>
+                    </div>
+                ))}
+            </div>
         </div>
     );
 };
@@ -279,6 +372,8 @@ const LabReportView = ({ data, error }: { data: TLabPublicStatus | null, error: 
                         </div>
                     ))}
                 </div>
+
+                {data.bill && data.bill.tests.length > 0 && <BillCard bill={data.bill} />}
 
                 <div className="flex flex-wrap gap-3">
                     {data.report && (
