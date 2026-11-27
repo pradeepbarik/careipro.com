@@ -124,6 +124,8 @@ export type TclinicDetail = {
         medicine_delivery_time_tag: string | null,
         open_time: string | null,
         recommended_doctors: string | null,
+        //free text the clinic writes about itself in branch settings, may hold line breaks
+        about_clinic?: string | null,
         rating_cnt: number | null,
         review_cnt: number | null,
         discount_msg: string | null,

@@ -18,7 +18,7 @@ type TAd = {
 };
 
 type UseAdsParams = {
-    page_type: 'home' | 'doctor_list' | 'doctor_detail' | 'clinic_list' | 'clinic_detail';
+    page_type: 'home' | 'doctor_list' | 'doctor_detail' | 'clinic_list' | 'clinic_detail' | 'medicine_store_list';
     category_ids?: string; // Comma-separated category IDs
     city?: string;
     limit?: number;

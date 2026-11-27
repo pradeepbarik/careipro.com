@@ -1,7 +1,7 @@
 'use client'
 import { useEffect, useRef, useState } from "react";
 import BackButton from "../mobile/back-button";
-import ShareButton from "../mobile/share-button";
+import ShareButton from "@/app/components/client-components/share-button";
 import FavouriteButton from "../mobile/favourite-button";
 
 /**

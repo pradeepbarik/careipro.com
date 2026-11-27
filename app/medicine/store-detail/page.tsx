@@ -2,8 +2,10 @@ import dynamic from "next/dynamic";
 import useDeviceInfo from "@/lib/hooks/useDeviceInfo";
 import type { Metadata } from "next";
 import { fetchClinicDetail } from "@/lib/hooks/useClinics";
-import { clinicDetailpageUrl } from "@/lib/helper/link";
+import { medicineStoreDtlpgLink } from "@/lib/helper/link";
+import { site_url } from "@/constants/site-config";
 const StoreDetailMobile = dynamic(() => import('./mobile'));
+const StoreDetailDesktop = dynamic(() => import('./desktop'));
 type Tparams={
     store_id:number,
     state:string,
@@ -20,13 +22,20 @@ export async function generateMetadata({ searchParams }: { searchParams: Tparams
         market_name:searchParams.market_name,
         clinic_bid:`MS${searchParams.store_id}-${searchParams.state_city}`
     });
+    const pageUrl = site_url + medicineStoreDtlpgLink({
+        seo_url: data.clinic_info.seo_url,
+        state: data.clinic_info.state || searchParams.state,
+        city: data.clinic_info.city || searchParams.city,
+        market_name: data.clinic_info.market_name || "",
+        bid: data.clinic_info.bid || "",
+    });
     return {
         title: data.clinic_info.page_title || data.clinic_info.name,
         description: data.clinic_info.meta_description || `Get details of ${data.clinic_info.name} including address, contact, working hours and more on Careipro. Find the best medicine store in ${data.clinic_info.city} for your healthcare needs.`,
         openGraph: {
             title: data.clinic_info.page_title || data.clinic_info.name,
             description: data.clinic_info.meta_description || `Get details of ${data.clinic_info.name} including address, contact, working hours and more on Careipro. Find the best medicine store in ${data.clinic_info.city} for your healthcare needs.`,
-            url: `${process.env.NEXT_PUBLIC_BASE_URL}/medicine-store/${searchParams.seo_url}`,
+            url: pageUrl,
             siteName: 'Careipro',
             images: [
                 {
@@ -47,15 +56,10 @@ export async function generateMetadata({ searchParams }: { searchParams: Tparams
                 `${process.env.NEXT_PUBLIC_BASE_URL}/default-store-logo.png`,
             ],
         },
+        /* clinicDetailpageUrl was used here before, it builds a clinic url
+           (/medical-store-in-{market}/...) that does not open this store */
         alternates: {
-            canonical: clinicDetailpageUrl({
-                seo_url: data.clinic_info.seo_url,
-                state: data.clinic_info.state||"",
-                city: data.clinic_info.city||"",
-                market_name: data.clinic_info.market_name||"",
-                bid: data.clinic_info.bid||"",
-                business_type:data.clinic_info.business_type||"",
-            }),
+            canonical: pageUrl,
         },    
     };
 }
@@ -68,13 +72,8 @@ const StoreDetail=async ({searchParams}:{searchParams:Tparams})=>{
         market_name:searchParams.market_name,
         clinic_bid:`MS${searchParams.store_id}-${searchParams.state_city}`,
     })
-    if(device.type==='mobile'){
-        return (
-            <>
-                <StoreDetailMobile data={data}/>
-            </>
-        )
-    }
-    return <>StoreDetail desktop</>
+    return device.type==='mobile'
+        ? <StoreDetailMobile data={data}/>
+        : <StoreDetailDesktop data={data}/>
 }
 export default StoreDetail;

@@ -5,7 +5,7 @@ import AdMedia from './ad-media';
 import { useState } from 'react';
 
 type CarouselAddProps = {
-    page_type: 'home' | 'doctor_list' | 'doctor_detail' | 'clinic_list' | 'clinic_detail';
+    page_type: 'home' | 'doctor_list' | 'doctor_detail' | 'clinic_list' | 'clinic_detail' | 'medicine_store_list';
     category_ids?: string;
     city?: string;
     limit?: number;

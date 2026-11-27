@@ -71,7 +71,7 @@ const nextConfig = {
                 destination: '/physiotherapy'
             },
             {
-                source:'/:state/:city/pharmacies/:seo_url([a-zA-Z0-9-]+)-(MS|C):store_id([0-9]+)-:state_city',
+                source:'/:state/:city/(pharmacies|medicine-stores)/:seo_url([a-zA-Z0-9-]+)-(MS|C):store_id([0-9]+)-:state_city',
                 destination: '/medicine/store-detail'
             },
             {
@@ -79,11 +79,15 @@ const nextConfig = {
                 destination: '/medicine'
             },
             {
-                source: '/:state/:city/pharmacies-in-:town',
+                source:'/:state/:city/:seo_url([a-zA-Z0-9-]+)-medicine-stores-in-:town/CATG:cat_id([0-9]+)',
+                destination: '/medicine/category-medicine-stores'
+            },
+            {
+                source: '/:state/:city/medicine-stores-in-:town',
                 destination: '/medicine/store-list'
             },
             {
-                source: '/:state/:city/pharmacies',
+                source: '/:state/:city/medicine-stores',
                 destination: '/medicine/store-list'
             },
             {

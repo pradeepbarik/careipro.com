@@ -4,7 +4,7 @@ import { useAds } from '@/lib/hooks/useAds';
 import AdMedia from './ad-media';
 
 type StandardBannerAdProps = {
-    page_type: 'home' | 'doctor_list' | 'doctor_detail' | 'clinic_list' | 'clinic_detail';
+    page_type: 'home' | 'doctor_list' | 'doctor_detail' | 'clinic_list' | 'clinic_detail' | 'medicine_store_list';
     category_ids?: string;
     city?: string;
     limit?: number;

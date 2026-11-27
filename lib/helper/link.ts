@@ -96,10 +96,27 @@ export const categoryResultPageLink = (params: { state: string, city: string,tow
 export const upiPaymentLink = (upiid: string, total_amount: number, message: string) => {
     return `upi://pay?pa=${upiid}&pn=&am=${total_amount}&cu=INR`;
 }
+/* the same shape the api builds for the store list links, /odisha/bhadrak/medicine-stores/{seo_url}-{bid}.
+   the older /pharmacies/ form still opens the page, this is the one search engines are told about */
 export const medicineStoreDtlpgLink= (params: { seo_url: string, state: string, city: string, market_name: string, bid: string }) => {
-    return `/${params.state.toLowerCase().replace(" ", "-")}/${params.city.toLowerCase().replace(' ', '-')}/pharmacies/${params.seo_url}-${params.bid}`;
+    const slug = (text: string) => text.trim().toLowerCase().replace(/\s+/g, '-');
+    return `/${slug(params.state)}/${slug(params.city)}/medicine-stores/${params.seo_url}-${params.bid}`;
 }
-export const hirePersonalAssistantPageUrl = (state: string, city: string) => {
+/* the store list for one market, e.g. /odisha/bhadrak/medicine-stores-in-bhadrak-town. the page
+   turns the hyphens back into spaces before asking the api, which matches the market by its name */
+export const medicineStoreListLink = (params: { state: string, city: string, market_name?: string }) => {
+    const slug = (text: string) => text.trim().toLowerCase().replace(/\s+/g, '-');
+    return `/${slug(params.state)}/${slug(params.city)}/medicine-stores${params.market_name ? `-in-${slug(params.market_name)}` : ''}`;
+}
+/* one category's stores in one market, e.g. /odisha/bhadrak/ayurvedic-medicine-stores-in-bhadrak-town/CATG201.
+   the category seo_url already ends in some spelling of "medicine stores" (Ayurvedic-medicne-stores),
+   that tail is dropped so the address doesn't say it twice. matches the category-medicine-stores rewrite */
+export const medicineStoreCategoryLink = (params: { state: string, city: string, market_name: string, seo_url: string, cat_id: number }) => {
+    const slug = (text: string) => text.trim().toLowerCase().replace(/\s+/g, '-');
+    const name = slug(params.seo_url).replace(/-medic[a-z]*(-stores?)?$/, '') || 'medicine';
+    return `/${slug(params.state)}/${slug(params.city)}/${name}-medicine-stores-in-${slug(params.market_name)}/CATG${params.cat_id}`;
+}
+export const hirePersonalAssistantPageUrl =(state: string, city: string) => {
     //same leading "//" trap as searchPageUrl, the rewrite target is a real route on its own
     if (!state || !city) {
         return `/hire-assistant`;
